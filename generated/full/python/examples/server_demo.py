@@ -63,7 +63,7 @@ if __name__ == '__main__':
                 
                 dad=datetime.now(UTC),
                 
-                sister=datetime.now(UTC),
+                sister=None,
                 
                 brothers_age=42,
                 
