@@ -270,13 +270,15 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             yield Static(f"Call: {self.method_name}", id="modal_title")
             
             with VerticalScroll(id="inputs_container"):
+                """ Vertical Scroll container for method inputs """
                 
-                if self.method_name == "refresh_daily_forecast":
-                
-                if self.method_name == "refresh_hourly_forecast":
-                
-                if self.method_name == "refresh_current_conditions":
                  
+                
+                 
+                
+                 
+                 
+             
             
             with Horizontal(id="button_container"):
                 yield Button("Call Method", variant="primary", id="call_button")
@@ -298,13 +300,14 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         logger.debug("Calling method '%s' with params: %s", self.method_name, self.params)
         try:
             # Collect inputs
-            kwargs = {}
+            kwargs = {} # type: Dict[str, Any]
             
-            if self.method_name == "refresh_daily_forecast":
             
-            if self.method_name == "refresh_hourly_forecast":
+             
             
-            if self.method_name == "refresh_current_conditions":
+             
+            
+             
             
 
 

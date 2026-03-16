@@ -181,9 +181,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         """Compose the modal screen."""
         with Vertical(id="modal_container"):
             yield Static(f"Call: {self.method_name}", id="modal_title")
-            
-            with VerticalScroll(id="inputs_container"):
-                 
+             
             
             with Horizontal(id="button_container"):
                 yield Button("Call Method", variant="primary", id="call_button")
@@ -205,7 +203,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         logger.debug("Calling method '%s' with params: %s", self.method_name, self.params)
         try:
             # Collect inputs
-            kwargs = {}
+            kwargs = {} # type: Dict[str, Any]
+            
             
 
 

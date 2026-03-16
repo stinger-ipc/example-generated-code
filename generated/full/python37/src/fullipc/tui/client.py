@@ -288,8 +288,11 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             yield Static(f"Call: {self.method_name}", id="modal_title")
             
             with VerticalScroll(id="inputs_container"):
+                """ Vertical Scroll container for method inputs """
+                
                 
                 if self.method_name == "add_numbers":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"first (PRIMITIVE)", classes="input_label") 
                     yield Input(type="integer",
@@ -314,8 +317,11 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     
                     
+                 
+                
                 
                 if self.method_name == "do_something":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"task_to_do (PRIMITIVE)", classes="input_label") 
                     yield Input(type="text",
@@ -324,10 +330,13 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     
                     
+                 
                 
-                if self.method_name == "what_time_is_it":
+                 
+                
                 
                 if self.method_name == "hold_temperature":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"temperature_celsius (PRIMITIVE)", classes="input_label") 
                     yield Input(type="number",
@@ -337,6 +346,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     
                  
+                 
+             
             
             with Horizontal(id="button_container"):
                 yield Button("Call Method", variant="primary", id="call_button")
@@ -358,50 +369,57 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         logger.debug("Calling method '%s' with params: %s", self.method_name, self.params)
         try:
             # Collect inputs
-            kwargs = {}
+            kwargs = {} # type: Dict[str, Any]
+            
+            
             
             if self.method_name == "add_numbers":
                 
-                first_input_widget = self.query_one(f"#input_first", Input)
-                first_value = int(first_input_widget.value)
-                kwargs["first"] = first_value
+                add_numbers_first_input_widget = self.query_one(f"#input_first", Input)
+                add_numbers_first_value = int(add_numbers_first_input_widget.value)
+                kwargs["first"] = add_numbers_first_value
                 
                 
                 
                 
-                second_input_widget = self.query_one(f"#input_second", Input)
-                second_value = int(second_input_widget.value)
-                kwargs["second"] = second_value
+                add_numbers_second_input_widget = self.query_one(f"#input_second", Input)
+                add_numbers_second_value = int(add_numbers_second_input_widget.value)
+                kwargs["second"] = add_numbers_second_value
                 
                 
                 
                 
-                third_input_widget = self.query_one(f"#input_third", Input)
-                third_value = int(third_input_widget.value)
-                kwargs["third"] = third_value
+                add_numbers_third_input_widget = self.query_one(f"#input_third", Input)
+                add_numbers_third_value = int(add_numbers_third_input_widget.value)
+                kwargs["third"] = add_numbers_third_value
                 
                 
                 
+             
+            
             
             if self.method_name == "do_something":
                 
-                task_to_do_input_widget = self.query_one(f"#input_task_to_do", Input)
-                task_to_do_value = str(task_to_do_input_widget.value)
-                kwargs["task_to_do"] = task_to_do_value
+                do_something_task_to_do_input_widget = self.query_one(f"#input_task_to_do", Input)
+                do_something_task_to_do_value = str(do_something_task_to_do_input_widget.value)
+                kwargs["task_to_do"] = do_something_task_to_do_value
                 
                 
                 
+             
             
-            if self.method_name == "what_time_is_it":
+             
+            
             
             if self.method_name == "hold_temperature":
                 
-                temperature_celsius_input_widget = self.query_one(f"#input_temperature_celsius", Input)
-                temperature_celsius_value = float(temperature_celsius_input_widget.value)
-                kwargs["temperature_celsius"] = temperature_celsius_value
+                hold_temperature_temperature_celsius_input_widget = self.query_one(f"#input_temperature_celsius", Input)
+                hold_temperature_temperature_celsius_value = float(hold_temperature_temperature_celsius_input_widget.value)
+                kwargs["temperature_celsius"] = hold_temperature_temperature_celsius_value
                 
                 
                 
+             
             
 
 

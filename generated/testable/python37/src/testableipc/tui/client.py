@@ -536,10 +536,13 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             yield Static(f"Call: {self.method_name}", id="modal_title")
             
             with VerticalScroll(id="inputs_container"):
+                """ Vertical Scroll container for method inputs """
                 
-                if self.method_name == "call_with_nothing":
+                 
+                
                 
                 if self.method_name == "call_one_integer":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (PRIMITIVE)", classes="input_label") 
                     yield Input(type="integer",
@@ -548,8 +551,11 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     
                     
+                 
+                
                 
                 if self.method_name == "call_optional_integer":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (PRIMITIVE) [Optional]", classes="input_label") 
                     yield Input(type="integer",
@@ -558,8 +564,11 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     
                     
+                 
+                
                 
                 if self.method_name == "call_three_integers":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (PRIMITIVE)", classes="input_label") 
                     yield Input(type="integer",
@@ -584,8 +593,11 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     
                     
+                 
+                
                 
                 if self.method_name == "call_one_string":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (PRIMITIVE)", classes="input_label") 
                     yield Input(type="text",
@@ -594,8 +606,11 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     
                     
+                 
+                
                 
                 if self.method_name == "call_optional_string":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (PRIMITIVE) [Optional]", classes="input_label") 
                     yield Input(type="text",
@@ -604,8 +619,11 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     
                     
+                 
+                
                 
                 if self.method_name == "call_three_strings":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (PRIMITIVE)", classes="input_label") 
                     yield Input(type="text",
@@ -630,8 +648,11 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     
                     
+                 
+                
                 
                 if self.method_name == "call_one_enum":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (ENUM)", classes="input_label")
                     options = [
@@ -644,8 +665,11 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     yield Select(options=options, id=f"input_input1")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_optional_enum":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (ENUM) [Optional]", classes="input_label")
                     options = [
@@ -658,8 +682,11 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     yield Select(options=options, id=f"input_input1")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_three_enums":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (ENUM)", classes="input_label")
                     options = [
@@ -696,53 +723,71 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     yield Select(options=options, id=f"input_input3")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_one_struct":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (JSON Object)", classes="input_label")
-                    yield TextArea.code_editor(language="json", placeholder=f" {  } ", id=f"input_input1")
+                    yield TextArea.code_editor(language="json", placeholder=f" object ", id=f"input_input1")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_optional_struct":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (JSON Object) [Optional]", classes="input_label")
-                    yield TextArea.code_editor(language="json", placeholder=f" {  } ", id=f"input_input1")
+                    yield TextArea.code_editor(language="json", placeholder=f" object ", id=f"input_input1")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_three_structs":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (JSON Object) [Optional]", classes="input_label")
-                    yield TextArea.code_editor(language="json", placeholder=f" {  } ", id=f"input_input1")
+                    yield TextArea.code_editor(language="json", placeholder=f" object ", id=f"input_input1")
                     
                     
                     
                     yield Label(f"input2 (JSON Object)", classes="input_label")
-                    yield TextArea.code_editor(language="json", placeholder=f" {  } ", id=f"input_input2")
+                    yield TextArea.code_editor(language="json", placeholder=f" object ", id=f"input_input2")
                     
                     
                     
                     yield Label(f"input3 (JSON Object)", classes="input_label")
-                    yield TextArea.code_editor(language="json", placeholder=f" {  } ", id=f"input_input3")
+                    yield TextArea.code_editor(language="json", placeholder=f" object ", id=f"input_input3")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_one_date_time":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (DATETIME)", classes="input_label")
                     yield Input(id=f"input_input1")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_optional_date_time":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (DATETIME) [Optional]", classes="input_label")
                     yield Input(id=f"input_input1")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_three_date_times":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (DATETIME)", classes="input_label")
                     yield Input(id=f"input_input1")
@@ -758,22 +803,31 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     yield Input(id=f"input_input3")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_one_duration":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (DURATION)", classes="input_label")
                     yield Input(id=f"input_input1")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_optional_duration":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (DURATION) [Optional]", classes="input_label")
                     yield Input(id=f"input_input1")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_three_durations":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (DURATION)", classes="input_label")
                     yield Input(id=f"input_input1")
@@ -789,22 +843,31 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     yield Input(id=f"input_input3")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_one_binary":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (BINARY)", classes="input_label")
                     yield Input(id=f"input_input1")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_optional_binary":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (BINARY) [Optional]", classes="input_label")
                     yield Input(id=f"input_input1")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_three_binaries":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (BINARY)", classes="input_label")
                     yield Input(id=f"input_input1")
@@ -820,22 +883,31 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     yield Input(id=f"input_input3")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_one_list_of_integers":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (JSON Array)", classes="input_label")
                     yield TextArea.code_editor(language="json", placeholder=f" [  ] ", id=f"input_input1")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_optional_list_of_floats":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (JSON Array) [Optional]", classes="input_label")
                     yield TextArea.code_editor(language="json", placeholder=f" [  ] ", id=f"input_input1")
                     
                     
+                 
+                
                 
                 if self.method_name == "call_two_lists":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (JSON Array)", classes="input_label")
                     yield TextArea.code_editor(language="json", placeholder=f" [  ] ", id=f"input_input1")
@@ -847,6 +919,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     
                  
+                 
+             
             
             with Horizontal(id="button_container"):
                 yield Button("Call Method", variant="primary", id="call_button")
@@ -868,378 +942,429 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         logger.debug("Calling method '%s' with params: %s", self.method_name, self.params)
         try:
             # Collect inputs
-            kwargs = {}
+            kwargs = {} # type: Dict[str, Any]
             
-            if self.method_name == "call_with_nothing":
+            
+             
+            
             
             if self.method_name == "call_one_integer":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = int(input1_input_widget.value)
-                kwargs["input1"] = input1_value
+                call_one_integer_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_one_integer_input1_value = int(call_one_integer_input1_input_widget.value)
+                kwargs["input1"] = call_one_integer_input1_value
                 
                 
                 
+             
+            
             
             if self.method_name == "call_optional_integer":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = int(input1_input_widget.value)
-                kwargs["input1"] = input1_value
+                call_optional_integer_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_optional_integer_input1_value = int(call_optional_integer_input1_input_widget.value)
+                kwargs["input1"] = call_optional_integer_input1_value
                 
                 
                 
+             
+            
             
             if self.method_name == "call_three_integers":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = int(input1_input_widget.value)
-                kwargs["input1"] = input1_value
+                call_three_integers_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_three_integers_input1_value = int(call_three_integers_input1_input_widget.value)
+                kwargs["input1"] = call_three_integers_input1_value
                 
                 
                 
                 
-                input2_input_widget = self.query_one(f"#input_input2", Input)
-                input2_value = int(input2_input_widget.value)
-                kwargs["input2"] = input2_value
+                call_three_integers_input2_input_widget = self.query_one(f"#input_input2", Input)
+                call_three_integers_input2_value = int(call_three_integers_input2_input_widget.value)
+                kwargs["input2"] = call_three_integers_input2_value
                 
                 
                 
                 
-                input3_input_widget = self.query_one(f"#input_input3", Input)
-                input3_value = int(input3_input_widget.value)
-                kwargs["input3"] = input3_value
+                call_three_integers_input3_input_widget = self.query_one(f"#input_input3", Input)
+                call_three_integers_input3_value = int(call_three_integers_input3_input_widget.value)
+                kwargs["input3"] = call_three_integers_input3_value
                 
                 
                 
+             
+            
             
             if self.method_name == "call_one_string":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = str(input1_input_widget.value)
-                kwargs["input1"] = input1_value
+                call_one_string_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_one_string_input1_value = str(call_one_string_input1_input_widget.value)
+                kwargs["input1"] = call_one_string_input1_value
                 
                 
                 
+             
+            
             
             if self.method_name == "call_optional_string":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = str(input1_input_widget.value)
-                kwargs["input1"] = input1_value
+                call_optional_string_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_optional_string_input1_value = str(call_optional_string_input1_input_widget.value)
+                kwargs["input1"] = call_optional_string_input1_value
                 
                 
                 
+             
+            
             
             if self.method_name == "call_three_strings":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = str(input1_input_widget.value)
-                kwargs["input1"] = input1_value
+                call_three_strings_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_three_strings_input1_value = str(call_three_strings_input1_input_widget.value)
+                kwargs["input1"] = call_three_strings_input1_value
                 
                 
                 
                 
-                input2_input_widget = self.query_one(f"#input_input2", Input)
-                input2_value = str(input2_input_widget.value)
-                kwargs["input2"] = input2_value
+                call_three_strings_input2_input_widget = self.query_one(f"#input_input2", Input)
+                call_three_strings_input2_value = str(call_three_strings_input2_input_widget.value)
+                kwargs["input2"] = call_three_strings_input2_value
                 
                 
                 
                 
-                input3_input_widget = self.query_one(f"#input_input3", Input)
-                input3_value = str(input3_input_widget.value)
-                kwargs["input3"] = input3_value
+                call_three_strings_input3_input_widget = self.query_one(f"#input_input3", Input)
+                call_three_strings_input3_value = str(call_three_strings_input3_input_widget.value)
+                kwargs["input3"] = call_three_strings_input3_value
                 
                 
                 
+             
+            
             
             if self.method_name == "call_one_enum":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Select)
-                input1_value = Numbers(int(input1_input_widget.value))
-                kwargs["input1"] = input1_value
+                call_one_enum_input1_input_widget = self.query_one(f"#input_input1", Select)
+                call_one_enum_input1_value = Numbers(int(call_one_enum_input1_input_widget.value))
+                kwargs["input1"] = call_one_enum_input1_value
                 
                 
+             
+            
             
             if self.method_name == "call_optional_enum":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Select)
-                input1_value = Numbers(int(input1_input_widget.value))
-                kwargs["input1"] = input1_value
+                call_optional_enum_input1_input_widget = self.query_one(f"#input_input1", Select)
+                call_optional_enum_input1_value = Numbers(int(call_optional_enum_input1_input_widget.value))
+                kwargs["input1"] = call_optional_enum_input1_value
                 
                 
+             
+            
             
             if self.method_name == "call_three_enums":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Select)
-                input1_value = Numbers(int(input1_input_widget.value))
-                kwargs["input1"] = input1_value
+                call_three_enums_input1_input_widget = self.query_one(f"#input_input1", Select)
+                call_three_enums_input1_value = Numbers(int(call_three_enums_input1_input_widget.value))
+                kwargs["input1"] = call_three_enums_input1_value
                 
                 
                 
-                input2_input_widget = self.query_one(f"#input_input2", Select)
-                input2_value = Numbers(int(input2_input_widget.value))
-                kwargs["input2"] = input2_value
+                call_three_enums_input2_input_widget = self.query_one(f"#input_input2", Select)
+                call_three_enums_input2_value = Numbers(int(call_three_enums_input2_input_widget.value))
+                kwargs["input2"] = call_three_enums_input2_value
                 
                 
                 
-                input3_input_widget = self.query_one(f"#input_input3", Select)
-                input3_value = Numbers(int(input3_input_widget.value))
-                kwargs["input3"] = input3_value
+                call_three_enums_input3_input_widget = self.query_one(f"#input_input3", Select)
+                call_three_enums_input3_value = Numbers(int(call_three_enums_input3_input_widget.value))
+                kwargs["input3"] = call_three_enums_input3_value
                 
                 
+             
+            
             
             if self.method_name == "call_one_struct":
                 
-                input1_input_widget = self.query_one(f"#input_input1", TextArea)
-                input1_widget_text_value = input1_input_widget.value.strip()
-                if not input1_widget_text_value and not arg.optional:
+                call_one_struct_input1_input_widget = self.query_one(f"#input_input1", TextArea)
+                call_one_struct_input1_widget_text_value = call_one_struct_input1_input_widget.value.strip()
+                
+                if not call_one_struct_input1_widget_text_value:
                     self.result_widget.update(f"[red]Error: Missing required parameter input1[/red]")
                     return
+                 
                 try:
-                    value = AllTypes.model_validate_json(input1_widget_text_value)
+                    call_one_struct_input1_value = AllTypes.model_validate_json(call_one_struct_input1_widget_text_value)
                 except Exception as e:
                     self.result_widget.update(f"[red]Error parsing JSON for parameter input1: {e}[/red]")
                     return
                 else:
-                    kwargs["input1"] = value
+                    kwargs["input1"] = call_one_struct_input1_value
                 
                 
+             
+            
             
             if self.method_name == "call_optional_struct":
                 
-                input1_input_widget = self.query_one(f"#input_input1", TextArea)
-                input1_widget_text_value = input1_input_widget.value.strip()
-                if not input1_widget_text_value and not arg.optional:
-                    self.result_widget.update(f"[red]Error: Missing required parameter input1[/red]")
-                    return
+                call_optional_struct_input1_input_widget = self.query_one(f"#input_input1", TextArea)
+                call_optional_struct_input1_widget_text_value = call_optional_struct_input1_input_widget.value.strip()
+                 
                 try:
-                    value = AllTypes.model_validate_json(input1_widget_text_value)
+                    call_optional_struct_input1_value = AllTypes.model_validate_json(call_optional_struct_input1_widget_text_value)
                 except Exception as e:
                     self.result_widget.update(f"[red]Error parsing JSON for parameter input1: {e}[/red]")
                     return
                 else:
-                    kwargs["input1"] = value
+                    kwargs["input1"] = call_optional_struct_input1_value
                 
                 
+             
+            
             
             if self.method_name == "call_three_structs":
                 
-                input1_input_widget = self.query_one(f"#input_input1", TextArea)
-                input1_widget_text_value = input1_input_widget.value.strip()
-                if not input1_widget_text_value and not arg.optional:
-                    self.result_widget.update(f"[red]Error: Missing required parameter input1[/red]")
-                    return
+                call_three_structs_input1_input_widget = self.query_one(f"#input_input1", TextArea)
+                call_three_structs_input1_widget_text_value = call_three_structs_input1_input_widget.value.strip()
+                 
                 try:
-                    value = AllTypes.model_validate_json(input1_widget_text_value)
+                    call_three_structs_input1_value = AllTypes.model_validate_json(call_three_structs_input1_widget_text_value)
                 except Exception as e:
                     self.result_widget.update(f"[red]Error parsing JSON for parameter input1: {e}[/red]")
                     return
                 else:
-                    kwargs["input1"] = value
+                    kwargs["input1"] = call_three_structs_input1_value
                 
                 
                 
-                input2_input_widget = self.query_one(f"#input_input2", TextArea)
-                input2_widget_text_value = input2_input_widget.value.strip()
-                if not input2_widget_text_value and not arg.optional:
+                call_three_structs_input2_input_widget = self.query_one(f"#input_input2", TextArea)
+                call_three_structs_input2_widget_text_value = call_three_structs_input2_input_widget.value.strip()
+                
+                if not call_three_structs_input2_widget_text_value:
                     self.result_widget.update(f"[red]Error: Missing required parameter input2[/red]")
                     return
+                 
                 try:
-                    value = AllTypes.model_validate_json(input2_widget_text_value)
+                    call_three_structs_input2_value = AllTypes.model_validate_json(call_three_structs_input2_widget_text_value)
                 except Exception as e:
                     self.result_widget.update(f"[red]Error parsing JSON for parameter input2: {e}[/red]")
                     return
                 else:
-                    kwargs["input2"] = value
+                    kwargs["input2"] = call_three_structs_input2_value
                 
                 
                 
-                input3_input_widget = self.query_one(f"#input_input3", TextArea)
-                input3_widget_text_value = input3_input_widget.value.strip()
-                if not input3_widget_text_value and not arg.optional:
+                call_three_structs_input3_input_widget = self.query_one(f"#input_input3", TextArea)
+                call_three_structs_input3_widget_text_value = call_three_structs_input3_input_widget.value.strip()
+                
+                if not call_three_structs_input3_widget_text_value:
                     self.result_widget.update(f"[red]Error: Missing required parameter input3[/red]")
                     return
+                 
                 try:
-                    value = AllTypes.model_validate_json(input3_widget_text_value)
+                    call_three_structs_input3_value = AllTypes.model_validate_json(call_three_structs_input3_widget_text_value)
                 except Exception as e:
                     self.result_widget.update(f"[red]Error parsing JSON for parameter input3: {e}[/red]")
                     return
                 else:
-                    kwargs["input3"] = value
+                    kwargs["input3"] = call_three_structs_input3_value
                 
                 
+             
+            
             
             if self.method_name == "call_one_date_time":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = datetime.fromisoformat(input1_input_widget.value)
-                kwargs["input1"] = input1_value
+                call_one_date_time_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_one_date_time_input1_value = datetime.fromisoformat(call_one_date_time_input1_input_widget.value)
+                kwargs["input1"] = call_one_date_time_input1_value
                 
                 
+             
+            
             
             if self.method_name == "call_optional_date_time":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = datetime.fromisoformat(input1_input_widget.value)
-                kwargs["input1"] = input1_value
+                call_optional_date_time_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_optional_date_time_input1_value = datetime.fromisoformat(call_optional_date_time_input1_input_widget.value)
+                kwargs["input1"] = call_optional_date_time_input1_value
                 
                 
+             
+            
             
             if self.method_name == "call_three_date_times":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = datetime.fromisoformat(input1_input_widget.value)
-                kwargs["input1"] = input1_value
+                call_three_date_times_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_three_date_times_input1_value = datetime.fromisoformat(call_three_date_times_input1_input_widget.value)
+                kwargs["input1"] = call_three_date_times_input1_value
                 
                 
                 
-                input2_input_widget = self.query_one(f"#input_input2", Input)
-                input2_value = datetime.fromisoformat(input2_input_widget.value)
-                kwargs["input2"] = input2_value
+                call_three_date_times_input2_input_widget = self.query_one(f"#input_input2", Input)
+                call_three_date_times_input2_value = datetime.fromisoformat(call_three_date_times_input2_input_widget.value)
+                kwargs["input2"] = call_three_date_times_input2_value
                 
                 
                 
-                input3_input_widget = self.query_one(f"#input_input3", Input)
-                input3_value = datetime.fromisoformat(input3_input_widget.value)
-                kwargs["input3"] = input3_value
+                call_three_date_times_input3_input_widget = self.query_one(f"#input_input3", Input)
+                call_three_date_times_input3_value = datetime.fromisoformat(call_three_date_times_input3_input_widget.value)
+                kwargs["input3"] = call_three_date_times_input3_value
                 
                 
+             
+            
             
             if self.method_name == "call_one_duration":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = isodate.parse_duration(input1_input_widget.value)
-                kwargs["input1"] = input1_value
+                call_one_duration_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_one_duration_input1_value = isodate.parse_duration(call_one_duration_input1_input_widget.value)
+                kwargs["input1"] = call_one_duration_input1_value
                 
                 
+             
+            
             
             if self.method_name == "call_optional_duration":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = isodate.parse_duration(input1_input_widget.value)
-                kwargs["input1"] = input1_value
+                call_optional_duration_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_optional_duration_input1_value = isodate.parse_duration(call_optional_duration_input1_input_widget.value)
+                kwargs["input1"] = call_optional_duration_input1_value
                 
                 
+             
+            
             
             if self.method_name == "call_three_durations":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = isodate.parse_duration(input1_input_widget.value)
-                kwargs["input1"] = input1_value
+                call_three_durations_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_three_durations_input1_value = isodate.parse_duration(call_three_durations_input1_input_widget.value)
+                kwargs["input1"] = call_three_durations_input1_value
                 
                 
                 
-                input2_input_widget = self.query_one(f"#input_input2", Input)
-                input2_value = isodate.parse_duration(input2_input_widget.value)
-                kwargs["input2"] = input2_value
+                call_three_durations_input2_input_widget = self.query_one(f"#input_input2", Input)
+                call_three_durations_input2_value = isodate.parse_duration(call_three_durations_input2_input_widget.value)
+                kwargs["input2"] = call_three_durations_input2_value
                 
                 
                 
-                input3_input_widget = self.query_one(f"#input_input3", Input)
-                input3_value = isodate.parse_duration(input3_input_widget.value)
-                kwargs["input3"] = input3_value
+                call_three_durations_input3_input_widget = self.query_one(f"#input_input3", Input)
+                call_three_durations_input3_value = isodate.parse_duration(call_three_durations_input3_input_widget.value)
+                kwargs["input3"] = call_three_durations_input3_value
                 
                 
+             
+            
             
             if self.method_name == "call_one_binary":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = input1_input_widget.value.encode('utf-8')
-                kwargs["input1"] = input1_value
+                call_one_binary_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_one_binary_input1_value = call_one_binary_input1_input_widget.value.encode('utf-8')
+                kwargs["input1"] = call_one_binary_input1_value
                  
                 
+             
+            
             
             if self.method_name == "call_optional_binary":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = input1_input_widget.value.encode('utf-8')
-                kwargs["input1"] = input1_value
+                call_optional_binary_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_optional_binary_input1_value = call_optional_binary_input1_input_widget.value.encode('utf-8')
+                kwargs["input1"] = call_optional_binary_input1_value
                  
                 
+             
+            
             
             if self.method_name == "call_three_binaries":
                 
-                input1_input_widget = self.query_one(f"#input_input1", Input)
-                input1_value = input1_input_widget.value.encode('utf-8')
-                kwargs["input1"] = input1_value
+                call_three_binaries_input1_input_widget = self.query_one(f"#input_input1", Input)
+                call_three_binaries_input1_value = call_three_binaries_input1_input_widget.value.encode('utf-8')
+                kwargs["input1"] = call_three_binaries_input1_value
                  
                 
                 
-                input2_input_widget = self.query_one(f"#input_input2", Input)
-                input2_value = input2_input_widget.value.encode('utf-8')
-                kwargs["input2"] = input2_value
+                call_three_binaries_input2_input_widget = self.query_one(f"#input_input2", Input)
+                call_three_binaries_input2_value = call_three_binaries_input2_input_widget.value.encode('utf-8')
+                kwargs["input2"] = call_three_binaries_input2_value
                  
                 
                 
-                input3_input_widget = self.query_one(f"#input_input3", Input)
-                input3_value = input3_input_widget.value.encode('utf-8')
-                kwargs["input3"] = input3_value
+                call_three_binaries_input3_input_widget = self.query_one(f"#input_input3", Input)
+                call_three_binaries_input3_value = call_three_binaries_input3_input_widget.value.encode('utf-8')
+                kwargs["input3"] = call_three_binaries_input3_value
                  
                 
+             
+            
             
             if self.method_name == "call_one_list_of_integers":
                 
                 type_adapter = TypeAdapter(list)
 
                 try:
-                    input1_input_widget = self.query_one(f"#input_input1", TextArea)
-                    input1_widget_text_value = input1_input_widget.value.strip()
-                    values = type_adapter.validate_json(input1_widget_text_value)
+                    call_one_list_of_integers_input1_input_widget = self.query_one(f"#input_input1", TextArea)
+                    call_one_list_of_integers_input1_widget_text_value = call_one_list_of_integers_input1_input_widget.value.strip()
+                    call_one_list_of_integers_input1_values = type_adapter.validate_json(call_one_list_of_integers_input1_widget_text_value)
                 except Exception as e:
                     self.result_widget.update(f"[red]Error parsing JSON for parameter input1: {e}[/red]")
                     return
                 else:
-                    kwargs["input1"] = values
+                    kwargs["input1"] = call_one_list_of_integers_input1_values
                 
                 
+             
+            
             
             if self.method_name == "call_optional_list_of_floats":
                 
                 type_adapter = TypeAdapter(list)
 
                 try:
-                    input1_input_widget = self.query_one(f"#input_input1", TextArea)
-                    input1_widget_text_value = input1_input_widget.value.strip()
-                    values = type_adapter.validate_json(input1_widget_text_value)
+                    call_optional_list_of_floats_input1_input_widget = self.query_one(f"#input_input1", TextArea)
+                    call_optional_list_of_floats_input1_widget_text_value = call_optional_list_of_floats_input1_input_widget.value.strip()
+                    call_optional_list_of_floats_input1_values = type_adapter.validate_json(call_optional_list_of_floats_input1_widget_text_value)
                 except Exception as e:
                     self.result_widget.update(f"[red]Error parsing JSON for parameter input1: {e}[/red]")
                     return
                 else:
-                    kwargs["input1"] = values
+                    kwargs["input1"] = call_optional_list_of_floats_input1_values
                 
                 
+             
+            
             
             if self.method_name == "call_two_lists":
                 
                 type_adapter = TypeAdapter(list)
 
                 try:
-                    input1_input_widget = self.query_one(f"#input_input1", TextArea)
-                    input1_widget_text_value = input1_input_widget.value.strip()
-                    values = type_adapter.validate_json(input1_widget_text_value)
+                    call_two_lists_input1_input_widget = self.query_one(f"#input_input1", TextArea)
+                    call_two_lists_input1_widget_text_value = call_two_lists_input1_input_widget.value.strip()
+                    call_two_lists_input1_values = type_adapter.validate_json(call_two_lists_input1_widget_text_value)
                 except Exception as e:
                     self.result_widget.update(f"[red]Error parsing JSON for parameter input1: {e}[/red]")
                     return
                 else:
-                    kwargs["input1"] = values
+                    kwargs["input1"] = call_two_lists_input1_values
                 
                 
                 
                 type_adapter = TypeAdapter(list)
 
                 try:
-                    input2_input_widget = self.query_one(f"#input_input2", TextArea)
-                    input2_widget_text_value = input2_input_widget.value.strip()
-                    values = type_adapter.validate_json(input2_widget_text_value)
+                    call_two_lists_input2_input_widget = self.query_one(f"#input_input2", TextArea)
+                    call_two_lists_input2_widget_text_value = call_two_lists_input2_input_widget.value.strip()
+                    call_two_lists_input2_values = type_adapter.validate_json(call_two_lists_input2_widget_text_value)
                 except Exception as e:
                     self.result_widget.update(f"[red]Error parsing JSON for parameter input2: {e}[/red]")
                     return
                 else:
-                    kwargs["input2"] = values
+                    kwargs["input2"] = call_two_lists_input2_values
                 
                 
+             
             
 
 

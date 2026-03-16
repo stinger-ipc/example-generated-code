@@ -193,8 +193,11 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             yield Static(f"Call: {self.method_name}", id="modal_title")
             
             with VerticalScroll(id="inputs_container"):
+                """ Vertical Scroll container for method inputs """
+                
                 
                 if self.method_name == "trade_numbers":
+                    """ Generate input fields for each argument of the method """
                     
                     yield Label(f"your_number (PRIMITIVE)", classes="input_label") 
                     yield Input(type="integer",
@@ -204,6 +207,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     
                  
+                 
+             
             
             with Horizontal(id="button_container"):
                 yield Button("Call Method", variant="primary", id="call_button")
@@ -225,16 +230,19 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         logger.debug("Calling method '%s' with params: %s", self.method_name, self.params)
         try:
             # Collect inputs
-            kwargs = {}
+            kwargs = {} # type: Dict[str, Any]
+            
+            
             
             if self.method_name == "trade_numbers":
                 
-                your_number_input_widget = self.query_one(f"#input_your_number", Input)
-                your_number_value = int(your_number_input_widget.value)
-                kwargs["your_number"] = your_number_value
+                trade_numbers_your_number_input_widget = self.query_one(f"#input_your_number", Input)
+                trade_numbers_your_number_value = int(trade_numbers_your_number_input_widget.value)
+                kwargs["your_number"] = trade_numbers_your_number_value
                 
                 
                 
+             
             
 
 
