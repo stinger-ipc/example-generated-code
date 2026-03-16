@@ -6,10 +6,11 @@ import isodate
 from typing import List, Optional, Any, Dict
 from textual.app import ComposeResult # typing: ignore
 from textual.screen import Screen, ModalScreen # typing: ignore
-from textual.widgets import Header, Footer, Static, RichLog, Button, Input, Label, Select # typing: ignore
+from textual.widgets import Header, Footer, Static, RichLog, Button, Input, Label, Select, TextArea # typing: ignore
 from textual.containers import Horizontal, VerticalScroll, Vertical # typing: ignore
 from weatheripc.interface_types import *
 from weatheripc.client import WeatherClient
+from pydantic import TypeAdapter
 import logging
 
 # Configure logging
@@ -167,17 +168,17 @@ class PropertyEditModal(ModalScreen[bool]):
                     
                     self.client.location = new_location_value
                 elif self.property_name == 'current_condition_refresh_interval':
-                    input_widget = self.query_one("#property_input", Input)
+                    input_widget = self.query_one("#property_input")
                     new_current_condition_refresh_interval_value = int(input_widget.value)
                     
                     self.client.current_condition_refresh_interval = new_current_condition_refresh_interval_value
                 elif self.property_name == 'hourly_forecast_refresh_interval':
-                    input_widget = self.query_one("#property_input", Input)
+                    input_widget = self.query_one("#property_input")
                     new_hourly_forecast_refresh_interval_value = int(input_widget.value)
                     
                     self.client.hourly_forecast_refresh_interval = new_hourly_forecast_refresh_interval_value
                 elif self.property_name == 'daily_forecast_refresh_interval':
-                    input_widget = self.query_one("#property_input", Input)
+                    input_widget = self.query_one("#property_input")
                     new_daily_forecast_refresh_interval_value = int(input_widget.value)
                     
                     self.client.daily_forecast_refresh_interval = new_daily_forecast_refresh_interval_value
@@ -230,6 +231,11 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         margin-bottom: 1;
     }
     
+    TextArea {
+        height: 3;
+        width: 100%;
+    }
+
     #button_container {
         layout: horizontal;
         height: auto;
@@ -264,12 +270,13 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             yield Static(f"Call: {self.method_name}", id="modal_title")
             
             with VerticalScroll(id="inputs_container"):
-                if self.params:
-                    for param_name, param_type in self.params.items():
-                        yield Label(f"{param_name} ({param_type.__name__ if hasattr(param_type, '__name__') else str(param_type)}):", classes="input_label")
-                        yield Input(placeholder=f"Enter {param_name}", id=f"input_{param_name}")
-                else:
-                    yield Static("No parameters required")
+                
+                if self.method_name == "refresh_daily_forecast":
+                
+                if self.method_name == "refresh_hourly_forecast":
+                
+                if self.method_name == "refresh_current_conditions":
+                 
             
             with Horizontal(id="button_container"):
                 yield Button("Call Method", variant="primary", id="call_button")
@@ -292,19 +299,15 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         try:
             # Collect inputs
             kwargs = {}
-            for param_name, param_type in self.params.items():
-                input_widget = self.query_one(f"#input_{param_name}", Input)
-                value_str = input_widget.value
-                
-                # Simple parsing - for demo, handle basic types
-                if value_str:
-                    kwargs[param_name] = self._parse_value(value_str, param_type)
-                elif "Optional" not in str(param_type):
-                    self.result_widget.update("[red]Error: Missing required parameter[/red]")
-                    return
-                else:
-                    kwargs[param_name] = None
             
+            if self.method_name == "refresh_daily_forecast":
+            
+            if self.method_name == "refresh_hourly_forecast":
+            
+            if self.method_name == "refresh_current_conditions":
+            
+
+
             # Call the method
             self.result_widget.update("[yellow]Calling method...[/yellow]")
             method = getattr(self.client, self.method_name)
@@ -321,22 +324,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                 
         except Exception as e:
             self.result_widget.update(f"[red]Error preparing call: {e}[/red]")
-    
-    def _parse_value(self, value_str: str, param_type: type) -> Any:
-        """Parse a string value to the appropriate type."""
-        type_str = str(param_type)
-        
-        if "int" in type_str.lower():
-            return int(value_str)
-        elif "float" in type_str.lower() or "number" in type_str.lower():
-            return float(value_str)
-        elif "str" in type_str.lower():
-            return value_str
-        elif "bool" in type_str.lower():
-            return value_str.lower() in ("true", "1", "yes")
-        else:
-            # For complex types, return the string for now
-            return value_str
+            logger.exception(f"Error preparing method call {self.method_name}", exc_info=e)
 
 
 class ClientScreen(Screen):

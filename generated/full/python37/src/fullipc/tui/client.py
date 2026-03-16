@@ -6,10 +6,11 @@ import isodate
 from typing import List, Optional, Any, Dict
 from textual.app import ComposeResult # typing: ignore
 from textual.screen import Screen, ModalScreen # typing: ignore
-from textual.widgets import Header, Footer, Static, RichLog, Button, Input, Label, Select # typing: ignore
+from textual.widgets import Header, Footer, Static, RichLog, Button, Input, Label, Select, TextArea # typing: ignore
 from textual.containers import Horizontal, VerticalScroll, Vertical # typing: ignore
 from fullipc.interface_types import *
 from fullipc.client import FullClient
+from pydantic import TypeAdapter
 import logging
 
 # Configure logging
@@ -140,7 +141,7 @@ class PropertyEditModal(ModalScreen[bool]):
         if event.button.id == "update_button":
             try:
                 if self.property_name == 'favorite_number':
-                    input_widget = self.query_one("#property_input", Input)
+                    input_widget = self.query_one("#property_input")
                     new_favorite_number_value = int(input_widget.value)
                     
                     self.client.favorite_number = new_favorite_number_value
@@ -165,12 +166,12 @@ class PropertyEditModal(ModalScreen[bool]):
                     
                     self.client.favorite_foods = new_favorite_foods_value
                 elif self.property_name == 'family_name':
-                    input_widget = self.query_one("#property_input", Input)
+                    input_widget = self.query_one("#property_input")
                     new_family_name_value = str(input_widget.value)
                     
                     self.client.family_name = new_family_name_value
                 elif self.property_name == 'last_breakfast_time':
-                    input_widget = self.query_one("#property_input", Input)
+                    input_widget = self.query_one("#property_input")
                     new_last_breakfast_time_value = datetime.fromisoformat(input_widget.value)
                     
                     self.client.last_breakfast_time = new_last_breakfast_time_value
@@ -248,6 +249,11 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         margin-bottom: 1;
     }
     
+    TextArea {
+        height: 3;
+        width: 100%;
+    }
+
     #button_container {
         layout: horizontal;
         height: auto;
@@ -282,12 +288,55 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             yield Static(f"Call: {self.method_name}", id="modal_title")
             
             with VerticalScroll(id="inputs_container"):
-                if self.params:
-                    for param_name, param_type in self.params.items():
-                        yield Label(f"{param_name} ({param_type.__name__ if hasattr(param_type, '__name__') else str(param_type)}):", classes="input_label")
-                        yield Input(placeholder=f"Enter {param_name}", id=f"input_{param_name}")
-                else:
-                    yield Static("No parameters required")
+                
+                if self.method_name == "add_numbers":
+                    
+                    yield Label(f"first (PRIMITIVE)", classes="input_label") 
+                    yield Input(type="integer",
+                        id=f"input_first"
+                    )
+                    
+                    
+                    
+                    
+                    yield Label(f"second (PRIMITIVE)", classes="input_label") 
+                    yield Input(type="integer",
+                        id=f"input_second"
+                    )
+                    
+                    
+                    
+                    
+                    yield Label(f"third (PRIMITIVE) [Optional]", classes="input_label") 
+                    yield Input(type="integer",
+                        id=f"input_third"
+                    )
+                    
+                    
+                    
+                
+                if self.method_name == "do_something":
+                    
+                    yield Label(f"task_to_do (PRIMITIVE)", classes="input_label") 
+                    yield Input(type="text",
+                        id=f"input_task_to_do"
+                    )
+                    
+                    
+                    
+                
+                if self.method_name == "what_time_is_it":
+                
+                if self.method_name == "hold_temperature":
+                    
+                    yield Label(f"temperature_celsius (PRIMITIVE)", classes="input_label") 
+                    yield Input(type="number",
+                        id=f"input_temperature_celsius"
+                    )
+                    
+                    
+                    
+                 
             
             with Horizontal(id="button_container"):
                 yield Button("Call Method", variant="primary", id="call_button")
@@ -310,19 +359,52 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         try:
             # Collect inputs
             kwargs = {}
-            for param_name, param_type in self.params.items():
-                input_widget = self.query_one(f"#input_{param_name}", Input)
-                value_str = input_widget.value
-                
-                # Simple parsing - for demo, handle basic types
-                if value_str:
-                    kwargs[param_name] = self._parse_value(value_str, param_type)
-                elif "Optional" not in str(param_type):
-                    self.result_widget.update("[red]Error: Missing required parameter[/red]")
-                    return
-                else:
-                    kwargs[param_name] = None
             
+            if self.method_name == "add_numbers":
+                
+                first_input_widget = self.query_one(f"#input_first", Input)
+                first_value = int(first_input_widget.value)
+                kwargs["first"] = first_value
+                
+                
+                
+                
+                second_input_widget = self.query_one(f"#input_second", Input)
+                second_value = int(second_input_widget.value)
+                kwargs["second"] = second_value
+                
+                
+                
+                
+                third_input_widget = self.query_one(f"#input_third", Input)
+                third_value = int(third_input_widget.value)
+                kwargs["third"] = third_value
+                
+                
+                
+            
+            if self.method_name == "do_something":
+                
+                task_to_do_input_widget = self.query_one(f"#input_task_to_do", Input)
+                task_to_do_value = str(task_to_do_input_widget.value)
+                kwargs["task_to_do"] = task_to_do_value
+                
+                
+                
+            
+            if self.method_name == "what_time_is_it":
+            
+            if self.method_name == "hold_temperature":
+                
+                temperature_celsius_input_widget = self.query_one(f"#input_temperature_celsius", Input)
+                temperature_celsius_value = float(temperature_celsius_input_widget.value)
+                kwargs["temperature_celsius"] = temperature_celsius_value
+                
+                
+                
+            
+
+
             # Call the method
             self.result_widget.update("[yellow]Calling method...[/yellow]")
             method = getattr(self.client, self.method_name)
@@ -339,22 +421,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                 
         except Exception as e:
             self.result_widget.update(f"[red]Error preparing call: {e}[/red]")
-    
-    def _parse_value(self, value_str: str, param_type: type) -> Any:
-        """Parse a string value to the appropriate type."""
-        type_str = str(param_type)
-        
-        if "int" in type_str.lower():
-            return int(value_str)
-        elif "float" in type_str.lower() or "number" in type_str.lower():
-            return float(value_str)
-        elif "str" in type_str.lower():
-            return value_str
-        elif "bool" in type_str.lower():
-            return value_str.lower() in ("true", "1", "yes")
-        else:
-            # For complex types, return the string for now
-            return value_str
+            logger.exception(f"Error preparing method call {self.method_name}", exc_info=e)
 
 
 class ClientScreen(Screen):

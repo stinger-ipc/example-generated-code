@@ -25,7 +25,7 @@ dev = [
 
 
 [project.optional-dependencies]
-tui = ["textual"]
+tui = ["textual[syntax]~=8.1"]
 
 
 [build-system]
@@ -41,7 +41,7 @@ simple-tui = "simpleipc.tui.app:main"
 packages = ["simpleipc"]
 
 [stinger-ipc]
-generator_version = "0.7.1.dev1"
+generator_version = "0.7.1"
 
 [tool.mypy]
 [[tool.mypy.overrides]]
