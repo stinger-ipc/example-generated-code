@@ -296,7 +296,7 @@ void FullClient::_handleAddNumbersResponse(
         throw std::runtime_error("Received payload for 'addNumbers' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingAddNumbersMethodCalls.find(correlationData);
     if (promiseItr != _pendingAddNumbersMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -364,7 +364,7 @@ void FullClient::_handleDoSomethingResponse(
         throw std::runtime_error("Received payload for 'doSomething' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingDoSomethingMethodCalls.find(correlationData);
     if (promiseItr != _pendingDoSomethingMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -426,7 +426,7 @@ void FullClient::_handleWhatTimeIsItResponse(
         throw std::runtime_error("Received payload for 'what_time_is_it' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingWhatTimeIsItMethodCalls.find(correlationData);
     if (promiseItr != _pendingWhatTimeIsItMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -490,7 +490,7 @@ void FullClient::_handleHoldTemperatureResponse(
         throw std::runtime_error("Received payload for 'hold_temperature' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingHoldTemperatureMethodCalls.find(correlationData);
     if (promiseItr != _pendingHoldTemperatureMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {

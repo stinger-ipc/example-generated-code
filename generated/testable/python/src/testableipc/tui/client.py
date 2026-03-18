@@ -511,57 +511,58 @@ class PropertyEditModal(ModalScreen[bool]):
             except Exception as e:
                 self.app.notify(f"Error updating property: {e}", severity="error")
         elif event.button.id == "help_button":
+            help_text = "No documentation available."
             if self.property_name == 'read_write_integer':
                 help_text = """A read-write integer property."""
-            if self.property_name == 'read_only_integer':
+            elif self.property_name == 'read_only_integer':
                 help_text = """A read-only integer property."""
-            if self.property_name == 'read_write_optional_integer':
+            elif self.property_name == 'read_write_optional_integer':
                 help_text = """A read-write optional integer property."""
-            if self.property_name == 'read_write_two_integers':
+            elif self.property_name == 'read_write_two_integers':
                 help_text = """A read-write property with two integer values. The second is optional."""
-            if self.property_name == 'read_only_string':
+            elif self.property_name == 'read_only_string':
                 help_text = """A read-only string property."""
-            if self.property_name == 'read_write_string':
+            elif self.property_name == 'read_write_string':
                 help_text = """A read-write string property."""
-            if self.property_name == 'read_write_optional_string':
+            elif self.property_name == 'read_write_optional_string':
                 help_text = """A read-write optional string property."""
-            if self.property_name == 'read_write_two_strings':
+            elif self.property_name == 'read_write_two_strings':
                 help_text = """A read-write property with two string values. The second is optional."""
-            if self.property_name == 'read_write_struct':
+            elif self.property_name == 'read_write_struct':
                 help_text = """A read-write struct property."""
-            if self.property_name == 'read_write_optional_struct':
+            elif self.property_name == 'read_write_optional_struct':
                 help_text = """A read-write optional struct property."""
-            if self.property_name == 'read_write_two_structs':
+            elif self.property_name == 'read_write_two_structs':
                 help_text = """A read-write property with two struct values. The second is optional."""
-            if self.property_name == 'read_only_enum':
+            elif self.property_name == 'read_only_enum':
                 help_text = """A read-only enum property."""
-            if self.property_name == 'read_write_enum':
+            elif self.property_name == 'read_write_enum':
                 help_text = """A read-write enum property."""
-            if self.property_name == 'read_write_optional_enum':
+            elif self.property_name == 'read_write_optional_enum':
                 help_text = """A read-write optional enum property."""
-            if self.property_name == 'read_write_two_enums':
+            elif self.property_name == 'read_write_two_enums':
                 help_text = """A read-write property with two enum values. The second is optional."""
-            if self.property_name == 'read_write_datetime':
+            elif self.property_name == 'read_write_datetime':
                 help_text = """A read-write datetime property."""
-            if self.property_name == 'read_write_optional_datetime':
+            elif self.property_name == 'read_write_optional_datetime':
                 help_text = """A read-write optional datetime property."""
-            if self.property_name == 'read_write_two_datetimes':
+            elif self.property_name == 'read_write_two_datetimes':
                 help_text = """A read-write property with two datetime values. The second is optional."""
-            if self.property_name == 'read_write_duration':
+            elif self.property_name == 'read_write_duration':
                 help_text = """A read-write duration property."""
-            if self.property_name == 'read_write_optional_duration':
+            elif self.property_name == 'read_write_optional_duration':
                 help_text = """A read-write optional duration property."""
-            if self.property_name == 'read_write_two_durations':
+            elif self.property_name == 'read_write_two_durations':
                 help_text = """A read-write property with two duration values. The second is optional."""
-            if self.property_name == 'read_write_binary':
+            elif self.property_name == 'read_write_binary':
                 help_text = """A read-write binary property."""
-            if self.property_name == 'read_write_optional_binary':
+            elif self.property_name == 'read_write_optional_binary':
                 help_text = """A read-write optional binary property."""
-            if self.property_name == 'read_write_two_binaries':
+            elif self.property_name == 'read_write_two_binaries':
                 help_text = """A read-write property with two binary values.  The second is optional."""
-            if self.property_name == 'read_write_list_of_strings':
+            elif self.property_name == 'read_write_list_of_strings':
                 help_text = """A read-write property that is a list of strings."""
-            if self.property_name == 'read_write_lists':
+            elif self.property_name == 'read_write_lists':
                 help_text = """A read-write property containing two lists.  The second list is optional."""
             
             self.app.push_screen(HelpModal(help_text, title=f"Help: {self.property_name}"))
@@ -1059,80 +1060,81 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         elif event.button.id == "call_button":
             self._call_method()
         elif event.button.id == "help_button":
+            help_text = "No documentation available."
             
             if self.method_name == "call_with_nothing":
                 help_text = """Method that takes no arguments and returns nothing."""
             
-            if self.method_name == "call_one_integer":
+            elif self.method_name == "call_one_integer":
                 help_text = """Method that takes one integer argument and returns one integer value."""
             
-            if self.method_name == "call_optional_integer":
+            elif self.method_name == "call_optional_integer":
                 help_text = """Method that takes one optional integer argument and returns one optional integer value."""
             
-            if self.method_name == "call_three_integers":
+            elif self.method_name == "call_three_integers":
                 help_text = """Method that takes three integer arguments, the third is optional, and returns three integer values, the third is optional."""
             
-            if self.method_name == "call_one_string":
+            elif self.method_name == "call_one_string":
                 help_text = """Method that takes one string argument and returns one string value."""
             
-            if self.method_name == "call_optional_string":
+            elif self.method_name == "call_optional_string":
                 help_text = """Method that takes one optional string argument and returns one optional string value."""
             
-            if self.method_name == "call_three_strings":
+            elif self.method_name == "call_three_strings":
                 help_text = """Method that takes three string arguments, the 2nd is optional, and returns three string values, the 2nd is optional."""
             
-            if self.method_name == "call_one_enum":
+            elif self.method_name == "call_one_enum":
                 help_text = """Method that takes one enum argument and returns one enum value."""
             
-            if self.method_name == "call_optional_enum":
+            elif self.method_name == "call_optional_enum":
                 help_text = """Method that takes one optional enum argument and returns one optional enum value."""
             
-            if self.method_name == "call_three_enums":
+            elif self.method_name == "call_three_enums":
                 help_text = """Method that takes three enum arguments, the third is optional, and returns three enum values, the third is optional."""
             
-            if self.method_name == "call_one_struct":
+            elif self.method_name == "call_one_struct":
                 help_text = """Method that takes one struct argument and returns one struct value."""
             
-            if self.method_name == "call_optional_struct":
+            elif self.method_name == "call_optional_struct":
                 help_text = """Method that takes one optional struct argument and returns one optional struct value."""
             
-            if self.method_name == "call_three_structs":
+            elif self.method_name == "call_three_structs":
                 help_text = """Method that takes three struct arguments, the first is optional, and returns three struct values, the first is optional."""
             
-            if self.method_name == "call_one_date_time":
+            elif self.method_name == "call_one_date_time":
                 help_text = """Method that takes one date and time argument and returns one date and time value."""
             
-            if self.method_name == "call_optional_date_time":
+            elif self.method_name == "call_optional_date_time":
                 help_text = """Method that takes one optional date and time argument and returns one optional date and time value."""
             
-            if self.method_name == "call_three_date_times":
+            elif self.method_name == "call_three_date_times":
                 help_text = """Method that takes three date and time arguments, the third is optional, and returns three date and time values, the third is optional."""
             
-            if self.method_name == "call_one_duration":
+            elif self.method_name == "call_one_duration":
                 help_text = """Method that takes one duration argument and returns one duration value."""
             
-            if self.method_name == "call_optional_duration":
+            elif self.method_name == "call_optional_duration":
                 help_text = """Method that takes one optional duration argument and returns one optional duration value."""
             
-            if self.method_name == "call_three_durations":
+            elif self.method_name == "call_three_durations":
                 help_text = """Method that takes three duration arguments, the third is optional, and returns three duration values, the third is optional."""
             
-            if self.method_name == "call_one_binary":
+            elif self.method_name == "call_one_binary":
                 help_text = """Method that takes one binary argument and returns one binary value."""
             
-            if self.method_name == "call_optional_binary":
+            elif self.method_name == "call_optional_binary":
                 help_text = """Method that takes one optional binary argument and returns one optional binary value."""
             
-            if self.method_name == "call_three_binaries":
+            elif self.method_name == "call_three_binaries":
                 help_text = """Method that takes three binary arguments, the third is optional, and returns three binary values, the third is optional."""
             
-            if self.method_name == "call_one_list_of_integers":
+            elif self.method_name == "call_one_list_of_integers":
                 help_text = """Method that takes one list of integers argument and returns one list of integers value."""
             
-            if self.method_name == "call_optional_list_of_floats":
+            elif self.method_name == "call_optional_list_of_floats":
                 help_text = """Method that takes one optional list of floats argument and returns one optional list of floats value."""
             
-            if self.method_name == "call_two_lists":
+            elif self.method_name == "call_two_lists":
                 help_text = """Method that takes two list arguments, the second is optional, and returns two list values, the second is optional."""
             
             self.app.push_screen(HelpModal(help_text, title=f"Help: {self.method_name}"))

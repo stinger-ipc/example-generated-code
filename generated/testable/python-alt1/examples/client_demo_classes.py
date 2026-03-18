@@ -372,7 +372,7 @@ class SuperAwesomeDoerOfThings:
             sleep(5)
             
             print("Making call to 'call_optional_date_time'")
-            future_resp = self.client.call_optional_date_time(input1=datetime.now(UTC))
+            future_resp = self.client.call_optional_date_time(input1=None)
             try:
                 print(f"RESULT:  {future_resp.result(5)}")
             except futures.TimeoutError:

@@ -168,6 +168,7 @@ class PropertyEditModal(ModalScreen[bool]):
             except Exception as e:
                 self.app.notify(f"Error updating property: {e}", severity="error")
         elif event.button.id == "help_button":
+            help_text = "No documentation available."
             if self.property_name == 'school':
                 help_text = """No documentation provided for this property."""
             
@@ -288,6 +289,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         elif event.button.id == "call_button":
             self._call_method()
         elif event.button.id == "help_button":
+            help_text = "No documentation available."
             
             if self.method_name == "trade_numbers":
                 help_text = """A simple method which trades favorite numbers."""

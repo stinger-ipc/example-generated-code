@@ -1798,7 +1798,7 @@ void TestableClient::_handleCallWithNothingResponse(
 {
     _broker->Log(LOG_DEBUG, "In response handler for callWithNothing");
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallWithNothingMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallWithNothingMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -1861,7 +1861,7 @@ void TestableClient::_handleCallOneIntegerResponse(
         throw std::runtime_error("Received payload for 'callOneInteger' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOneIntegerMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOneIntegerMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -1926,7 +1926,7 @@ void TestableClient::_handleCallOptionalIntegerResponse(
         throw std::runtime_error("Received payload for 'callOptionalInteger' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOptionalIntegerMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOptionalIntegerMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -1995,7 +1995,7 @@ void TestableClient::_handleCallThreeIntegersResponse(
         throw std::runtime_error("Received payload for 'callThreeIntegers' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallThreeIntegersMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallThreeIntegersMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -2063,7 +2063,7 @@ void TestableClient::_handleCallOneStringResponse(
         throw std::runtime_error("Received payload for 'callOneString' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOneStringMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOneStringMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -2131,7 +2131,7 @@ void TestableClient::_handleCallOptionalStringResponse(
         throw std::runtime_error("Received payload for 'callOptionalString' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOptionalStringMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOptionalStringMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -2211,7 +2211,7 @@ void TestableClient::_handleCallThreeStringsResponse(
         throw std::runtime_error("Received payload for 'callThreeStrings' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallThreeStringsMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallThreeStringsMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -2275,7 +2275,7 @@ void TestableClient::_handleCallOneEnumResponse(
         throw std::runtime_error("Received payload for 'callOneEnum' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOneEnumMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOneEnumMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -2339,7 +2339,7 @@ void TestableClient::_handleCallOptionalEnumResponse(
         throw std::runtime_error("Received payload for 'callOptionalEnum' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOptionalEnumMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOptionalEnumMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -2407,7 +2407,7 @@ void TestableClient::_handleCallThreeEnumsResponse(
         throw std::runtime_error("Received payload for 'callThreeEnums' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallThreeEnumsMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallThreeEnumsMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -2478,7 +2478,7 @@ void TestableClient::_handleCallOneStructResponse(
         throw std::runtime_error("Received payload for 'callOneStruct' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOneStructMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOneStructMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -2551,7 +2551,7 @@ void TestableClient::_handleCallOptionalStructResponse(
         throw std::runtime_error("Received payload for 'callOptionalStruct' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOptionalStructMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOptionalStructMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -2642,7 +2642,7 @@ void TestableClient::_handleCallThreeStructsResponse(
         throw std::runtime_error("Received payload for 'callThreeStructs' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallThreeStructsMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallThreeStructsMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -2711,7 +2711,7 @@ void TestableClient::_handleCallOneDateTimeResponse(
         throw std::runtime_error("Received payload for 'callOneDateTime' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOneDateTimeMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOneDateTimeMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -2780,7 +2780,7 @@ void TestableClient::_handleCallOptionalDateTimeResponse(
         throw std::runtime_error("Received payload for 'callOptionalDateTime' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOptionalDateTimeMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOptionalDateTimeMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -2863,7 +2863,7 @@ void TestableClient::_handleCallThreeDateTimesResponse(
         throw std::runtime_error("Received payload for 'callThreeDateTimes' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallThreeDateTimesMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallThreeDateTimesMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -2932,7 +2932,7 @@ void TestableClient::_handleCallOneDurationResponse(
         throw std::runtime_error("Received payload for 'callOneDuration' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOneDurationMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOneDurationMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -3001,7 +3001,7 @@ void TestableClient::_handleCallOptionalDurationResponse(
         throw std::runtime_error("Received payload for 'callOptionalDuration' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOptionalDurationMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOptionalDurationMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -3084,7 +3084,7 @@ void TestableClient::_handleCallThreeDurationsResponse(
         throw std::runtime_error("Received payload for 'callThreeDurations' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallThreeDurationsMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallThreeDurationsMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -3153,7 +3153,7 @@ void TestableClient::_handleCallOneBinaryResponse(
         throw std::runtime_error("Received payload for 'callOneBinary' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOneBinaryMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOneBinaryMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -3222,7 +3222,7 @@ void TestableClient::_handleCallOptionalBinaryResponse(
         throw std::runtime_error("Received payload for 'callOptionalBinary' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOptionalBinaryMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOptionalBinaryMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -3305,7 +3305,7 @@ void TestableClient::_handleCallThreeBinariesResponse(
         throw std::runtime_error("Received payload for 'callThreeBinaries' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallThreeBinariesMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallThreeBinariesMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -3376,7 +3376,7 @@ void TestableClient::_handleCallOneListOfIntegersResponse(
         throw std::runtime_error("Received payload for 'callOneListOfIntegers' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOneListOfIntegersMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOneListOfIntegersMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -3447,7 +3447,7 @@ void TestableClient::_handleCallOptionalListOfFloatsResponse(
         throw std::runtime_error("Received payload for 'callOptionalListOfFloats' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallOptionalListOfFloatsMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallOptionalListOfFloatsMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -3529,7 +3529,7 @@ void TestableClient::_handleCallTwoListsResponse(
         throw std::runtime_error("Received payload for 'callTwoLists' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingCallTwoListsMethodCalls.find(correlationData);
     if (promiseItr != _pendingCallTwoListsMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {

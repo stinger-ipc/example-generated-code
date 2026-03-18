@@ -263,18 +263,19 @@ class PropertyEditModal(ModalScreen[bool]):
             except Exception as e:
                 self.app.notify(f"Error updating property: {e}", severity="error")
         elif event.button.id == "help_button":
+            help_text = "No documentation available."
             if self.property_name == 'favorite_number':
                 help_text = """My favorite number
 """
-            if self.property_name == 'favorite_foods':
+            elif self.property_name == 'favorite_foods':
                 help_text = """No documentation provided for this property."""
-            if self.property_name == 'lunch_menu':
+            elif self.property_name == 'lunch_menu':
                 help_text = """No documentation provided for this property."""
-            if self.property_name == 'family_name':
+            elif self.property_name == 'family_name':
                 help_text = """This is to test a property with a single string value."""
-            if self.property_name == 'last_breakfast_time':
+            elif self.property_name == 'last_breakfast_time':
                 help_text = """This is to test a property with a single datetime value."""
-            if self.property_name == 'last_birthdays':
+            elif self.property_name == 'last_birthdays':
                 help_text = """This is to test a property with multiple datetime values."""
             
             self.app.push_screen(HelpModal(help_text, title=f"Help: {self.property_name}"))
@@ -442,17 +443,18 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         elif event.button.id == "call_button":
             self._call_method()
         elif event.button.id == "help_button":
+            help_text = "No documentation available."
             
             if self.method_name == "add_numbers":
                 help_text = """No documentation provided for this method."""
             
-            if self.method_name == "do_something":
+            elif self.method_name == "do_something":
                 help_text = """No documentation provided for this method."""
             
-            if self.method_name == "what_time_is_it":
+            elif self.method_name == "what_time_is_it":
                 help_text = """Get the current date and time."""
             
-            if self.method_name == "hold_temperature":
+            elif self.method_name == "hold_temperature":
                 help_text = """Hold a temperature for a specified duration."""
             
             self.app.push_screen(HelpModal(help_text, title=f"Help: {self.method_name}"))

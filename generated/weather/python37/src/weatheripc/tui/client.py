@@ -245,37 +245,38 @@ class PropertyEditModal(ModalScreen[bool]):
             except Exception as e:
                 self.app.notify(f"Error updating property: {e}", severity="error")
         elif event.button.id == "help_button":
+            help_text = "No documentation available."
             if self.property_name == 'location':
                 help_text = """Weather will be retrieved for the provided location.
 """
-            if self.property_name == 'current_temperature':
+            elif self.property_name == 'current_temperature':
                 help_text = """This is the current (estimated) temperature in degrees fahrenheit.  This values
 is regularly updated.  The value is extrapolated from the hourly forecast, but
 adjusted based on the latest conditions at the nearest weather station.
 """
-            if self.property_name == 'current_condition':
+            elif self.property_name == 'current_condition':
                 help_text = """This is the current weather outside.  This comes from the hourly forecast and is
 updated about once per hour.
 """
-            if self.property_name == 'daily_forecast':
+            elif self.property_name == 'daily_forecast':
                 help_text = """This contains the weather forecast for each day of the next few days.  It is updated
 a couple of times a day.  The current day may not have the high or low temperature
 provided.  This is an example which shows only a few days.  The actual implementation
 will have a value for each day of the week.
 """
-            if self.property_name == 'hourly_forecast':
+            elif self.property_name == 'hourly_forecast':
                 help_text = """This contains the weather forecast for each hour of the next 24 hours.  The data source
 us updated a couple of times per day, but this API property is updated every hour on the
 hour.
 """
-            if self.property_name == 'current_condition_refresh_interval':
+            elif self.property_name == 'current_condition_refresh_interval':
                 help_text = """This is the maximum interval, in seconds, that the latest weather conditions at the nearest weather
 station are retrieved.
 """
-            if self.property_name == 'hourly_forecast_refresh_interval':
+            elif self.property_name == 'hourly_forecast_refresh_interval':
                 help_text = """This is the maximum interval, in seconds, that the hourly forecast data is retrieved.
 """
-            if self.property_name == 'daily_forecast_refresh_interval':
+            elif self.property_name == 'daily_forecast_refresh_interval':
                 help_text = """This is the maximum interval, in seconds, that the daily forecast data is retrieved.
 """
             
@@ -388,6 +389,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         elif event.button.id == "call_button":
             self._call_method()
         elif event.button.id == "help_button":
+            help_text = "No documentation available."
             
             if self.method_name == "refresh_daily_forecast":
                 help_text = """When called, this method will force the retrieval of the daily weather forecast from
@@ -398,7 +400,7 @@ When called, the `daily_forecast` API property will be republished with the late
 This method has no arguments and provides no return values.
 """
             
-            if self.method_name == "refresh_hourly_forecast":
+            elif self.method_name == "refresh_hourly_forecast":
                 help_text = """When called, this method will force the retrieval of the hourly weather forecast from
 the NWS weather API.  
 
@@ -407,7 +409,7 @@ When called, the `hourly_forecast` API property will be republished with the lat
 This method has no arguments and provides no return values.
 """
             
-            if self.method_name == "refresh_current_conditions":
+            elif self.method_name == "refresh_current_conditions":
                 help_text = """When called, this method will force the retrieval of the latest weather conditions
 from the nearest weather station.  It also forces a re-calculation of the current
 temperature.

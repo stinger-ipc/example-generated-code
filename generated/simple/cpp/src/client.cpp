@@ -168,7 +168,7 @@ void SimpleClient::_handleTradeNumbersResponse(
         throw std::runtime_error("Received payload for 'trade_numbers' response is not an object");
     }
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingTradeNumbersMethodCalls.find(correlationData);
     if (promiseItr != _pendingTradeNumbersMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {

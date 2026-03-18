@@ -204,7 +204,7 @@ void WeatherClient::_handleRefreshDailyForecastResponse(
 {
     _broker->Log(LOG_DEBUG, "In response handler for refresh_daily_forecast");
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingRefreshDailyForecastMethodCalls.find(correlationData);
     if (promiseItr != _pendingRefreshDailyForecastMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -255,7 +255,7 @@ void WeatherClient::_handleRefreshHourlyForecastResponse(
 {
     _broker->Log(LOG_DEBUG, "In response handler for refresh_hourly_forecast");
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingRefreshHourlyForecastMethodCalls.find(correlationData);
     if (promiseItr != _pendingRefreshHourlyForecastMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
@@ -306,7 +306,7 @@ void WeatherClient::_handleRefreshCurrentConditionsResponse(
 {
     _broker->Log(LOG_DEBUG, "In response handler for refresh_current_conditions");
 
-    auto correlationData = msg.properties.correlationData.value_or({});
+    auto correlationData = msg.properties.correlationData.value_or(std::vector<std::byte>{});
     auto promiseItr = _pendingRefreshCurrentConditionsMethodCalls.find(correlationData);
     if (promiseItr != _pendingRefreshCurrentConditionsMethodCalls.end()) {
         if (msg.properties.returnCode && (static_cast<stinger::error::MethodReturnCode>(*(msg.properties.returnCode)) != stinger::error::MethodReturnCode::SUCCESS)) {
