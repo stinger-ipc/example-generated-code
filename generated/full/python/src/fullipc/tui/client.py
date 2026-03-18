@@ -6,7 +6,7 @@ import isodate
 from typing import List, Optional, Any, Dict
 from textual.app import ComposeResult # typing: ignore
 from textual.screen import Screen, ModalScreen # typing: ignore
-from textual.widgets import Header, Footer, Static, RichLog, Button, Input, Label, Select, TextArea # typing: ignore
+from textual.widgets import Header, Footer, Static, RichLog, Button, Input, Label, Select, TextArea, Markdown # typing: ignore
 from textual.containers import Horizontal, VerticalScroll, Vertical # typing: ignore
 from fullipc.interface_types import *
 from fullipc.client import FullClient
@@ -16,6 +16,62 @@ import logging
 # Configure logging
 logger = logging.getLogger("TUI-Client")
 logger.setLevel(logging.DEBUG)
+
+class HelpModal(ModalScreen):
+    """Modal screen for displaying markdown-formatted help text."""
+
+    CSS = """
+    HelpModal {
+        align: center middle;
+    }
+
+    #help_modal_container {
+        width: 70%;
+        height: auto;
+        max-height: 80%;
+        background: $surface;
+        border: thick $primary;
+        padding: 1;
+    }
+
+    #help_modal_title {
+        text-style: bold;
+        text-align: center;
+        background: $primary;
+        padding: 1;
+        margin-bottom: 1;
+    }
+
+    #help_content {
+        height: auto;
+        max-height: 60vh;
+        overflow-y: auto;
+        padding: 0 1;
+    }
+
+    #help_close_button {
+        width: 100%;
+        margin-top: 1;
+    }
+    """
+
+    BINDINGS = [("escape", "dismiss", "Close")]
+
+    def __init__(self, text: str, title: str = "Help"):
+        super().__init__()
+        self._text = text
+        self._title = title
+
+    def compose(self) -> ComposeResult:
+        """Compose the help modal."""
+        with Vertical(id="help_modal_container"):
+            yield Static(self._title, id="help_modal_title")
+            yield Markdown(self._text, id="help_content")
+            yield Button("Close", variant="primary", id="help_close_button")
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "help_close_button":
+            self.dismiss()
 
 class PropertyEditModal(ModalScreen[bool]):
     """Modal screen for editing a property value."""
@@ -133,6 +189,7 @@ class PropertyEditModal(ModalScreen[bool]):
             with Horizontal(id="property_button_container"):
                 yield Button("Update", variant="primary", id="update_button")
                 yield Button("Cancel", variant="error", id="cancel_button")
+                yield Button("Help", variant="default", id="help_button")
     
 
 
@@ -205,6 +262,22 @@ class PropertyEditModal(ModalScreen[bool]):
                 self.dismiss(True)
             except Exception as e:
                 self.app.notify(f"Error updating property: {e}", severity="error")
+        elif event.button.id == "help_button":
+            if self.property_name == 'favorite_number':
+                help_text = """My favorite number
+"""
+            if self.property_name == 'favorite_foods':
+                help_text = """No documentation provided for this property."""
+            if self.property_name == 'lunch_menu':
+                help_text = """No documentation provided for this property."""
+            if self.property_name == 'family_name':
+                help_text = """This is to test a property with a single string value."""
+            if self.property_name == 'last_breakfast_time':
+                help_text = """This is to test a property with a single datetime value."""
+            if self.property_name == 'last_birthdays':
+                help_text = """This is to test a property with multiple datetime values."""
+            
+            self.app.push_screen(HelpModal(help_text, title=f"Help: {self.property_name}"))
         else:
             self.dismiss(False)
 
@@ -296,7 +369,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"first (PRIMITIVE)", classes="input_label") 
                     yield Input(type="integer",
-                        id=f"input_first"
+                        id=f"input_first",
+                        placeholder="None",
                     )
                     
                     
@@ -304,7 +378,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"second (PRIMITIVE)", classes="input_label") 
                     yield Input(type="integer",
-                        id=f"input_second"
+                        id=f"input_second",
+                        placeholder="None",
                     )
                     
                     
@@ -312,7 +387,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"third (PRIMITIVE) [Optional]", classes="input_label") 
                     yield Input(type="integer",
-                        id=f"input_third"
+                        id=f"input_third",
+                        placeholder="None",
                     )
                     
                     
@@ -325,7 +401,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"task_to_do (PRIMITIVE)", classes="input_label") 
                     yield Input(type="text",
-                        id=f"input_task_to_do"
+                        id=f"input_task_to_do",
+                        placeholder="None",
                     )
                     
                     
@@ -340,7 +417,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"temperature_celsius (PRIMITIVE)", classes="input_label") 
                     yield Input(type="number",
-                        id=f"input_temperature_celsius"
+                        id=f"input_temperature_celsius",
+                        placeholder="The temperature to hold in degrees Celsius.",
                     )
                     
                     
@@ -352,6 +430,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             with Horizontal(id="button_container"):
                 yield Button("Call Method", variant="primary", id="call_button")
                 yield Button("Close", variant="error", id="cancel_button")
+                yield Button("Help", variant="default", id="help_button")
             
             self.result_widget = Static("", id="result_text")
             yield self.result_widget
@@ -362,7 +441,22 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             self.dismiss(None)
         elif event.button.id == "call_button":
             self._call_method()
-    
+        elif event.button.id == "help_button":
+            
+            if self.method_name == "add_numbers":
+                help_text = """No documentation provided for this method."""
+            
+            if self.method_name == "do_something":
+                help_text = """No documentation provided for this method."""
+            
+            if self.method_name == "what_time_is_it":
+                help_text = """Get the current date and time."""
+            
+            if self.method_name == "hold_temperature":
+                help_text = """Hold a temperature for a specified duration."""
+            
+            self.app.push_screen(HelpModal(help_text, title=f"Help: {self.method_name}"))
+
     def _call_method(self) -> None:
         """Call the method with collected inputs."""
         assert self.result_widget is not None, "result_widget must be initialized"

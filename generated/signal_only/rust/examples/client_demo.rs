@@ -12,7 +12,7 @@ LICENSE: This generated code is not subject to any license restrictions from the
 TODO: Get license text from stinger file
 */
 
-use mqttier::{Connection, MqttierClient, MqttierOptionsBuilder};
+use mqttier::{Connection, MqttierClient, MqttierOptionsBuilder, TcpConnection};
 use signal_only_ipc::client::SignalOnlyClient;
 use signal_only_ipc::discovery::SignalOnlyDiscovery;
 #[allow(unused_imports)]
@@ -36,7 +36,10 @@ async fn main() {
     // Create an MQTT client that implements the MqttPubSub trait.
     // Application code is responsible for managing the client object.
     let mqttier_options = MqttierOptionsBuilder::default()
-        .connection(Connection::TcpLocalhost(1883))
+        .connection(Connection::Tcp(TcpConnection::from_env_with_defaults(
+            "localhost",
+            1883,
+        )))
         .client_id("rust-client-demo".to_string())
         .build()
         .unwrap();

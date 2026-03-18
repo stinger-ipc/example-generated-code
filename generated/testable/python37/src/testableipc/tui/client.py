@@ -6,7 +6,7 @@ import isodate
 from typing import List, Optional, Any, Dict
 from textual.app import ComposeResult # typing: ignore
 from textual.screen import Screen, ModalScreen # typing: ignore
-from textual.widgets import Header, Footer, Static, RichLog, Button, Input, Label, Select, TextArea # typing: ignore
+from textual.widgets import Header, Footer, Static, RichLog, Button, Input, Label, Select, TextArea, Markdown # typing: ignore
 from textual.containers import Horizontal, VerticalScroll, Vertical # typing: ignore
 from testableipc.interface_types import *
 from testableipc.client import TestableClient
@@ -16,6 +16,62 @@ import logging
 # Configure logging
 logger = logging.getLogger("TUI-Client")
 logger.setLevel(logging.DEBUG)
+
+class HelpModal(ModalScreen):
+    """Modal screen for displaying markdown-formatted help text."""
+
+    CSS = """
+    HelpModal {
+        align: center middle;
+    }
+
+    #help_modal_container {
+        width: 70%;
+        height: auto;
+        max-height: 80%;
+        background: $surface;
+        border: thick $primary;
+        padding: 1;
+    }
+
+    #help_modal_title {
+        text-style: bold;
+        text-align: center;
+        background: $primary;
+        padding: 1;
+        margin-bottom: 1;
+    }
+
+    #help_content {
+        height: auto;
+        max-height: 60vh;
+        overflow-y: auto;
+        padding: 0 1;
+    }
+
+    #help_close_button {
+        width: 100%;
+        margin-top: 1;
+    }
+    """
+
+    BINDINGS = [("escape", "dismiss", "Close")]
+
+    def __init__(self, text: str, title: str = "Help"):
+        super().__init__()
+        self._text = text
+        self._title = title
+
+    def compose(self) -> ComposeResult:
+        """Compose the help modal."""
+        with Vertical(id="help_modal_container"):
+            yield Static(self._title, id="help_modal_title")
+            yield Markdown(self._text, id="help_content")
+            yield Button("Close", variant="primary", id="help_close_button")
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "help_close_button":
+            self.dismiss()
 
 class PropertyEditModal(ModalScreen[bool]):
     """Modal screen for editing a property value."""
@@ -246,6 +302,7 @@ class PropertyEditModal(ModalScreen[bool]):
             with Horizontal(id="property_button_container"):
                 yield Button("Update", variant="primary", id="update_button")
                 yield Button("Cancel", variant="error", id="cancel_button")
+                yield Button("Help", variant="default", id="help_button")
     
 
 
@@ -453,6 +510,61 @@ class PropertyEditModal(ModalScreen[bool]):
                 self.dismiss(True)
             except Exception as e:
                 self.app.notify(f"Error updating property: {e}", severity="error")
+        elif event.button.id == "help_button":
+            if self.property_name == 'read_write_integer':
+                help_text = """A read-write integer property."""
+            if self.property_name == 'read_only_integer':
+                help_text = """A read-only integer property."""
+            if self.property_name == 'read_write_optional_integer':
+                help_text = """A read-write optional integer property."""
+            if self.property_name == 'read_write_two_integers':
+                help_text = """A read-write property with two integer values. The second is optional."""
+            if self.property_name == 'read_only_string':
+                help_text = """A read-only string property."""
+            if self.property_name == 'read_write_string':
+                help_text = """A read-write string property."""
+            if self.property_name == 'read_write_optional_string':
+                help_text = """A read-write optional string property."""
+            if self.property_name == 'read_write_two_strings':
+                help_text = """A read-write property with two string values. The second is optional."""
+            if self.property_name == 'read_write_struct':
+                help_text = """A read-write struct property."""
+            if self.property_name == 'read_write_optional_struct':
+                help_text = """A read-write optional struct property."""
+            if self.property_name == 'read_write_two_structs':
+                help_text = """A read-write property with two struct values. The second is optional."""
+            if self.property_name == 'read_only_enum':
+                help_text = """A read-only enum property."""
+            if self.property_name == 'read_write_enum':
+                help_text = """A read-write enum property."""
+            if self.property_name == 'read_write_optional_enum':
+                help_text = """A read-write optional enum property."""
+            if self.property_name == 'read_write_two_enums':
+                help_text = """A read-write property with two enum values. The second is optional."""
+            if self.property_name == 'read_write_datetime':
+                help_text = """A read-write datetime property."""
+            if self.property_name == 'read_write_optional_datetime':
+                help_text = """A read-write optional datetime property."""
+            if self.property_name == 'read_write_two_datetimes':
+                help_text = """A read-write property with two datetime values. The second is optional."""
+            if self.property_name == 'read_write_duration':
+                help_text = """A read-write duration property."""
+            if self.property_name == 'read_write_optional_duration':
+                help_text = """A read-write optional duration property."""
+            if self.property_name == 'read_write_two_durations':
+                help_text = """A read-write property with two duration values. The second is optional."""
+            if self.property_name == 'read_write_binary':
+                help_text = """A read-write binary property."""
+            if self.property_name == 'read_write_optional_binary':
+                help_text = """A read-write optional binary property."""
+            if self.property_name == 'read_write_two_binaries':
+                help_text = """A read-write property with two binary values.  The second is optional."""
+            if self.property_name == 'read_write_list_of_strings':
+                help_text = """A read-write property that is a list of strings."""
+            if self.property_name == 'read_write_lists':
+                help_text = """A read-write property containing two lists.  The second list is optional."""
+            
+            self.app.push_screen(HelpModal(help_text, title=f"Help: {self.property_name}"))
         else:
             self.dismiss(False)
 
@@ -546,7 +658,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"input1 (PRIMITIVE)", classes="input_label") 
                     yield Input(type="integer",
-                        id=f"input_input1"
+                        id=f"input_input1",
+                        placeholder="None",
                     )
                     
                     
@@ -559,7 +672,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"input1 (PRIMITIVE) [Optional]", classes="input_label") 
                     yield Input(type="integer",
-                        id=f"input_input1"
+                        id=f"input_input1",
+                        placeholder="None",
                     )
                     
                     
@@ -572,7 +686,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"input1 (PRIMITIVE)", classes="input_label") 
                     yield Input(type="integer",
-                        id=f"input_input1"
+                        id=f"input_input1",
+                        placeholder="The first integer input.  The other two don't have descriptions.",
                     )
                     
                     
@@ -580,7 +695,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"input2 (PRIMITIVE)", classes="input_label") 
                     yield Input(type="integer",
-                        id=f"input_input2"
+                        id=f"input_input2",
+                        placeholder="None",
                     )
                     
                     
@@ -588,7 +704,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"input3 (PRIMITIVE) [Optional]", classes="input_label") 
                     yield Input(type="integer",
-                        id=f"input_input3"
+                        id=f"input_input3",
+                        placeholder="None",
                     )
                     
                     
@@ -601,7 +718,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"input1 (PRIMITIVE)", classes="input_label") 
                     yield Input(type="text",
-                        id=f"input_input1"
+                        id=f"input_input1",
+                        placeholder="None",
                     )
                     
                     
@@ -614,7 +732,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"input1 (PRIMITIVE) [Optional]", classes="input_label") 
                     yield Input(type="text",
-                        id=f"input_input1"
+                        id=f"input_input1",
+                        placeholder="None",
                     )
                     
                     
@@ -627,7 +746,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"input1 (PRIMITIVE)", classes="input_label") 
                     yield Input(type="text",
-                        id=f"input_input1"
+                        id=f"input_input1",
+                        placeholder="The first string input.  The other two don't have descriptions.",
                     )
                     
                     
@@ -635,7 +755,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"input2 (PRIMITIVE) [Optional]", classes="input_label") 
                     yield Input(type="text",
-                        id=f"input_input2"
+                        id=f"input_input2",
+                        placeholder="None",
                     )
                     
                     
@@ -643,7 +764,8 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                     yield Label(f"input3 (PRIMITIVE)", classes="input_label") 
                     yield Input(type="text",
-                        id=f"input_input3"
+                        id=f"input_input3",
+                        placeholder="None",
                     )
                     
                     
@@ -662,7 +784,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                         ("three", 3),
                     ]
-                    yield Select(options=options, id=f"input_input1")
+                    yield Select(options=options, id=f"input_input1", tooltip="None", allow_blank=False)
                     
                     
                  
@@ -679,7 +801,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                         ("three", 3),
                     ]
-                    yield Select(options=options, id=f"input_input1")
+                    yield Select(options=options, id=f"input_input1", tooltip="None", allow_blank=True)
                     
                     
                  
@@ -696,7 +818,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                         ("three", 3),
                     ]
-                    yield Select(options=options, id=f"input_input1")
+                    yield Select(options=options, id=f"input_input1", tooltip="The first enum input.  The other two don't have descriptions.", allow_blank=False)
                     
                     
                     
@@ -708,7 +830,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                         ("three", 3),
                     ]
-                    yield Select(options=options, id=f"input_input2")
+                    yield Select(options=options, id=f"input_input2", tooltip="None", allow_blank=False)
                     
                     
                     
@@ -720,7 +842,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     
                         ("three", 3),
                     ]
-                    yield Select(options=options, id=f"input_input3")
+                    yield Select(options=options, id=f"input_input3", tooltip="None", allow_blank=True)
                     
                     
                  
@@ -730,7 +852,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (JSON Object)", classes="input_label")
-                    yield TextArea.code_editor(language="json", placeholder=f" object ", id=f"input_input1")
+                    yield TextArea.code_editor(language="json", placeholder="None", id=f"input_input1")
                     
                     
                  
@@ -740,7 +862,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (JSON Object) [Optional]", classes="input_label")
-                    yield TextArea.code_editor(language="json", placeholder=f" object ", id=f"input_input1")
+                    yield TextArea.code_editor(language="json", placeholder="None", id=f"input_input1")
                     
                     
                  
@@ -750,17 +872,17 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (JSON Object) [Optional]", classes="input_label")
-                    yield TextArea.code_editor(language="json", placeholder=f" object ", id=f"input_input1")
+                    yield TextArea.code_editor(language="json", placeholder="The first struct input.  The other two don't have descriptions.", id=f"input_input1")
                     
                     
                     
                     yield Label(f"input2 (JSON Object)", classes="input_label")
-                    yield TextArea.code_editor(language="json", placeholder=f" object ", id=f"input_input2")
+                    yield TextArea.code_editor(language="json", placeholder="None", id=f"input_input2")
                     
                     
                     
                     yield Label(f"input3 (JSON Object)", classes="input_label")
-                    yield TextArea.code_editor(language="json", placeholder=f" object ", id=f"input_input3")
+                    yield TextArea.code_editor(language="json", placeholder="None", id=f"input_input3")
                     
                     
                  
@@ -770,7 +892,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (DATETIME)", classes="input_label")
-                    yield Input(id=f"input_input1")
+                    yield Input(placeholder="None", id=f"input_input1")
                     
                     
                  
@@ -780,7 +902,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (DATETIME) [Optional]", classes="input_label")
-                    yield Input(id=f"input_input1")
+                    yield Input(placeholder="None", id=f"input_input1")
                     
                     
                  
@@ -790,17 +912,17 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (DATETIME)", classes="input_label")
-                    yield Input(id=f"input_input1")
+                    yield Input(placeholder="The first date and time input.  The other two don't have descriptions.", id=f"input_input1")
                     
                     
                     
                     yield Label(f"input2 (DATETIME)", classes="input_label")
-                    yield Input(id=f"input_input2")
+                    yield Input(placeholder="None", id=f"input_input2")
                     
                     
                     
                     yield Label(f"input3 (DATETIME) [Optional]", classes="input_label")
-                    yield Input(id=f"input_input3")
+                    yield Input(placeholder="None", id=f"input_input3")
                     
                     
                  
@@ -810,7 +932,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (DURATION)", classes="input_label")
-                    yield Input(id=f"input_input1")
+                    yield Input(placeholder="None", id=f"input_input1")
                     
                     
                  
@@ -820,7 +942,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (DURATION) [Optional]", classes="input_label")
-                    yield Input(id=f"input_input1")
+                    yield Input(placeholder="None", id=f"input_input1")
                     
                     
                  
@@ -830,17 +952,17 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (DURATION)", classes="input_label")
-                    yield Input(id=f"input_input1")
+                    yield Input(placeholder="The first duration input.  The other two don't have descriptions.", id=f"input_input1")
                     
                     
                     
                     yield Label(f"input2 (DURATION)", classes="input_label")
-                    yield Input(id=f"input_input2")
+                    yield Input(placeholder="None", id=f"input_input2")
                     
                     
                     
                     yield Label(f"input3 (DURATION) [Optional]", classes="input_label")
-                    yield Input(id=f"input_input3")
+                    yield Input(placeholder="None", id=f"input_input3")
                     
                     
                  
@@ -850,7 +972,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (BINARY)", classes="input_label")
-                    yield Input(id=f"input_input1")
+                    yield Input(placeholder="None", id=f"input_input1")
                     
                     
                  
@@ -860,7 +982,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (BINARY) [Optional]", classes="input_label")
-                    yield Input(id=f"input_input1")
+                    yield Input(placeholder="None", id=f"input_input1")
                     
                     
                  
@@ -870,17 +992,17 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (BINARY)", classes="input_label")
-                    yield Input(id=f"input_input1")
+                    yield Input(placeholder="The first binary input.  The other two don't have descriptions.", id=f"input_input1")
                     
                     
                     
                     yield Label(f"input2 (BINARY)", classes="input_label")
-                    yield Input(id=f"input_input2")
+                    yield Input(placeholder="None", id=f"input_input2")
                     
                     
                     
                     yield Label(f"input3 (BINARY) [Optional]", classes="input_label")
-                    yield Input(id=f"input_input3")
+                    yield Input(placeholder="None", id=f"input_input3")
                     
                     
                  
@@ -890,7 +1012,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (JSON Array)", classes="input_label")
-                    yield TextArea.code_editor(language="json", placeholder=f" [  ] ", id=f"input_input1")
+                    yield TextArea.code_editor(language="json", placeholder="None", id=f"input_input1")
                     
                     
                  
@@ -900,7 +1022,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (JSON Array) [Optional]", classes="input_label")
-                    yield TextArea.code_editor(language="json", placeholder=f" [  ] ", id=f"input_input1")
+                    yield TextArea.code_editor(language="json", placeholder="None", id=f"input_input1")
                     
                     
                  
@@ -910,12 +1032,12 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                     """ Generate input fields for each argument of the method """
                     
                     yield Label(f"input1 (JSON Array)", classes="input_label")
-                    yield TextArea.code_editor(language="json", placeholder=f" [  ] ", id=f"input_input1")
+                    yield TextArea.code_editor(language="json", placeholder="The first list of enums.", id=f"input_input1")
                     
                     
                     
                     yield Label(f"input2 (JSON Array) [Optional]", classes="input_label")
-                    yield TextArea.code_editor(language="json", placeholder=f" [  ] ", id=f"input_input2")
+                    yield TextArea.code_editor(language="json", placeholder="None", id=f"input_input2")
                     
                     
                  
@@ -925,6 +1047,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             with Horizontal(id="button_container"):
                 yield Button("Call Method", variant="primary", id="call_button")
                 yield Button("Close", variant="error", id="cancel_button")
+                yield Button("Help", variant="default", id="help_button")
             
             self.result_widget = Static("", id="result_text")
             yield self.result_widget
@@ -935,7 +1058,85 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             self.dismiss(None)
         elif event.button.id == "call_button":
             self._call_method()
-    
+        elif event.button.id == "help_button":
+            
+            if self.method_name == "call_with_nothing":
+                help_text = """Method that takes no arguments and returns nothing."""
+            
+            if self.method_name == "call_one_integer":
+                help_text = """Method that takes one integer argument and returns one integer value."""
+            
+            if self.method_name == "call_optional_integer":
+                help_text = """Method that takes one optional integer argument and returns one optional integer value."""
+            
+            if self.method_name == "call_three_integers":
+                help_text = """Method that takes three integer arguments, the third is optional, and returns three integer values, the third is optional."""
+            
+            if self.method_name == "call_one_string":
+                help_text = """Method that takes one string argument and returns one string value."""
+            
+            if self.method_name == "call_optional_string":
+                help_text = """Method that takes one optional string argument and returns one optional string value."""
+            
+            if self.method_name == "call_three_strings":
+                help_text = """Method that takes three string arguments, the 2nd is optional, and returns three string values, the 2nd is optional."""
+            
+            if self.method_name == "call_one_enum":
+                help_text = """Method that takes one enum argument and returns one enum value."""
+            
+            if self.method_name == "call_optional_enum":
+                help_text = """Method that takes one optional enum argument and returns one optional enum value."""
+            
+            if self.method_name == "call_three_enums":
+                help_text = """Method that takes three enum arguments, the third is optional, and returns three enum values, the third is optional."""
+            
+            if self.method_name == "call_one_struct":
+                help_text = """Method that takes one struct argument and returns one struct value."""
+            
+            if self.method_name == "call_optional_struct":
+                help_text = """Method that takes one optional struct argument and returns one optional struct value."""
+            
+            if self.method_name == "call_three_structs":
+                help_text = """Method that takes three struct arguments, the first is optional, and returns three struct values, the first is optional."""
+            
+            if self.method_name == "call_one_date_time":
+                help_text = """Method that takes one date and time argument and returns one date and time value."""
+            
+            if self.method_name == "call_optional_date_time":
+                help_text = """Method that takes one optional date and time argument and returns one optional date and time value."""
+            
+            if self.method_name == "call_three_date_times":
+                help_text = """Method that takes three date and time arguments, the third is optional, and returns three date and time values, the third is optional."""
+            
+            if self.method_name == "call_one_duration":
+                help_text = """Method that takes one duration argument and returns one duration value."""
+            
+            if self.method_name == "call_optional_duration":
+                help_text = """Method that takes one optional duration argument and returns one optional duration value."""
+            
+            if self.method_name == "call_three_durations":
+                help_text = """Method that takes three duration arguments, the third is optional, and returns three duration values, the third is optional."""
+            
+            if self.method_name == "call_one_binary":
+                help_text = """Method that takes one binary argument and returns one binary value."""
+            
+            if self.method_name == "call_optional_binary":
+                help_text = """Method that takes one optional binary argument and returns one optional binary value."""
+            
+            if self.method_name == "call_three_binaries":
+                help_text = """Method that takes three binary arguments, the third is optional, and returns three binary values, the third is optional."""
+            
+            if self.method_name == "call_one_list_of_integers":
+                help_text = """Method that takes one list of integers argument and returns one list of integers value."""
+            
+            if self.method_name == "call_optional_list_of_floats":
+                help_text = """Method that takes one optional list of floats argument and returns one optional list of floats value."""
+            
+            if self.method_name == "call_two_lists":
+                help_text = """Method that takes two list arguments, the second is optional, and returns two list values, the second is optional."""
+            
+            self.app.push_screen(HelpModal(help_text, title=f"Help: {self.method_name}"))
+
     def _call_method(self) -> None:
         """Call the method with collected inputs."""
         assert self.result_widget is not None, "result_widget must be initialized"

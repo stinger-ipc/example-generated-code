@@ -16,7 +16,7 @@ use full_ipc::client::FullClient;
 use full_ipc::discovery::FullDiscovery;
 #[allow(unused_imports)]
 use full_ipc::payloads::{MethodReturnCode, *};
-use mqttier::{Connection, MqttierClient, MqttierOptionsBuilder};
+use mqttier::{Connection, MqttierClient, MqttierOptionsBuilder, TcpConnection};
 use tokio::join;
 use tokio::time::{sleep, Duration};
 #[allow(unused_imports)]
@@ -36,7 +36,10 @@ async fn main() {
     // Create an MQTT client that implements the MqttPubSub trait.
     // Application code is responsible for managing the client object.
     let mqttier_options = MqttierOptionsBuilder::default()
-        .connection(Connection::TcpLocalhost(1883))
+        .connection(Connection::Tcp(TcpConnection::from_env_with_defaults(
+            "localhost",
+            1883,
+        )))
         .client_id("rust-client-demo".to_string())
         .build()
         .unwrap();

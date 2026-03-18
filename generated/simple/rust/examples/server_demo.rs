@@ -9,7 +9,7 @@ TODO: Get license text from stinger file
 */
 use std::any::Any;
 
-use mqttier::{Connection, MqttierClient, MqttierOptionsBuilder};
+use mqttier::{Connection, MqttierClient, MqttierOptionsBuilder, TcpConnection};
 use simple_ipc::property::SimpleInitialPropertyValues;
 use simple_ipc::server::{SimpleMethodHandlers, SimpleServer};
 use tokio::time::{sleep, Duration};
@@ -65,7 +65,10 @@ async fn main() {
 
     // Set up an MQTT client connection.
     let mqttier_options = MqttierOptionsBuilder::default()
-        .connection(Connection::TcpLocalhost(1883))
+        .connection(Connection::Tcp(TcpConnection::from_env_with_defaults(
+            "localhost",
+            1883,
+        )))
         .client_id("rust-server-demo".to_string())
         .build()
         .unwrap();
