@@ -9,9 +9,14 @@ project (weather
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
+# require C++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # more secure code
 set (CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+find_package(Threads REQUIRED)
 find_package(RapidJSON REQUIRED)
 
 # Fetch stinger-cpp-utils dependency
@@ -76,24 +81,28 @@ add_executable(weather-client-demo examples/client_main.cpp)
 target_link_libraries(weather-client-demo
 	PRIVATE
 		Weather::Client
+		Threads::Threads
 )
 
 add_executable(weather-server-demo examples/server_main.cpp)
 target_link_libraries(weather-server-demo
 	PRIVATE
 		Weather::Server
+		Threads::Threads
 )
 
 add_executable(weather-discovery-example examples/discovery_example.cpp)
 target_link_libraries(weather-discovery-example
 	PRIVATE
 		Weather::Client
+		Threads::Threads
 )
 
 add_executable(weather-discovery-publisher examples/discovery_publisher.cpp)
 target_link_libraries(weather-discovery-publisher
 	PRIVATE
 		Weather::Client
+		Threads::Threads
 )
 
 set_target_properties(

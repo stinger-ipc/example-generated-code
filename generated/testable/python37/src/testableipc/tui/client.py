@@ -611,7 +611,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
     }
     
     TextArea {
-        height: 3;
+        height: 4lh;
         width: 100%;
     }
 
@@ -1290,7 +1290,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             if self.method_name == "call_one_struct":
                 
                 call_one_struct_input1_input_widget = self.query_one(f"#input_input1", TextArea)
-                call_one_struct_input1_widget_text_value = call_one_struct_input1_input_widget.value.strip()
+                call_one_struct_input1_widget_text_value = call_one_struct_input1_input_widget.text.strip()
                 
                 if not call_one_struct_input1_widget_text_value:
                     self.result_widget.update(f"[red]Error: Missing required parameter input1[/red]")
@@ -1311,7 +1311,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             if self.method_name == "call_optional_struct":
                 
                 call_optional_struct_input1_input_widget = self.query_one(f"#input_input1", TextArea)
-                call_optional_struct_input1_widget_text_value = call_optional_struct_input1_input_widget.value.strip()
+                call_optional_struct_input1_widget_text_value = call_optional_struct_input1_input_widget.text.strip()
                  
                 try:
                     call_optional_struct_input1_value = AllTypes.model_validate_json(call_optional_struct_input1_widget_text_value)
@@ -1328,7 +1328,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             if self.method_name == "call_three_structs":
                 
                 call_three_structs_input1_input_widget = self.query_one(f"#input_input1", TextArea)
-                call_three_structs_input1_widget_text_value = call_three_structs_input1_input_widget.value.strip()
+                call_three_structs_input1_widget_text_value = call_three_structs_input1_input_widget.text.strip()
                  
                 try:
                     call_three_structs_input1_value = AllTypes.model_validate_json(call_three_structs_input1_widget_text_value)
@@ -1341,7 +1341,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                 
                 
                 call_three_structs_input2_input_widget = self.query_one(f"#input_input2", TextArea)
-                call_three_structs_input2_widget_text_value = call_three_structs_input2_input_widget.value.strip()
+                call_three_structs_input2_widget_text_value = call_three_structs_input2_input_widget.text.strip()
                 
                 if not call_three_structs_input2_widget_text_value:
                     self.result_widget.update(f"[red]Error: Missing required parameter input2[/red]")
@@ -1358,7 +1358,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                 
                 
                 call_three_structs_input3_input_widget = self.query_one(f"#input_input3", TextArea)
-                call_three_structs_input3_widget_text_value = call_three_structs_input3_input_widget.value.strip()
+                call_three_structs_input3_widget_text_value = call_three_structs_input3_input_widget.text.strip()
                 
                 if not call_three_structs_input3_widget_text_value:
                     self.result_widget.update(f"[red]Error: Missing required parameter input3[/red]")
@@ -1508,7 +1508,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
 
                 try:
                     call_one_list_of_integers_input1_input_widget = self.query_one(f"#input_input1", TextArea)
-                    call_one_list_of_integers_input1_widget_text_value = call_one_list_of_integers_input1_input_widget.value.strip()
+                    call_one_list_of_integers_input1_widget_text_value = call_one_list_of_integers_input1_input_widget.text.strip()
                     call_one_list_of_integers_input1_values = type_adapter.validate_json(call_one_list_of_integers_input1_widget_text_value)
                 except Exception as e:
                     self.result_widget.update(f"[red]Error parsing JSON for parameter input1: {e}[/red]")
@@ -1526,7 +1526,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
 
                 try:
                     call_optional_list_of_floats_input1_input_widget = self.query_one(f"#input_input1", TextArea)
-                    call_optional_list_of_floats_input1_widget_text_value = call_optional_list_of_floats_input1_input_widget.value.strip()
+                    call_optional_list_of_floats_input1_widget_text_value = call_optional_list_of_floats_input1_input_widget.text.strip()
                     call_optional_list_of_floats_input1_values = type_adapter.validate_json(call_optional_list_of_floats_input1_widget_text_value)
                 except Exception as e:
                     self.result_widget.update(f"[red]Error parsing JSON for parameter input1: {e}[/red]")
@@ -1544,7 +1544,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
 
                 try:
                     call_two_lists_input1_input_widget = self.query_one(f"#input_input1", TextArea)
-                    call_two_lists_input1_widget_text_value = call_two_lists_input1_input_widget.value.strip()
+                    call_two_lists_input1_widget_text_value = call_two_lists_input1_input_widget.text.strip()
                     call_two_lists_input1_values = type_adapter.validate_json(call_two_lists_input1_widget_text_value)
                 except Exception as e:
                     self.result_widget.update(f"[red]Error parsing JSON for parameter input1: {e}[/red]")
@@ -1558,7 +1558,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
 
                 try:
                     call_two_lists_input2_input_widget = self.query_one(f"#input_input2", TextArea)
-                    call_two_lists_input2_widget_text_value = call_two_lists_input2_input_widget.value.strip()
+                    call_two_lists_input2_widget_text_value = call_two_lists_input2_input_widget.text.strip()
                     call_two_lists_input2_values = type_adapter.validate_json(call_two_lists_input2_widget_text_value)
                 except Exception as e:
                     self.result_widget.update(f"[red]Error parsing JSON for parameter input2: {e}[/red]")

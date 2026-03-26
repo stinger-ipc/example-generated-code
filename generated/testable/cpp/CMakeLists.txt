@@ -9,9 +9,14 @@ project (testable
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
+# require C++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # more secure code
 set (CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+find_package(Threads REQUIRED)
 find_package(RapidJSON REQUIRED)
 
 # Fetch stinger-cpp-utils dependency
@@ -76,24 +81,28 @@ add_executable(testable-client-demo examples/client_main.cpp)
 target_link_libraries(testable-client-demo
 	PRIVATE
 		Testable::Client
+		Threads::Threads
 )
 
 add_executable(testable-server-demo examples/server_main.cpp)
 target_link_libraries(testable-server-demo
 	PRIVATE
 		Testable::Server
+		Threads::Threads
 )
 
 add_executable(testable-discovery-example examples/discovery_example.cpp)
 target_link_libraries(testable-discovery-example
 	PRIVATE
 		Testable::Client
+		Threads::Threads
 )
 
 add_executable(testable-discovery-publisher examples/discovery_publisher.cpp)
 target_link_libraries(testable-discovery-publisher
 	PRIVATE
 		Testable::Client
+		Threads::Threads
 )
 
 set_target_properties(

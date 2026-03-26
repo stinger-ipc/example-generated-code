@@ -9,9 +9,14 @@ project (signal-only
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
+# require C++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # more secure code
 set (CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+find_package(Threads REQUIRED)
 find_package(RapidJSON REQUIRED)
 
 # Fetch stinger-cpp-utils dependency
@@ -76,24 +81,28 @@ add_executable(signal-only-client-demo examples/client_main.cpp)
 target_link_libraries(signal-only-client-demo
 	PRIVATE
 		SignalOnly::Client
+		Threads::Threads
 )
 
 add_executable(signal-only-server-demo examples/server_main.cpp)
 target_link_libraries(signal-only-server-demo
 	PRIVATE
 		SignalOnly::Server
+		Threads::Threads
 )
 
 add_executable(signal-only-discovery-example examples/discovery_example.cpp)
 target_link_libraries(signal-only-discovery-example
 	PRIVATE
 		SignalOnly::Client
+		Threads::Threads
 )
 
 add_executable(signal-only-discovery-publisher examples/discovery_publisher.cpp)
 target_link_libraries(signal-only-discovery-publisher
 	PRIVATE
 		SignalOnly::Client
+		Threads::Threads
 )
 
 set_target_properties(

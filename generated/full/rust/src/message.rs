@@ -5,7 +5,7 @@ use stinger_mqtt_trait::message::{MqttMessage, MqttMessageBuilder, QoS};
 #[cfg(feature = "client")]
 use uuid::Uuid;
 
-#[cfg(feature = "server")]
+#[cfg(any(feature = "server", test))]
 pub fn interface_online(
     topic: &str,
     payload: &crate::interface::InterfaceInfo,
@@ -27,7 +27,7 @@ pub fn interface_online(
     Ok(msg)
 }
 
-#[cfg(feature = "server")]
+#[cfg(any(feature = "server", test))]
 pub fn property_value<T: Serialize>(
     topic: &str,
     payload: &T,

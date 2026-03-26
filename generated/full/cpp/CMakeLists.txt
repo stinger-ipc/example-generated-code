@@ -9,9 +9,14 @@ project (full
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
+# require C++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # more secure code
 set (CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+find_package(Threads REQUIRED)
 find_package(RapidJSON REQUIRED)
 
 # Fetch stinger-cpp-utils dependency
@@ -76,24 +81,28 @@ add_executable(full-client-demo examples/client_main.cpp)
 target_link_libraries(full-client-demo
 	PRIVATE
 		Full::Client
+		Threads::Threads
 )
 
 add_executable(full-server-demo examples/server_main.cpp)
 target_link_libraries(full-server-demo
 	PRIVATE
 		Full::Server
+		Threads::Threads
 )
 
 add_executable(full-discovery-example examples/discovery_example.cpp)
 target_link_libraries(full-discovery-example
 	PRIVATE
 		Full::Client
+		Threads::Threads
 )
 
 add_executable(full-discovery-publisher examples/discovery_publisher.cpp)
 target_link_libraries(full-discovery-publisher
 	PRIVATE
 		Full::Client
+		Threads::Threads
 )
 
 set_target_properties(
