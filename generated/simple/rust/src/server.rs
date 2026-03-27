@@ -572,6 +572,7 @@ impl<C: Mqtt5PubSub + Clone + Send> SimpleServer<C> {
             .await
             .initialize(self.clone())
             .await;
+
         let sub_ids = self.subscription_ids.clone();
         let publisher = self.mqtt_client.clone();
 
@@ -584,12 +585,15 @@ impl<C: Mqtt5PubSub + Clone + Send> SimpleServer<C> {
             if let Some(mut rx_for_school_prop) = props.school.take_request_receiver() {
                 tokio::spawn(async move {
                     while let Some((request, opt_responder)) = rx_for_school_prop.recv().await {
+                        debug!("Received request to update 'school' property value through local watch channel. Current version is {}, request is: {:?}", school_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = SchoolProperty {
                             name: request.clone(),
                         };
 
-                        let version_value =
-                            school_prop_version.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                        let version_value = school_prop_version
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/Simple/{service_id}/property/school/value",
                             &topic_param_map_for_school,
@@ -710,4 +714,125 @@ pub trait SimpleMethodHandlers<C: Mqtt5PubSub>: Send + Sync {
     async fn handle_trade_numbers(&self, your_number: i32) -> Result<i32, MethodReturnCode>;
 
     fn as_any(&self) -> &dyn Any;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::message::property_update;
+    use stinger_mqtt_trait::mock::MockClient;
+    use tracing_subscriber::EnvFilter;
+
+    struct SimpleMethodImpl {
+        server: Option<SimpleServer<MockClient>>,
+    }
+
+    #[async_trait]
+    impl SimpleMethodHandlers<MockClient> for SimpleMethodImpl {
+        async fn initialize(
+            &mut self,
+            server: SimpleServer<MockClient>,
+        ) -> Result<(), MethodReturnCode> {
+            self.server = Some(server.clone());
+            Ok(())
+        }
+
+        async fn handle_trade_numbers(&self, _your_number: i32) -> Result<i32, MethodReturnCode> {
+            println!("Handling trade_numbers");
+            Ok(42)
+        }
+
+        fn as_any(&self) -> &dyn Any {
+            self
+        }
+    }
+
+    #[tokio::test]
+    async fn mock_server() {
+        let _ = tracing_subscriber::fmt()
+            .with_test_writer()
+            .with_env_filter(EnvFilter::new("simple_ipc=debug"))
+            .try_init();
+
+        let service_id = "N".to_string();
+        let client_id = "mock_client".to_string();
+
+        let mut mock_mqtt = MockClient::new(client_id.clone());
+
+        let initial_property_values = SimpleInitialPropertyValues {
+            school: "apples".to_string(),
+            school_version: 1,
+        };
+
+        let server = SimpleServer::new(
+            mock_mqtt.clone(),
+            Arc::new(AsyncMutex::new(Box::new(SimpleMethodImpl { server: None }))),
+            service_id.clone(),
+            initial_property_values.clone(),
+            "prefix".to_string(),
+        )
+        .await;
+
+        // Start the server connection loop in a separate task.
+        let mut looping_server = server.clone();
+        let _loop_join_handle = tokio::spawn(async move {
+            let _conn_loop = looping_server.run_loop().await;
+        });
+
+        let mut topic_param_map = HashMap::from([
+            ("interface_name".to_string(), "Simple".to_string()),
+            ("service_id".to_string(), service_id.clone()),
+            ("client_id".to_string(), client_id.clone()),
+            ("property_name".to_string(), "prop_xyz".to_string()),
+            ("prefix".to_string(), "prefix".to_string()),
+        ]);
+
+        tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+        let received_messages = mock_mqtt.published_messages();
+        for (i, msg) in received_messages.iter().enumerate() {
+            println!("Initial message {}: {:?}", i, msg);
+        }
+        assert_eq!(received_messages.len(), 1 + 1); // 1 for interface online, plus 1 for each property initial publish
+
+        // Publish a property update message for each property
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert("property_name".to_string(), "school".to_string());
+            let property_school_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "name": "apples" 
+            }"#;
+            let payload: SchoolProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_school_topic,
+                &payload,
+                initial_property_values.school_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+    }
 }

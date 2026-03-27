@@ -206,7 +206,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
     }
     
     TextArea {
-        height: 4lh;
+        height: 40vw;
         width: 100%;
     }
 

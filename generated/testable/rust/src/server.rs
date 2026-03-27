@@ -8334,6 +8334,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             .await
             .initialize(self.clone())
             .await;
+
         let sub_ids = self.subscription_ids.clone();
         let publisher = self.mqtt_client.clone();
 
@@ -8350,12 +8351,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_integer_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_integer' property value through local watch channel. Current version is {}, request is: {:?}", read_write_integer_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteIntegerProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_integer_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_write_integer/value",
                             &topic_param_map_for_read_write_integer,
@@ -8401,12 +8405,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_only_integer_prop.recv().await
                     {
+                        debug!("Received request to update 'read_only_integer' property value through local watch channel. Current version is {}, request is: {:?}", read_only_integer_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadOnlyIntegerProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_only_integer_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_only_integer/value",
                             &topic_param_map_for_read_only_integer,
@@ -8453,12 +8460,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_optional_integer_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_optional_integer' property value through local watch channel. Current version is {}, request is: {:?}", read_write_optional_integer_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteOptionalIntegerProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_optional_integer_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt("{prefix}/testable/{service_id}/property/read_write_optional_integer/value", &topic_param_map_for_read_write_optional_integer).unwrap();
                         match message::property_value(&topic, &payload_obj, version_value) {
                             Ok(msg) => {
@@ -8502,10 +8512,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_two_integers_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_two_integers' property value through local watch channel. Current version is {}, request is: {:?}", read_write_two_integers_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = request.clone();
 
                         let version_value = read_write_two_integers_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_write_two_integers/value",
                             &topic_param_map_for_read_write_two_integers,
@@ -8552,12 +8565,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_only_string_prop.recv().await
                     {
+                        debug!("Received request to update 'read_only_string' property value through local watch channel. Current version is {}, request is: {:?}", read_only_string_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadOnlyStringProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_only_string_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_only_string/value",
                             &topic_param_map_for_read_only_string,
@@ -8603,12 +8619,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_string_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_string' property value through local watch channel. Current version is {}, request is: {:?}", read_write_string_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteStringProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_string_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_write_string/value",
                             &topic_param_map_for_read_write_string,
@@ -8655,12 +8674,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_optional_string_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_optional_string' property value through local watch channel. Current version is {}, request is: {:?}", read_write_optional_string_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteOptionalStringProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_optional_string_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt("{prefix}/testable/{service_id}/property/read_write_optional_string/value", &topic_param_map_for_read_write_optional_string).unwrap();
                         match message::property_value(&topic, &payload_obj, version_value) {
                             Ok(msg) => {
@@ -8703,10 +8725,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_two_strings_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_two_strings' property value through local watch channel. Current version is {}, request is: {:?}", read_write_two_strings_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = request.clone();
 
                         let version_value = read_write_two_strings_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_write_two_strings/value",
                             &topic_param_map_for_read_write_two_strings,
@@ -8752,12 +8777,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_struct_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_struct' property value through local watch channel. Current version is {}, request is: {:?}", read_write_struct_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteStructProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_struct_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_write_struct/value",
                             &topic_param_map_for_read_write_struct,
@@ -8804,12 +8832,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_optional_struct_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_optional_struct' property value through local watch channel. Current version is {}, request is: {:?}", read_write_optional_struct_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteOptionalStructProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_optional_struct_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt("{prefix}/testable/{service_id}/property/read_write_optional_struct/value", &topic_param_map_for_read_write_optional_struct).unwrap();
                         match message::property_value(&topic, &payload_obj, version_value) {
                             Ok(msg) => {
@@ -8852,10 +8883,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_two_structs_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_two_structs' property value through local watch channel. Current version is {}, request is: {:?}", read_write_two_structs_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = request.clone();
 
                         let version_value = read_write_two_structs_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_write_two_structs/value",
                             &topic_param_map_for_read_write_two_structs,
@@ -8901,12 +8935,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_only_enum_prop.recv().await
                     {
+                        debug!("Received request to update 'read_only_enum' property value through local watch channel. Current version is {}, request is: {:?}", read_only_enum_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadOnlyEnumProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_only_enum_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_only_enum/value",
                             &topic_param_map_for_read_only_enum,
@@ -8952,12 +8989,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_enum_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_enum' property value through local watch channel. Current version is {}, request is: {:?}", read_write_enum_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteEnumProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_enum_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_write_enum/value",
                             &topic_param_map_for_read_write_enum,
@@ -9004,12 +9044,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_optional_enum_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_optional_enum' property value through local watch channel. Current version is {}, request is: {:?}", read_write_optional_enum_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteOptionalEnumProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_optional_enum_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt("{prefix}/testable/{service_id}/property/read_write_optional_enum/value", &topic_param_map_for_read_write_optional_enum).unwrap();
                         match message::property_value(&topic, &payload_obj, version_value) {
                             Ok(msg) => {
@@ -9052,10 +9095,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_two_enums_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_two_enums' property value through local watch channel. Current version is {}, request is: {:?}", read_write_two_enums_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = request.clone();
 
                         let version_value = read_write_two_enums_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_write_two_enums/value",
                             &topic_param_map_for_read_write_two_enums,
@@ -9101,12 +9147,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_datetime_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_datetime' property value through local watch channel. Current version is {}, request is: {:?}", read_write_datetime_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteDatetimeProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_datetime_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_write_datetime/value",
                             &topic_param_map_for_read_write_datetime,
@@ -9153,12 +9202,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_optional_datetime_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_optional_datetime' property value through local watch channel. Current version is {}, request is: {:?}", read_write_optional_datetime_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteOptionalDatetimeProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_optional_datetime_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt("{prefix}/testable/{service_id}/property/read_write_optional_datetime/value", &topic_param_map_for_read_write_optional_datetime).unwrap();
                         match message::property_value(&topic, &payload_obj, version_value) {
                             Ok(msg) => {
@@ -9203,10 +9255,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_two_datetimes_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_two_datetimes' property value through local watch channel. Current version is {}, request is: {:?}", read_write_two_datetimes_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = request.clone();
 
                         let version_value = read_write_two_datetimes_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt("{prefix}/testable/{service_id}/property/read_write_two_datetimes/value", &topic_param_map_for_read_write_two_datetimes).unwrap();
                         match message::property_value(&topic, &payload_obj, version_value) {
                             Ok(msg) => {
@@ -9249,12 +9304,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_duration_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_duration' property value through local watch channel. Current version is {}, request is: {:?}", read_write_duration_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteDurationProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_duration_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_write_duration/value",
                             &topic_param_map_for_read_write_duration,
@@ -9301,12 +9359,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_optional_duration_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_optional_duration' property value through local watch channel. Current version is {}, request is: {:?}", read_write_optional_duration_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteOptionalDurationProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_optional_duration_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt("{prefix}/testable/{service_id}/property/read_write_optional_duration/value", &topic_param_map_for_read_write_optional_duration).unwrap();
                         match message::property_value(&topic, &payload_obj, version_value) {
                             Ok(msg) => {
@@ -9351,10 +9412,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_two_durations_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_two_durations' property value through local watch channel. Current version is {}, request is: {:?}", read_write_two_durations_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = request.clone();
 
                         let version_value = read_write_two_durations_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt("{prefix}/testable/{service_id}/property/read_write_two_durations/value", &topic_param_map_for_read_write_two_durations).unwrap();
                         match message::property_value(&topic, &payload_obj, version_value) {
                             Ok(msg) => {
@@ -9397,12 +9461,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_binary_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_binary' property value through local watch channel. Current version is {}, request is: {:?}", read_write_binary_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteBinaryProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_binary_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_write_binary/value",
                             &topic_param_map_for_read_write_binary,
@@ -9449,12 +9516,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_optional_binary_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_optional_binary' property value through local watch channel. Current version is {}, request is: {:?}", read_write_optional_binary_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteOptionalBinaryProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_optional_binary_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt("{prefix}/testable/{service_id}/property/read_write_optional_binary/value", &topic_param_map_for_read_write_optional_binary).unwrap();
                         match message::property_value(&topic, &payload_obj, version_value) {
                             Ok(msg) => {
@@ -9498,10 +9568,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_two_binaries_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_two_binaries' property value through local watch channel. Current version is {}, request is: {:?}", read_write_two_binaries_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = request.clone();
 
                         let version_value = read_write_two_binaries_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_write_two_binaries/value",
                             &topic_param_map_for_read_write_two_binaries,
@@ -9549,12 +9622,15 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_list_of_strings_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_list_of_strings' property value through local watch channel. Current version is {}, request is: {:?}", read_write_list_of_strings_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = ReadWriteListOfStringsProperty {
                             value: request.clone(),
                         };
 
                         let version_value = read_write_list_of_strings_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt("{prefix}/testable/{service_id}/property/read_write_list_of_strings/value", &topic_param_map_for_read_write_list_of_strings).unwrap();
                         match message::property_value(&topic, &payload_obj, version_value) {
                             Ok(msg) => {
@@ -9597,10 +9673,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_read_write_lists_prop.recv().await
                     {
+                        debug!("Received request to update 'read_write_lists' property value through local watch channel. Current version is {}, request is: {:?}", read_write_lists_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = request.clone();
 
                         let version_value = read_write_lists_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/testable/{service_id}/property/read_write_lists/value",
                             &topic_param_map_for_read_write_lists,
@@ -10343,4 +10422,2140 @@ pub trait TestableMethodHandlers<C: Mqtt5PubSub>: Send + Sync {
     ) -> Result<CallTwoListsReturnValues, MethodReturnCode>;
 
     fn as_any(&self) -> &dyn Any;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::message::property_update;
+    use stinger_mqtt_trait::mock::MockClient;
+    use tracing_subscriber::EnvFilter;
+
+    struct TestableMethodImpl {
+        server: Option<TestableServer<MockClient>>,
+    }
+
+    #[async_trait]
+    impl TestableMethodHandlers<MockClient> for TestableMethodImpl {
+        async fn initialize(
+            &mut self,
+            server: TestableServer<MockClient>,
+        ) -> Result<(), MethodReturnCode> {
+            self.server = Some(server.clone());
+            Ok(())
+        }
+
+        async fn handle_call_with_nothing(&self) -> Result<(), MethodReturnCode> {
+            println!("Handling callWithNothing");
+            Ok(())
+        }
+
+        async fn handle_call_one_integer(&self, _input1: i32) -> Result<i32, MethodReturnCode> {
+            println!("Handling callOneInteger");
+            Ok(42)
+        }
+
+        async fn handle_call_optional_integer(
+            &self,
+            _input1: Option<i32>,
+        ) -> Result<Option<i32>, MethodReturnCode> {
+            println!("Handling callOptionalInteger");
+            Ok(Some(42))
+        }
+
+        async fn handle_call_three_integers(
+            &self,
+            _input1: i32,
+            _input2: i32,
+            _input3: Option<i32>,
+        ) -> Result<CallThreeIntegersReturnValues, MethodReturnCode> {
+            println!("Handling callThreeIntegers");
+            let rv = CallThreeIntegersReturnValues {
+                output1: 42,
+                output2: 42,
+                output3: Some(42),
+            };
+            Ok(rv)
+        }
+
+        async fn handle_call_one_string(
+            &self,
+            _input1: String,
+        ) -> Result<String, MethodReturnCode> {
+            println!("Handling callOneString");
+            Ok("apples".to_string())
+        }
+
+        async fn handle_call_optional_string(
+            &self,
+            _input1: Option<String>,
+        ) -> Result<Option<String>, MethodReturnCode> {
+            println!("Handling callOptionalString");
+            Ok(Some("apples".to_string()))
+        }
+
+        async fn handle_call_three_strings(
+            &self,
+            _input1: String,
+            _input2: Option<String>,
+            _input3: String,
+        ) -> Result<CallThreeStringsReturnValues, MethodReturnCode> {
+            println!("Handling callThreeStrings");
+            let rv = CallThreeStringsReturnValues {
+                output1: "apples".to_string(),
+                output2: Some("apples".to_string()),
+                output3: "apples".to_string(),
+            };
+            Ok(rv)
+        }
+
+        async fn handle_call_one_enum(
+            &self,
+            _input1: Numbers,
+        ) -> Result<Numbers, MethodReturnCode> {
+            println!("Handling callOneEnum");
+            Ok(Numbers::One)
+        }
+
+        async fn handle_call_optional_enum(
+            &self,
+            _input1: Option<Numbers>,
+        ) -> Result<Option<Numbers>, MethodReturnCode> {
+            println!("Handling callOptionalEnum");
+            Ok(Some(Numbers::One))
+        }
+
+        async fn handle_call_three_enums(
+            &self,
+            _input1: Numbers,
+            _input2: Numbers,
+            _input3: Option<Numbers>,
+        ) -> Result<CallThreeEnumsReturnValues, MethodReturnCode> {
+            println!("Handling callThreeEnums");
+            let rv = CallThreeEnumsReturnValues {
+                output1: Numbers::One,
+                output2: Numbers::One,
+                output3: Some(Numbers::One),
+            };
+            Ok(rv)
+        }
+
+        async fn handle_call_one_struct(
+            &self,
+            _input1: AllTypes,
+        ) -> Result<AllTypes, MethodReturnCode> {
+            println!("Handling callOneStruct");
+            let rv = AllTypes {
+                the_bool: true,
+                the_int: 42,
+                the_number: 3.14,
+                the_str: "apples".to_string(),
+                the_enum: Numbers::One,
+                an_entry_object: Entry {
+                    key: 42,
+                    value: "apples".to_string(),
+                },
+                date_and_time: chrono::Utc::now(),
+                time_duration: chrono::Duration::seconds(3536),
+                data: vec![101, 120, 97, 109, 112, 108, 101],
+                optional_integer: Some(42),
+                optional_string: Some("apples".to_string()),
+                optional_enum: Some(Numbers::One),
+                optional_entry_object: Some(Entry {
+                    key: 42,
+                    value: "apples".to_string(),
+                }),
+                optional_date_time: Some(chrono::Utc::now()),
+                optional_duration: Some(chrono::Duration::seconds(3536)),
+                optional_binary: Some(vec![101, 120, 97, 109, 112, 108, 101]),
+                array_of_integers: vec![42, 2022],
+                optional_array_of_integers: Some(vec![42, 2022, 2022]),
+                array_of_strings: vec!["apples".to_string(), "foo".to_string()],
+                optional_array_of_strings: Some(vec![
+                    "apples".to_string(),
+                    "foo".to_string(),
+                    "foo".to_string(),
+                ]),
+                array_of_enums: vec![Numbers::One, Numbers::One],
+                optional_array_of_enums: Some(vec![Numbers::One, Numbers::One, Numbers::One]),
+                array_of_datetimes: vec![chrono::Utc::now(), chrono::Utc::now()],
+                optional_array_of_datetimes: Some(vec![
+                    chrono::Utc::now(),
+                    chrono::Utc::now(),
+                    chrono::Utc::now(),
+                ]),
+                array_of_durations: vec![
+                    chrono::Duration::seconds(3536),
+                    chrono::Duration::seconds(975),
+                ],
+                optional_array_of_durations: Some(vec![
+                    chrono::Duration::seconds(3536),
+                    chrono::Duration::seconds(975),
+                    chrono::Duration::seconds(967),
+                ]),
+                array_of_binaries: vec![
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                ],
+                optional_array_of_binaries: Some(vec![
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                ]),
+                array_of_entry_objects: vec![
+                    Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    },
+                    Entry {
+                        key: 2022,
+                        value: "foo".to_string(),
+                    },
+                ],
+                optional_array_of_entry_objects: Some(vec![
+                    Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    },
+                    Entry {
+                        key: 2022,
+                        value: "foo".to_string(),
+                    },
+                    Entry {
+                        key: 2022,
+                        value: "foo".to_string(),
+                    },
+                ]),
+            };
+
+            Ok(rv)
+        }
+
+        async fn handle_call_optional_struct(
+            &self,
+            _input1: Option<AllTypes>,
+        ) -> Result<Option<AllTypes>, MethodReturnCode> {
+            println!("Handling callOptionalStruct");
+            let rv = AllTypes {
+                the_bool: true,
+                the_int: 42,
+                the_number: 3.14,
+                the_str: "apples".to_string(),
+                the_enum: Numbers::One,
+                an_entry_object: Entry {
+                    key: 42,
+                    value: "apples".to_string(),
+                },
+                date_and_time: chrono::Utc::now(),
+                time_duration: chrono::Duration::seconds(3536),
+                data: vec![101, 120, 97, 109, 112, 108, 101],
+                optional_integer: Some(42),
+                optional_string: Some("apples".to_string()),
+                optional_enum: Some(Numbers::One),
+                optional_entry_object: Some(Entry {
+                    key: 42,
+                    value: "apples".to_string(),
+                }),
+                optional_date_time: Some(chrono::Utc::now()),
+                optional_duration: Some(chrono::Duration::seconds(3536)),
+                optional_binary: Some(vec![101, 120, 97, 109, 112, 108, 101]),
+                array_of_integers: vec![42, 2022],
+                optional_array_of_integers: Some(vec![42, 2022, 2022]),
+                array_of_strings: vec!["apples".to_string(), "foo".to_string()],
+                optional_array_of_strings: Some(vec![
+                    "apples".to_string(),
+                    "foo".to_string(),
+                    "foo".to_string(),
+                ]),
+                array_of_enums: vec![Numbers::One, Numbers::One],
+                optional_array_of_enums: Some(vec![Numbers::One, Numbers::One, Numbers::One]),
+                array_of_datetimes: vec![chrono::Utc::now(), chrono::Utc::now()],
+                optional_array_of_datetimes: Some(vec![
+                    chrono::Utc::now(),
+                    chrono::Utc::now(),
+                    chrono::Utc::now(),
+                ]),
+                array_of_durations: vec![
+                    chrono::Duration::seconds(3536),
+                    chrono::Duration::seconds(975),
+                ],
+                optional_array_of_durations: Some(vec![
+                    chrono::Duration::seconds(3536),
+                    chrono::Duration::seconds(975),
+                    chrono::Duration::seconds(967),
+                ]),
+                array_of_binaries: vec![
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                ],
+                optional_array_of_binaries: Some(vec![
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                ]),
+                array_of_entry_objects: vec![
+                    Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    },
+                    Entry {
+                        key: 2022,
+                        value: "foo".to_string(),
+                    },
+                ],
+                optional_array_of_entry_objects: Some(vec![
+                    Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    },
+                    Entry {
+                        key: 2022,
+                        value: "foo".to_string(),
+                    },
+                    Entry {
+                        key: 2022,
+                        value: "foo".to_string(),
+                    },
+                ]),
+            };
+
+            Ok(Some(rv))
+        }
+
+        async fn handle_call_three_structs(
+            &self,
+            _input1: Option<AllTypes>,
+            _input2: AllTypes,
+            _input3: AllTypes,
+        ) -> Result<CallThreeStructsReturnValues, MethodReturnCode> {
+            println!("Handling callThreeStructs");
+            let rv = CallThreeStructsReturnValues {
+                output1: Some(AllTypes {
+                    the_bool: true,
+                    the_int: 42,
+                    the_number: 3.14,
+                    the_str: "apples".to_string(),
+                    the_enum: Numbers::One,
+                    an_entry_object: Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    },
+                    date_and_time: chrono::Utc::now(),
+                    time_duration: chrono::Duration::seconds(3536),
+                    data: vec![101, 120, 97, 109, 112, 108, 101],
+                    optional_integer: Some(42),
+                    optional_string: Some("apples".to_string()),
+                    optional_enum: Some(Numbers::One),
+                    optional_entry_object: Some(Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    }),
+                    optional_date_time: Some(chrono::Utc::now()),
+                    optional_duration: Some(chrono::Duration::seconds(3536)),
+                    optional_binary: Some(vec![101, 120, 97, 109, 112, 108, 101]),
+                    array_of_integers: vec![42, 2022],
+                    optional_array_of_integers: Some(vec![42, 2022, 2022]),
+                    array_of_strings: vec!["apples".to_string(), "foo".to_string()],
+                    optional_array_of_strings: Some(vec![
+                        "apples".to_string(),
+                        "foo".to_string(),
+                        "foo".to_string(),
+                    ]),
+                    array_of_enums: vec![Numbers::One, Numbers::One],
+                    optional_array_of_enums: Some(vec![Numbers::One, Numbers::One, Numbers::One]),
+                    array_of_datetimes: vec![chrono::Utc::now(), chrono::Utc::now()],
+                    optional_array_of_datetimes: Some(vec![
+                        chrono::Utc::now(),
+                        chrono::Utc::now(),
+                        chrono::Utc::now(),
+                    ]),
+                    array_of_durations: vec![
+                        chrono::Duration::seconds(3536),
+                        chrono::Duration::seconds(975),
+                    ],
+                    optional_array_of_durations: Some(vec![
+                        chrono::Duration::seconds(3536),
+                        chrono::Duration::seconds(975),
+                        chrono::Duration::seconds(967),
+                    ]),
+                    array_of_binaries: vec![
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                    ],
+                    optional_array_of_binaries: Some(vec![
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                    ]),
+                    array_of_entry_objects: vec![
+                        Entry {
+                            key: 42,
+                            value: "apples".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                    ],
+                    optional_array_of_entry_objects: Some(vec![
+                        Entry {
+                            key: 42,
+                            value: "apples".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                    ]),
+                }),
+                output2: AllTypes {
+                    the_bool: true,
+                    the_int: 42,
+                    the_number: 3.14,
+                    the_str: "apples".to_string(),
+                    the_enum: Numbers::One,
+                    an_entry_object: Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    },
+                    date_and_time: chrono::Utc::now(),
+                    time_duration: chrono::Duration::seconds(3536),
+                    data: vec![101, 120, 97, 109, 112, 108, 101],
+                    optional_integer: Some(42),
+                    optional_string: Some("apples".to_string()),
+                    optional_enum: Some(Numbers::One),
+                    optional_entry_object: Some(Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    }),
+                    optional_date_time: Some(chrono::Utc::now()),
+                    optional_duration: Some(chrono::Duration::seconds(3536)),
+                    optional_binary: Some(vec![101, 120, 97, 109, 112, 108, 101]),
+                    array_of_integers: vec![42, 2022],
+                    optional_array_of_integers: Some(vec![42, 2022, 2022]),
+                    array_of_strings: vec!["apples".to_string(), "foo".to_string()],
+                    optional_array_of_strings: Some(vec![
+                        "apples".to_string(),
+                        "foo".to_string(),
+                        "foo".to_string(),
+                    ]),
+                    array_of_enums: vec![Numbers::One, Numbers::One],
+                    optional_array_of_enums: Some(vec![Numbers::One, Numbers::One, Numbers::One]),
+                    array_of_datetimes: vec![chrono::Utc::now(), chrono::Utc::now()],
+                    optional_array_of_datetimes: Some(vec![
+                        chrono::Utc::now(),
+                        chrono::Utc::now(),
+                        chrono::Utc::now(),
+                    ]),
+                    array_of_durations: vec![
+                        chrono::Duration::seconds(3536),
+                        chrono::Duration::seconds(975),
+                    ],
+                    optional_array_of_durations: Some(vec![
+                        chrono::Duration::seconds(3536),
+                        chrono::Duration::seconds(975),
+                        chrono::Duration::seconds(967),
+                    ]),
+                    array_of_binaries: vec![
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                    ],
+                    optional_array_of_binaries: Some(vec![
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                    ]),
+                    array_of_entry_objects: vec![
+                        Entry {
+                            key: 42,
+                            value: "apples".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                    ],
+                    optional_array_of_entry_objects: Some(vec![
+                        Entry {
+                            key: 42,
+                            value: "apples".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                    ]),
+                },
+                output3: AllTypes {
+                    the_bool: true,
+                    the_int: 42,
+                    the_number: 3.14,
+                    the_str: "apples".to_string(),
+                    the_enum: Numbers::One,
+                    an_entry_object: Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    },
+                    date_and_time: chrono::Utc::now(),
+                    time_duration: chrono::Duration::seconds(3536),
+                    data: vec![101, 120, 97, 109, 112, 108, 101],
+                    optional_integer: Some(42),
+                    optional_string: Some("apples".to_string()),
+                    optional_enum: Some(Numbers::One),
+                    optional_entry_object: Some(Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    }),
+                    optional_date_time: Some(chrono::Utc::now()),
+                    optional_duration: Some(chrono::Duration::seconds(3536)),
+                    optional_binary: Some(vec![101, 120, 97, 109, 112, 108, 101]),
+                    array_of_integers: vec![42, 2022],
+                    optional_array_of_integers: Some(vec![42, 2022, 2022]),
+                    array_of_strings: vec!["apples".to_string(), "foo".to_string()],
+                    optional_array_of_strings: Some(vec![
+                        "apples".to_string(),
+                        "foo".to_string(),
+                        "foo".to_string(),
+                    ]),
+                    array_of_enums: vec![Numbers::One, Numbers::One],
+                    optional_array_of_enums: Some(vec![Numbers::One, Numbers::One, Numbers::One]),
+                    array_of_datetimes: vec![chrono::Utc::now(), chrono::Utc::now()],
+                    optional_array_of_datetimes: Some(vec![
+                        chrono::Utc::now(),
+                        chrono::Utc::now(),
+                        chrono::Utc::now(),
+                    ]),
+                    array_of_durations: vec![
+                        chrono::Duration::seconds(3536),
+                        chrono::Duration::seconds(975),
+                    ],
+                    optional_array_of_durations: Some(vec![
+                        chrono::Duration::seconds(3536),
+                        chrono::Duration::seconds(975),
+                        chrono::Duration::seconds(967),
+                    ]),
+                    array_of_binaries: vec![
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                    ],
+                    optional_array_of_binaries: Some(vec![
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                    ]),
+                    array_of_entry_objects: vec![
+                        Entry {
+                            key: 42,
+                            value: "apples".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                    ],
+                    optional_array_of_entry_objects: Some(vec![
+                        Entry {
+                            key: 42,
+                            value: "apples".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                    ]),
+                },
+            };
+            Ok(rv)
+        }
+
+        async fn handle_call_one_date_time(
+            &self,
+            _input1: chrono::DateTime<chrono::Utc>,
+        ) -> Result<chrono::DateTime<chrono::Utc>, MethodReturnCode> {
+            println!("Handling callOneDateTime");
+            Ok(chrono::Utc::now())
+        }
+
+        async fn handle_call_optional_date_time(
+            &self,
+            _input1: Option<chrono::DateTime<chrono::Utc>>,
+        ) -> Result<Option<chrono::DateTime<chrono::Utc>>, MethodReturnCode> {
+            println!("Handling callOptionalDateTime");
+            Ok(Some(chrono::Utc::now()))
+        }
+
+        async fn handle_call_three_date_times(
+            &self,
+            _input1: chrono::DateTime<chrono::Utc>,
+            _input2: chrono::DateTime<chrono::Utc>,
+            _input3: Option<chrono::DateTime<chrono::Utc>>,
+        ) -> Result<CallThreeDateTimesReturnValues, MethodReturnCode> {
+            println!("Handling callThreeDateTimes");
+            let rv = CallThreeDateTimesReturnValues {
+                output1: chrono::Utc::now(),
+                output2: chrono::Utc::now(),
+                output3: Some(chrono::Utc::now()),
+            };
+            Ok(rv)
+        }
+
+        async fn handle_call_one_duration(
+            &self,
+            _input1: chrono::Duration,
+        ) -> Result<chrono::Duration, MethodReturnCode> {
+            println!("Handling callOneDuration");
+            Ok(chrono::Duration::seconds(3536))
+        }
+
+        async fn handle_call_optional_duration(
+            &self,
+            _input1: Option<chrono::Duration>,
+        ) -> Result<Option<chrono::Duration>, MethodReturnCode> {
+            println!("Handling callOptionalDuration");
+            Ok(Some(chrono::Duration::seconds(3536)))
+        }
+
+        async fn handle_call_three_durations(
+            &self,
+            _input1: chrono::Duration,
+            _input2: chrono::Duration,
+            _input3: Option<chrono::Duration>,
+        ) -> Result<CallThreeDurationsReturnValues, MethodReturnCode> {
+            println!("Handling callThreeDurations");
+            let rv = CallThreeDurationsReturnValues {
+                output1: chrono::Duration::seconds(3536),
+                output2: chrono::Duration::seconds(3536),
+                output3: Some(chrono::Duration::seconds(3536)),
+            };
+            Ok(rv)
+        }
+
+        async fn handle_call_one_binary(
+            &self,
+            _input1: Vec<u8>,
+        ) -> Result<Vec<u8>, MethodReturnCode> {
+            println!("Handling callOneBinary");
+            Ok(vec![101, 120, 97, 109, 112, 108, 101])
+        }
+
+        async fn handle_call_optional_binary(
+            &self,
+            _input1: Option<Vec<u8>>,
+        ) -> Result<Option<Vec<u8>>, MethodReturnCode> {
+            println!("Handling callOptionalBinary");
+            Ok(Some(vec![101, 120, 97, 109, 112, 108, 101]))
+        }
+
+        async fn handle_call_three_binaries(
+            &self,
+            _input1: Vec<u8>,
+            _input2: Vec<u8>,
+            _input3: Option<Vec<u8>>,
+        ) -> Result<CallThreeBinariesReturnValues, MethodReturnCode> {
+            println!("Handling callThreeBinaries");
+            let rv = CallThreeBinariesReturnValues {
+                output1: vec![101, 120, 97, 109, 112, 108, 101],
+                output2: vec![101, 120, 97, 109, 112, 108, 101],
+                output3: Some(vec![101, 120, 97, 109, 112, 108, 101]),
+            };
+            Ok(rv)
+        }
+
+        async fn handle_call_one_list_of_integers(
+            &self,
+            _input1: Vec<i32>,
+        ) -> Result<Vec<i32>, MethodReturnCode> {
+            println!("Handling callOneListOfIntegers");
+            Ok(vec![42, 2022])
+        }
+
+        async fn handle_call_optional_list_of_floats(
+            &self,
+            _input1: Option<Vec<f32>>,
+        ) -> Result<Option<Vec<f32>>, MethodReturnCode> {
+            println!("Handling callOptionalListOfFloats");
+            Ok(Some(vec![3.14, 1.0, 1.0]))
+        }
+
+        async fn handle_call_two_lists(
+            &self,
+            _input1: Vec<Numbers>,
+            _input2: Option<Vec<String>>,
+        ) -> Result<CallTwoListsReturnValues, MethodReturnCode> {
+            println!("Handling callTwoLists");
+            let rv = CallTwoListsReturnValues {
+                output1: vec![Numbers::One, Numbers::One],
+                output2: Some(vec![
+                    "apples".to_string(),
+                    "foo".to_string(),
+                    "foo".to_string(),
+                ]),
+            };
+            Ok(rv)
+        }
+
+        fn as_any(&self) -> &dyn Any {
+            self
+        }
+    }
+
+    #[tokio::test]
+    async fn mock_server() {
+        let _ = tracing_subscriber::fmt()
+            .with_test_writer()
+            .with_env_filter(EnvFilter::new("testable_ipc=debug"))
+            .try_init();
+
+        let service_id = "N".to_string();
+        let client_id = "mock_client".to_string();
+
+        let mut mock_mqtt = MockClient::new(client_id.clone());
+
+        let initial_property_values = TestableInitialPropertyValues {
+            read_write_integer: 42,
+            read_write_integer_version: 1,
+
+            read_only_integer: 42,
+            read_only_integer_version: 1,
+
+            read_write_optional_integer: Some(42),
+            read_write_optional_integer_version: 1,
+
+            read_write_two_integers: ReadWriteTwoIntegersProperty {
+                first: 42,
+                second: Some(42),
+            },
+            read_write_two_integers_version: 1,
+
+            read_only_string: "apples".to_string(),
+            read_only_string_version: 1,
+
+            read_write_string: "apples".to_string(),
+            read_write_string_version: 1,
+
+            read_write_optional_string: Some("apples".to_string()),
+            read_write_optional_string_version: 1,
+
+            read_write_two_strings: ReadWriteTwoStringsProperty {
+                first: "apples".to_string(),
+                second: Some("apples".to_string()),
+            },
+            read_write_two_strings_version: 1,
+
+            read_write_struct: AllTypes {
+                the_bool: true,
+                the_int: 42,
+                the_number: 3.14,
+                the_str: "apples".to_string(),
+                the_enum: Numbers::One,
+                an_entry_object: Entry {
+                    key: 42,
+                    value: "apples".to_string(),
+                },
+                date_and_time: chrono::Utc::now(),
+                time_duration: chrono::Duration::seconds(3536),
+                data: vec![101, 120, 97, 109, 112, 108, 101],
+                optional_integer: Some(42),
+                optional_string: Some("apples".to_string()),
+                optional_enum: Some(Numbers::One),
+                optional_entry_object: Some(Entry {
+                    key: 42,
+                    value: "apples".to_string(),
+                }),
+                optional_date_time: Some(chrono::Utc::now()),
+                optional_duration: Some(chrono::Duration::seconds(3536)),
+                optional_binary: Some(vec![101, 120, 97, 109, 112, 108, 101]),
+                array_of_integers: vec![42, 2022],
+                optional_array_of_integers: Some(vec![42, 2022, 2022]),
+                array_of_strings: vec!["apples".to_string(), "foo".to_string()],
+                optional_array_of_strings: Some(vec![
+                    "apples".to_string(),
+                    "foo".to_string(),
+                    "foo".to_string(),
+                ]),
+                array_of_enums: vec![Numbers::One, Numbers::One],
+                optional_array_of_enums: Some(vec![Numbers::One, Numbers::One, Numbers::One]),
+                array_of_datetimes: vec![chrono::Utc::now(), chrono::Utc::now()],
+                optional_array_of_datetimes: Some(vec![
+                    chrono::Utc::now(),
+                    chrono::Utc::now(),
+                    chrono::Utc::now(),
+                ]),
+                array_of_durations: vec![
+                    chrono::Duration::seconds(3536),
+                    chrono::Duration::seconds(975),
+                ],
+                optional_array_of_durations: Some(vec![
+                    chrono::Duration::seconds(3536),
+                    chrono::Duration::seconds(975),
+                    chrono::Duration::seconds(967),
+                ]),
+                array_of_binaries: vec![
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                ],
+                optional_array_of_binaries: Some(vec![
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                ]),
+                array_of_entry_objects: vec![
+                    Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    },
+                    Entry {
+                        key: 2022,
+                        value: "foo".to_string(),
+                    },
+                ],
+                optional_array_of_entry_objects: Some(vec![
+                    Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    },
+                    Entry {
+                        key: 2022,
+                        value: "foo".to_string(),
+                    },
+                    Entry {
+                        key: 2022,
+                        value: "foo".to_string(),
+                    },
+                ]),
+            },
+            read_write_struct_version: 1,
+
+            read_write_optional_struct: Some(AllTypes {
+                the_bool: true,
+                the_int: 42,
+                the_number: 3.14,
+                the_str: "apples".to_string(),
+                the_enum: Numbers::One,
+                an_entry_object: Entry {
+                    key: 42,
+                    value: "apples".to_string(),
+                },
+                date_and_time: chrono::Utc::now(),
+                time_duration: chrono::Duration::seconds(3536),
+                data: vec![101, 120, 97, 109, 112, 108, 101],
+                optional_integer: Some(42),
+                optional_string: Some("apples".to_string()),
+                optional_enum: Some(Numbers::One),
+                optional_entry_object: Some(Entry {
+                    key: 42,
+                    value: "apples".to_string(),
+                }),
+                optional_date_time: Some(chrono::Utc::now()),
+                optional_duration: Some(chrono::Duration::seconds(3536)),
+                optional_binary: Some(vec![101, 120, 97, 109, 112, 108, 101]),
+                array_of_integers: vec![42, 2022],
+                optional_array_of_integers: Some(vec![42, 2022, 2022]),
+                array_of_strings: vec!["apples".to_string(), "foo".to_string()],
+                optional_array_of_strings: Some(vec![
+                    "apples".to_string(),
+                    "foo".to_string(),
+                    "foo".to_string(),
+                ]),
+                array_of_enums: vec![Numbers::One, Numbers::One],
+                optional_array_of_enums: Some(vec![Numbers::One, Numbers::One, Numbers::One]),
+                array_of_datetimes: vec![chrono::Utc::now(), chrono::Utc::now()],
+                optional_array_of_datetimes: Some(vec![
+                    chrono::Utc::now(),
+                    chrono::Utc::now(),
+                    chrono::Utc::now(),
+                ]),
+                array_of_durations: vec![
+                    chrono::Duration::seconds(3536),
+                    chrono::Duration::seconds(975),
+                ],
+                optional_array_of_durations: Some(vec![
+                    chrono::Duration::seconds(3536),
+                    chrono::Duration::seconds(975),
+                    chrono::Duration::seconds(967),
+                ]),
+                array_of_binaries: vec![
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                ],
+                optional_array_of_binaries: Some(vec![
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                    vec![101, 120, 97, 109, 112, 108, 101],
+                ]),
+                array_of_entry_objects: vec![
+                    Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    },
+                    Entry {
+                        key: 2022,
+                        value: "foo".to_string(),
+                    },
+                ],
+                optional_array_of_entry_objects: Some(vec![
+                    Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    },
+                    Entry {
+                        key: 2022,
+                        value: "foo".to_string(),
+                    },
+                    Entry {
+                        key: 2022,
+                        value: "foo".to_string(),
+                    },
+                ]),
+            }),
+            read_write_optional_struct_version: 1,
+
+            read_write_two_structs: ReadWriteTwoStructsProperty {
+                first: AllTypes {
+                    the_bool: true,
+                    the_int: 42,
+                    the_number: 3.14,
+                    the_str: "apples".to_string(),
+                    the_enum: Numbers::One,
+                    an_entry_object: Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    },
+                    date_and_time: chrono::Utc::now(),
+                    time_duration: chrono::Duration::seconds(3536),
+                    data: vec![101, 120, 97, 109, 112, 108, 101],
+                    optional_integer: Some(42),
+                    optional_string: Some("apples".to_string()),
+                    optional_enum: Some(Numbers::One),
+                    optional_entry_object: Some(Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    }),
+                    optional_date_time: Some(chrono::Utc::now()),
+                    optional_duration: Some(chrono::Duration::seconds(3536)),
+                    optional_binary: Some(vec![101, 120, 97, 109, 112, 108, 101]),
+                    array_of_integers: vec![42, 2022],
+                    optional_array_of_integers: Some(vec![42, 2022, 2022]),
+                    array_of_strings: vec!["apples".to_string(), "foo".to_string()],
+                    optional_array_of_strings: Some(vec![
+                        "apples".to_string(),
+                        "foo".to_string(),
+                        "foo".to_string(),
+                    ]),
+                    array_of_enums: vec![Numbers::One, Numbers::One],
+                    optional_array_of_enums: Some(vec![Numbers::One, Numbers::One, Numbers::One]),
+                    array_of_datetimes: vec![chrono::Utc::now(), chrono::Utc::now()],
+                    optional_array_of_datetimes: Some(vec![
+                        chrono::Utc::now(),
+                        chrono::Utc::now(),
+                        chrono::Utc::now(),
+                    ]),
+                    array_of_durations: vec![
+                        chrono::Duration::seconds(3536),
+                        chrono::Duration::seconds(975),
+                    ],
+                    optional_array_of_durations: Some(vec![
+                        chrono::Duration::seconds(3536),
+                        chrono::Duration::seconds(975),
+                        chrono::Duration::seconds(967),
+                    ]),
+                    array_of_binaries: vec![
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                    ],
+                    optional_array_of_binaries: Some(vec![
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                    ]),
+                    array_of_entry_objects: vec![
+                        Entry {
+                            key: 42,
+                            value: "apples".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                    ],
+                    optional_array_of_entry_objects: Some(vec![
+                        Entry {
+                            key: 42,
+                            value: "apples".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                    ]),
+                },
+                second: Some(AllTypes {
+                    the_bool: true,
+                    the_int: 42,
+                    the_number: 3.14,
+                    the_str: "apples".to_string(),
+                    the_enum: Numbers::One,
+                    an_entry_object: Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    },
+                    date_and_time: chrono::Utc::now(),
+                    time_duration: chrono::Duration::seconds(3536),
+                    data: vec![101, 120, 97, 109, 112, 108, 101],
+                    optional_integer: Some(42),
+                    optional_string: Some("apples".to_string()),
+                    optional_enum: Some(Numbers::One),
+                    optional_entry_object: Some(Entry {
+                        key: 42,
+                        value: "apples".to_string(),
+                    }),
+                    optional_date_time: Some(chrono::Utc::now()),
+                    optional_duration: Some(chrono::Duration::seconds(3536)),
+                    optional_binary: Some(vec![101, 120, 97, 109, 112, 108, 101]),
+                    array_of_integers: vec![42, 2022],
+                    optional_array_of_integers: Some(vec![42, 2022, 2022]),
+                    array_of_strings: vec!["apples".to_string(), "foo".to_string()],
+                    optional_array_of_strings: Some(vec![
+                        "apples".to_string(),
+                        "foo".to_string(),
+                        "foo".to_string(),
+                    ]),
+                    array_of_enums: vec![Numbers::One, Numbers::One],
+                    optional_array_of_enums: Some(vec![Numbers::One, Numbers::One, Numbers::One]),
+                    array_of_datetimes: vec![chrono::Utc::now(), chrono::Utc::now()],
+                    optional_array_of_datetimes: Some(vec![
+                        chrono::Utc::now(),
+                        chrono::Utc::now(),
+                        chrono::Utc::now(),
+                    ]),
+                    array_of_durations: vec![
+                        chrono::Duration::seconds(3536),
+                        chrono::Duration::seconds(975),
+                    ],
+                    optional_array_of_durations: Some(vec![
+                        chrono::Duration::seconds(3536),
+                        chrono::Duration::seconds(975),
+                        chrono::Duration::seconds(967),
+                    ]),
+                    array_of_binaries: vec![
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                    ],
+                    optional_array_of_binaries: Some(vec![
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                        vec![101, 120, 97, 109, 112, 108, 101],
+                    ]),
+                    array_of_entry_objects: vec![
+                        Entry {
+                            key: 42,
+                            value: "apples".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                    ],
+                    optional_array_of_entry_objects: Some(vec![
+                        Entry {
+                            key: 42,
+                            value: "apples".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                        Entry {
+                            key: 2022,
+                            value: "foo".to_string(),
+                        },
+                    ]),
+                }),
+            },
+            read_write_two_structs_version: 1,
+
+            read_only_enum: Numbers::One,
+            read_only_enum_version: 1,
+
+            read_write_enum: Numbers::One,
+            read_write_enum_version: 1,
+
+            read_write_optional_enum: Some(Numbers::One),
+            read_write_optional_enum_version: 1,
+
+            read_write_two_enums: ReadWriteTwoEnumsProperty {
+                first: Numbers::One,
+                second: Some(Numbers::One),
+            },
+            read_write_two_enums_version: 1,
+
+            read_write_datetime: chrono::Utc::now(),
+            read_write_datetime_version: 1,
+
+            read_write_optional_datetime: Some(chrono::Utc::now()),
+            read_write_optional_datetime_version: 1,
+
+            read_write_two_datetimes: ReadWriteTwoDatetimesProperty {
+                first: chrono::Utc::now(),
+                second: Some(chrono::Utc::now()),
+            },
+            read_write_two_datetimes_version: 1,
+
+            read_write_duration: chrono::Duration::seconds(3536),
+            read_write_duration_version: 1,
+
+            read_write_optional_duration: Some(chrono::Duration::seconds(3536)),
+            read_write_optional_duration_version: 1,
+
+            read_write_two_durations: ReadWriteTwoDurationsProperty {
+                first: chrono::Duration::seconds(3536),
+                second: Some(chrono::Duration::seconds(3536)),
+            },
+            read_write_two_durations_version: 1,
+
+            read_write_binary: vec![101, 120, 97, 109, 112, 108, 101],
+            read_write_binary_version: 1,
+
+            read_write_optional_binary: Some(vec![101, 120, 97, 109, 112, 108, 101]),
+            read_write_optional_binary_version: 1,
+
+            read_write_two_binaries: ReadWriteTwoBinariesProperty {
+                first: vec![101, 120, 97, 109, 112, 108, 101],
+                second: Some(vec![101, 120, 97, 109, 112, 108, 101]),
+            },
+            read_write_two_binaries_version: 1,
+
+            read_write_list_of_strings: vec!["apples".to_string(), "foo".to_string()],
+            read_write_list_of_strings_version: 1,
+
+            read_write_lists: ReadWriteListsProperty {
+                the_list: vec![Numbers::One, Numbers::One],
+                optional_list: Some(vec![
+                    chrono::Utc::now(),
+                    chrono::Utc::now(),
+                    chrono::Utc::now(),
+                ]),
+            },
+            read_write_lists_version: 1,
+        };
+
+        let server = TestableServer::new(
+            mock_mqtt.clone(),
+            Arc::new(AsyncMutex::new(Box::new(TestableMethodImpl {
+                server: None,
+            }))),
+            service_id.clone(),
+            initial_property_values.clone(),
+            "prefix".to_string(),
+        )
+        .await;
+
+        // Start the server connection loop in a separate task.
+        let mut looping_server = server.clone();
+        let _loop_join_handle = tokio::spawn(async move {
+            let _conn_loop = looping_server.run_loop().await;
+        });
+
+        let mut topic_param_map = HashMap::from([
+            ("interface_name".to_string(), "testable".to_string()),
+            ("service_id".to_string(), service_id.clone()),
+            ("client_id".to_string(), client_id.clone()),
+            ("property_name".to_string(), "prop_xyz".to_string()),
+            ("prefix".to_string(), "prefix".to_string()),
+        ]);
+
+        tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+        let received_messages = mock_mqtt.published_messages();
+        for (i, msg) in received_messages.iter().enumerate() {
+            println!("Initial message {}: {:?}", i, msg);
+        }
+        assert_eq!(received_messages.len(), 1 + 26); // 1 for interface online, plus 1 for each property initial publish
+
+        // Publish a property update message for each property
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_integer".to_string(),
+            );
+            let property_read_write_integer_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": 42 
+            }"#;
+            let payload: ReadWriteIntegerProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_integer_topic,
+                &payload,
+                initial_property_values.read_write_integer_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_optional_integer".to_string(),
+            );
+            let property_read_write_optional_integer_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": 42 
+            }"#;
+            let payload: ReadWriteOptionalIntegerProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_optional_integer_topic,
+                &payload,
+                initial_property_values.read_write_optional_integer_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_two_integers".to_string(),
+            );
+            let property_read_write_two_integers_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "first": 42 ,
+            
+                "second": 42 
+            }"#;
+            let payload: ReadWriteTwoIntegersProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_two_integers_topic,
+                &payload,
+                initial_property_values.read_write_two_integers_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert("property_name".to_string(), "read_write_string".to_string());
+            let property_read_write_string_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": "apples" 
+            }"#;
+            let payload: ReadWriteStringProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_string_topic,
+                &payload,
+                initial_property_values.read_write_string_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_optional_string".to_string(),
+            );
+            let property_read_write_optional_string_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": "apples" 
+            }"#;
+            let payload: ReadWriteOptionalStringProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_optional_string_topic,
+                &payload,
+                initial_property_values.read_write_optional_string_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_two_strings".to_string(),
+            );
+            let property_read_write_two_strings_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "first": "apples" ,
+            
+                "second": "apples" 
+            }"#;
+            let payload: ReadWriteTwoStringsProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_two_strings_topic,
+                &payload,
+                initial_property_values.read_write_two_strings_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert("property_name".to_string(), "read_write_struct".to_string());
+            let property_read_write_struct_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [42, 2022], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": ["apples", "foo"], "array_of_enums": [1, 3], "optional_array_of_enums": null, "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": null, "array_of_durations": [], "optional_array_of_durations": [], "array_of_binaries": [], "optional_array_of_binaries": [], "array_of_entry_objects": [], "optional_array_of_entry_objects": null} 
+            }"#;
+            let payload: ReadWriteStructProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_struct_topic,
+                &payload,
+                initial_property_values.read_write_struct_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_optional_struct".to_string(),
+            );
+            let property_read_write_optional_struct_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": null, "array_of_strings": [], "optional_array_of_strings": ["apples", "foo"], "array_of_enums": [1, 3], "optional_array_of_enums": [], "array_of_datetimes": [], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} 
+            }"#;
+            let payload: ReadWriteOptionalStructProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_optional_struct_topic,
+                &payload,
+                initial_property_values.read_write_optional_struct_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_two_structs".to_string(),
+            );
+            let property_read_write_two_structs_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "first": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [], "array_of_strings": [], "optional_array_of_strings": ["apples", "foo"], "array_of_enums": [1, 3], "optional_array_of_enums": [1, 3], "array_of_datetimes": [], "optional_array_of_datetimes": [], "array_of_durations": [], "optional_array_of_durations": [], "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": [], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": []} ,
+            
+                "second": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": [], "array_of_enums": [1, 3], "optional_array_of_enums": [1, 3], "array_of_datetimes": [], "optional_array_of_datetimes": [], "array_of_durations": [], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": [], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} 
+            }"#;
+            let payload: ReadWriteTwoStructsProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_two_structs_topic,
+                &payload,
+                initial_property_values.read_write_two_structs_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert("property_name".to_string(), "read_write_enum".to_string());
+            let property_read_write_enum_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": 1 
+            }"#;
+            let payload: ReadWriteEnumProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_enum_topic,
+                &payload,
+                initial_property_values.read_write_enum_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_optional_enum".to_string(),
+            );
+            let property_read_write_optional_enum_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": 1 
+            }"#;
+            let payload: ReadWriteOptionalEnumProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_optional_enum_topic,
+                &payload,
+                initial_property_values.read_write_optional_enum_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_two_enums".to_string(),
+            );
+            let property_read_write_two_enums_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "first": 1 ,
+            
+                "second": 1 
+            }"#;
+            let payload: ReadWriteTwoEnumsProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_two_enums_topic,
+                &payload,
+                initial_property_values.read_write_two_enums_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_datetime".to_string(),
+            );
+            let property_read_write_datetime_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": "1990-07-08T16:20:00Z" 
+            }"#;
+            let payload: ReadWriteDatetimeProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_datetime_topic,
+                &payload,
+                initial_property_values.read_write_datetime_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_optional_datetime".to_string(),
+            );
+            let property_read_write_optional_datetime_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": "1990-07-08T16:20:00Z" 
+            }"#;
+            let payload: ReadWriteOptionalDatetimeProperty =
+                serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_optional_datetime_topic,
+                &payload,
+                initial_property_values.read_write_optional_datetime_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_two_datetimes".to_string(),
+            );
+            let property_read_write_two_datetimes_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "first": "1990-07-08T16:20:00Z" ,
+            
+                "second": "1990-07-08T16:20:00Z" 
+            }"#;
+            let payload: ReadWriteTwoDatetimesProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_two_datetimes_topic,
+                &payload,
+                initial_property_values.read_write_two_datetimes_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_duration".to_string(),
+            );
+            let property_read_write_duration_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": "PT3536S" 
+            }"#;
+            let payload: ReadWriteDurationProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_duration_topic,
+                &payload,
+                initial_property_values.read_write_duration_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_optional_duration".to_string(),
+            );
+            let property_read_write_optional_duration_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": null 
+            }"#;
+            let payload: ReadWriteOptionalDurationProperty =
+                serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_optional_duration_topic,
+                &payload,
+                initial_property_values.read_write_optional_duration_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_two_durations".to_string(),
+            );
+            let property_read_write_two_durations_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "first": "PT3536S" ,
+            
+                "second": null 
+            }"#;
+            let payload: ReadWriteTwoDurationsProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_two_durations_topic,
+                &payload,
+                initial_property_values.read_write_two_durations_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert("property_name".to_string(), "read_write_binary".to_string());
+            let property_read_write_binary_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==" 
+            }"#;
+            let payload: ReadWriteBinaryProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_binary_topic,
+                &payload,
+                initial_property_values.read_write_binary_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_optional_binary".to_string(),
+            );
+            let property_read_write_optional_binary_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==" 
+            }"#;
+            let payload: ReadWriteOptionalBinaryProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_optional_binary_topic,
+                &payload,
+                initial_property_values.read_write_optional_binary_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_two_binaries".to_string(),
+            );
+            let property_read_write_two_binaries_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "first": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==" ,
+            
+                "second": null 
+            }"#;
+            let payload: ReadWriteTwoBinariesProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_two_binaries_topic,
+                &payload,
+                initial_property_values.read_write_two_binaries_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "read_write_list_of_strings".to_string(),
+            );
+            let property_read_write_list_of_strings_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "value": ["apples", "foo"] 
+            }"#;
+            let payload: ReadWriteListOfStringsProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_list_of_strings_topic,
+                &payload,
+                initial_property_values.read_write_list_of_strings_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert("property_name".to_string(), "read_write_lists".to_string());
+            let property_read_write_lists_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "the_list": [1, 3] ,
+            
+                "optionalList": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"] 
+            }"#;
+            let payload: ReadWriteListsProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_read_write_lists_topic,
+                &payload,
+                initial_property_values.read_write_lists_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+    }
 }

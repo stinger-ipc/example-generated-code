@@ -1691,6 +1691,7 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
             .await
             .initialize(self.clone())
             .await;
+
         let sub_ids = self.subscription_ids.clone();
         let publisher = self.mqtt_client.clone();
 
@@ -1707,12 +1708,15 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_favorite_number_prop.recv().await
                     {
+                        debug!("Received request to update 'favorite_number' property value through local watch channel. Current version is {}, request is: {:?}", favorite_number_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = FavoriteNumberProperty {
                             number: request.clone(),
                         };
 
                         let version_value = favorite_number_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/Full/{service_id}/property/favorite_number/value",
                             &topic_param_map_for_favorite_number,
@@ -1758,10 +1762,13 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_favorite_foods_prop.recv().await
                     {
+                        debug!("Received request to update 'favorite_foods' property value through local watch channel. Current version is {}, request is: {:?}", favorite_foods_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = request.clone();
 
                         let version_value = favorite_foods_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/Full/{service_id}/property/favorite_foods/value",
                             &topic_param_map_for_favorite_foods,
@@ -1803,10 +1810,13 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
             if let Some(mut rx_for_lunch_menu_prop) = props.lunch_menu.take_request_receiver() {
                 tokio::spawn(async move {
                     while let Some((request, opt_responder)) = rx_for_lunch_menu_prop.recv().await {
+                        debug!("Received request to update 'lunch_menu' property value through local watch channel. Current version is {}, request is: {:?}", lunch_menu_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = request.clone();
 
                         let version_value = lunch_menu_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/Full/{service_id}/property/lunch_menu/value",
                             &topic_param_map_for_lunch_menu,
@@ -1849,12 +1859,15 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
                 tokio::spawn(async move {
                     while let Some((request, opt_responder)) = rx_for_family_name_prop.recv().await
                     {
+                        debug!("Received request to update 'family_name' property value through local watch channel. Current version is {}, request is: {:?}", family_name_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = FamilyNameProperty {
                             family_name: request.clone(),
                         };
 
                         let version_value = family_name_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/Full/{service_id}/property/family_name/value",
                             &topic_param_map_for_family_name,
@@ -1900,12 +1913,15 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_last_breakfast_time_prop.recv().await
                     {
+                        debug!("Received request to update 'last_breakfast_time' property value through local watch channel. Current version is {}, request is: {:?}", last_breakfast_time_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = LastBreakfastTimeProperty {
                             timestamp: request.clone(),
                         };
 
                         let version_value = last_breakfast_time_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/Full/{service_id}/property/last_breakfast_time/value",
                             &topic_param_map_for_last_breakfast_time,
@@ -1951,10 +1967,13 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
                     while let Some((request, opt_responder)) =
                         rx_for_last_birthdays_prop.recv().await
                     {
+                        debug!("Received request to update 'last_birthdays' property value through local watch channel. Current version is {}, request is: {:?}", last_birthdays_prop_version.load(Ordering::SeqCst), request);
+
                         let payload_obj = request.clone();
 
                         let version_value = last_birthdays_prop_version
-                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                            + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
                         let topic: String = strfmt(
                             "{prefix}/Full/{service_id}/property/last_birthdays/value",
                             &topic_param_map_for_last_birthdays,
@@ -2175,4 +2194,369 @@ pub trait FullMethodHandlers<C: Mqtt5PubSub>: Send + Sync {
     ) -> Result<bool, MethodReturnCode>;
 
     fn as_any(&self) -> &dyn Any;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::message::property_update;
+    use stinger_mqtt_trait::mock::MockClient;
+    use tracing_subscriber::EnvFilter;
+
+    struct FullMethodImpl {
+        server: Option<FullServer<MockClient>>,
+    }
+
+    #[async_trait]
+    impl FullMethodHandlers<MockClient> for FullMethodImpl {
+        async fn initialize(
+            &mut self,
+            server: FullServer<MockClient>,
+        ) -> Result<(), MethodReturnCode> {
+            self.server = Some(server.clone());
+            Ok(())
+        }
+
+        async fn handle_add_numbers(
+            &self,
+            _first: i32,
+            _second: i32,
+            _third: Option<i32>,
+        ) -> Result<i32, MethodReturnCode> {
+            println!("Handling addNumbers");
+            Ok(42)
+        }
+
+        async fn handle_do_something(
+            &self,
+            _task_to_do: String,
+        ) -> Result<DoSomethingReturnValues, MethodReturnCode> {
+            println!("Handling doSomething");
+            let rv = DoSomethingReturnValues {
+                label: "apples".to_string(),
+                identifier: 42,
+            };
+            Ok(rv)
+        }
+
+        async fn handle_what_time_is_it(
+            &self,
+        ) -> Result<chrono::DateTime<chrono::Utc>, MethodReturnCode> {
+            println!("Handling what_time_is_it");
+            Ok(chrono::Utc::now())
+        }
+
+        async fn handle_hold_temperature(
+            &self,
+            _temperature_celsius: f32,
+        ) -> Result<bool, MethodReturnCode> {
+            println!("Handling hold_temperature");
+            Ok(true)
+        }
+
+        fn as_any(&self) -> &dyn Any {
+            self
+        }
+    }
+
+    #[tokio::test]
+    async fn mock_server() {
+        let _ = tracing_subscriber::fmt()
+            .with_test_writer()
+            .with_env_filter(EnvFilter::new("full_ipc=debug"))
+            .try_init();
+
+        let service_id = "N".to_string();
+        let client_id = "mock_client".to_string();
+
+        let mut mock_mqtt = MockClient::new(client_id.clone());
+
+        let initial_property_values = FullInitialPropertyValues {
+            favorite_number: 42,
+            favorite_number_version: 1,
+
+            favorite_foods: FavoriteFoodsProperty {
+                drink: "apples".to_string(),
+                slices_of_pizza: 42,
+                breakfast: Some("apples".to_string()),
+            },
+            favorite_foods_version: 1,
+
+            lunch_menu: LunchMenuProperty {
+                monday: Lunch {
+                    drink: true,
+                    sandwich: "apples".to_string(),
+                    crackers: 3.14,
+                    day: DayOfTheWeek::Saturday,
+                    order_number: Some(42),
+                    time_of_lunch: chrono::Utc::now(),
+                    duration_of_lunch: chrono::Duration::seconds(3536),
+                },
+                tuesday: Lunch {
+                    drink: true,
+                    sandwich: "apples".to_string(),
+                    crackers: 3.14,
+                    day: DayOfTheWeek::Saturday,
+                    order_number: Some(42),
+                    time_of_lunch: chrono::Utc::now(),
+                    duration_of_lunch: chrono::Duration::seconds(3536),
+                },
+            },
+            lunch_menu_version: 1,
+
+            family_name: "apples".to_string(),
+            family_name_version: 1,
+
+            last_breakfast_time: chrono::Utc::now(),
+            last_breakfast_time_version: 1,
+
+            last_birthdays: LastBirthdaysProperty {
+                mom: chrono::Utc::now(),
+                dad: chrono::Utc::now(),
+                sister: Some(chrono::Utc::now()),
+                brothers_age: Some(42),
+            },
+            last_birthdays_version: 1,
+        };
+
+        let server = FullServer::new(
+            mock_mqtt.clone(),
+            Arc::new(AsyncMutex::new(Box::new(FullMethodImpl { server: None }))),
+            service_id.clone(),
+            initial_property_values.clone(),
+            "prefix".to_string(),
+        )
+        .await;
+
+        // Start the server connection loop in a separate task.
+        let mut looping_server = server.clone();
+        let _loop_join_handle = tokio::spawn(async move {
+            let _conn_loop = looping_server.run_loop().await;
+        });
+
+        let mut topic_param_map = HashMap::from([
+            ("interface_name".to_string(), "Full".to_string()),
+            ("service_id".to_string(), service_id.clone()),
+            ("client_id".to_string(), client_id.clone()),
+            ("property_name".to_string(), "prop_xyz".to_string()),
+            ("prefix".to_string(), "prefix".to_string()),
+        ]);
+
+        tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+        let received_messages = mock_mqtt.published_messages();
+        for (i, msg) in received_messages.iter().enumerate() {
+            println!("Initial message {}: {:?}", i, msg);
+        }
+        assert_eq!(received_messages.len(), 1 + 6); // 1 for interface online, plus 1 for each property initial publish
+
+        // Publish a property update message for each property
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert("property_name".to_string(), "favorite_number".to_string());
+            let property_favorite_number_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "number": 42 
+            }"#;
+            let payload: FavoriteNumberProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_favorite_number_topic,
+                &payload,
+                initial_property_values.favorite_number_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert("property_name".to_string(), "favorite_foods".to_string());
+            let property_favorite_foods_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "drink": "apples" ,
+            
+                "slices_of_pizza": 42 ,
+            
+                "breakfast": "apples" 
+            }"#;
+            let payload: FavoriteFoodsProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_favorite_foods_topic,
+                &payload,
+                initial_property_values.favorite_foods_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert("property_name".to_string(), "family_name".to_string());
+            let property_family_name_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "family_name": "apples" 
+            }"#;
+            let payload: FamilyNameProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_family_name_topic,
+                &payload,
+                initial_property_values.family_name_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert(
+                "property_name".to_string(),
+                "last_breakfast_time".to_string(),
+            );
+            let property_last_breakfast_time_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "timestamp": "1990-07-08T16:20:00Z" 
+            }"#;
+            let payload: LastBreakfastTimeProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_last_breakfast_time_topic,
+                &payload,
+                initial_property_values.last_breakfast_time_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+
+        {
+            mock_mqtt.clear_published_messages();
+
+            topic_param_map.insert("property_name".to_string(), "last_birthdays".to_string());
+            let property_last_birthdays_topic = strfmt(
+                "{prefix}/{interface_name}/{service_id}/property/{property_name}/update",
+                &topic_param_map,
+            )
+            .unwrap();
+
+            // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
+            let json_str = r#"{
+                "mom": "1990-07-08T16:20:00Z" ,
+            
+                "dad": "1990-07-08T16:20:00Z" ,
+            
+                "sister": "1990-07-08T16:20:00Z" ,
+            
+                "brothers_age": 42 
+            }"#;
+            let payload: LastBirthdaysProperty = serde_json::from_str(json_str).unwrap();
+
+            let update_req = property_update(
+                &property_last_birthdays_topic,
+                &payload,
+                initial_property_values.last_birthdays_version,
+            )
+            .unwrap();
+
+            info!("Inject message to {}", update_req.topic);
+            let result = mock_mqtt.simulate_receive(update_req);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), 1);
+
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+            let received_messages = mock_mqtt.published_messages();
+            if received_messages.len() != 2 {
+                for (i, msg) in received_messages.iter().enumerate() {
+                    println!("Message {}: {:?}", i, msg);
+                }
+            }
+            assert_eq!(received_messages.len(), 2);
+        }
+    }
 }

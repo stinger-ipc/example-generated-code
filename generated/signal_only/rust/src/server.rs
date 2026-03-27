@@ -357,7 +357,82 @@ impl<C: Mqtt5PubSub + Clone + Send> SignalOnlyServer<C> {
             ("prefix".to_string(), self.topic_param_prefix.clone()),
         ]);
 
+        // Spawn a task to periodically publish interface info.
+        let mut interface_publisher = self.mqtt_client.clone();
+        let instance_id = self.instance_id.clone();
+        let topic_param_map_for_info = topic_param_map.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(std::time::Duration::from_secs(120));
+            loop {
+                interval.tick().await;
+                let topic = strfmt(
+                    "{prefix}/SignalOnly/{service_id}/interface",
+                    &topic_param_map_for_info,
+                )
+                .unwrap();
+                let info = crate::interface::InterfaceInfoBuilder::default()
+                    .interface_name("SignalOnly".to_string())
+                    .title("SignalOnly".to_string())
+                    .version("0.0.1".to_string())
+                    .instance(instance_id.clone())
+                    .connection_topic(topic.clone())
+                    .prefix(topic_param_map_for_info.get("prefix").unwrap().to_string())
+                    .build()
+                    .unwrap();
+                let msg = message::interface_online(&topic, &info, 144 /*seconds*/).unwrap();
+                let _ = interface_publisher.publish(msg).await;
+            }
+        });
+
         warn!("Server receive loop completed. Exiting run_loop.");
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use stinger_mqtt_trait::mock::MockClient;
+
+    use tracing_subscriber::EnvFilter;
+
+    #[tokio::test]
+    async fn mock_server() {
+        let _ = tracing_subscriber::fmt()
+            .with_test_writer()
+            .with_env_filter(EnvFilter::new("signal_only_ipc=debug"))
+            .try_init();
+
+        let service_id = "N".to_string();
+        let client_id = "mock_client".to_string();
+
+        let mut mock_mqtt = MockClient::new(client_id.clone());
+
+        let server =
+            SignalOnlyServer::new(mock_mqtt.clone(), service_id.clone(), "prefix".to_string())
+                .await;
+
+        // Start the server connection loop in a separate task.
+        let mut looping_server = server.clone();
+        let _loop_join_handle = tokio::spawn(async move {
+            let _conn_loop = looping_server.run_loop().await;
+        });
+
+        let mut topic_param_map = HashMap::from([
+            ("interface_name".to_string(), "SignalOnly".to_string()),
+            ("service_id".to_string(), service_id.clone()),
+            ("client_id".to_string(), client_id.clone()),
+            ("property_name".to_string(), "prop_xyz".to_string()),
+            ("prefix".to_string(), "prefix".to_string()),
+        ]);
+
+        tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+        let received_messages = mock_mqtt.published_messages();
+        for (i, msg) in received_messages.iter().enumerate() {
+            println!("Initial message {}: {:?}", i, msg);
+        }
+        assert_eq!(received_messages.len(), 1 + 0); // 1 for interface online, plus 1 for each property initial publish
+
+        // Publish a property update message for each property
     }
 }
