@@ -20,17 +20,32 @@ namespace stinger {
 namespace gen {
 namespace signal_only {
 
+/**
+ * Information about a discovered service instance, including its service ID, topic parameters, and initial property values.
+ * This is updated as information is received over MQTT about the interface.
+ */
 struct InstanceInfo {
 public:
-    std::optional<std::string> serviceId;
+    std::optional<std::string> serviceId; // In the payload, this is the 'instance' field.
     std::optional<std::string> prefix;
 
+    /**
+     * This is the deserialization method for the InstanceInfo struct. 
+     * The JSON text should already be parsed into a rapidjson::Value object, and this method will extract the relevant fields to populate the InstanceInfo struct.
+     */
     void UpdateFromRapidJsonObject(const rapidjson::Value& jsonObj);
+
+    /**
+    * This is the serialization method for the InstanceInfo struct.
+    */
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
 
     bool isComplete() const;
 };
 
+/**
+ * This uses an IConnection object to subscribe to MQTT topics to receive messages that describe the SignalOnly interface.
+ */
 class SignalOnlyDiscovery {
 public:
     // Constructor taking a broker connection and service_id

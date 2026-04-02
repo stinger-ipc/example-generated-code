@@ -53,8 +53,8 @@ bool InstanceInfo::isComplete() const
 
 void InstanceInfo::UpdateFromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
-    if (jsonObj.HasMember("service_id") && jsonObj["service_id"].IsString()) {
-        serviceId = jsonObj["service_id"].GetString();
+    if (jsonObj.HasMember("instance") && jsonObj["instance"].IsString()) {
+        serviceId = jsonObj["instance"].GetString();
     }
     if (jsonObj.HasMember("prefix") && jsonObj["prefix"].IsString()) {
         prefix = jsonObj["prefix"].GetString();
