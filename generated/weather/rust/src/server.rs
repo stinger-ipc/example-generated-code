@@ -841,6 +841,7 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
     /// Watch for changes to the `location` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_location(&self) -> watch::Receiver<LocationProperty> {
         self.properties.location.subscribe()
     }
@@ -869,6 +870,7 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
     /// Watch for changes to the `current_temperature` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_current_temperature(&self) -> watch::Receiver<f32> {
         self.properties.current_temperature.subscribe()
     }
@@ -897,6 +899,7 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
     /// Watch for changes to the `current_condition` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_current_condition(&self) -> watch::Receiver<CurrentConditionProperty> {
         self.properties.current_condition.subscribe()
     }
@@ -928,6 +931,7 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
     /// Watch for changes to the `daily_forecast` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_daily_forecast(&self) -> watch::Receiver<DailyForecastProperty> {
         self.properties.daily_forecast.subscribe()
     }
@@ -956,6 +960,7 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
     /// Watch for changes to the `hourly_forecast` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_hourly_forecast(&self) -> watch::Receiver<HourlyForecastProperty> {
         self.properties.hourly_forecast.subscribe()
     }
@@ -1107,6 +1112,7 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
     /// Watch for changes to the `current_condition_refresh_interval` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_current_condition_refresh_interval(&self) -> watch::Receiver<i32> {
         self.properties
             .current_condition_refresh_interval
@@ -1261,6 +1267,7 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
     /// Watch for changes to the `hourly_forecast_refresh_interval` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_hourly_forecast_refresh_interval(&self) -> watch::Receiver<i32> {
         self.properties.hourly_forecast_refresh_interval.subscribe()
     }
@@ -1410,6 +1417,7 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
     /// Watch for changes to the `daily_forecast_refresh_interval` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_daily_forecast_refresh_interval(&self) -> watch::Receiver<i32> {
         self.properties.daily_forecast_refresh_interval.subscribe()
     }

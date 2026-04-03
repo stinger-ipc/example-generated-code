@@ -93,154 +93,154 @@ TestableClient::TestableClient(std::shared_ptr<stinger::utils::IConnection> brok
     auto arrayOfEveryTypeTopic = stinger::utils::format("{prefix}/testable/{service_id}/signal/arrayOfEveryType", topicParams);
     _arrayOfEveryTypeSignalSubscriptionId = _broker->Subscribe(arrayOfEveryTypeTopic, 2);
     { // Restrict scope
-        auto callWithNothingRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callWithNothing/request", topicParams);
+        auto callWithNothingResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callWithNothing/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callWithNothingRequestTopic, topicParams);
-        _callWithNothingMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callWithNothingResponseTopic, topicParams);
+        _callWithNothingMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOneIntegerRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOneInteger/request", topicParams);
+        auto callOneIntegerResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOneInteger/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOneIntegerRequestTopic, topicParams);
-        _callOneIntegerMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOneIntegerResponseTopic, topicParams);
+        _callOneIntegerMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOptionalIntegerRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOptionalInteger/request", topicParams);
+        auto callOptionalIntegerResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOptionalInteger/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOptionalIntegerRequestTopic, topicParams);
-        _callOptionalIntegerMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOptionalIntegerResponseTopic, topicParams);
+        _callOptionalIntegerMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callThreeIntegersRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callThreeIntegers/request", topicParams);
+        auto callThreeIntegersResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callThreeIntegers/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callThreeIntegersRequestTopic, topicParams);
-        _callThreeIntegersMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callThreeIntegersResponseTopic, topicParams);
+        _callThreeIntegersMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOneStringRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOneString/request", topicParams);
+        auto callOneStringResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOneString/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOneStringRequestTopic, topicParams);
-        _callOneStringMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOneStringResponseTopic, topicParams);
+        _callOneStringMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOptionalStringRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOptionalString/request", topicParams);
+        auto callOptionalStringResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOptionalString/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOptionalStringRequestTopic, topicParams);
-        _callOptionalStringMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOptionalStringResponseTopic, topicParams);
+        _callOptionalStringMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callThreeStringsRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callThreeStrings/request", topicParams);
+        auto callThreeStringsResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callThreeStrings/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callThreeStringsRequestTopic, topicParams);
-        _callThreeStringsMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callThreeStringsResponseTopic, topicParams);
+        _callThreeStringsMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOneEnumRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOneEnum/request", topicParams);
+        auto callOneEnumResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOneEnum/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOneEnumRequestTopic, topicParams);
-        _callOneEnumMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOneEnumResponseTopic, topicParams);
+        _callOneEnumMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOptionalEnumRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOptionalEnum/request", topicParams);
+        auto callOptionalEnumResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOptionalEnum/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOptionalEnumRequestTopic, topicParams);
-        _callOptionalEnumMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOptionalEnumResponseTopic, topicParams);
+        _callOptionalEnumMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callThreeEnumsRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callThreeEnums/request", topicParams);
+        auto callThreeEnumsResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callThreeEnums/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callThreeEnumsRequestTopic, topicParams);
-        _callThreeEnumsMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callThreeEnumsResponseTopic, topicParams);
+        _callThreeEnumsMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOneStructRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOneStruct/request", topicParams);
+        auto callOneStructResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOneStruct/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOneStructRequestTopic, topicParams);
-        _callOneStructMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOneStructResponseTopic, topicParams);
+        _callOneStructMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOptionalStructRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOptionalStruct/request", topicParams);
+        auto callOptionalStructResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOptionalStruct/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOptionalStructRequestTopic, topicParams);
-        _callOptionalStructMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOptionalStructResponseTopic, topicParams);
+        _callOptionalStructMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callThreeStructsRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callThreeStructs/request", topicParams);
+        auto callThreeStructsResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callThreeStructs/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callThreeStructsRequestTopic, topicParams);
-        _callThreeStructsMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callThreeStructsResponseTopic, topicParams);
+        _callThreeStructsMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOneDateTimeRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOneDateTime/request", topicParams);
+        auto callOneDateTimeResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOneDateTime/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOneDateTimeRequestTopic, topicParams);
-        _callOneDateTimeMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOneDateTimeResponseTopic, topicParams);
+        _callOneDateTimeMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOptionalDateTimeRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOptionalDateTime/request", topicParams);
+        auto callOptionalDateTimeResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOptionalDateTime/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOptionalDateTimeRequestTopic, topicParams);
-        _callOptionalDateTimeMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOptionalDateTimeResponseTopic, topicParams);
+        _callOptionalDateTimeMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callThreeDateTimesRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callThreeDateTimes/request", topicParams);
+        auto callThreeDateTimesResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callThreeDateTimes/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callThreeDateTimesRequestTopic, topicParams);
-        _callThreeDateTimesMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callThreeDateTimesResponseTopic, topicParams);
+        _callThreeDateTimesMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOneDurationRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOneDuration/request", topicParams);
+        auto callOneDurationResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOneDuration/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOneDurationRequestTopic, topicParams);
-        _callOneDurationMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOneDurationResponseTopic, topicParams);
+        _callOneDurationMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOptionalDurationRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOptionalDuration/request", topicParams);
+        auto callOptionalDurationResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOptionalDuration/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOptionalDurationRequestTopic, topicParams);
-        _callOptionalDurationMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOptionalDurationResponseTopic, topicParams);
+        _callOptionalDurationMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callThreeDurationsRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callThreeDurations/request", topicParams);
+        auto callThreeDurationsResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callThreeDurations/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callThreeDurationsRequestTopic, topicParams);
-        _callThreeDurationsMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callThreeDurationsResponseTopic, topicParams);
+        _callThreeDurationsMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOneBinaryRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOneBinary/request", topicParams);
+        auto callOneBinaryResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOneBinary/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOneBinaryRequestTopic, topicParams);
-        _callOneBinaryMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOneBinaryResponseTopic, topicParams);
+        _callOneBinaryMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOptionalBinaryRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOptionalBinary/request", topicParams);
+        auto callOptionalBinaryResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOptionalBinary/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOptionalBinaryRequestTopic, topicParams);
-        _callOptionalBinaryMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOptionalBinaryResponseTopic, topicParams);
+        _callOptionalBinaryMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callThreeBinariesRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callThreeBinaries/request", topicParams);
+        auto callThreeBinariesResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callThreeBinaries/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callThreeBinariesRequestTopic, topicParams);
-        _callThreeBinariesMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callThreeBinariesResponseTopic, topicParams);
+        _callThreeBinariesMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOneListOfIntegersRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOneListOfIntegers/request", topicParams);
+        auto callOneListOfIntegersResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOneListOfIntegers/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOneListOfIntegersRequestTopic, topicParams);
-        _callOneListOfIntegersMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOneListOfIntegersResponseTopic, topicParams);
+        _callOneListOfIntegersMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callOptionalListOfFloatsRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callOptionalListOfFloats/request", topicParams);
+        auto callOptionalListOfFloatsResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callOptionalListOfFloats/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callOptionalListOfFloatsRequestTopic, topicParams);
-        _callOptionalListOfFloatsMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callOptionalListOfFloatsResponseTopic, topicParams);
+        _callOptionalListOfFloatsMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto callTwoListsRequestTopic = stinger::utils::format("{prefix}/testable/{service_id}/method/callTwoLists/request", topicParams);
+        auto callTwoListsResponseTopic = stinger::utils::format("client/{client_id}/testable/method/callTwoLists/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(callTwoListsRequestTopic, topicParams);
-        _callTwoListsMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(callTwoListsResponseTopic, topicParams);
+        _callTwoListsMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     auto readWriteIntegerValueTopic = stinger::utils::format("{prefix}/testable/{service_id}/property/read_write_integer/value", topicParams);
     _readWriteIntegerPropertySubscriptionId = _broker->Subscribe(readWriteIntegerValueTopic, 1);

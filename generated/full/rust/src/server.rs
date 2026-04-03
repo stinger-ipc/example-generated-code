@@ -995,6 +995,7 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
     /// Watch for changes to the `favorite_number` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_favorite_number(&self) -> watch::Receiver<i32> {
         self.properties.favorite_number.subscribe()
     }
@@ -1145,6 +1146,7 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
     /// Watch for changes to the `favorite_foods` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_favorite_foods(&self) -> watch::Receiver<FavoriteFoodsProperty> {
         self.properties.favorite_foods.subscribe()
     }
@@ -1173,6 +1175,7 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
     /// Watch for changes to the `lunch_menu` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_lunch_menu(&self) -> watch::Receiver<LunchMenuProperty> {
         self.properties.lunch_menu.subscribe()
     }
@@ -1327,6 +1330,7 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
     /// Watch for changes to the `family_name` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_family_name(&self) -> watch::Receiver<String> {
         self.properties.family_name.subscribe()
     }
@@ -1479,6 +1483,7 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
     /// Watch for changes to the `last_breakfast_time` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_last_breakfast_time(&self) -> watch::Receiver<chrono::DateTime<chrono::Utc>> {
         self.properties.last_breakfast_time.subscribe()
     }
@@ -1634,6 +1639,7 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
     /// Watch for changes to the `last_birthdays` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_last_birthdays(&self) -> watch::Receiver<LastBirthdaysProperty> {
         self.properties.last_birthdays.subscribe()
     }

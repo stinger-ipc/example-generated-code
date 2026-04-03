@@ -4835,6 +4835,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_integer` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_integer(&self) -> watch::Receiver<i32> {
         self.properties.read_write_integer.subscribe()
     }
@@ -4863,6 +4864,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_only_integer` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_only_integer(&self) -> watch::Receiver<i32> {
         self.properties.read_only_integer.subscribe()
     }
@@ -5013,6 +5015,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_optional_integer` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_optional_integer(&self) -> watch::Receiver<Option<i32>> {
         self.properties.read_write_optional_integer.subscribe()
     }
@@ -5164,6 +5167,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_two_integers` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_two_integers(&self) -> watch::Receiver<ReadWriteTwoIntegersProperty> {
         self.properties.read_write_two_integers.subscribe()
     }
@@ -5197,6 +5201,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_only_string` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_only_string(&self) -> watch::Receiver<String> {
         self.properties.read_only_string.subscribe()
     }
@@ -5347,6 +5352,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_string` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_string(&self) -> watch::Receiver<String> {
         self.properties.read_write_string.subscribe()
     }
@@ -5497,6 +5503,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_optional_string` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_optional_string(&self) -> watch::Receiver<Option<String>> {
         self.properties.read_write_optional_string.subscribe()
     }
@@ -5648,6 +5655,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_two_strings` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_two_strings(&self) -> watch::Receiver<ReadWriteTwoStringsProperty> {
         self.properties.read_write_two_strings.subscribe()
     }
@@ -5803,6 +5811,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_struct` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_struct(&self) -> watch::Receiver<AllTypes> {
         self.properties.read_write_struct.subscribe()
     }
@@ -5953,6 +5962,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_optional_struct` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_optional_struct(&self) -> watch::Receiver<Option<AllTypes>> {
         self.properties.read_write_optional_struct.subscribe()
     }
@@ -6104,6 +6114,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_two_structs` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_two_structs(&self) -> watch::Receiver<ReadWriteTwoStructsProperty> {
         self.properties.read_write_two_structs.subscribe()
     }
@@ -6137,6 +6148,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_only_enum` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_only_enum(&self) -> watch::Receiver<Numbers> {
         self.properties.read_only_enum.subscribe()
     }
@@ -6289,6 +6301,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_enum` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_enum(&self) -> watch::Receiver<Numbers> {
         self.properties.read_write_enum.subscribe()
     }
@@ -6439,6 +6452,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_optional_enum` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_optional_enum(&self) -> watch::Receiver<Option<Numbers>> {
         self.properties.read_write_optional_enum.subscribe()
     }
@@ -6590,6 +6604,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_two_enums` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_two_enums(&self) -> watch::Receiver<ReadWriteTwoEnumsProperty> {
         self.properties.read_write_two_enums.subscribe()
     }
@@ -6745,6 +6760,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_datetime` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_datetime(&self) -> watch::Receiver<chrono::DateTime<chrono::Utc>> {
         self.properties.read_write_datetime.subscribe()
     }
@@ -6900,6 +6916,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_optional_datetime` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_optional_datetime(
         &self,
     ) -> watch::Receiver<Option<chrono::DateTime<chrono::Utc>>> {
@@ -7055,6 +7072,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_two_datetimes` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_two_datetimes(&self) -> watch::Receiver<ReadWriteTwoDatetimesProperty> {
         self.properties.read_write_two_datetimes.subscribe()
     }
@@ -7210,6 +7228,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_duration` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_duration(&self) -> watch::Receiver<chrono::Duration> {
         self.properties.read_write_duration.subscribe()
     }
@@ -7360,6 +7379,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_optional_duration` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_optional_duration(&self) -> watch::Receiver<Option<chrono::Duration>> {
         self.properties.read_write_optional_duration.subscribe()
     }
@@ -7513,6 +7533,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_two_durations` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_two_durations(&self) -> watch::Receiver<ReadWriteTwoDurationsProperty> {
         self.properties.read_write_two_durations.subscribe()
     }
@@ -7668,6 +7689,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_binary` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_binary(&self) -> watch::Receiver<Vec<u8>> {
         self.properties.read_write_binary.subscribe()
     }
@@ -7818,6 +7840,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_optional_binary` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_optional_binary(&self) -> watch::Receiver<Option<Vec<u8>>> {
         self.properties.read_write_optional_binary.subscribe()
     }
@@ -7969,6 +7992,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_two_binaries` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_two_binaries(&self) -> watch::Receiver<ReadWriteTwoBinariesProperty> {
         self.properties.read_write_two_binaries.subscribe()
     }
@@ -8124,6 +8148,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_list_of_strings` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_list_of_strings(&self) -> watch::Receiver<Vec<String>> {
         self.properties.read_write_list_of_strings.subscribe()
     }
@@ -8274,6 +8299,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
     /// Watch for changes to the `read_write_lists` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_read_write_lists(&self) -> watch::Receiver<ReadWriteListsProperty> {
         self.properties.read_write_lists.subscribe()
     }
@@ -11854,7 +11880,7 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [42, 2022], "array_of_strings": [], "optional_array_of_strings": [], "array_of_enums": [1, 1], "optional_array_of_enums": [], "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": [], "array_of_binaries": [], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} 
+                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": ["apples", "foo"], "array_of_enums": [1, 1], "optional_array_of_enums": null, "array_of_datetimes": [], "optional_array_of_datetimes": [], "array_of_durations": [], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": [], "optional_array_of_binaries": [], "array_of_entry_objects": [], "optional_array_of_entry_objects": []} 
             }"#;
             let payload: ReadWriteStructProperty = serde_json::from_str(json_str).unwrap();
 
@@ -11896,7 +11922,7 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [42, 2022], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": ["apples", "foo"], "array_of_enums": [], "optional_array_of_enums": null, "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": [], "optional_array_of_durations": [], "array_of_binaries": [], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": []} 
+                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [], "optional_array_of_integers": [42, 2022], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": null, "array_of_enums": [1, 1], "optional_array_of_enums": null, "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": [], "optional_array_of_durations": [], "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [], "optional_array_of_entry_objects": []} 
             }"#;
             let payload: ReadWriteOptionalStructProperty = serde_json::from_str(json_str).unwrap();
 
@@ -11938,9 +11964,9 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "first": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [], "optional_array_of_integers": null, "array_of_strings": [], "optional_array_of_strings": ["apples", "foo"], "array_of_enums": [1, 1], "optional_array_of_enums": [], "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": [], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": null, "array_of_binaries": [], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} ,
+                "first": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [42, 2022], "array_of_strings": [], "optional_array_of_strings": ["apples", "foo"], "array_of_enums": [1, 1], "optional_array_of_enums": [1, 1], "array_of_datetimes": [], "optional_array_of_datetimes": [], "array_of_durations": [], "optional_array_of_durations": [], "array_of_binaries": [], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} ,
             
-                "second": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [], "optional_array_of_integers": [42, 2022], "array_of_strings": [], "optional_array_of_strings": null, "array_of_enums": [], "optional_array_of_enums": [1, 1], "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": [], "array_of_durations": [], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": [], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": []} 
+                "second": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [42, 2022], "array_of_strings": [], "optional_array_of_strings": ["apples", "foo"], "array_of_enums": [], "optional_array_of_enums": [1, 1], "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": [], "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": []} 
             }"#;
             let payload: ReadWriteTwoStructsProperty = serde_json::from_str(json_str).unwrap();
 
@@ -12404,7 +12430,7 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "value": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==" 
+                "value": null 
             }"#;
             let payload: ReadWriteOptionalBinaryProperty = serde_json::from_str(json_str).unwrap();
 
@@ -12490,7 +12516,7 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "value": [] 
+                "value": ["apples", "foo"] 
             }"#;
             let payload: ReadWriteListOfStringsProperty = serde_json::from_str(json_str).unwrap();
 
@@ -12529,9 +12555,9 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "the_list": [1, 1] ,
+                "the_list": [] ,
             
-                "optionalList": null 
+                "optionalList": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"] 
             }"#;
             let payload: ReadWriteListsProperty = serde_json::from_str(json_str).unwrap();
 

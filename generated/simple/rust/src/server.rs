@@ -515,6 +515,7 @@ impl<C: Mqtt5PubSub + Clone + Send> SimpleServer<C> {
 
     /// Watch for changes to the `school` property.
     /// This returns a watch::Receiver that can be awaited on for changes to the property value.
+    /// Use `.borrow_and_update()` on the Receiver to get the current value and reset the watcher.
     pub fn watch_school(&self) -> watch::Receiver<String> {
         self.properties.school.subscribe()
     }

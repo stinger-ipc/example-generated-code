@@ -47,28 +47,28 @@ FullClient::FullClient(std::shared_ptr<stinger::utils::IConnection> broker, cons
     auto randomWordTopic = stinger::utils::format("{prefix}/Full/{service_id}/signal/randomWord", topicParams);
     _randomWordSignalSubscriptionId = _broker->Subscribe(randomWordTopic, 2);
     { // Restrict scope
-        auto addNumbersRequestTopic = stinger::utils::format("{prefix}/Full/{service_id}/method/addNumbers/request", topicParams);
+        auto addNumbersResponseTopic = stinger::utils::format("client/{client_id}/Full/method/addNumbers/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(addNumbersRequestTopic, topicParams);
-        _addNumbersMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(addNumbersResponseTopic, topicParams);
+        _addNumbersMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto doSomethingRequestTopic = stinger::utils::format("{prefix}/Full/{service_id}/method/doSomething/request", topicParams);
+        auto doSomethingResponseTopic = stinger::utils::format("client/{client_id}/Full/method/doSomething/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(doSomethingRequestTopic, topicParams);
-        _doSomethingMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(doSomethingResponseTopic, topicParams);
+        _doSomethingMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto whatTimeIsItRequestTopic = stinger::utils::format("{prefix}/Full/{service_id}/method/what_time_is_it/request", topicParams);
+        auto whatTimeIsItResponseTopic = stinger::utils::format("client/{client_id}/Full/method/what_time_is_it/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(whatTimeIsItRequestTopic, topicParams);
-        _whatTimeIsItMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(whatTimeIsItResponseTopic, topicParams);
+        _whatTimeIsItMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto holdTemperatureRequestTopic = stinger::utils::format("{prefix}/Full/{service_id}/method/hold_temperature/request", topicParams);
+        auto holdTemperatureResponseTopic = stinger::utils::format("client/{client_id}/Full/method/hold_temperature/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(holdTemperatureRequestTopic, topicParams);
-        _holdTemperatureMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(holdTemperatureResponseTopic, topicParams);
+        _holdTemperatureMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     auto favoriteNumberValueTopic = stinger::utils::format("{prefix}/Full/{service_id}/property/favorite_number/value", topicParams);
     _favoriteNumberPropertySubscriptionId = _broker->Subscribe(favoriteNumberValueTopic, 1);

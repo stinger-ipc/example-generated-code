@@ -45,10 +45,10 @@ SimpleClient::SimpleClient(std::shared_ptr<stinger::utils::IConnection> broker, 
     auto personEnteredTopic = stinger::utils::format("{prefix}/Simple/{service_id}/signal/person_entered", topicParams);
     _personEnteredSignalSubscriptionId = _broker->Subscribe(personEnteredTopic, 2);
     { // Restrict scope
-        auto tradeNumbersRequestTopic = stinger::utils::format("{prefix}/Simple/{service_id}/method/trade_numbers/request", topicParams);
+        auto tradeNumbersResponseTopic = stinger::utils::format("client/{client_id}/Simple/method/trade_numbers/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(tradeNumbersRequestTopic, topicParams);
-        _tradeNumbersMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(tradeNumbersResponseTopic, topicParams);
+        _tradeNumbersMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     auto schoolValueTopic = stinger::utils::format("{prefix}/Simple/{service_id}/property/school/value", topicParams);
     _schoolPropertySubscriptionId = _broker->Subscribe(schoolValueTopic, 1);

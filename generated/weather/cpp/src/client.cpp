@@ -45,22 +45,22 @@ WeatherClient::WeatherClient(std::shared_ptr<stinger::utils::IConnection> broker
     auto currentTimeTopic = stinger::utils::format("{prefix}/weather/{service_id}/signal/current_time", topicParams);
     _currentTimeSignalSubscriptionId = _broker->Subscribe(currentTimeTopic, 2);
     { // Restrict scope
-        auto refreshDailyForecastRequestTopic = stinger::utils::format("{prefix}/weather/{service_id}/method/refresh_daily_forecast/request", topicParams);
+        auto refreshDailyForecastResponseTopic = stinger::utils::format("client/{client_id}/weather/method/refresh_daily_forecast/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(refreshDailyForecastRequestTopic, topicParams);
-        _refreshDailyForecastMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(refreshDailyForecastResponseTopic, topicParams);
+        _refreshDailyForecastMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto refreshHourlyForecastRequestTopic = stinger::utils::format("{prefix}/weather/{service_id}/method/refresh_hourly_forecast/request", topicParams);
+        auto refreshHourlyForecastResponseTopic = stinger::utils::format("client/{client_id}/weather/method/refresh_hourly_forecast/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(refreshHourlyForecastRequestTopic, topicParams);
-        _refreshHourlyForecastMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(refreshHourlyForecastResponseTopic, topicParams);
+        _refreshHourlyForecastMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     { // Restrict scope
-        auto refreshCurrentConditionsRequestTopic = stinger::utils::format("{prefix}/weather/{service_id}/method/refresh_current_conditions/request", topicParams);
+        auto refreshCurrentConditionsResponseTopic = stinger::utils::format("client/{client_id}/weather/method/refresh_current_conditions/response", topicParams);
         std::stringstream responseTopicStringStream;
-        responseTopicStringStream << stinger::utils::format(refreshCurrentConditionsRequestTopic, topicParams);
-        _refreshCurrentConditionsMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 2);
+        responseTopicStringStream << stinger::utils::format(refreshCurrentConditionsResponseTopic, topicParams);
+        _refreshCurrentConditionsMethodSubscriptionId = _broker->Subscribe(responseTopicStringStream.str(), 1);
     }
     auto locationValueTopic = stinger::utils::format("{prefix}/weather/{service_id}/property/location/value", topicParams);
     _locationPropertySubscriptionId = _broker->Subscribe(locationValueTopic, 1);
