@@ -202,23 +202,89 @@ async fn main() {
     // Provide property handles to the property_publish_task which will use them to continuously update property values.
 
     let favorite_number_property = server.get_favorite_number_handle();
+    let favorite_number_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = favorite_number_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'favorite_number' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let favorite_foods_property = server.get_favorite_foods_handle();
+    let favorite_foods_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = favorite_foods_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'favorite_foods' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let lunch_menu_property = server.get_lunch_menu_handle();
+    let lunch_menu_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = lunch_menu_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'lunch_menu' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let family_name_property = server.get_family_name_handle();
+    let family_name_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = family_name_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'family_name' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let last_breakfast_time_property = server.get_last_breakfast_time_handle();
+    let last_breakfast_time_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = last_breakfast_time_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'last_breakfast_time' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let last_birthdays_property = server.get_last_birthdays_handle();
+    let last_birthdays_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = last_birthdays_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'last_birthdays' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
     let property_publish_task = tokio::spawn(async move {
         loop {
             sleep(Duration::from_secs(51)).await;
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'favorite_number'");
+                println!("Demo code periodic change of property 'favorite_number'");
                 let mut favorite_number_guard = favorite_number_property.write().await;
                 *favorite_number_guard = 2022;
                 // Value is changed and published when favorite_number_guard goes out of scope and is dropped.
@@ -226,7 +292,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'favorite_foods'");
+                println!("Demo code periodic change of property 'favorite_foods'");
                 let mut favorite_foods_guard = favorite_foods_property.write().await;
                 let new_favorite_foods_value = FavoriteFoodsProperty {
                     drink: "foo".to_string(),
@@ -239,7 +305,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'lunch_menu'");
+                println!("Demo code periodic change of property 'lunch_menu'");
                 let mut lunch_menu_guard = lunch_menu_property.write().await;
                 let new_lunch_menu_value = LunchMenuProperty {
                     monday: Lunch {
@@ -267,7 +333,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'family_name'");
+                println!("Demo code periodic change of property 'family_name'");
                 let mut family_name_guard = family_name_property.write().await;
                 *family_name_guard = "foo".to_string();
                 // Value is changed and published when family_name_guard goes out of scope and is dropped.
@@ -275,7 +341,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'last_breakfast_time'");
+                println!("Demo code periodic change of property 'last_breakfast_time'");
                 let mut last_breakfast_time_guard = last_breakfast_time_property.write().await;
                 *last_breakfast_time_guard = chrono::Utc::now();
                 // Value is changed and published when last_breakfast_time_guard goes out of scope and is dropped.
@@ -283,7 +349,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'last_birthdays'");
+                println!("Demo code periodic change of property 'last_birthdays'");
                 let mut last_birthdays_guard = last_birthdays_property.write().await;
                 let new_last_birthdays_value = LastBirthdaysProperty {
                     mom: chrono::Utc::now(),

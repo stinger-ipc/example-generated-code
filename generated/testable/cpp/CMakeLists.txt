@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 cmake_policy(VERSION 3.16)
 
 
-project (testable
+project (testable-ipc
 	LANGUAGES CXX
 	VERSION 0.0.1)
 
@@ -49,69 +49,69 @@ set(SERVER_SOURCE_FILES
 )
 
 # server lib
-add_library(testable-server ${SERVER_SOURCE_FILES})
-add_library(Testable::Server ALIAS testable-server)
-target_include_directories(testable-server
+add_library(testable-ipc-server ${SERVER_SOURCE_FILES})
+add_library(TestableIpc::Server ALIAS testable-ipc-server)
+target_include_directories(testable-ipc-server
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 		${rapidJSON_INCLUDE_DIRS}
 )
-target_link_libraries(testable-server
+target_link_libraries(testable-ipc-server
 	PUBLIC
 		Stinger::Utils
 )
 
 # client lib
-add_library(testable-client ${CLIENT_SOURCE_FILES})
-add_library(Testable::Client ALIAS testable-client)
-target_include_directories(testable-client
+add_library(testable-ipc-client ${CLIENT_SOURCE_FILES})
+add_library(TestableIpc::Client ALIAS testable-ipc-client)
+target_include_directories(testable-ipc-client
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 		${rapidJSON_INCLUDE_DIRS}
 )
-target_link_libraries(testable-client
+target_link_libraries(testable-ipc-client
 	PUBLIC
 		Stinger::Utils
 )
 
 # example client
-add_executable(testable-client-demo examples/client_main.cpp)
-target_link_libraries(testable-client-demo
+add_executable(testable-ipc-client-demo examples/client_main.cpp)
+target_link_libraries(testable-ipc-client-demo
 	PRIVATE
-		Testable::Client
+		TestableIpc::Client
 		Threads::Threads
 )
 
-add_executable(testable-server-demo examples/server_main.cpp)
-target_link_libraries(testable-server-demo
+add_executable(testable-ipc-server-demo examples/server_main.cpp)
+target_link_libraries(testable-ipc-server-demo
 	PRIVATE
-		Testable::Server
+		TestableIpc::Server
 		Threads::Threads
 )
 
-add_executable(testable-discovery-example examples/discovery_example.cpp)
-target_link_libraries(testable-discovery-example
+add_executable(testable-ipc-discovery-example examples/discovery_example.cpp)
+target_link_libraries(testable-ipc-discovery-example
 	PRIVATE
-		Testable::Client
+		TestableIpc::Client
 		Threads::Threads
 )
 
-add_executable(testable-discovery-publisher examples/discovery_publisher.cpp)
-target_link_libraries(testable-discovery-publisher
+add_executable(testable-ipc-discovery-publisher examples/discovery_publisher.cpp)
+target_link_libraries(testable-ipc-discovery-publisher
 	PRIVATE
-		Testable::Client
+		TestableIpc::Client
 		Threads::Threads
 )
 
 set_target_properties(
-	testable-client
-	testable-server
-	testable-client-demo
-	testable-server-demo
-	testable-discovery-publisher
-	testable-discovery-example
+	testable-ipc-client
+	testable-ipc-server
+	testable-ipc-client-demo
+	testable-ipc-server-demo
+	testable-ipc-discovery-publisher
+	testable-ipc-discovery-example
 	PROPERTIES
 		CXX_STANDARD 17 # use 17, if you can
 		CXX_STANDARD_REQUIRED ON # use 17, I insist
@@ -121,51 +121,51 @@ set_target_properties(
 # help cmake find this
 configure_package_config_file(
 	${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.cmake.in
-	${CMAKE_CURRENT_BINARY_DIR}/Testable-config.cmake
-	INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/Testable
+	${CMAKE_CURRENT_BINARY_DIR}/TestableIpc-config.cmake
+	INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/TestableIpc
 	PATH_VARS CMAKE_INSTALL_INCLUDEDIR CMAKE_INSTALL_LIBDIR
 )
 
 # help cmake enforce version rules
 write_basic_package_version_file(
-	${CMAKE_CURRENT_SOURCE_DIR}/cmake/Testable-config-version.cmake
+	${CMAKE_CURRENT_SOURCE_DIR}/cmake/TestableIpc-config-version.cmake
 	VERSION 0.0.1
 	COMPATIBILITY AnyNewerVersion
 )
 
 install(FILES
-	${CMAKE_CURRENT_BINARY_DIR}/Testable-config.cmake
-	${CMAKE_CURRENT_BINARY_DIR}/Testable-config-version.cmake
-	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/Testable
+	${CMAKE_CURRENT_BINARY_DIR}/TestableIpc-config.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/TestableIpc-config-version.cmake
+	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/TestableIpc
 )
 
 install(DIRECTORY
-	${CMAKE_CURRENT_SOURCE_DIR}/include/Testable
+	${CMAKE_CURRENT_SOURCE_DIR}/include/TestableIpc
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 install(TARGETS
-	testable-server
-	testable-client
-	testable-server-demo
-	testable-client-demo
-	testable-discovery-example
-	testable-discovery-publisher
+	testable-ipc-server
+	testable-ipc-client
+	testable-ipc-server-demo
+	testable-ipc-client-demo
+	testable-ipc-discovery-example
+	testable-ipc-discovery-publisher
 	stinger_utils
-	EXPORT TestableTargets
+	EXPORT TestableIpcTargets
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # .a files
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} # .so files
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} # executables
 )
 
 install(EXPORT
-	TestableTargets
-	FILE Testable-targets.cmake
-	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/Testable
-	NAMESPACE Testable::
+	TestableIpcTargets
+	FILE TestableIpc-targets.cmake
+	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/TestableIpc
+	NAMESPACE TestableIpc::
 )
 
-export (EXPORT TestableTargets
-	FILE ${CMAKE_CURRENT_BINARY_DIR}/Testable-targets.cmake
-	NAMESPACE Testable::
+export (EXPORT TestableIpcTargets
+	FILE ${CMAKE_CURRENT_BINARY_DIR}/TestableIpc-targets.cmake
+	NAMESPACE TestableIpc::
 )

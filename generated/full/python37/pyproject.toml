@@ -1,5 +1,5 @@
 [project]
-name = "full-37-ipc"
+name = "full-ipc"
 version = "0.0.2"
 description = "Example Interface"
 

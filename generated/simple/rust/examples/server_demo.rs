@@ -122,13 +122,24 @@ async fn main() {
     // Provide property handles to the property_publish_task which will use them to continuously update property values.
 
     let school_property = server.get_school_handle();
+    let school_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = school_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'school' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
     let property_publish_task = tokio::spawn(async move {
         loop {
             sleep(Duration::from_secs(51)).await;
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'school'");
+                println!("Demo code periodic change of property 'school'");
                 let mut school_guard = school_property.write().await;
                 *school_guard = "foo".to_string();
                 // Value is changed and published when school_guard goes out of scope and is dropped.

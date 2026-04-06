@@ -197,30 +197,118 @@ async fn main() {
     // Provide property handles to the property_publish_task which will use them to continuously update property values.
 
     let location_property = server.get_location_handle();
+    let location_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = location_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'location' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let current_temperature_property = server.get_current_temperature_handle();
+    let current_temperature_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = current_temperature_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'current_temperature' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let current_condition_property = server.get_current_condition_handle();
+    let current_condition_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = current_condition_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'current_condition' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let daily_forecast_property = server.get_daily_forecast_handle();
+    let daily_forecast_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = daily_forecast_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'daily_forecast' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let hourly_forecast_property = server.get_hourly_forecast_handle();
+    let hourly_forecast_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = hourly_forecast_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'hourly_forecast' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let current_condition_refresh_interval_property =
         server.get_current_condition_refresh_interval_handle();
+    let current_condition_refresh_interval_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = current_condition_refresh_interval_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'current_condition_refresh_interval' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let hourly_forecast_refresh_interval_property =
         server.get_hourly_forecast_refresh_interval_handle();
+    let hourly_forecast_refresh_interval_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = hourly_forecast_refresh_interval_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'hourly_forecast_refresh_interval' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let daily_forecast_refresh_interval_property =
         server.get_daily_forecast_refresh_interval_handle();
+    let daily_forecast_refresh_interval_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = daily_forecast_refresh_interval_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'daily_forecast_refresh_interval' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
     let property_publish_task = tokio::spawn(async move {
         loop {
             sleep(Duration::from_secs(51)).await;
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'location'");
+                println!("Demo code periodic change of property 'location'");
                 let mut location_guard = location_property.write().await;
                 let new_location_value = LocationProperty {
                     latitude: 1.0,
@@ -232,7 +320,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'current_temperature'");
+                println!("Demo code periodic change of property 'current_temperature'");
                 let mut current_temperature_guard = current_temperature_property.write().await;
                 *current_temperature_guard = 1.0;
                 // Value is changed and published when current_temperature_guard goes out of scope and is dropped.
@@ -240,7 +328,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'current_condition'");
+                println!("Demo code periodic change of property 'current_condition'");
                 let mut current_condition_guard = current_condition_property.write().await;
                 let new_current_condition_value = CurrentConditionProperty {
                     condition: WeatherCondition::Sunny,
@@ -252,7 +340,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'daily_forecast'");
+                println!("Demo code periodic change of property 'daily_forecast'");
                 let mut daily_forecast_guard = daily_forecast_property.write().await;
                 let new_daily_forecast_value = DailyForecastProperty {
                     monday: ForecastForDay {
@@ -283,7 +371,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'hourly_forecast'");
+                println!("Demo code periodic change of property 'hourly_forecast'");
                 let mut hourly_forecast_guard = hourly_forecast_property.write().await;
                 let new_hourly_forecast_value = HourlyForecastProperty {
                     hour_0: ForecastForHour {
@@ -313,7 +401,9 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'current_condition_refresh_interval'");
+                println!(
+                    "Demo code periodic change of property 'current_condition_refresh_interval'"
+                );
                 let mut current_condition_refresh_interval_guard =
                     current_condition_refresh_interval_property.write().await;
                 *current_condition_refresh_interval_guard = 2022;
@@ -322,7 +412,9 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'hourly_forecast_refresh_interval'");
+                println!(
+                    "Demo code periodic change of property 'hourly_forecast_refresh_interval'"
+                );
                 let mut hourly_forecast_refresh_interval_guard =
                     hourly_forecast_refresh_interval_property.write().await;
                 *hourly_forecast_refresh_interval_guard = 2022;
@@ -331,7 +423,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'daily_forecast_refresh_interval'");
+                println!("Demo code periodic change of property 'daily_forecast_refresh_interval'");
                 let mut daily_forecast_refresh_interval_guard =
                     daily_forecast_refresh_interval_property.write().await;
                 *daily_forecast_refresh_interval_guard = 2022;

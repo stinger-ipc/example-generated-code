@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 cmake_policy(VERSION 3.16)
 
 
-project (full
+project (full-ipc
 	LANGUAGES CXX
 	VERSION 0.0.2)
 
@@ -49,69 +49,69 @@ set(SERVER_SOURCE_FILES
 )
 
 # server lib
-add_library(full-server ${SERVER_SOURCE_FILES})
-add_library(Full::Server ALIAS full-server)
-target_include_directories(full-server
+add_library(full-ipc-server ${SERVER_SOURCE_FILES})
+add_library(FullIpc::Server ALIAS full-ipc-server)
+target_include_directories(full-ipc-server
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 		${rapidJSON_INCLUDE_DIRS}
 )
-target_link_libraries(full-server
+target_link_libraries(full-ipc-server
 	PUBLIC
 		Stinger::Utils
 )
 
 # client lib
-add_library(full-client ${CLIENT_SOURCE_FILES})
-add_library(Full::Client ALIAS full-client)
-target_include_directories(full-client
+add_library(full-ipc-client ${CLIENT_SOURCE_FILES})
+add_library(FullIpc::Client ALIAS full-ipc-client)
+target_include_directories(full-ipc-client
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 		${rapidJSON_INCLUDE_DIRS}
 )
-target_link_libraries(full-client
+target_link_libraries(full-ipc-client
 	PUBLIC
 		Stinger::Utils
 )
 
 # example client
-add_executable(full-client-demo examples/client_main.cpp)
-target_link_libraries(full-client-demo
+add_executable(full-ipc-client-demo examples/client_main.cpp)
+target_link_libraries(full-ipc-client-demo
 	PRIVATE
-		Full::Client
+		FullIpc::Client
 		Threads::Threads
 )
 
-add_executable(full-server-demo examples/server_main.cpp)
-target_link_libraries(full-server-demo
+add_executable(full-ipc-server-demo examples/server_main.cpp)
+target_link_libraries(full-ipc-server-demo
 	PRIVATE
-		Full::Server
+		FullIpc::Server
 		Threads::Threads
 )
 
-add_executable(full-discovery-example examples/discovery_example.cpp)
-target_link_libraries(full-discovery-example
+add_executable(full-ipc-discovery-example examples/discovery_example.cpp)
+target_link_libraries(full-ipc-discovery-example
 	PRIVATE
-		Full::Client
+		FullIpc::Client
 		Threads::Threads
 )
 
-add_executable(full-discovery-publisher examples/discovery_publisher.cpp)
-target_link_libraries(full-discovery-publisher
+add_executable(full-ipc-discovery-publisher examples/discovery_publisher.cpp)
+target_link_libraries(full-ipc-discovery-publisher
 	PRIVATE
-		Full::Client
+		FullIpc::Client
 		Threads::Threads
 )
 
 set_target_properties(
-	full-client
-	full-server
-	full-client-demo
-	full-server-demo
-	full-discovery-publisher
-	full-discovery-example
+	full-ipc-client
+	full-ipc-server
+	full-ipc-client-demo
+	full-ipc-server-demo
+	full-ipc-discovery-publisher
+	full-ipc-discovery-example
 	PROPERTIES
 		CXX_STANDARD 17 # use 17, if you can
 		CXX_STANDARD_REQUIRED ON # use 17, I insist
@@ -121,51 +121,51 @@ set_target_properties(
 # help cmake find this
 configure_package_config_file(
 	${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.cmake.in
-	${CMAKE_CURRENT_BINARY_DIR}/Full-config.cmake
-	INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/Full
+	${CMAKE_CURRENT_BINARY_DIR}/FullIpc-config.cmake
+	INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/FullIpc
 	PATH_VARS CMAKE_INSTALL_INCLUDEDIR CMAKE_INSTALL_LIBDIR
 )
 
 # help cmake enforce version rules
 write_basic_package_version_file(
-	${CMAKE_CURRENT_SOURCE_DIR}/cmake/Full-config-version.cmake
+	${CMAKE_CURRENT_SOURCE_DIR}/cmake/FullIpc-config-version.cmake
 	VERSION 0.0.2
 	COMPATIBILITY AnyNewerVersion
 )
 
 install(FILES
-	${CMAKE_CURRENT_BINARY_DIR}/Full-config.cmake
-	${CMAKE_CURRENT_BINARY_DIR}/Full-config-version.cmake
-	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/Full
+	${CMAKE_CURRENT_BINARY_DIR}/FullIpc-config.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/FullIpc-config-version.cmake
+	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/FullIpc
 )
 
 install(DIRECTORY
-	${CMAKE_CURRENT_SOURCE_DIR}/include/Full
+	${CMAKE_CURRENT_SOURCE_DIR}/include/FullIpc
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 install(TARGETS
-	full-server
-	full-client
-	full-server-demo
-	full-client-demo
-	full-discovery-example
-	full-discovery-publisher
+	full-ipc-server
+	full-ipc-client
+	full-ipc-server-demo
+	full-ipc-client-demo
+	full-ipc-discovery-example
+	full-ipc-discovery-publisher
 	stinger_utils
-	EXPORT FullTargets
+	EXPORT FullIpcTargets
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # .a files
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} # .so files
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} # executables
 )
 
 install(EXPORT
-	FullTargets
-	FILE Full-targets.cmake
-	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/Full
-	NAMESPACE Full::
+	FullIpcTargets
+	FILE FullIpc-targets.cmake
+	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/FullIpc
+	NAMESPACE FullIpc::
 )
 
-export (EXPORT FullTargets
-	FILE ${CMAKE_CURRENT_BINARY_DIR}/Full-targets.cmake
-	NAMESPACE Full::
+export (EXPORT FullIpcTargets
+	FILE ${CMAKE_CURRENT_BINARY_DIR}/FullIpc-targets.cmake
+	NAMESPACE FullIpc::
 )

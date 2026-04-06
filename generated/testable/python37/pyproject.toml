@@ -1,5 +1,5 @@
 [project]
-name = "testable-37-ipc"
+name = "testable-ipc"
 version = "0.0.1"
 description = "Interface for testing"
 

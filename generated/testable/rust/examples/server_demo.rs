@@ -1859,63 +1859,349 @@ async fn main() {
     // Provide property handles to the property_publish_task which will use them to continuously update property values.
 
     let read_write_integer_property = server.get_read_write_integer_handle();
+    let read_write_integer_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_integer_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_integer' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_only_integer_property = server.get_read_only_integer_handle();
+    let read_only_integer_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_only_integer_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_only_integer' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_optional_integer_property = server.get_read_write_optional_integer_handle();
+    let read_write_optional_integer_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_optional_integer_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_optional_integer' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_two_integers_property = server.get_read_write_two_integers_handle();
+    let read_write_two_integers_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_two_integers_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_two_integers' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_only_string_property = server.get_read_only_string_handle();
+    let read_only_string_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_only_string_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_only_string' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_string_property = server.get_read_write_string_handle();
+    let read_write_string_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_string_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_string' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_optional_string_property = server.get_read_write_optional_string_handle();
+    let read_write_optional_string_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_optional_string_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_optional_string' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_two_strings_property = server.get_read_write_two_strings_handle();
+    let read_write_two_strings_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_two_strings_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_two_strings' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_struct_property = server.get_read_write_struct_handle();
+    let read_write_struct_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_struct_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_struct' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_optional_struct_property = server.get_read_write_optional_struct_handle();
+    let read_write_optional_struct_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_optional_struct_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_optional_struct' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_two_structs_property = server.get_read_write_two_structs_handle();
+    let read_write_two_structs_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_two_structs_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_two_structs' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_only_enum_property = server.get_read_only_enum_handle();
+    let read_only_enum_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_only_enum_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_only_enum' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_enum_property = server.get_read_write_enum_handle();
+    let read_write_enum_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_enum_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_enum' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_optional_enum_property = server.get_read_write_optional_enum_handle();
+    let read_write_optional_enum_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_optional_enum_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_optional_enum' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_two_enums_property = server.get_read_write_two_enums_handle();
+    let read_write_two_enums_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_two_enums_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_two_enums' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_datetime_property = server.get_read_write_datetime_handle();
+    let read_write_datetime_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_datetime_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_datetime' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_optional_datetime_property = server.get_read_write_optional_datetime_handle();
+    let read_write_optional_datetime_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_optional_datetime_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_optional_datetime' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_two_datetimes_property = server.get_read_write_two_datetimes_handle();
+    let read_write_two_datetimes_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_two_datetimes_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_two_datetimes' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_duration_property = server.get_read_write_duration_handle();
+    let read_write_duration_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_duration_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_duration' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_optional_duration_property = server.get_read_write_optional_duration_handle();
+    let read_write_optional_duration_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_optional_duration_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_optional_duration' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_two_durations_property = server.get_read_write_two_durations_handle();
+    let read_write_two_durations_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_two_durations_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_two_durations' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_binary_property = server.get_read_write_binary_handle();
+    let read_write_binary_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_binary_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_binary' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_optional_binary_property = server.get_read_write_optional_binary_handle();
+    let read_write_optional_binary_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_optional_binary_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_optional_binary' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_two_binaries_property = server.get_read_write_two_binaries_handle();
+    let read_write_two_binaries_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_two_binaries_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_two_binaries' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_list_of_strings_property = server.get_read_write_list_of_strings_handle();
+    let read_write_list_of_strings_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_list_of_strings_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_list_of_strings' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
 
     let read_write_lists_property = server.get_read_write_lists_handle();
+    let read_write_lists_property_monitor = tokio::spawn({
+        let mut property_handle_watcher = read_write_lists_property.subscribe();
+        async move {
+            while property_handle_watcher.changed().await.is_ok() {
+                println!(
+                    "Property 'read_write_lists' value has changed to: {:?}",
+                    *(property_handle_watcher.borrow_and_update())
+                );
+            }
+        }
+    });
     let property_publish_task = tokio::spawn(async move {
         loop {
             sleep(Duration::from_secs(51)).await;
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_integer'");
+                println!("Demo code periodic change of property 'read_write_integer'");
                 let mut read_write_integer_guard = read_write_integer_property.write().await;
                 *read_write_integer_guard = 2022;
                 // Value is changed and published when read_write_integer_guard goes out of scope and is dropped.
@@ -1923,7 +2209,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_only_integer'");
+                println!("Demo code periodic change of property 'read_only_integer'");
                 let mut read_only_integer_guard = read_only_integer_property.write().await;
                 *read_only_integer_guard = 2022;
                 // Value is changed and published when read_only_integer_guard goes out of scope and is dropped.
@@ -1931,7 +2217,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_optional_integer'");
+                println!("Demo code periodic change of property 'read_write_optional_integer'");
                 let mut read_write_optional_integer_guard =
                     read_write_optional_integer_property.write().await;
                 *read_write_optional_integer_guard = Some(2022);
@@ -1940,7 +2226,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_two_integers'");
+                println!("Demo code periodic change of property 'read_write_two_integers'");
                 let mut read_write_two_integers_guard =
                     read_write_two_integers_property.write().await;
                 let new_read_write_two_integers_value = ReadWriteTwoIntegersProperty {
@@ -1953,7 +2239,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_only_string'");
+                println!("Demo code periodic change of property 'read_only_string'");
                 let mut read_only_string_guard = read_only_string_property.write().await;
                 *read_only_string_guard = "foo".to_string();
                 // Value is changed and published when read_only_string_guard goes out of scope and is dropped.
@@ -1961,7 +2247,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_string'");
+                println!("Demo code periodic change of property 'read_write_string'");
                 let mut read_write_string_guard = read_write_string_property.write().await;
                 *read_write_string_guard = "foo".to_string();
                 // Value is changed and published when read_write_string_guard goes out of scope and is dropped.
@@ -1969,7 +2255,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_optional_string'");
+                println!("Demo code periodic change of property 'read_write_optional_string'");
                 let mut read_write_optional_string_guard =
                     read_write_optional_string_property.write().await;
                 *read_write_optional_string_guard = Some("foo".to_string());
@@ -1978,7 +2264,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_two_strings'");
+                println!("Demo code periodic change of property 'read_write_two_strings'");
                 let mut read_write_two_strings_guard =
                     read_write_two_strings_property.write().await;
                 let new_read_write_two_strings_value = ReadWriteTwoStringsProperty {
@@ -1991,7 +2277,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_struct'");
+                println!("Demo code periodic change of property 'read_write_struct'");
                 let mut read_write_struct_guard = read_write_struct_property.write().await;
                 *read_write_struct_guard = AllTypes {
                     the_bool: true,
@@ -2080,7 +2366,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_optional_struct'");
+                println!("Demo code periodic change of property 'read_write_optional_struct'");
                 let mut read_write_optional_struct_guard =
                     read_write_optional_struct_property.write().await;
                 *read_write_optional_struct_guard = Some(AllTypes {
@@ -2170,7 +2456,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_two_structs'");
+                println!("Demo code periodic change of property 'read_write_two_structs'");
                 let mut read_write_two_structs_guard =
                     read_write_two_structs_property.write().await;
                 let new_read_write_two_structs_value = ReadWriteTwoStructsProperty {
@@ -2353,7 +2639,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_only_enum'");
+                println!("Demo code periodic change of property 'read_only_enum'");
                 let mut read_only_enum_guard = read_only_enum_property.write().await;
                 *read_only_enum_guard = Numbers::One;
                 // Value is changed and published when read_only_enum_guard goes out of scope and is dropped.
@@ -2361,7 +2647,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_enum'");
+                println!("Demo code periodic change of property 'read_write_enum'");
                 let mut read_write_enum_guard = read_write_enum_property.write().await;
                 *read_write_enum_guard = Numbers::One;
                 // Value is changed and published when read_write_enum_guard goes out of scope and is dropped.
@@ -2369,7 +2655,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_optional_enum'");
+                println!("Demo code periodic change of property 'read_write_optional_enum'");
                 let mut read_write_optional_enum_guard =
                     read_write_optional_enum_property.write().await;
                 *read_write_optional_enum_guard = Some(Numbers::One);
@@ -2378,7 +2664,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_two_enums'");
+                println!("Demo code periodic change of property 'read_write_two_enums'");
                 let mut read_write_two_enums_guard = read_write_two_enums_property.write().await;
                 let new_read_write_two_enums_value = ReadWriteTwoEnumsProperty {
                     first: Numbers::One,
@@ -2390,7 +2676,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_datetime'");
+                println!("Demo code periodic change of property 'read_write_datetime'");
                 let mut read_write_datetime_guard = read_write_datetime_property.write().await;
                 *read_write_datetime_guard = chrono::Utc::now();
                 // Value is changed and published when read_write_datetime_guard goes out of scope and is dropped.
@@ -2398,7 +2684,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_optional_datetime'");
+                println!("Demo code periodic change of property 'read_write_optional_datetime'");
                 let mut read_write_optional_datetime_guard =
                     read_write_optional_datetime_property.write().await;
                 *read_write_optional_datetime_guard = Some(chrono::Utc::now());
@@ -2407,7 +2693,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_two_datetimes'");
+                println!("Demo code periodic change of property 'read_write_two_datetimes'");
                 let mut read_write_two_datetimes_guard =
                     read_write_two_datetimes_property.write().await;
                 let new_read_write_two_datetimes_value = ReadWriteTwoDatetimesProperty {
@@ -2420,7 +2706,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_duration'");
+                println!("Demo code periodic change of property 'read_write_duration'");
                 let mut read_write_duration_guard = read_write_duration_property.write().await;
                 *read_write_duration_guard = chrono::Duration::seconds(975);
                 // Value is changed and published when read_write_duration_guard goes out of scope and is dropped.
@@ -2428,7 +2714,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_optional_duration'");
+                println!("Demo code periodic change of property 'read_write_optional_duration'");
                 let mut read_write_optional_duration_guard =
                     read_write_optional_duration_property.write().await;
                 *read_write_optional_duration_guard = Some(chrono::Duration::seconds(975));
@@ -2437,7 +2723,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_two_durations'");
+                println!("Demo code periodic change of property 'read_write_two_durations'");
                 let mut read_write_two_durations_guard =
                     read_write_two_durations_property.write().await;
                 let new_read_write_two_durations_value = ReadWriteTwoDurationsProperty {
@@ -2450,7 +2736,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_binary'");
+                println!("Demo code periodic change of property 'read_write_binary'");
                 let mut read_write_binary_guard = read_write_binary_property.write().await;
                 *read_write_binary_guard = vec![101, 120, 97, 109, 112, 108, 101];
                 // Value is changed and published when read_write_binary_guard goes out of scope and is dropped.
@@ -2458,7 +2744,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_optional_binary'");
+                println!("Demo code periodic change of property 'read_write_optional_binary'");
                 let mut read_write_optional_binary_guard =
                     read_write_optional_binary_property.write().await;
                 *read_write_optional_binary_guard = Some(vec![101, 120, 97, 109, 112, 108, 101]);
@@ -2467,7 +2753,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_two_binaries'");
+                println!("Demo code periodic change of property 'read_write_two_binaries'");
                 let mut read_write_two_binaries_guard =
                     read_write_two_binaries_property.write().await;
                 let new_read_write_two_binaries_value = ReadWriteTwoBinariesProperty {
@@ -2480,7 +2766,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_list_of_strings'");
+                println!("Demo code periodic change of property 'read_write_list_of_strings'");
                 let mut read_write_list_of_strings_guard =
                     read_write_list_of_strings_property.write().await;
                 *read_write_list_of_strings_guard = vec!["foo".to_string(), "foo".to_string()];
@@ -2489,7 +2775,7 @@ async fn main() {
 
             sleep(Duration::from_secs(1)).await;
             {
-                println!("Changing property 'read_write_lists'");
+                println!("Demo code periodic change of property 'read_write_lists'");
                 let mut read_write_lists_guard = read_write_lists_property.write().await;
                 let new_read_write_lists_value = ReadWriteListsProperty {
                     the_list: vec![Numbers::One, Numbers::Three],

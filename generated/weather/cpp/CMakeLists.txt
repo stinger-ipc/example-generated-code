@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 cmake_policy(VERSION 3.16)
 
 
-project (weather
+project (weather-ipc
 	LANGUAGES CXX
 	VERSION 0.1.2)
 
@@ -49,69 +49,69 @@ set(SERVER_SOURCE_FILES
 )
 
 # server lib
-add_library(weather-server ${SERVER_SOURCE_FILES})
-add_library(Weather::Server ALIAS weather-server)
-target_include_directories(weather-server
+add_library(weather-ipc-server ${SERVER_SOURCE_FILES})
+add_library(WeatherIpc::Server ALIAS weather-ipc-server)
+target_include_directories(weather-ipc-server
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 		${rapidJSON_INCLUDE_DIRS}
 )
-target_link_libraries(weather-server
+target_link_libraries(weather-ipc-server
 	PUBLIC
 		Stinger::Utils
 )
 
 # client lib
-add_library(weather-client ${CLIENT_SOURCE_FILES})
-add_library(Weather::Client ALIAS weather-client)
-target_include_directories(weather-client
+add_library(weather-ipc-client ${CLIENT_SOURCE_FILES})
+add_library(WeatherIpc::Client ALIAS weather-ipc-client)
+target_include_directories(weather-ipc-client
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 		${rapidJSON_INCLUDE_DIRS}
 )
-target_link_libraries(weather-client
+target_link_libraries(weather-ipc-client
 	PUBLIC
 		Stinger::Utils
 )
 
 # example client
-add_executable(weather-client-demo examples/client_main.cpp)
-target_link_libraries(weather-client-demo
+add_executable(weather-ipc-client-demo examples/client_main.cpp)
+target_link_libraries(weather-ipc-client-demo
 	PRIVATE
-		Weather::Client
+		WeatherIpc::Client
 		Threads::Threads
 )
 
-add_executable(weather-server-demo examples/server_main.cpp)
-target_link_libraries(weather-server-demo
+add_executable(weather-ipc-server-demo examples/server_main.cpp)
+target_link_libraries(weather-ipc-server-demo
 	PRIVATE
-		Weather::Server
+		WeatherIpc::Server
 		Threads::Threads
 )
 
-add_executable(weather-discovery-example examples/discovery_example.cpp)
-target_link_libraries(weather-discovery-example
+add_executable(weather-ipc-discovery-example examples/discovery_example.cpp)
+target_link_libraries(weather-ipc-discovery-example
 	PRIVATE
-		Weather::Client
+		WeatherIpc::Client
 		Threads::Threads
 )
 
-add_executable(weather-discovery-publisher examples/discovery_publisher.cpp)
-target_link_libraries(weather-discovery-publisher
+add_executable(weather-ipc-discovery-publisher examples/discovery_publisher.cpp)
+target_link_libraries(weather-ipc-discovery-publisher
 	PRIVATE
-		Weather::Client
+		WeatherIpc::Client
 		Threads::Threads
 )
 
 set_target_properties(
-	weather-client
-	weather-server
-	weather-client-demo
-	weather-server-demo
-	weather-discovery-publisher
-	weather-discovery-example
+	weather-ipc-client
+	weather-ipc-server
+	weather-ipc-client-demo
+	weather-ipc-server-demo
+	weather-ipc-discovery-publisher
+	weather-ipc-discovery-example
 	PROPERTIES
 		CXX_STANDARD 17 # use 17, if you can
 		CXX_STANDARD_REQUIRED ON # use 17, I insist
@@ -121,51 +121,51 @@ set_target_properties(
 # help cmake find this
 configure_package_config_file(
 	${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.cmake.in
-	${CMAKE_CURRENT_BINARY_DIR}/Weather-config.cmake
-	INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/Weather
+	${CMAKE_CURRENT_BINARY_DIR}/WeatherIpc-config.cmake
+	INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/WeatherIpc
 	PATH_VARS CMAKE_INSTALL_INCLUDEDIR CMAKE_INSTALL_LIBDIR
 )
 
 # help cmake enforce version rules
 write_basic_package_version_file(
-	${CMAKE_CURRENT_SOURCE_DIR}/cmake/Weather-config-version.cmake
+	${CMAKE_CURRENT_SOURCE_DIR}/cmake/WeatherIpc-config-version.cmake
 	VERSION 0.1.2
 	COMPATIBILITY AnyNewerVersion
 )
 
 install(FILES
-	${CMAKE_CURRENT_BINARY_DIR}/Weather-config.cmake
-	${CMAKE_CURRENT_BINARY_DIR}/Weather-config-version.cmake
-	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/Weather
+	${CMAKE_CURRENT_BINARY_DIR}/WeatherIpc-config.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/WeatherIpc-config-version.cmake
+	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/WeatherIpc
 )
 
 install(DIRECTORY
-	${CMAKE_CURRENT_SOURCE_DIR}/include/Weather
+	${CMAKE_CURRENT_SOURCE_DIR}/include/WeatherIpc
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 install(TARGETS
-	weather-server
-	weather-client
-	weather-server-demo
-	weather-client-demo
-	weather-discovery-example
-	weather-discovery-publisher
+	weather-ipc-server
+	weather-ipc-client
+	weather-ipc-server-demo
+	weather-ipc-client-demo
+	weather-ipc-discovery-example
+	weather-ipc-discovery-publisher
 	stinger_utils
-	EXPORT WeatherTargets
+	EXPORT WeatherIpcTargets
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # .a files
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} # .so files
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} # executables
 )
 
 install(EXPORT
-	WeatherTargets
-	FILE Weather-targets.cmake
-	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/Weather
-	NAMESPACE Weather::
+	WeatherIpcTargets
+	FILE WeatherIpc-targets.cmake
+	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/WeatherIpc
+	NAMESPACE WeatherIpc::
 )
 
-export (EXPORT WeatherTargets
-	FILE ${CMAKE_CURRENT_BINARY_DIR}/Weather-targets.cmake
-	NAMESPACE Weather::
+export (EXPORT WeatherIpcTargets
+	FILE ${CMAKE_CURRENT_BINARY_DIR}/WeatherIpc-targets.cmake
+	NAMESPACE WeatherIpc::
 )

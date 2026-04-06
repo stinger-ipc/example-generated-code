@@ -1,5 +1,5 @@
 [project]
-name = "simple-37-ipc"
+name = "simple-ipc"
 version = "0.0.1"
 description = "Simple Example Interface"
 

@@ -1,5 +1,5 @@
 [project]
-name = "weather-37-ipc"
+name = "weather-ipc"
 version = "0.1.2"
 description = "NWS weather forecast"
 

@@ -38,7 +38,7 @@ signal-only-tui = "signalonlyipc.tui.app:main"
 
 
 [tool.setuptools.package-data]
-packages = ["signal_onlyipc"]
+packages = ["signalonlyipc"]
 
 [stinger-ipc]
 generator_version = "0.8.5"

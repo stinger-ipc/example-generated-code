@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 cmake_policy(VERSION 3.16)
 
 
-project (simple
+project (simple-ipc
 	LANGUAGES CXX
 	VERSION 0.0.1)
 
@@ -49,69 +49,69 @@ set(SERVER_SOURCE_FILES
 )
 
 # server lib
-add_library(simple-server ${SERVER_SOURCE_FILES})
-add_library(Simple::Server ALIAS simple-server)
-target_include_directories(simple-server
+add_library(simple-ipc-server ${SERVER_SOURCE_FILES})
+add_library(SimpleIpc::Server ALIAS simple-ipc-server)
+target_include_directories(simple-ipc-server
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 		${rapidJSON_INCLUDE_DIRS}
 )
-target_link_libraries(simple-server
+target_link_libraries(simple-ipc-server
 	PUBLIC
 		Stinger::Utils
 )
 
 # client lib
-add_library(simple-client ${CLIENT_SOURCE_FILES})
-add_library(Simple::Client ALIAS simple-client)
-target_include_directories(simple-client
+add_library(simple-ipc-client ${CLIENT_SOURCE_FILES})
+add_library(SimpleIpc::Client ALIAS simple-ipc-client)
+target_include_directories(simple-ipc-client
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 		${rapidJSON_INCLUDE_DIRS}
 )
-target_link_libraries(simple-client
+target_link_libraries(simple-ipc-client
 	PUBLIC
 		Stinger::Utils
 )
 
 # example client
-add_executable(simple-client-demo examples/client_main.cpp)
-target_link_libraries(simple-client-demo
+add_executable(simple-ipc-client-demo examples/client_main.cpp)
+target_link_libraries(simple-ipc-client-demo
 	PRIVATE
-		Simple::Client
+		SimpleIpc::Client
 		Threads::Threads
 )
 
-add_executable(simple-server-demo examples/server_main.cpp)
-target_link_libraries(simple-server-demo
+add_executable(simple-ipc-server-demo examples/server_main.cpp)
+target_link_libraries(simple-ipc-server-demo
 	PRIVATE
-		Simple::Server
+		SimpleIpc::Server
 		Threads::Threads
 )
 
-add_executable(simple-discovery-example examples/discovery_example.cpp)
-target_link_libraries(simple-discovery-example
+add_executable(simple-ipc-discovery-example examples/discovery_example.cpp)
+target_link_libraries(simple-ipc-discovery-example
 	PRIVATE
-		Simple::Client
+		SimpleIpc::Client
 		Threads::Threads
 )
 
-add_executable(simple-discovery-publisher examples/discovery_publisher.cpp)
-target_link_libraries(simple-discovery-publisher
+add_executable(simple-ipc-discovery-publisher examples/discovery_publisher.cpp)
+target_link_libraries(simple-ipc-discovery-publisher
 	PRIVATE
-		Simple::Client
+		SimpleIpc::Client
 		Threads::Threads
 )
 
 set_target_properties(
-	simple-client
-	simple-server
-	simple-client-demo
-	simple-server-demo
-	simple-discovery-publisher
-	simple-discovery-example
+	simple-ipc-client
+	simple-ipc-server
+	simple-ipc-client-demo
+	simple-ipc-server-demo
+	simple-ipc-discovery-publisher
+	simple-ipc-discovery-example
 	PROPERTIES
 		CXX_STANDARD 17 # use 17, if you can
 		CXX_STANDARD_REQUIRED ON # use 17, I insist
@@ -121,51 +121,51 @@ set_target_properties(
 # help cmake find this
 configure_package_config_file(
 	${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.cmake.in
-	${CMAKE_CURRENT_BINARY_DIR}/Simple-config.cmake
-	INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/Simple
+	${CMAKE_CURRENT_BINARY_DIR}/SimpleIpc-config.cmake
+	INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/SimpleIpc
 	PATH_VARS CMAKE_INSTALL_INCLUDEDIR CMAKE_INSTALL_LIBDIR
 )
 
 # help cmake enforce version rules
 write_basic_package_version_file(
-	${CMAKE_CURRENT_SOURCE_DIR}/cmake/Simple-config-version.cmake
+	${CMAKE_CURRENT_SOURCE_DIR}/cmake/SimpleIpc-config-version.cmake
 	VERSION 0.0.1
 	COMPATIBILITY AnyNewerVersion
 )
 
 install(FILES
-	${CMAKE_CURRENT_BINARY_DIR}/Simple-config.cmake
-	${CMAKE_CURRENT_BINARY_DIR}/Simple-config-version.cmake
-	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/Simple
+	${CMAKE_CURRENT_BINARY_DIR}/SimpleIpc-config.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/SimpleIpc-config-version.cmake
+	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/SimpleIpc
 )
 
 install(DIRECTORY
-	${CMAKE_CURRENT_SOURCE_DIR}/include/Simple
+	${CMAKE_CURRENT_SOURCE_DIR}/include/SimpleIpc
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 install(TARGETS
-	simple-server
-	simple-client
-	simple-server-demo
-	simple-client-demo
-	simple-discovery-example
-	simple-discovery-publisher
+	simple-ipc-server
+	simple-ipc-client
+	simple-ipc-server-demo
+	simple-ipc-client-demo
+	simple-ipc-discovery-example
+	simple-ipc-discovery-publisher
 	stinger_utils
-	EXPORT SimpleTargets
+	EXPORT SimpleIpcTargets
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # .a files
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} # .so files
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} # executables
 )
 
 install(EXPORT
-	SimpleTargets
-	FILE Simple-targets.cmake
-	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/Simple
-	NAMESPACE Simple::
+	SimpleIpcTargets
+	FILE SimpleIpc-targets.cmake
+	DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/SimpleIpc
+	NAMESPACE SimpleIpc::
 )
 
-export (EXPORT SimpleTargets
-	FILE ${CMAKE_CURRENT_BINARY_DIR}/Simple-targets.cmake
-	NAMESPACE Simple::
+export (EXPORT SimpleIpcTargets
+	FILE ${CMAKE_CURRENT_BINARY_DIR}/SimpleIpc-targets.cmake
+	NAMESPACE SimpleIpc::
 )
