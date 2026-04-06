@@ -460,12 +460,25 @@ impl<C: Mqtt5PubSub + Clone + Send> SimpleServer<C> {
 
                         // Single value property.  Use the name field of the struct.
                         *write_request = new_property_structure.name.clone();
+                        debug!(
+                            "Updating 'school' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'school' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'school' property change".to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'school' property: {:?}", e);
@@ -499,6 +512,7 @@ impl<C: Mqtt5PubSub + Clone + Send> SimpleServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'school' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {

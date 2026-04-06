@@ -788,12 +788,25 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
                         // Multi-value property set as a struct.
                         *write_request = new_property_structure.clone();
+                        debug!(
+                            "Updating 'location' property to new structure: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'location' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'location' property change".to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'location' property: {:?}", e);
@@ -825,6 +838,7 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'location' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -1062,12 +1076,20 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
                         // Single value property.  Use the seconds field of the struct.
                         *write_request = new_property_structure.seconds.clone();
+                        debug!("Updating 'current_condition_refresh_interval' property to new value: {:?}", *write_request);
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'current_condition_refresh_interval' property change");
+                                return_code = MethodReturnCode::ServerError("Timeout committing 'current_condition_refresh_interval' property change".to_string());
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'current_condition_refresh_interval' property: {:?}", e);
@@ -1099,6 +1121,7 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'current_condition_refresh_interval' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -1217,12 +1240,20 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
                         // Single value property.  Use the seconds field of the struct.
                         *write_request = new_property_structure.seconds.clone();
+                        debug!("Updating 'hourly_forecast_refresh_interval' property to new value: {:?}", *write_request);
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'hourly_forecast_refresh_interval' property change");
+                                return_code = MethodReturnCode::ServerError("Timeout committing 'hourly_forecast_refresh_interval' property change".to_string());
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'hourly_forecast_refresh_interval' property: {:?}", e);
@@ -1254,6 +1285,7 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'hourly_forecast_refresh_interval' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -1367,12 +1399,20 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
                         // Single value property.  Use the seconds field of the struct.
                         *write_request = new_property_structure.seconds.clone();
+                        debug!("Updating 'daily_forecast_refresh_interval' property to new value: {:?}", *write_request);
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'daily_forecast_refresh_interval' property change");
+                                return_code = MethodReturnCode::ServerError("Timeout committing 'daily_forecast_refresh_interval' property change".to_string());
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'daily_forecast_refresh_interval' property: {:?}", e);
@@ -1404,6 +1444,7 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'daily_forecast_refresh_interval' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {

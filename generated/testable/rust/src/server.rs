@@ -4782,12 +4782,26 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_integer' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_integer' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_integer' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_integer' property: {:?}", e);
@@ -4822,6 +4836,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_integer' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -4962,12 +4977,23 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_optional_integer' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_optional_integer' property change");
+                                return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_integer' property change".to_string());
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_optional_integer' property: {:?}", e);
@@ -5002,6 +5028,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_optional_integer' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -5116,12 +5143,28 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Multi-value property set as a struct.
                         *write_request = new_property_structure.clone();
+                        debug!(
+                            "Updating 'read_write_two_integers' property to new structure: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!(
+                                    "Timeout committing 'read_write_two_integers' property change"
+                                );
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_two_integers' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_two_integers' property: {:?}", e);
@@ -5154,6 +5197,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_two_integers' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -5299,12 +5343,26 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_string' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_string' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_string' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_string' property: {:?}", e);
@@ -5339,6 +5397,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_string' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -5450,12 +5509,23 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_optional_string' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_optional_string' property change");
+                                return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_string' property change".to_string());
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_optional_string' property: {:?}", e);
@@ -5490,6 +5560,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_optional_string' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -5604,12 +5675,28 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Multi-value property set as a struct.
                         *write_request = new_property_structure.clone();
+                        debug!(
+                            "Updating 'read_write_two_strings' property to new structure: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!(
+                                    "Timeout committing 'read_write_two_strings' property change"
+                                );
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_two_strings' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_two_strings' property: {:?}", e);
@@ -5642,6 +5729,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_two_strings' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -5758,12 +5846,26 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_struct' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_struct' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_struct' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_struct' property: {:?}", e);
@@ -5798,6 +5900,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_struct' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -5909,12 +6012,23 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_optional_struct' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_optional_struct' property change");
+                                return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_struct' property change".to_string());
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_optional_struct' property: {:?}", e);
@@ -5949,6 +6063,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_optional_struct' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -6063,12 +6178,28 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Multi-value property set as a struct.
                         *write_request = new_property_structure.clone();
+                        debug!(
+                            "Updating 'read_write_two_structs' property to new structure: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!(
+                                    "Timeout committing 'read_write_two_structs' property change"
+                                );
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_two_structs' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_two_structs' property: {:?}", e);
@@ -6101,6 +6232,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_two_structs' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -6246,12 +6378,26 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_enum' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_enum' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_enum' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_enum' property: {:?}", e);
@@ -6285,6 +6431,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_enum' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -6399,12 +6546,28 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_optional_enum' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!(
+                                    "Timeout committing 'read_write_optional_enum' property change"
+                                );
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_optional_enum' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_optional_enum' property: {:?}", e);
@@ -6439,6 +6602,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_optional_enum' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -6553,12 +6717,26 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Multi-value property set as a struct.
                         *write_request = new_property_structure.clone();
+                        debug!(
+                            "Updating 'read_write_two_enums' property to new structure: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_two_enums' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_two_enums' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_two_enums' property: {:?}", e);
@@ -6591,6 +6769,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_two_enums' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -6707,12 +6886,26 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_datetime' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_datetime' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_datetime' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_datetime' property: {:?}", e);
@@ -6747,6 +6940,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_datetime' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -6863,12 +7057,23 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_optional_datetime' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_optional_datetime' property change");
+                                return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_datetime' property change".to_string());
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_optional_datetime' property: {:?}", e);
@@ -6903,6 +7108,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_optional_datetime' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -7021,12 +7227,28 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Multi-value property set as a struct.
                         *write_request = new_property_structure.clone();
+                        debug!(
+                            "Updating 'read_write_two_datetimes' property to new structure: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!(
+                                    "Timeout committing 'read_write_two_datetimes' property change"
+                                );
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_two_datetimes' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_two_datetimes' property: {:?}", e);
@@ -7059,6 +7281,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_two_datetimes' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -7175,12 +7398,26 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_duration' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_duration' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_duration' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_duration' property: {:?}", e);
@@ -7215,6 +7452,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_duration' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -7326,12 +7564,23 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_optional_duration' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_optional_duration' property change");
+                                return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_duration' property change".to_string());
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_optional_duration' property: {:?}", e);
@@ -7366,6 +7615,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_optional_duration' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -7482,12 +7732,28 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Multi-value property set as a struct.
                         *write_request = new_property_structure.clone();
+                        debug!(
+                            "Updating 'read_write_two_durations' property to new structure: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!(
+                                    "Timeout committing 'read_write_two_durations' property change"
+                                );
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_two_durations' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_two_durations' property: {:?}", e);
@@ -7520,6 +7786,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_two_durations' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -7636,12 +7903,26 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_binary' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_binary' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_binary' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_binary' property: {:?}", e);
@@ -7676,6 +7957,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_binary' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -7787,12 +8069,23 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_optional_binary' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_optional_binary' property change");
+                                return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_binary' property change".to_string());
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_optional_binary' property: {:?}", e);
@@ -7827,6 +8120,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_optional_binary' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -7941,12 +8235,28 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Multi-value property set as a struct.
                         *write_request = new_property_structure.clone();
+                        debug!(
+                            "Updating 'read_write_two_binaries' property to new structure: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!(
+                                    "Timeout committing 'read_write_two_binaries' property change"
+                                );
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_two_binaries' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_two_binaries' property: {:?}", e);
@@ -7979,6 +8289,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_two_binaries' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -8095,12 +8406,23 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Single value property.  Use the value field of the struct.
                         *write_request = new_property_structure.value.clone();
+                        debug!(
+                            "Updating 'read_write_list_of_strings' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_list_of_strings' property change");
+                                return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_list_of_strings' property change".to_string());
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_list_of_strings' property: {:?}", e);
@@ -8135,6 +8457,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_list_of_strings' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -8249,12 +8572,26 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         // Multi-value property set as a struct.
                         *write_request = new_property_structure.clone();
+                        debug!(
+                            "Updating 'read_write_lists' property to new structure: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'read_write_lists' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'read_write_lists' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'read_write_lists' property: {:?}", e);
@@ -8286,6 +8623,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'read_write_lists' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -11880,7 +12218,7 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [], "optional_array_of_integers": [42, 2022], "array_of_strings": [], "optional_array_of_strings": [], "array_of_enums": [1, 1], "optional_array_of_enums": [1, 1], "array_of_datetimes": [], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": [], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": [], "optional_array_of_binaries": [], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": null} 
+                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": null, "array_of_enums": [1, 1], "optional_array_of_enums": null, "array_of_datetimes": [], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": [], "optional_array_of_binaries": null, "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": null} 
             }"#;
             let payload: ReadWriteStructProperty = serde_json::from_str(json_str).unwrap();
 
@@ -11922,7 +12260,7 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": null, "array_of_integers": [], "optional_array_of_integers": [42, 2022], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": [], "array_of_enums": [1, 1], "optional_array_of_enums": [], "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": [], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} 
+                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": null, "array_of_strings": ["apples", "foo"], "optional_array_of_strings": [], "array_of_enums": [1, 1], "optional_array_of_enums": [], "array_of_datetimes": [], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": [], "optional_array_of_durations": null, "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": [], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} 
             }"#;
             let payload: ReadWriteOptionalStructProperty = serde_json::from_str(json_str).unwrap();
 
@@ -11964,9 +12302,9 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "first": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": null, "array_of_integers": [], "optional_array_of_integers": [42, 2022], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": [], "array_of_enums": [], "optional_array_of_enums": null, "array_of_datetimes": [], "optional_array_of_datetimes": null, "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": [], "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": []} ,
+                "first": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": null, "array_of_strings": ["apples", "foo"], "optional_array_of_strings": null, "array_of_enums": [], "optional_array_of_enums": [], "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": [], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": [], "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [], "optional_array_of_entry_objects": null} ,
             
-                "second": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [], "optional_array_of_integers": [], "array_of_strings": [], "optional_array_of_strings": ["apples", "foo"], "array_of_enums": [1, 1], "optional_array_of_enums": [1, 1], "array_of_datetimes": [], "optional_array_of_datetimes": [], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": [], "optional_array_of_binaries": [], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": []} 
+                "second": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [], "optional_array_of_integers": [], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": null, "array_of_enums": [1, 1], "optional_array_of_enums": [], "array_of_datetimes": [], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": [], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": null} 
             }"#;
             let payload: ReadWriteTwoStructsProperty = serde_json::from_str(json_str).unwrap();
 
@@ -12430,7 +12768,7 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "value": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==" 
+                "value": null 
             }"#;
             let payload: ReadWriteOptionalBinaryProperty = serde_json::from_str(json_str).unwrap();
 
@@ -12516,7 +12854,7 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "value": [] 
+                "value": ["apples", "foo"] 
             }"#;
             let payload: ReadWriteListOfStringsProperty = serde_json::from_str(json_str).unwrap();
 

@@ -940,12 +940,26 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
                         // Single value property.  Use the number field of the struct.
                         *write_request = new_property_structure.number.clone();
+                        debug!(
+                            "Updating 'favorite_number' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'favorite_number' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'favorite_number' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'favorite_number' property: {:?}", e);
@@ -979,6 +993,7 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'favorite_number' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -1093,12 +1108,26 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
                         // Multi-value property set as a struct.
                         *write_request = new_property_structure.clone();
+                        debug!(
+                            "Updating 'favorite_foods' property to new structure: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'favorite_foods' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'favorite_foods' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'favorite_foods' property: {:?}", e);
@@ -1130,6 +1159,7 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'favorite_foods' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -1273,12 +1303,25 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
                         // Single value property.  Use the family_name field of the struct.
                         *write_request = new_property_structure.family_name.clone();
+                        debug!(
+                            "Updating 'family_name' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'family_name' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'family_name' property change".to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'family_name' property: {:?}", e);
@@ -1314,6 +1357,7 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'family_name' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -1428,12 +1472,26 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
                         // Single value property.  Use the timestamp field of the struct.
                         *write_request = new_property_structure.timestamp.clone();
+                        debug!(
+                            "Updating 'last_breakfast_time' property to new value: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'last_breakfast_time' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'last_breakfast_time' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'last_breakfast_time' property: {:?}", e);
@@ -1470,6 +1528,7 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'last_breakfast_time' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
@@ -1586,12 +1645,26 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
                         // Multi-value property set as a struct.
                         *write_request = new_property_structure.clone();
+                        debug!(
+                            "Updating 'last_birthdays' property to new structure: {:?}",
+                            *write_request
+                        );
 
                         // Committing the write request blocks until the message has been published to MQTT.
-                        write_request
+                        match write_request
                             .commit(std::time::Duration::from_secs(2))
-                            .await;
-                        Some((*write_request).clone())
+                            .await
+                        {
+                            CommitResult::Applied(_) => Some((*write_request).clone()),
+                            CommitResult::TimedOut => {
+                                error!("Timeout committing 'last_birthdays' property change");
+                                return_code = MethodReturnCode::ServerError(
+                                    "Timeout committing 'last_birthdays' property change"
+                                        .to_string(),
+                                );
+                                None
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Failed to parse JSON received over MQTT to update 'last_birthdays' property: {:?}", e);
@@ -1623,6 +1696,7 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
                 return_code,
             ) {
                 Ok(msg) => {
+                    debug!("Publishing response to 'last_birthdays' property update request to topic '{}', payload: {:?}", resp_topic, payload_obj);
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
                 Err(err) => {
