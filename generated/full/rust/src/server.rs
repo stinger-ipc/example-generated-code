@@ -2279,7 +2279,7 @@ pub trait FullMethodHandlers<C: Mqtt5PubSub>: Send + Sync {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::message::property_update;
+    use crate::message::property_update_request;
     use stinger_mqtt_trait::mock::MockClient;
     use tracing_subscriber::EnvFilter;
 
@@ -2440,6 +2440,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_favorite_number_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -2447,10 +2453,12 @@ mod tests {
             }"#;
             let payload: FavoriteNumberProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_favorite_number_topic,
                 &payload,
                 initial_property_values.favorite_number_version,
+                correlation_uuid,
+                property_favorite_number_response_topic,
             )
             .unwrap();
 
@@ -2479,6 +2487,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_favorite_foods_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -2490,10 +2504,12 @@ mod tests {
             }"#;
             let payload: FavoriteFoodsProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_favorite_foods_topic,
                 &payload,
                 initial_property_values.favorite_foods_version,
+                correlation_uuid,
+                property_favorite_foods_response_topic,
             )
             .unwrap();
 
@@ -2522,6 +2538,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_family_name_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -2529,10 +2551,12 @@ mod tests {
             }"#;
             let payload: FamilyNameProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_family_name_topic,
                 &payload,
                 initial_property_values.family_name_version,
+                correlation_uuid,
+                property_family_name_response_topic,
             )
             .unwrap();
 
@@ -2564,6 +2588,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_last_breakfast_time_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -2571,10 +2601,12 @@ mod tests {
             }"#;
             let payload: LastBreakfastTimeProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_last_breakfast_time_topic,
                 &payload,
                 initial_property_values.last_breakfast_time_version,
+                correlation_uuid,
+                property_last_breakfast_time_response_topic,
             )
             .unwrap();
 
@@ -2603,6 +2635,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_last_birthdays_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -2616,10 +2654,12 @@ mod tests {
             }"#;
             let payload: LastBirthdaysProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_last_birthdays_topic,
                 &payload,
                 initial_property_values.last_birthdays_version,
+                correlation_uuid,
+                property_last_birthdays_response_topic,
             )
             .unwrap();
 

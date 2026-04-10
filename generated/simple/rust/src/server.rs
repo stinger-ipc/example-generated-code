@@ -734,7 +734,7 @@ pub trait SimpleMethodHandlers<C: Mqtt5PubSub>: Send + Sync {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::message::property_update;
+    use crate::message::property_update_request;
     use stinger_mqtt_trait::mock::MockClient;
     use tracing_subscriber::EnvFilter;
 
@@ -820,6 +820,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_school_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -827,10 +833,12 @@ mod tests {
             }"#;
             let payload: SchoolProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_school_topic,
                 &payload,
                 initial_property_values.school_version,
+                correlation_uuid,
+                property_school_response_topic,
             )
             .unwrap();
 

@@ -10791,7 +10791,7 @@ pub trait TestableMethodHandlers<C: Mqtt5PubSub>: Send + Sync {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::message::property_update;
+    use crate::message::property_update_request;
     use stinger_mqtt_trait::mock::MockClient;
     use tracing_subscriber::EnvFilter;
 
@@ -11965,6 +11965,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_integer_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -11972,10 +11978,12 @@ mod tests {
             }"#;
             let payload: ReadWriteIntegerProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_integer_topic,
                 &payload,
                 initial_property_values.read_write_integer_version,
+                correlation_uuid,
+                property_read_write_integer_response_topic,
             )
             .unwrap();
 
@@ -12007,6 +12015,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_optional_integer_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12014,10 +12028,12 @@ mod tests {
             }"#;
             let payload: ReadWriteOptionalIntegerProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_optional_integer_topic,
                 &payload,
                 initial_property_values.read_write_optional_integer_version,
+                correlation_uuid,
+                property_read_write_optional_integer_response_topic,
             )
             .unwrap();
 
@@ -12049,6 +12065,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_two_integers_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12058,10 +12080,12 @@ mod tests {
             }"#;
             let payload: ReadWriteTwoIntegersProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_two_integers_topic,
                 &payload,
                 initial_property_values.read_write_two_integers_version,
+                correlation_uuid,
+                property_read_write_two_integers_response_topic,
             )
             .unwrap();
 
@@ -12090,6 +12114,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_string_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12097,10 +12127,12 @@ mod tests {
             }"#;
             let payload: ReadWriteStringProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_string_topic,
                 &payload,
                 initial_property_values.read_write_string_version,
+                correlation_uuid,
+                property_read_write_string_response_topic,
             )
             .unwrap();
 
@@ -12132,6 +12164,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_optional_string_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12139,10 +12177,12 @@ mod tests {
             }"#;
             let payload: ReadWriteOptionalStringProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_optional_string_topic,
                 &payload,
                 initial_property_values.read_write_optional_string_version,
+                correlation_uuid,
+                property_read_write_optional_string_response_topic,
             )
             .unwrap();
 
@@ -12174,6 +12214,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_two_strings_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12183,10 +12229,12 @@ mod tests {
             }"#;
             let payload: ReadWriteTwoStringsProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_two_strings_topic,
                 &payload,
                 initial_property_values.read_write_two_strings_version,
+                correlation_uuid,
+                property_read_write_two_strings_response_topic,
             )
             .unwrap();
 
@@ -12215,17 +12263,25 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_struct_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": null, "array_of_integers": [], "optional_array_of_integers": [], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": null, "array_of_enums": [], "optional_array_of_enums": [], "array_of_datetimes": [], "optional_array_of_datetimes": [], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": null, "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": [], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} 
+                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": null, "array_of_strings": [], "optional_array_of_strings": null, "array_of_enums": [1, 1], "optional_array_of_enums": [1, 1], "array_of_datetimes": [], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": null, "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": [], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} 
             }"#;
             let payload: ReadWriteStructProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_struct_topic,
                 &payload,
                 initial_property_values.read_write_struct_version,
+                correlation_uuid,
+                property_read_write_struct_response_topic,
             )
             .unwrap();
 
@@ -12257,17 +12313,25 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_optional_struct_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": null, "array_of_integers": [42, 2022], "optional_array_of_integers": [42, 2022], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": [], "array_of_enums": [1, 1], "optional_array_of_enums": [], "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": null, "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": null, "array_of_entry_objects": [], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} 
+                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [42, 2022], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": null, "array_of_enums": [], "optional_array_of_enums": [], "array_of_datetimes": [], "optional_array_of_datetimes": [], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": null, "array_of_binaries": [], "optional_array_of_binaries": [], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": []} 
             }"#;
             let payload: ReadWriteOptionalStructProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_optional_struct_topic,
                 &payload,
                 initial_property_values.read_write_optional_struct_version,
+                correlation_uuid,
+                property_read_write_optional_struct_response_topic,
             )
             .unwrap();
 
@@ -12299,19 +12363,27 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_two_structs_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "first": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [42, 2022], "array_of_strings": [], "optional_array_of_strings": ["apples", "foo"], "array_of_enums": [1, 1], "optional_array_of_enums": [], "array_of_datetimes": [], "optional_array_of_datetimes": [], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": null, "array_of_binaries": [], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} ,
+                "first": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [42, 2022], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": [], "array_of_enums": [1, 1], "optional_array_of_enums": [], "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": [], "array_of_durations": [], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": [], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} ,
             
-                "second": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [], "optional_array_of_integers": [], "array_of_strings": [], "optional_array_of_strings": ["apples", "foo"], "array_of_enums": [], "optional_array_of_enums": [1, 1], "array_of_datetimes": [], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": [], "optional_array_of_durations": [], "array_of_binaries": [], "optional_array_of_binaries": [], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": null} 
+                "second": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"key": 42, "value": "apples"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": null, "array_of_integers": [42, 2022], "optional_array_of_integers": [], "array_of_strings": [], "optional_array_of_strings": [], "array_of_enums": [1, 1], "optional_array_of_enums": [1, 1], "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": [], "array_of_durations": [], "optional_array_of_durations": null, "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} 
             }"#;
             let payload: ReadWriteTwoStructsProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_two_structs_topic,
                 &payload,
                 initial_property_values.read_write_two_structs_version,
+                correlation_uuid,
+                property_read_write_two_structs_response_topic,
             )
             .unwrap();
 
@@ -12340,6 +12412,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_enum_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12347,10 +12425,12 @@ mod tests {
             }"#;
             let payload: ReadWriteEnumProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_enum_topic,
                 &payload,
                 initial_property_values.read_write_enum_version,
+                correlation_uuid,
+                property_read_write_enum_response_topic,
             )
             .unwrap();
 
@@ -12382,6 +12462,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_optional_enum_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12389,10 +12475,12 @@ mod tests {
             }"#;
             let payload: ReadWriteOptionalEnumProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_optional_enum_topic,
                 &payload,
                 initial_property_values.read_write_optional_enum_version,
+                correlation_uuid,
+                property_read_write_optional_enum_response_topic,
             )
             .unwrap();
 
@@ -12424,6 +12512,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_two_enums_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12433,10 +12527,12 @@ mod tests {
             }"#;
             let payload: ReadWriteTwoEnumsProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_two_enums_topic,
                 &payload,
                 initial_property_values.read_write_two_enums_version,
+                correlation_uuid,
+                property_read_write_two_enums_response_topic,
             )
             .unwrap();
 
@@ -12468,6 +12564,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_datetime_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12475,10 +12577,12 @@ mod tests {
             }"#;
             let payload: ReadWriteDatetimeProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_datetime_topic,
                 &payload,
                 initial_property_values.read_write_datetime_version,
+                correlation_uuid,
+                property_read_write_datetime_response_topic,
             )
             .unwrap();
 
@@ -12510,6 +12614,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_optional_datetime_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12518,10 +12628,12 @@ mod tests {
             let payload: ReadWriteOptionalDatetimeProperty =
                 serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_optional_datetime_topic,
                 &payload,
                 initial_property_values.read_write_optional_datetime_version,
+                correlation_uuid,
+                property_read_write_optional_datetime_response_topic,
             )
             .unwrap();
 
@@ -12553,6 +12665,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_two_datetimes_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12562,10 +12680,12 @@ mod tests {
             }"#;
             let payload: ReadWriteTwoDatetimesProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_two_datetimes_topic,
                 &payload,
                 initial_property_values.read_write_two_datetimes_version,
+                correlation_uuid,
+                property_read_write_two_datetimes_response_topic,
             )
             .unwrap();
 
@@ -12597,6 +12717,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_duration_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12604,10 +12730,12 @@ mod tests {
             }"#;
             let payload: ReadWriteDurationProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_duration_topic,
                 &payload,
                 initial_property_values.read_write_duration_version,
+                correlation_uuid,
+                property_read_write_duration_response_topic,
             )
             .unwrap();
 
@@ -12639,6 +12767,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_optional_duration_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12647,10 +12781,12 @@ mod tests {
             let payload: ReadWriteOptionalDurationProperty =
                 serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_optional_duration_topic,
                 &payload,
                 initial_property_values.read_write_optional_duration_version,
+                correlation_uuid,
+                property_read_write_optional_duration_response_topic,
             )
             .unwrap();
 
@@ -12682,6 +12818,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_two_durations_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12691,10 +12833,12 @@ mod tests {
             }"#;
             let payload: ReadWriteTwoDurationsProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_two_durations_topic,
                 &payload,
                 initial_property_values.read_write_two_durations_version,
+                correlation_uuid,
+                property_read_write_two_durations_response_topic,
             )
             .unwrap();
 
@@ -12723,6 +12867,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_binary_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12730,10 +12880,12 @@ mod tests {
             }"#;
             let payload: ReadWriteBinaryProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_binary_topic,
                 &payload,
                 initial_property_values.read_write_binary_version,
+                correlation_uuid,
+                property_read_write_binary_response_topic,
             )
             .unwrap();
 
@@ -12765,6 +12917,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_optional_binary_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12772,10 +12930,12 @@ mod tests {
             }"#;
             let payload: ReadWriteOptionalBinaryProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_optional_binary_topic,
                 &payload,
                 initial_property_values.read_write_optional_binary_version,
+                correlation_uuid,
+                property_read_write_optional_binary_response_topic,
             )
             .unwrap();
 
@@ -12807,19 +12967,27 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_two_binaries_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
                 "first": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==" ,
             
-                "second": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==" 
+                "second": null 
             }"#;
             let payload: ReadWriteTwoBinariesProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_two_binaries_topic,
                 &payload,
                 initial_property_values.read_write_two_binaries_version,
+                correlation_uuid,
+                property_read_write_two_binaries_response_topic,
             )
             .unwrap();
 
@@ -12851,17 +13019,25 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_list_of_strings_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "value": [] 
+                "value": ["apples", "foo"] 
             }"#;
             let payload: ReadWriteListOfStringsProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_list_of_strings_topic,
                 &payload,
                 initial_property_values.read_write_list_of_strings_version,
+                correlation_uuid,
+                property_read_write_list_of_strings_response_topic,
             )
             .unwrap();
 
@@ -12890,6 +13066,12 @@ mod tests {
                 &topic_param_map,
             )
             .unwrap();
+            let property_read_write_lists_response_topic = strfmt(
+                "client/{client_id}/{interface_name}/property/{property_name}/update/response",
+                &topic_param_map,
+            )
+            .unwrap();
+            let correlation_uuid = uuid::Uuid::new_v4();
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
@@ -12899,10 +13081,12 @@ mod tests {
             }"#;
             let payload: ReadWriteListsProperty = serde_json::from_str(json_str).unwrap();
 
-            let update_req = property_update(
+            let update_req = property_update_request(
                 &property_read_write_lists_topic,
                 &payload,
                 initial_property_values.read_write_lists_version,
+                correlation_uuid,
+                property_read_write_lists_response_topic,
             )
             .unwrap();
 
