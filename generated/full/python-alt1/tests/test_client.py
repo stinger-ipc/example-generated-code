@@ -111,6 +111,49 @@ class TestClientProperties:
         assert client.last_birthdays == initial_property_values.last_birthdays, "Property 'last_birthdays' value does not match expected value"
         
 
+    
+    def test_favorite_number_setter(self, client):
+        new_favorite_number_value =42
+            
+        client.favorite_number = new_favorite_number_value
+    
+    def test_favorite_foods_setter(self, client):
+        new_favorite_foods_value =FavoriteFoodsProperty(
+                
+                drink="apples",
+                
+                slices_of_pizza=42,
+                
+                breakfast="apples",
+                
+            )
+        client.favorite_foods = new_favorite_foods_value
+    
+    def test_family_name_setter(self, client):
+        new_family_name_value ="apples"
+            
+        client.family_name = new_family_name_value
+    
+    def test_last_breakfast_time_setter(self, client):
+        new_last_breakfast_time_value =datetime.now(UTC)
+            
+        client.last_breakfast_time = new_last_breakfast_time_value
+    
+    def test_last_birthdays_setter(self, client):
+        new_last_birthdays_value =LastBirthdaysProperty(
+                
+                mom=datetime.now(UTC),
+                
+                dad=datetime.now(UTC),
+                
+                sister=None,
+                
+                brothers_age=42,
+                
+            )
+        client.last_birthdays = new_last_birthdays_value
+    
+
 
 class TestClientMethods:
 

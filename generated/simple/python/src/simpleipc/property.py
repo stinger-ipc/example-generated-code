@@ -6,19 +6,13 @@ LICENSE: This generated code is not subject to any license restrictions from the
 TODO: Get license text from stinger file
 """
 
-
 from typing import List
 from pydantic import BaseModel
 from .interface_types import *
 
 
-
 class SimpleInitialPropertyValues(BaseModel):
-    """ This class holds all the initial property values for the Simple interface.
-    
-    """
-    
+    """This class holds all the initial property values for the Simple interface."""
+
     school: str
     school_version: int = 0
-    
-

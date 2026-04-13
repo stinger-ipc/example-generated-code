@@ -74,6 +74,13 @@ class TestClientProperties:
         assert client.school == initial_property_values.school, "Property 'school' value does not match expected value"
         
 
+    
+    def test_school_setter(self, client):
+        new_school_value ="apples"
+            
+        client.school = new_school_value
+    
+
 
 class TestClientMethods:
 

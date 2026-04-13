@@ -124,6 +124,33 @@ class TestClientProperties:
         assert client.daily_forecast_refresh_interval == initial_property_values.daily_forecast_refresh_interval, "Property 'daily_forecast_refresh_interval' value does not match expected value"
         
 
+    
+    def test_location_setter(self, client):
+        new_location_value =LocationProperty(
+                
+                latitude=3.14,
+                
+                longitude=3.14,
+                
+            )
+        client.location = new_location_value
+    
+    def test_current_condition_refresh_interval_setter(self, client):
+        new_current_condition_refresh_interval_value =42
+            
+        client.current_condition_refresh_interval = new_current_condition_refresh_interval_value
+    
+    def test_hourly_forecast_refresh_interval_setter(self, client):
+        new_hourly_forecast_refresh_interval_value =42
+            
+        client.hourly_forecast_refresh_interval = new_hourly_forecast_refresh_interval_value
+    
+    def test_daily_forecast_refresh_interval_setter(self, client):
+        new_daily_forecast_refresh_interval_value =42
+            
+        client.daily_forecast_refresh_interval = new_daily_forecast_refresh_interval_value
+    
+
 
 class TestClientMethods:
 

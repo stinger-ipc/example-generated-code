@@ -21,19 +21,16 @@ def request_loop(client: SimpleClient):
         except futures.TimeoutError:
             print(f"Timed out waiting for response to 'trade_numbers' call")
         sleep(5)
-        
-        
-        
-        client.school = "apples"
-         
-         
-        sleep(10)
- 
 
-if __name__ == '__main__':
+        client.school = "apples"
+
+        sleep(10)
+
+
+if __name__ == "__main__":
     import sys
 
-    if len(sys.argv) > 1 and sys.argv[1] == '--help':
+    if len(sys.argv) > 1 and sys.argv[1] == "--help":
         print("Usage: client_demo.py [--help]")
         print("Connects to an MQTT broker and demonstrates Simple client functionality.")
         print("Environment variables:")
@@ -45,21 +42,18 @@ if __name__ == '__main__':
     conn = Mqtt5Connection(transport)
 
     client_builder = SimpleClientBuilder()
-    
+
     @client_builder.receive_person_entered
     def print_person_entered_receipt(person: Person):
         """
-        @param person Person 
+        @param person Person
         """
         print(f"Got a 'person_entered' signal: person={ person} ")
-    
-    
+
     @client_builder.school_updated
     def print_new_school_value(value: str):
-        """
-        """
+        """ """
         print(f"Property 'school' has been updated to: {value}")
-    
 
     discovery = SimpleClientDiscoverer(conn, client_builder)
     fut_client = discovery.get_singleton_client()
@@ -70,8 +64,8 @@ if __name__ == '__main__':
         exit(1)
 
     sleep(2)
-    
+
     threading.Thread(target=request_loop, args=(client,), daemon=True).start()
-    
+
     print("Ctrl-C will stop the program.")
     signal.pause()

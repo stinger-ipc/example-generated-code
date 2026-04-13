@@ -30,7 +30,7 @@ class FullPropertyOwnership:
         self._last_birthdays = LastBirthdaysProperty(
                 mom=datetime.now(UTC),
                 dad=datetime.now(UTC),
-                sister=None,
+                sister=datetime.now(UTC),
                 brothers_age=42,
             )  
     def get_property_favorite_number(self):

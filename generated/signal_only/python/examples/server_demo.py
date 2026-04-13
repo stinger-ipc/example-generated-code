@@ -11,9 +11,7 @@ from pyqttier import Mqtt5Connection, MqttTransportType, MqttTransport
 from signalonlyipc.server import SignalOnlyServer
 from signalonlyipc.interface_types import *
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     """
     This shows an example on how to run the code.  Ideally, your app should do something similar, but use the methods in
     a more meaningful way.
@@ -21,26 +19,19 @@ if __name__ == '__main__':
 
     import sys
 
-    if len(sys.argv) > 1 and sys.argv[1] == '--help':
+    if len(sys.argv) > 1 and sys.argv[1] == "--help":
         print("Usage: server_demo.py [--help]")
         print("Connects to an MQTT broker and demonstrates SignalOnly server functionality.")
         print("Environment variables:")
         print("  MQTT_HOSTNAME - MQTT broker hostname (default: localhost)")
         print("  MQTT_PORT - MQTT broker port (default: 1883)")
         print("  TOPIC_PARAM_PREFIX - Topic parameter (default: example)")
-        
+
         sys.exit(0)
 
-     
-    
     transport = MqttTransport(MqttTransportType.TCP, os.environ.get("MQTT_HOSTNAME", "localhost"), int(os.environ.get("MQTT_PORT", 1883)))
     conn = Mqtt5Connection(transport, client_id=os.environ.get("CLIENT_ID", "py-server-demo"))
     server = SignalOnlyServer(conn, os.environ.get("SERVICE_ID", "py-server-demo:1"), prefix=os.environ.get("TOPIC_PARAM_PREFIX", "example"))
-
-    
-    
-    
-    
 
     print("Ctrl-C will stop the program.")
 
@@ -51,14 +42,14 @@ if __name__ == '__main__':
             server.emit_maybe_number(42)
             server.emit_maybe_name("apples")
             server.emit_now(datetime.now(UTC))
-            
+
             sleep(4)
             server.emit_another_signal(one=3.14, two=True, three="apples")
             server.emit_bark(word="apples")
             server.emit_maybe_number(number=42)
             server.emit_maybe_name(name="apples")
             server.emit_now(timestamp=datetime.now(UTC))
-            
+
             sleep(42)
         except KeyboardInterrupt:
             break

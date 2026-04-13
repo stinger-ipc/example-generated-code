@@ -4,10 +4,10 @@ import concurrent.futures as futures
 from datetime import datetime, timedelta
 import isodate
 from typing import List, Optional, Any, Dict
-from textual.app import ComposeResult # typing: ignore
-from textual.screen import Screen, ModalScreen # typing: ignore
-from textual.widgets import Header, Footer, Static, RichLog, Button, Input, Label, Select, TextArea, Markdown # typing: ignore
-from textual.containers import Horizontal, VerticalScroll, Vertical # typing: ignore
+from textual.app import ComposeResult  # typing: ignore
+from textual.screen import Screen, ModalScreen  # typing: ignore
+from textual.widgets import Header, Footer, Static, RichLog, Button, Input, Label, Select, TextArea, Markdown  # typing: ignore
+from textual.containers import Horizontal, VerticalScroll, Vertical  # typing: ignore
 from simpleipc.interface_types import *
 from simpleipc.client import SimpleClient
 from pydantic import TypeAdapter
@@ -16,6 +16,7 @@ import logging
 # Configure logging
 logger = logging.getLogger("TUI-Client")
 logger.setLevel(logging.DEBUG)
+
 
 class HelpModal(ModalScreen):
     """Modal screen for displaying markdown-formatted help text."""
@@ -73,9 +74,10 @@ class HelpModal(ModalScreen):
         if event.button.id == "help_close_button":
             self.dismiss()
 
+
 class PropertyEditModal(ModalScreen[bool]):
     """Modal screen for editing a property value."""
-    
+
     CSS = """
     PropertyEditModal {
         align: center middle;
@@ -127,51 +129,45 @@ class PropertyEditModal(ModalScreen[bool]):
         margin: 0 1;
     }
     """
-    
+
     def __init__(self, property_name: str, current_value: Any, client: SimpleClient):
         super().__init__()
         self.property_name = property_name
         self.current_value = current_value
         self.client = client
-    
+
     def compose(self) -> ComposeResult:
         """Compose the modal screen."""
         with Vertical(id="property_modal_container"):
             yield Static(f"Edit: {self.property_name}", id="property_modal_title")
             yield Label(f"Current value: {self.current_value}", classes="property_input_label")
-            if self.property_name == 'school':
-                
+            if self.property_name == "school":
+
                 yield Input(placeholder=f"Enter new value", value=str(self.current_value) if self.current_value is not None else "", id="property_input")
-                
-                
-            
-            
+
             with Horizontal(id="property_button_container"):
                 yield Button("Update", variant="primary", id="update_button")
                 yield Button("Cancel", variant="error", id="cancel_button")
                 yield Button("Help", variant="default", id="help_button")
-    
-
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Handle button presses."""
         if event.button.id == "update_button":
             try:
-                if self.property_name == 'school':
+                if self.property_name == "school":
                     input_widget = self.query_one("#property_input")
                     new_school_value = str(input_widget.value)
-                    
+
                     self.client.school = new_school_value
-                
-            
+
                 self.dismiss(True)
             except Exception as e:
                 self.app.notify(f"Error updating property: {e}", severity="error")
         elif event.button.id == "help_button":
             help_text = "No documentation available."
-            if self.property_name == 'school':
+            if self.property_name == "school":
                 help_text = """No documentation provided for this property."""
-            
+
             self.app.push_screen(HelpModal(help_text, title=f"Help: {self.property_name}"))
         else:
             self.dismiss(False)
@@ -179,7 +175,7 @@ class PropertyEditModal(ModalScreen[bool]):
 
 class MethodCallModal(ModalScreen[Optional[str]]):
     """Modal screen for calling a method with inputs."""
-    
+
     CSS = """
     MethodCallModal {
         align: center middle;
@@ -242,46 +238,40 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         overflow-y: auto;
     }
     """
-    
+
     def __init__(self, method_name: str, params: Dict[str, type], client: Any):
         super().__init__()
         self.method_name = method_name
         self.params = params
         self.client = client
         self.result_widget: Optional[Static] = None
-    
+
     def compose(self) -> ComposeResult:
         """Compose the modal screen."""
         with Vertical(id="modal_container"):
             yield Static(f"Call: {self.method_name}", id="modal_title")
-            
+
             with VerticalScroll(id="inputs_container"):
-                """ Vertical Scroll container for method inputs """
-                
-                
+                """Vertical Scroll container for method inputs"""
+
                 if self.method_name == "trade_numbers":
-                    """ Generate input fields for each argument of the method """
-                    
-                    yield Label(f"your_number (PRIMITIVE)", classes="input_label") 
-                    yield Input(type="integer",
+                    """Generate input fields for each argument of the method"""
+
+                    yield Label(f"your_number (PRIMITIVE)", classes="input_label")
+                    yield Input(
+                        type="integer",
                         id=f"input_your_number",
                         placeholder="Your favorite number.",
                     )
-                    
-                    
-                    
-                 
-                 
-             
-            
+
             with Horizontal(id="button_container"):
                 yield Button("Call Method", variant="primary", id="call_button")
                 yield Button("Close", variant="error", id="cancel_button")
                 yield Button("Help", variant="default", id="help_button")
-            
+
             self.result_widget = Static("", id="result_text")
             yield self.result_widget
-    
+
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Handle button presses."""
         if event.button.id == "cancel_button":
@@ -290,10 +280,10 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             self._call_method()
         elif event.button.id == "help_button":
             help_text = "No documentation available."
-            
+
             if self.method_name == "trade_numbers":
                 help_text = """A simple method which trades favorite numbers."""
-            
+
             self.app.push_screen(HelpModal(help_text, title=f"Help: {self.method_name}"))
 
     def _call_method(self) -> None:
@@ -302,27 +292,19 @@ class MethodCallModal(ModalScreen[Optional[str]]):
         logger.debug("Calling method '%s' with params: %s", self.method_name, self.params)
         try:
             # Collect inputs
-            kwargs = {} # type: Dict[str, Any]
-            
-            
-            
+            kwargs = {}  # type: Dict[str, Any]
+
             if self.method_name == "trade_numbers":
-                
+
                 trade_numbers_your_number_input_widget = self.query_one(f"#input_your_number", Input)
                 trade_numbers_your_number_value = int(trade_numbers_your_number_input_widget.value)
                 kwargs["your_number"] = trade_numbers_your_number_value
-                
-                
-                
-             
-            
-
 
             # Call the method
             self.result_widget.update("[yellow]Calling method...[/yellow]")
             method = getattr(self.client, self.method_name)
             future_result = method(**kwargs)
-            
+
             # Wait for result (with timeout)
             try:
                 result = future_result.result(timeout=5.0)
@@ -331,7 +313,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                 self.result_widget.update("[red]Timeout waiting for response[/red]")
             except Exception as e:
                 self.result_widget.update(f"[red]Error: {e}[/red]")
-                
+
         except Exception as e:
             self.result_widget.update(f"[red]Error preparing call: {e}[/red]")
             logger.exception(f"Error preparing method call {self.method_name}", exc_info=e)
@@ -339,7 +321,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
 
 class ClientScreen(Screen):
     """Screen for interacting with a connected SimpleIPC server."""
-    
+
     CSS = """
     ClientScreen {
         layout: vertical;
@@ -410,16 +392,16 @@ class ClientScreen(Screen):
         color: $text;
     }
     """
-    
+
     BINDINGS = [
         ("escape", "back_to_discovery", "Back to Discovery"),
     ]
-    
+
     def __init__(self):
         """Initialize the client screen."""
         super().__init__()
         self.client = None
-    
+
     def compose(self) -> ComposeResult:
         """Compose the client screen widgets."""
         yield Header()
@@ -430,12 +412,12 @@ class ClientScreen(Screen):
             with VerticalScroll(id="middle_pane"):
                 yield Static("Properties", classes="pane_title")
                 # Properties will be added dynamically
-            
+
             with VerticalScroll(id="right_pane"):
                 yield Static("Signals", classes="pane_title")
                 yield RichLog(id="signals_log", highlight=True, markup=True)
         yield Footer()
-    
+
     def on_mount(self) -> None:
         """Set up signal handlers when screen mounts."""
         logger.debug("Mounting client screen")
@@ -446,49 +428,49 @@ class ClientScreen(Screen):
         if self.client is None:
             self.notify("No client available!", severity="error")
             return
-        
+
         # Add method buttons
         self._add_method_buttons()
         # Register all signal handlers
         self._register_signal_handlers()
-        
+
         # Register all property handlers
         self._register_property_handlers()
-        
-    
+
     def on_show(self):
         logger.debug("Showing client screen")
-
 
     def _add_method_buttons(self) -> None:
         """Add buttons for all call_* methods."""
         pane = self.query_one("#left_pane", VerticalScroll)
-        
+
         # Define all methods with their parameters
         methods = {
-            "trade_numbers": { "your_number": int,  }, 
-        
-        } # type: Dict[str, Dict[str, Any]]
-        
+            "trade_numbers": {
+                "your_number": int,
+            },
+        }  # type: Dict[str, Dict[str, Any]]
+
         for method_name, params in methods.items():
             btn = Button(method_name, classes="method_button")
             btn.method_name = method_name  # Store for retrieval
-            btn.method_params = params  
+            btn.method_params = params
             pane.mount(btn)
-    
+
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Handle method button presses."""
-        if hasattr(event.button, 'method_name'):
+        if hasattr(event.button, "method_name"):
             method_name = event.button.method_name
             method_params = event.button.method_params
-            
+
             # Show modal for method call
             modal = MethodCallModal(method_name, method_params, self.client)
             self.app.push_screen(modal)
+
     def _register_signal_handlers(self) -> None:
         """Register callbacks for all receive_* methods."""
         log = self.query_one("#signals_log", RichLog)
-        
+
         # Define a generic handler factory
         def make_handler(signal_name: str):
             def handler(*args, **kwargs):
@@ -499,82 +481,78 @@ class ClientScreen(Screen):
                     data = ", ".join([f"{k}={v}" for k, v in kwargs.items()])
                 else:
                     data = "(no data)"
-                
+
                 # Log to the RichLog widget
                 timestamp = datetime.now().strftime("%H:%M:%S")
                 log.write(f"[gray]{timestamp}[/gray] [bold cyan]{signal_name}[/bold cyan]: {data}")
+
             return handler
-        
+
         # Register all signal handlers
         assert self.client is not None, "Client must be initialized"
         logger.debug("Registering TUI handler for signal '%s'", "person_entered")
         self.client.receive_person_entered(make_handler("person_entered"))
-    
+
     def _register_property_handlers(self) -> None:
         """Register callbacks for all *_changed methods and create property displays."""
         pane = self.query_one("#middle_pane", VerticalScroll)
-        
+
         # Define property registration helper
         def register_property(prop_name: str, changed_method_name: str, is_writable: bool = False):
             # Create a Static widget for this property
             prop_widget = Static(id=f"prop_{prop_name}")
             prop_widget.add_class("property_item")
-            
+
             # Add writable or readonly class
             if is_writable:
                 prop_widget.add_class("writable")
                 prop_widget.can_focus = True
-                prop_widget.property_name = prop_name# Store for click handling
+                prop_widget.property_name = prop_name  # Store for click handling
             else:
                 prop_widget.add_class("readonly")
-            
+
             pane.mount(prop_widget)
-            
-            
+
             if prop_name == "school":
+
                 def on_school_updated(value: str):
                     prop_widget.current_value = value
-                    
+
                     values = []
-                    
+
                     # Single value
                     if value is None:
                         values.append("None")
                     else:
-                        
+
                         values.append(f"{value}")  # other - PRIMITIVE
-                        
-                    
+
                     value_str = "\n".join(values)
-                    
+
                     # Update the widget
-                    prop_widget.update(
-                        f"[bold cyan]{prop_name}[/bold cyan]\n{value_str}"
-                    )
+                    prop_widget.update(f"[bold cyan]{prop_name}[/bold cyan]\n{value_str}")
 
                 # Register the handler with call_immediately=True
                 assert self.client is not None, "Client must be initialized"
                 self.client.school_changed(on_school_updated, call_immediately=True)
-            
 
         # Register all properties
         register_property("school", "school_changed", is_writable=True)
-    
-    
+
     def on_click(self, event) -> None:
         """Handle clicks on property widgets."""
         assert self.client is not None, "Client must be initialized"
 
         # Check if the clicked widget is a writable property
         widget = event.widget
-        if hasattr(widget, 'property_name') and hasattr(widget, 'current_value'):
+        if hasattr(widget, "property_name") and hasattr(widget, "current_value"):
             property_name = widget.property_name
             current_value = widget.current_value
-            
+
             # Open the edit modal
             modal = PropertyEditModal(property_name, current_value, self.client)
             self.app.push_screen(modal)
-    
+
     def action_back_to_discovery(self) -> None:
         """Navigate back to the discovery screen."""
         self.app.pop_screen()

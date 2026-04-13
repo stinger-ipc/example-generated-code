@@ -1,6 +1,7 @@
 """
 Tests for weather client.
 """
+
 import pytest
 import sys
 from pathlib import Path
@@ -14,6 +15,7 @@ from weatheripc.interface_types import *
 from pyqttier.mock import MockConnection
 import json
 from typing import Dict, Any
+
 
 def to_jsonified_dict(model: BaseModel) -> Dict[str, Any]:
     """Convert a Pydantic model to a JSON-serializable dict."""
@@ -64,7 +66,6 @@ def client(mock_connection, initial_property_values):
     mock_discovered_instance = DiscoveredInstance(
         instance_id="x",
         initial_property_values=initial_property_values,
-        
         info=WeatherInterfaceInfo(
             instance="x",
             connection_topic="x/weather/x/interface",
@@ -92,65 +93,86 @@ class TestClientProperties:
 
     def test_client_properties_initialization(self, client, initial_property_values):
         """Test that client properties are initialized correctly."""
-        
-        assert hasattr(client, 'location'), "Client missing property 'location'"
+
+        assert hasattr(client, "location"), "Client missing property 'location'"
         assert client.location is not None, "Property 'location' not initialized properly"
         assert client.location == initial_property_values.location, "Property 'location' value does not match expected value"
-        
-        assert hasattr(client, 'current_temperature'), "Client missing property 'current_temperature'"
+
+        assert hasattr(client, "current_temperature"), "Client missing property 'current_temperature'"
         assert client.current_temperature is not None, "Property 'current_temperature' not initialized properly"
         assert client.current_temperature == initial_property_values.current_temperature, "Property 'current_temperature' value does not match expected value"
-        
-        assert hasattr(client, 'current_condition'), "Client missing property 'current_condition'"
+
+        assert hasattr(client, "current_condition"), "Client missing property 'current_condition'"
         assert client.current_condition is not None, "Property 'current_condition' not initialized properly"
         assert client.current_condition == initial_property_values.current_condition, "Property 'current_condition' value does not match expected value"
-        
-        assert hasattr(client, 'daily_forecast'), "Client missing property 'daily_forecast'"
+
+        assert hasattr(client, "daily_forecast"), "Client missing property 'daily_forecast'"
         assert client.daily_forecast is not None, "Property 'daily_forecast' not initialized properly"
         assert client.daily_forecast == initial_property_values.daily_forecast, "Property 'daily_forecast' value does not match expected value"
-        
-        assert hasattr(client, 'hourly_forecast'), "Client missing property 'hourly_forecast'"
+
+        assert hasattr(client, "hourly_forecast"), "Client missing property 'hourly_forecast'"
         assert client.hourly_forecast is not None, "Property 'hourly_forecast' not initialized properly"
         assert client.hourly_forecast == initial_property_values.hourly_forecast, "Property 'hourly_forecast' value does not match expected value"
-        
-        assert hasattr(client, 'current_condition_refresh_interval'), "Client missing property 'current_condition_refresh_interval'"
+
+        assert hasattr(client, "current_condition_refresh_interval"), "Client missing property 'current_condition_refresh_interval'"
         assert client.current_condition_refresh_interval is not None, "Property 'current_condition_refresh_interval' not initialized properly"
-        assert client.current_condition_refresh_interval == initial_property_values.current_condition_refresh_interval, "Property 'current_condition_refresh_interval' value does not match expected value"
-        
-        assert hasattr(client, 'hourly_forecast_refresh_interval'), "Client missing property 'hourly_forecast_refresh_interval'"
+        assert (
+            client.current_condition_refresh_interval == initial_property_values.current_condition_refresh_interval
+        ), "Property 'current_condition_refresh_interval' value does not match expected value"
+
+        assert hasattr(client, "hourly_forecast_refresh_interval"), "Client missing property 'hourly_forecast_refresh_interval'"
         assert client.hourly_forecast_refresh_interval is not None, "Property 'hourly_forecast_refresh_interval' not initialized properly"
         assert client.hourly_forecast_refresh_interval == initial_property_values.hourly_forecast_refresh_interval, "Property 'hourly_forecast_refresh_interval' value does not match expected value"
-        
-        assert hasattr(client, 'daily_forecast_refresh_interval'), "Client missing property 'daily_forecast_refresh_interval'"
+
+        assert hasattr(client, "daily_forecast_refresh_interval"), "Client missing property 'daily_forecast_refresh_interval'"
         assert client.daily_forecast_refresh_interval is not None, "Property 'daily_forecast_refresh_interval' not initialized properly"
         assert client.daily_forecast_refresh_interval == initial_property_values.daily_forecast_refresh_interval, "Property 'daily_forecast_refresh_interval' value does not match expected value"
-        
+
+    def test_location_setter(self, client):
+        new_location_value = LocationProperty(
+            latitude=3.14,
+            longitude=3.14,
+        )
+        client.location = new_location_value
+
+    def test_current_condition_refresh_interval_setter(self, client):
+        new_current_condition_refresh_interval_value = 42
+
+        client.current_condition_refresh_interval = new_current_condition_refresh_interval_value
+
+    def test_hourly_forecast_refresh_interval_setter(self, client):
+        new_hourly_forecast_refresh_interval_value = 42
+
+        client.hourly_forecast_refresh_interval = new_hourly_forecast_refresh_interval_value
+
+    def test_daily_forecast_refresh_interval_setter(self, client):
+        new_daily_forecast_refresh_interval_value = 42
+
+        client.daily_forecast_refresh_interval = new_daily_forecast_refresh_interval_value
 
 
 class TestClientMethods:
 
-    
     def test_refresh_daily_forecast_method_call_sends_request(self, mock_connection, client):
-        kwargs = {} # type: Dict[str, Any]
+        kwargs = {}  # type: Dict[str, Any]
         client.refresh_daily_forecast(**kwargs)
         assert len(mock_connection.published_messages) == 1, "No message was published for 'refresh_daily_forecast' method call"
         message = mock_connection.published_messages[0]
         expected_topic = "x/weather/x/method/refresh_daily_forecast/request"
         assert message.topic == expected_topic, f"Incorrect topic for 'refresh_daily_forecast' method call: {message.topic}"
-    
+
     def test_refresh_hourly_forecast_method_call_sends_request(self, mock_connection, client):
-        kwargs = {} # type: Dict[str, Any]
+        kwargs = {}  # type: Dict[str, Any]
         client.refresh_hourly_forecast(**kwargs)
         assert len(mock_connection.published_messages) == 1, "No message was published for 'refresh_hourly_forecast' method call"
         message = mock_connection.published_messages[0]
         expected_topic = "x/weather/x/method/refresh_hourly_forecast/request"
         assert message.topic == expected_topic, f"Incorrect topic for 'refresh_hourly_forecast' method call: {message.topic}"
-    
+
     def test_refresh_current_conditions_method_call_sends_request(self, mock_connection, client):
-        kwargs = {} # type: Dict[str, Any]
+        kwargs = {}  # type: Dict[str, Any]
         client.refresh_current_conditions(**kwargs)
         assert len(mock_connection.published_messages) == 1, "No message was published for 'refresh_current_conditions' method call"
         message = mock_connection.published_messages[0]
         expected_topic = "x/weather/x/method/refresh_current_conditions/request"
         assert message.topic == expected_topic, f"Incorrect topic for 'refresh_current_conditions' method call: {message.topic}"
-    

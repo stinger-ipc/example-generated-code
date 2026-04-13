@@ -8,9 +8,6 @@ LICENSE: This generated code is not subject to any license restrictions from the
 TODO: Get license text from stinger file
 """
 
-
-
-
 from pydantic import BaseModel, Field, PlainValidator, PlainSerializer, ConfigDict
 from datetime import datetime, timedelta, timezone
 
@@ -27,11 +24,13 @@ if sys.version_info >= (3, 9):
 else:
     from typing_extensions import Annotated
 
+
 def base64_decode_if_str(value: Union[str, bytes, None]) -> Optional[bytes]:
-    """ If the value is a string, decode it from base64 to bytes.  Otherwise return the bytes as-is."""
+    """If the value is a string, decode it from base64 to bytes.  Otherwise return the bytes as-is."""
     if isinstance(value, str):
         return base64.b64decode(value)
     return value
+
 
 class FullInterfaceInfo(BaseModel):
     interface_name: str = Field(default="Full")
@@ -42,11 +41,13 @@ class FullInterfaceInfo(BaseModel):
     timestamp: str
     prefix: str
 
+
 # There are 2 enum definitions
 class DayOfTheWeek(IntEnum):
-    """ Interface enum `dayOfTheWeek`.
+    """Interface enum `dayOfTheWeek`.
     The days of the week.
     """
+
     SUNDAY = 1
     MONDAY = 2
     TUESDAY = 3
@@ -55,10 +56,12 @@ class DayOfTheWeek(IntEnum):
     FRIDAY = 6
     SATURDAY = 7
 
+
 class MultiplesOfTen(IntEnum):
-    """ Interface enum `multiplesOfTen`.
+    """Interface enum `multiplesOfTen`.
     Enumeration of multiples of ten.
     """
+
     TEN = 10
     TWENTY = 20
     THIRTY = 30
@@ -68,192 +71,203 @@ class MultiplesOfTen(IntEnum):
 
 # There are 1 struct definitions
 class Lunch(BaseModel):
-    """ Interface struct `lunch`. """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
-    drink: Annotated[bool, Field(description="Whether or not lunch comes with a drink", )]
-    sandwich: Annotated[str, Field(description="The type of sandwich which will be served.", )]
-    crackers: Annotated[float, Field(description="The number of crackers that come with lunch.", )]
+    """Interface struct `lunch`."""
+
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
+    drink: Annotated[
+        bool,
+        Field(
+            description="Whether or not lunch comes with a drink",
+        ),
+    ]
+    sandwich: Annotated[
+        str,
+        Field(
+            description="The type of sandwich which will be served.",
+        ),
+    ]
+    crackers: Annotated[
+        float,
+        Field(
+            description="The number of crackers that come with lunch.",
+        ),
+    ]
     day: Annotated[DayOfTheWeek, Field()]
     order_number: Annotated[Optional[int], Field()]
-    time_of_lunch: Annotated[datetime, Field(description="The time when lunch is served.", )]
-    duration_of_lunch: Annotated[timedelta, Field(description="The amount of time lunch lasts.", )]
-
-
+    time_of_lunch: Annotated[
+        datetime,
+        Field(
+            description="The time when lunch is served.",
+        ),
+    ]
+    duration_of_lunch: Annotated[
+        timedelta,
+        Field(
+            description="The amount of time lunch lasts.",
+        ),
+    ]
 
 
 # There are 2 signal definitions
 class TodayIsSignalPayload(BaseModel):
-    """ Interface signal `todayIs`. 
-    """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
+    """Interface signal `todayIs`."""
+
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
     day_of_month: Annotated[int, Field(description="The calendar day of the month.", alias="dayOfMonth")]
     day_of_week: Annotated[DayOfTheWeek, Field(alias="dayOfWeek")]
 
 
-
 class RandomWordSignalPayload(BaseModel):
-    """ Interface signal `randomWord`. 
-    """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
+    """Interface signal `randomWord`."""
+
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
     word: Annotated[str, Field()]
     time: Annotated[datetime, Field()]
 
 
-
-
 # There are 6 property definitions
 class FavoriteNumberProperty(BaseModel):
-    """ Interface property `favorite_number` (multi-value struct).
-    
+    """Interface property `favorite_number` (multi-value struct).
+
     My favorite number
 
     """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
+
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
     number: Annotated[int, Field()]
 
 
-
 class FavoriteFoodsProperty(BaseModel):
-    """ Interface property `favorite_foods` (multi-value struct).
-    """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
+    """Interface property `favorite_foods` (multi-value struct)."""
+
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
     drink: Annotated[str, Field()]
     slices_of_pizza: Annotated[int, Field()]
     breakfast: Annotated[Optional[str], Field()]
 
 
-
 class LunchMenuProperty(BaseModel):
-    """ Interface property `lunch_menu` (multi-value struct).
-    """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
-    monday: Annotated[Lunch, Field()]
-    tuesday: Annotated[Lunch, Field(description="Tuesday's lunch menu.", )]
+    """Interface property `lunch_menu` (multi-value struct)."""
 
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
+    monday: Annotated[Lunch, Field()]
+    tuesday: Annotated[
+        Lunch,
+        Field(
+            description="Tuesday's lunch menu.",
+        ),
+    ]
 
 
 class FamilyNameProperty(BaseModel):
-    """ Interface property `family_name` (multi-value struct).
-    
+    """Interface property `family_name` (multi-value struct).
+
     This is to test a property with a single string value.
     """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
+
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
     family_name: Annotated[str, Field()]
 
 
-
 class LastBreakfastTimeProperty(BaseModel):
-    """ Interface property `last_breakfast_time` (multi-value struct).
-    
+    """Interface property `last_breakfast_time` (multi-value struct).
+
     This is to test a property with a single datetime value.
     """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
+
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
     timestamp: Annotated[datetime, Field()]
 
 
-
 class LastBirthdaysProperty(BaseModel):
-    """ Interface property `last_birthdays` (multi-value struct).
-    
+    """Interface property `last_birthdays` (multi-value struct).
+
     This is to test a property with multiple datetime values.
     """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
+
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
     mom: Annotated[datetime, Field()]
     dad: Annotated[datetime, Field()]
     sister: Annotated[Optional[datetime], Field()]
-    brothers_age: Annotated[Optional[int], Field(description="The age of my brothers in years.", )]
-
-
+    brothers_age: Annotated[
+        Optional[int],
+        Field(
+            description="The age of my brothers in years.",
+        ),
+    ]
 
 
 # There are 4 method definitions
 class AddNumbersMethodRequest(BaseModel):
-    """ Interface method `addNumbers` request object. 
-    """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
+    """Interface method `addNumbers` request object."""
+
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
     first: Annotated[int, Field()]
     second: Annotated[int, Field()]
     third: Annotated[Optional[int], Field()]
 
 
-
 class AddNumbersMethodResponse(BaseModel):
-    """ Interface method `addNumbers` response object. 
-    """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
+    """Interface method `addNumbers` response object."""
+
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
     sum: Annotated[int, Field()]
 
 
-
 class DoSomethingMethodRequest(BaseModel):
-    """ Interface method `doSomething` request object. 
-    """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
+    """Interface method `doSomething` request object."""
+
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
     task_to_do: Annotated[str, Field()]
 
 
-
 class DoSomethingMethodResponse(BaseModel):
-    """ Interface method `doSomething` response object. 
-    """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
+    """Interface method `doSomething` response object."""
+
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
     label: Annotated[str, Field()]
     identifier: Annotated[int, Field()]
 
 
-
 class WhatTimeIsItMethodRequest(BaseModel):
-    """ Interface method `what_time_is_it` request object. 
+    """Interface method `what_time_is_it` request object.
 
     Get the current date and time.
     """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
 
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
 
 
 class WhatTimeIsItMethodResponse(BaseModel):
-    """ Interface method `what_time_is_it` response object. 
+    """Interface method `what_time_is_it` response object.
 
     Get the current date and time.
     """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
+
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
     timestamp: Annotated[datetime, Field()]
 
 
-
 class HoldTemperatureMethodRequest(BaseModel):
-    """ Interface method `hold_temperature` request object. 
+    """Interface method `hold_temperature` request object.
 
     Hold a temperature for a specified duration.
     """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
-    temperature_celsius: Annotated[float, Field(description="The temperature to hold in degrees Celsius.", )]
 
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
+    temperature_celsius: Annotated[
+        float,
+        Field(
+            description="The temperature to hold in degrees Celsius.",
+        ),
+    ]
 
 
 class HoldTemperatureMethodResponse(BaseModel):
-    """ Interface method `hold_temperature` response object. 
+    """Interface method `hold_temperature` response object.
 
     Hold a temperature for a specified duration.
     """
-    
-    model_config = ConfigDict(populate_by_name=True, strict=True, extra='forbid')
+
+    model_config = ConfigDict(populate_by_name=True, strict=True, extra="forbid")
     success: Annotated[bool, Field()]
-
-

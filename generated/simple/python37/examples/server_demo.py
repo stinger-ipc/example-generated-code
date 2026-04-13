@@ -12,9 +12,7 @@ from simpleipc.server import SimpleServer
 from simpleipc.property import SimpleInitialPropertyValues
 from simpleipc.interface_types import *
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     """
     This shows an example on how to run the code.  Ideally, your app should do something similar, but use the methods in
     a more meaningful way.
@@ -22,56 +20,45 @@ if __name__ == '__main__':
 
     import sys
 
-    if len(sys.argv) > 1 and sys.argv[1] == '--help':
+    if len(sys.argv) > 1 and sys.argv[1] == "--help":
         print("Usage: server_demo.py [--help]")
         print("Connects to an MQTT broker and demonstrates Simple server functionality.")
         print("Environment variables:")
         print("  MQTT_HOSTNAME - MQTT broker hostname (default: localhost)")
         print("  MQTT_PORT - MQTT broker port (default: 1883)")
         print("  TOPIC_PARAM_PREFIX - Topic parameter (default: example)")
-        
+
         sys.exit(0)
 
-    
-    
     initial_property_values = SimpleInitialPropertyValues(
         school="apples",
-            
         school_version=1,
-        
     )
-     
-     
-    
+
     transport = MqttTransport(MqttTransportType.TCP, os.environ.get("MQTT_HOSTNAME", "localhost"), int(os.environ.get("MQTT_PORT", 1883)))
     conn = Mqtt5Connection(transport, client_id=os.environ.get("CLIENT_ID", "py-server-demo"))
     server = SimpleServer(conn, os.environ.get("SERVICE_ID", "py-server-demo:1"), initial_property_values, prefix=os.environ.get("TOPIC_PARAM_PREFIX", "example"))
 
-    
-    @server.handle_trade_numbers 
+    @server.handle_trade_numbers
     def trade_numbers(your_number: int) -> int:
-        """ This is an example handler for the 'trade_numbers' method.  """
+        """This is an example handler for the 'trade_numbers' method."""
         print(f"--> Running trade_numbers({your_number})'")
         return 42
-    
-    
-    
+
     @server.on_school_updated
     def on_school_update(name: str):
-        """ Example callback for when the 'school' property is updated. """
+        """Example callback for when the 'school' property is updated."""
         print(f"~~> Received update for 'school' property: { name= }")
-    
-    
 
     print("Ctrl-C will stop the program.")
 
     while True:
         try:
             server.emit_person_entered(Person(name="apples", gender=Gender.MALE))
-            
+
             sleep(4)
             server.emit_person_entered(person=Person(name="apples", gender=Gender.MALE))
-            
+
             sleep(42)
         except KeyboardInterrupt:
             break
