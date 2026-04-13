@@ -4592,20 +4592,20 @@ class TestableServer:
         if not isinstance(value, ReadWriteTwoIntegersProperty):
             raise ValueError(f"The value must be ReadWriteTwoIntegersProperty.")
 
-            value_updated = False
-            with self._property_read_write_two_integers.mutex:
-                if value != self._property_read_write_two_integers.get_value():
-                    value_updated = True
-                    self._property_read_write_two_integers.set_value(value)
-                    self._property_read_write_two_integers.version += 1
-                    prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_two_integers/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_two_integers.get_value(), self._property_read_write_two_integers.version)
-                    self._conn.publish(state_msg)
-            
-            if value_updated:
-                for read_write_two_integers_callback in self._property_read_write_two_integers.callbacks:
-                    read_write_two_integers_callback(self._property_read_write_two_integers.get_value())
-            
+        value_updated = False
+        with self._property_read_write_two_integers.mutex:
+            if value != self._property_read_write_two_integers.get_value():
+                value_updated = True
+                self._property_read_write_two_integers.set_value(value)
+                self._property_read_write_two_integers.version += 1
+                prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_two_integers/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_two_integers.get_value(), self._property_read_write_two_integers.version)
+                self._conn.publish(state_msg)
+        
+        if value_updated:
+            for read_write_two_integers_callback in self._property_read_write_two_integers.callbacks:
+                read_write_two_integers_callback(self._property_read_write_two_integers.get_value())
+        
     
 
     def set_read_write_two_integers(self, first: int, second: Optional[int]):
@@ -4811,20 +4811,20 @@ class TestableServer:
         if not isinstance(value, ReadWriteTwoStringsProperty):
             raise ValueError(f"The value must be ReadWriteTwoStringsProperty.")
 
-            value_updated = False
-            with self._property_read_write_two_strings.mutex:
-                if value != self._property_read_write_two_strings.get_value():
-                    value_updated = True
-                    self._property_read_write_two_strings.set_value(value)
-                    self._property_read_write_two_strings.version += 1
-                    prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_two_strings/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_two_strings.get_value(), self._property_read_write_two_strings.version)
-                    self._conn.publish(state_msg)
-            
-            if value_updated:
-                for read_write_two_strings_callback in self._property_read_write_two_strings.callbacks:
-                    read_write_two_strings_callback(self._property_read_write_two_strings.get_value())
-            
+        value_updated = False
+        with self._property_read_write_two_strings.mutex:
+            if value != self._property_read_write_two_strings.get_value():
+                value_updated = True
+                self._property_read_write_two_strings.set_value(value)
+                self._property_read_write_two_strings.version += 1
+                prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_two_strings/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_two_strings.get_value(), self._property_read_write_two_strings.version)
+                self._conn.publish(state_msg)
+        
+        if value_updated:
+            for read_write_two_strings_callback in self._property_read_write_two_strings.callbacks:
+                read_write_two_strings_callback(self._property_read_write_two_strings.get_value())
+        
     
 
     def set_read_write_two_strings(self, first: str, second: Optional[str]):
@@ -4978,20 +4978,20 @@ class TestableServer:
         if not isinstance(value, ReadWriteTwoStructsProperty):
             raise ValueError(f"The value must be ReadWriteTwoStructsProperty.")
 
-            value_updated = False
-            with self._property_read_write_two_structs.mutex:
-                if value != self._property_read_write_two_structs.get_value():
-                    value_updated = True
-                    self._property_read_write_two_structs.set_value(value)
-                    self._property_read_write_two_structs.version += 1
-                    prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_two_structs/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_two_structs.get_value(), self._property_read_write_two_structs.version)
-                    self._conn.publish(state_msg)
-            
-            if value_updated:
-                for read_write_two_structs_callback in self._property_read_write_two_structs.callbacks:
-                    read_write_two_structs_callback(self._property_read_write_two_structs.get_value())
-            
+        value_updated = False
+        with self._property_read_write_two_structs.mutex:
+            if value != self._property_read_write_two_structs.get_value():
+                value_updated = True
+                self._property_read_write_two_structs.set_value(value)
+                self._property_read_write_two_structs.version += 1
+                prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_two_structs/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_two_structs.get_value(), self._property_read_write_two_structs.version)
+                self._conn.publish(state_msg)
+        
+        if value_updated:
+            for read_write_two_structs_callback in self._property_read_write_two_structs.callbacks:
+                read_write_two_structs_callback(self._property_read_write_two_structs.get_value())
+        
     
 
     def set_read_write_two_structs(self, first: AllTypes, second: Optional[AllTypes]):
@@ -5197,20 +5197,20 @@ class TestableServer:
         if not isinstance(value, ReadWriteTwoEnumsProperty):
             raise ValueError(f"The value must be ReadWriteTwoEnumsProperty.")
 
-            value_updated = False
-            with self._property_read_write_two_enums.mutex:
-                if value != self._property_read_write_two_enums.get_value():
-                    value_updated = True
-                    self._property_read_write_two_enums.set_value(value)
-                    self._property_read_write_two_enums.version += 1
-                    prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_two_enums/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_two_enums.get_value(), self._property_read_write_two_enums.version)
-                    self._conn.publish(state_msg)
-            
-            if value_updated:
-                for read_write_two_enums_callback in self._property_read_write_two_enums.callbacks:
-                    read_write_two_enums_callback(self._property_read_write_two_enums.get_value())
-            
+        value_updated = False
+        with self._property_read_write_two_enums.mutex:
+            if value != self._property_read_write_two_enums.get_value():
+                value_updated = True
+                self._property_read_write_two_enums.set_value(value)
+                self._property_read_write_two_enums.version += 1
+                prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_two_enums/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_two_enums.get_value(), self._property_read_write_two_enums.version)
+                self._conn.publish(state_msg)
+        
+        if value_updated:
+            for read_write_two_enums_callback in self._property_read_write_two_enums.callbacks:
+                read_write_two_enums_callback(self._property_read_write_two_enums.get_value())
+        
     
 
     def set_read_write_two_enums(self, first: Numbers, second: Optional[Numbers]):
@@ -5364,20 +5364,20 @@ class TestableServer:
         if not isinstance(value, ReadWriteTwoDatetimesProperty):
             raise ValueError(f"The value must be ReadWriteTwoDatetimesProperty.")
 
-            value_updated = False
-            with self._property_read_write_two_datetimes.mutex:
-                if value != self._property_read_write_two_datetimes.get_value():
-                    value_updated = True
-                    self._property_read_write_two_datetimes.set_value(value)
-                    self._property_read_write_two_datetimes.version += 1
-                    prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_two_datetimes/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_two_datetimes.get_value(), self._property_read_write_two_datetimes.version)
-                    self._conn.publish(state_msg)
-            
-            if value_updated:
-                for read_write_two_datetimes_callback in self._property_read_write_two_datetimes.callbacks:
-                    read_write_two_datetimes_callback(self._property_read_write_two_datetimes.get_value())
-            
+        value_updated = False
+        with self._property_read_write_two_datetimes.mutex:
+            if value != self._property_read_write_two_datetimes.get_value():
+                value_updated = True
+                self._property_read_write_two_datetimes.set_value(value)
+                self._property_read_write_two_datetimes.version += 1
+                prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_two_datetimes/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_two_datetimes.get_value(), self._property_read_write_two_datetimes.version)
+                self._conn.publish(state_msg)
+        
+        if value_updated:
+            for read_write_two_datetimes_callback in self._property_read_write_two_datetimes.callbacks:
+                read_write_two_datetimes_callback(self._property_read_write_two_datetimes.get_value())
+        
     
 
     def set_read_write_two_datetimes(self, first: datetime, second: Optional[datetime]):
@@ -5531,20 +5531,20 @@ class TestableServer:
         if not isinstance(value, ReadWriteTwoDurationsProperty):
             raise ValueError(f"The value must be ReadWriteTwoDurationsProperty.")
 
-            value_updated = False
-            with self._property_read_write_two_durations.mutex:
-                if value != self._property_read_write_two_durations.get_value():
-                    value_updated = True
-                    self._property_read_write_two_durations.set_value(value)
-                    self._property_read_write_two_durations.version += 1
-                    prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_two_durations/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_two_durations.get_value(), self._property_read_write_two_durations.version)
-                    self._conn.publish(state_msg)
-            
-            if value_updated:
-                for read_write_two_durations_callback in self._property_read_write_two_durations.callbacks:
-                    read_write_two_durations_callback(self._property_read_write_two_durations.get_value())
-            
+        value_updated = False
+        with self._property_read_write_two_durations.mutex:
+            if value != self._property_read_write_two_durations.get_value():
+                value_updated = True
+                self._property_read_write_two_durations.set_value(value)
+                self._property_read_write_two_durations.version += 1
+                prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_two_durations/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_two_durations.get_value(), self._property_read_write_two_durations.version)
+                self._conn.publish(state_msg)
+        
+        if value_updated:
+            for read_write_two_durations_callback in self._property_read_write_two_durations.callbacks:
+                read_write_two_durations_callback(self._property_read_write_two_durations.get_value())
+        
     
 
     def set_read_write_two_durations(self, first: timedelta, second: Optional[timedelta]):
@@ -5698,20 +5698,20 @@ class TestableServer:
         if not isinstance(value, ReadWriteTwoBinariesProperty):
             raise ValueError(f"The value must be ReadWriteTwoBinariesProperty.")
 
-            value_updated = False
-            with self._property_read_write_two_binaries.mutex:
-                if value != self._property_read_write_two_binaries.get_value():
-                    value_updated = True
-                    self._property_read_write_two_binaries.set_value(value)
-                    self._property_read_write_two_binaries.version += 1
-                    prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_two_binaries/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_two_binaries.get_value(), self._property_read_write_two_binaries.version)
-                    self._conn.publish(state_msg)
-            
-            if value_updated:
-                for read_write_two_binaries_callback in self._property_read_write_two_binaries.callbacks:
-                    read_write_two_binaries_callback(self._property_read_write_two_binaries.get_value())
-            
+        value_updated = False
+        with self._property_read_write_two_binaries.mutex:
+            if value != self._property_read_write_two_binaries.get_value():
+                value_updated = True
+                self._property_read_write_two_binaries.set_value(value)
+                self._property_read_write_two_binaries.version += 1
+                prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_two_binaries/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_two_binaries.get_value(), self._property_read_write_two_binaries.version)
+                self._conn.publish(state_msg)
+        
+        if value_updated:
+            for read_write_two_binaries_callback in self._property_read_write_two_binaries.callbacks:
+                read_write_two_binaries_callback(self._property_read_write_two_binaries.get_value())
+        
     
 
     def set_read_write_two_binaries(self, first: bytes, second: Optional[bytes]):
@@ -5813,20 +5813,20 @@ class TestableServer:
         if not isinstance(value, ReadWriteListsProperty):
             raise ValueError(f"The value must be ReadWriteListsProperty.")
 
-            value_updated = False
-            with self._property_read_write_lists.mutex:
-                if value != self._property_read_write_lists.get_value():
-                    value_updated = True
-                    self._property_read_write_lists.set_value(value)
-                    self._property_read_write_lists.version += 1
-                    prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_lists/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_lists.get_value(), self._property_read_write_lists.version)
-                    self._conn.publish(state_msg)
-            
-            if value_updated:
-                for read_write_lists_callback in self._property_read_write_lists.callbacks:
-                    read_write_lists_callback(self._property_read_write_lists.get_value())
-            
+        value_updated = False
+        with self._property_read_write_lists.mutex:
+            if value != self._property_read_write_lists.get_value():
+                value_updated = True
+                self._property_read_write_lists.set_value(value)
+                self._property_read_write_lists.version += 1
+                prop_value_topic = "{prefix}/testable/{service_id}/property/read_write_lists/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_read_write_lists.get_value(), self._property_read_write_lists.version)
+                self._conn.publish(state_msg)
+        
+        if value_updated:
+            for read_write_lists_callback in self._property_read_write_lists.callbacks:
+                read_write_lists_callback(self._property_read_write_lists.get_value())
+        
     
 
     def set_read_write_lists(self, the_list: List[Numbers], optional_list: Optional[List[datetime]]):

@@ -809,20 +809,20 @@ class WeatherServer:
         if not isinstance(value, LocationProperty):
             raise ValueError(f"The value must be LocationProperty.")
 
-            value_updated = False
-            with self._property_location.mutex:
-                if value != self._property_location.get_value():
-                    value_updated = True
-                    self._property_location.set_value(value)
-                    self._property_location.version += 1
-                    prop_value_topic = "{prefix}/weather/{service_id}/property/location/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_location.get_value(), self._property_location.version)
-                    self._conn.publish(state_msg)
-            
-            if value_updated:
-                for location_callback in self._property_location.callbacks:
-                    location_callback(self._property_location.get_value())
-            
+        value_updated = False
+        with self._property_location.mutex:
+            if value != self._property_location.get_value():
+                value_updated = True
+                self._property_location.set_value(value)
+                self._property_location.version += 1
+                prop_value_topic = "{prefix}/weather/{service_id}/property/location/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_location.get_value(), self._property_location.version)
+                self._conn.publish(state_msg)
+        
+        if value_updated:
+            for location_callback in self._property_location.callbacks:
+                location_callback(self._property_location.get_value())
+        
     
 
     def set_location(self, latitude: float, longitude: float):
@@ -924,20 +924,20 @@ class WeatherServer:
         if not isinstance(value, CurrentConditionProperty):
             raise ValueError(f"The value must be CurrentConditionProperty.")
 
-            value_updated = False
-            with self._property_current_condition.mutex:
-                if value != self._property_current_condition.get_value():
-                    value_updated = True
-                    self._property_current_condition.set_value(value)
-                    self._property_current_condition.version += 1
-                    prop_value_topic = "{prefix}/weather/{service_id}/property/current_condition/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_current_condition.get_value(), self._property_current_condition.version)
-                    self._conn.publish(state_msg)
-            
-            if value_updated:
-                for current_condition_callback in self._property_current_condition.callbacks:
-                    current_condition_callback(self._property_current_condition.get_value())
-            
+        value_updated = False
+        with self._property_current_condition.mutex:
+            if value != self._property_current_condition.get_value():
+                value_updated = True
+                self._property_current_condition.set_value(value)
+                self._property_current_condition.version += 1
+                prop_value_topic = "{prefix}/weather/{service_id}/property/current_condition/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_current_condition.get_value(), self._property_current_condition.version)
+                self._conn.publish(state_msg)
+        
+        if value_updated:
+            for current_condition_callback in self._property_current_condition.callbacks:
+                current_condition_callback(self._property_current_condition.get_value())
+        
     
 
     def set_current_condition(self, condition: WeatherCondition, description: str):
@@ -987,20 +987,20 @@ class WeatherServer:
         if not isinstance(value, DailyForecastProperty):
             raise ValueError(f"The value must be DailyForecastProperty.")
 
-            value_updated = False
-            with self._property_daily_forecast.mutex:
-                if value != self._property_daily_forecast.get_value():
-                    value_updated = True
-                    self._property_daily_forecast.set_value(value)
-                    self._property_daily_forecast.version += 1
-                    prop_value_topic = "{prefix}/weather/{service_id}/property/daily_forecast/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_daily_forecast.get_value(), self._property_daily_forecast.version)
-                    self._conn.publish(state_msg)
-            
-            if value_updated:
-                for daily_forecast_callback in self._property_daily_forecast.callbacks:
-                    daily_forecast_callback(self._property_daily_forecast.get_value())
-            
+        value_updated = False
+        with self._property_daily_forecast.mutex:
+            if value != self._property_daily_forecast.get_value():
+                value_updated = True
+                self._property_daily_forecast.set_value(value)
+                self._property_daily_forecast.version += 1
+                prop_value_topic = "{prefix}/weather/{service_id}/property/daily_forecast/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_daily_forecast.get_value(), self._property_daily_forecast.version)
+                self._conn.publish(state_msg)
+        
+        if value_updated:
+            for daily_forecast_callback in self._property_daily_forecast.callbacks:
+                daily_forecast_callback(self._property_daily_forecast.get_value())
+        
     
 
     def set_daily_forecast(self, monday: ForecastForDay, tuesday: ForecastForDay, wednesday: ForecastForDay):
@@ -1054,20 +1054,20 @@ class WeatherServer:
         if not isinstance(value, HourlyForecastProperty):
             raise ValueError(f"The value must be HourlyForecastProperty.")
 
-            value_updated = False
-            with self._property_hourly_forecast.mutex:
-                if value != self._property_hourly_forecast.get_value():
-                    value_updated = True
-                    self._property_hourly_forecast.set_value(value)
-                    self._property_hourly_forecast.version += 1
-                    prop_value_topic = "{prefix}/weather/{service_id}/property/hourly_forecast/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_hourly_forecast.get_value(), self._property_hourly_forecast.version)
-                    self._conn.publish(state_msg)
-            
-            if value_updated:
-                for hourly_forecast_callback in self._property_hourly_forecast.callbacks:
-                    hourly_forecast_callback(self._property_hourly_forecast.get_value())
-            
+        value_updated = False
+        with self._property_hourly_forecast.mutex:
+            if value != self._property_hourly_forecast.get_value():
+                value_updated = True
+                self._property_hourly_forecast.set_value(value)
+                self._property_hourly_forecast.version += 1
+                prop_value_topic = "{prefix}/weather/{service_id}/property/hourly_forecast/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_hourly_forecast.get_value(), self._property_hourly_forecast.version)
+                self._conn.publish(state_msg)
+        
+        if value_updated:
+            for hourly_forecast_callback in self._property_hourly_forecast.callbacks:
+                hourly_forecast_callback(self._property_hourly_forecast.get_value())
+        
     
 
     def set_hourly_forecast(self, hour_0: ForecastForHour, hour_1: ForecastForHour, hour_2: ForecastForHour, hour_3: ForecastForHour):

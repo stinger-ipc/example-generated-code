@@ -929,16 +929,16 @@ class FullServer:
         if not isinstance(value, FavoriteFoodsProperty):
             raise ValueError(f"The value must be FavoriteFoodsProperty.")
 
-            value_updated = False
-            with self._property_favorite_foods.mutex:
-                if value != self._property_favorite_foods.get_value():
-                    value_updated = True
-                    self._property_favorite_foods.set_value(value)
-                    self._property_favorite_foods.version += 1
-                    prop_value_topic = "{prefix}/Full/{service_id}/property/favorite_foods/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_favorite_foods.get_value(), self._property_favorite_foods.version)
-                    self._conn.publish(state_msg)
-            
+        value_updated = False
+        with self._property_favorite_foods.mutex:
+            if value != self._property_favorite_foods.get_value():
+                value_updated = True
+                self._property_favorite_foods.set_value(value)
+                self._property_favorite_foods.version += 1
+                prop_value_topic = "{prefix}/Full/{service_id}/property/favorite_foods/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_favorite_foods.get_value(), self._property_favorite_foods.version)
+                self._conn.publish(state_msg)
+        
     
 
     def set_favorite_foods(self, drink: str, slices_of_pizza: int, breakfast: Optional[str]):
@@ -988,16 +988,16 @@ class FullServer:
         if not isinstance(value, LunchMenuProperty):
             raise ValueError(f"The value must be LunchMenuProperty.")
 
-            value_updated = False
-            with self._property_lunch_menu.mutex:
-                if value != self._property_lunch_menu.get_value():
-                    value_updated = True
-                    self._property_lunch_menu.set_value(value)
-                    self._property_lunch_menu.version += 1
-                    prop_value_topic = "{prefix}/Full/{service_id}/property/lunch_menu/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_lunch_menu.get_value(), self._property_lunch_menu.version)
-                    self._conn.publish(state_msg)
-            
+        value_updated = False
+        with self._property_lunch_menu.mutex:
+            if value != self._property_lunch_menu.get_value():
+                value_updated = True
+                self._property_lunch_menu.set_value(value)
+                self._property_lunch_menu.version += 1
+                prop_value_topic = "{prefix}/Full/{service_id}/property/lunch_menu/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_lunch_menu.get_value(), self._property_lunch_menu.version)
+                self._conn.publish(state_msg)
+        
     
 
     def set_lunch_menu(self, monday: Lunch, tuesday: Lunch):
@@ -1133,16 +1133,16 @@ class FullServer:
         if not isinstance(value, LastBirthdaysProperty):
             raise ValueError(f"The value must be LastBirthdaysProperty.")
 
-            value_updated = False
-            with self._property_last_birthdays.mutex:
-                if value != self._property_last_birthdays.get_value():
-                    value_updated = True
-                    self._property_last_birthdays.set_value(value)
-                    self._property_last_birthdays.version += 1
-                    prop_value_topic = "{prefix}/Full/{service_id}/property/last_birthdays/value".format(**self._topic_template_kwargs)
-                    state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_last_birthdays.get_value(), self._property_last_birthdays.version)
-                    self._conn.publish(state_msg)
-            
+        value_updated = False
+        with self._property_last_birthdays.mutex:
+            if value != self._property_last_birthdays.get_value():
+                value_updated = True
+                self._property_last_birthdays.set_value(value)
+                self._property_last_birthdays.version += 1
+                prop_value_topic = "{prefix}/Full/{service_id}/property/last_birthdays/value".format(**self._topic_template_kwargs)
+                state_msg = MessageCreator.property_state_message(prop_value_topic, self._property_last_birthdays.get_value(), self._property_last_birthdays.version)
+                self._conn.publish(state_msg)
+        
     
 
     def set_last_birthdays(self, mom: datetime, dad: datetime, sister: Optional[datetime], brothers_age: Optional[int]):
