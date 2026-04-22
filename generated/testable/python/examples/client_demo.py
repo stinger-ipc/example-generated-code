@@ -110,7 +110,7 @@ def request_loop(client: TestableClient):
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=None,
+                optional_date_time=datetime.now(UTC),
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -151,7 +151,7 @@ def request_loop(client: TestableClient):
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=None,
+                optional_date_time=datetime.now(UTC),
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -256,7 +256,7 @@ def request_loop(client: TestableClient):
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=None,
+                optional_date_time=datetime.now(UTC),
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -290,7 +290,7 @@ def request_loop(client: TestableClient):
         sleep(5)
 
         print("Making call to 'call_optional_date_time'")
-        future_resp = client.call_optional_date_time(input1=datetime.now(UTC))
+        future_resp = client.call_optional_date_time(input1=None)
         try:
             print(f"RESULT:  {future_resp.result(5)}")
         except futures.TimeoutError:
@@ -409,7 +409,7 @@ def request_loop(client: TestableClient):
             optional_string="apples",
             optional_enum=Numbers.ONE,
             optional_entry_object=Entry(key=42, value="apples"),
-            optional_date_time=None,
+            optional_date_time=datetime.now(UTC),
             optional_duration=None,
             optional_binary=b"example binary data",
             array_of_integers=[42, 2022],
@@ -508,7 +508,7 @@ def request_loop(client: TestableClient):
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=None,
+                optional_date_time=datetime.now(UTC),
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -539,11 +539,11 @@ def request_loop(client: TestableClient):
 
         client.read_write_datetime = datetime.now(UTC)
 
-        client.read_write_optional_datetime = datetime.now(UTC)
+        client.read_write_optional_datetime = None
 
         client.read_write_two_datetimes = ReadWriteTwoDatetimesProperty(
             first=datetime.now(UTC),
-            second=datetime.now(UTC),
+            second=None,
         )
 
         client.read_write_duration = timedelta(seconds=3536)
