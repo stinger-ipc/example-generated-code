@@ -137,8 +137,11 @@ AllTypes AllTypes::FromRapidJsonObject(const rapidjson::Value& jsonObj)
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             allTypes.optionalInteger = itr->value.GetInt();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             allTypes.optionalInteger = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'OptionalInteger' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -146,8 +149,11 @@ AllTypes AllTypes::FromRapidJsonObject(const rapidjson::Value& jsonObj)
         if (itr != jsonObj.MemberEnd() && itr->value.IsString()) {
             allTypes.optionalString = itr->value.GetString();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             allTypes.optionalString = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'OptionalString' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -155,8 +161,11 @@ AllTypes AllTypes::FromRapidJsonObject(const rapidjson::Value& jsonObj)
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             allTypes.optionalEnum = static_cast<Numbers>(itr->value.GetInt());
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             allTypes.optionalEnum = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'OptionalEnum' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -164,8 +173,11 @@ AllTypes AllTypes::FromRapidJsonObject(const rapidjson::Value& jsonObj)
         if (itr != jsonObj.MemberEnd() && itr->value.IsObject()) {
             allTypes.optionalEntryObject = Entry::FromRapidJsonObject(itr->value);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             allTypes.optionalEntryObject = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'optionalEntryObject' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -174,8 +186,11 @@ AllTypes AllTypes::FromRapidJsonObject(const rapidjson::Value& jsonObj)
             auto tempOptionalDateTimeIsoString = itr->value.GetString();
             allTypes.optionalDateTime = stinger::utils::parseIsoTimestamp(tempOptionalDateTimeIsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             allTypes.optionalDateTime = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'OptionalDateTime' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -184,8 +199,11 @@ AllTypes AllTypes::FromRapidJsonObject(const rapidjson::Value& jsonObj)
             auto tempOptionalDurationIsoString = itr->value.GetString();
             allTypes.optionalDuration = stinger::utils::parseIsoDuration(tempOptionalDurationIsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             allTypes.optionalDuration = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'OptionalDuration' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -194,8 +212,11 @@ AllTypes AllTypes::FromRapidJsonObject(const rapidjson::Value& jsonObj)
             auto tempOptionalBinaryB64String = itr->value.GetString();
             allTypes.optionalBinary = stinger::utils::base64Decode(tempOptionalBinaryB64String);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             allTypes.optionalBinary = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'OptionalBinary' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -228,8 +249,11 @@ AllTypes AllTypes::FromRapidJsonObject(const rapidjson::Value& jsonObj)
                 allTypes.optionalArrayOfIntegers = std::move(tempArray);
             }
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             allTypes.optionalArrayOfIntegers = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'optional_array_of_integers' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -262,8 +286,11 @@ AllTypes AllTypes::FromRapidJsonObject(const rapidjson::Value& jsonObj)
                 allTypes.optionalArrayOfStrings = std::move(tempArray);
             }
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             allTypes.optionalArrayOfStrings = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'optional_array_of_strings' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -296,8 +323,11 @@ AllTypes AllTypes::FromRapidJsonObject(const rapidjson::Value& jsonObj)
                 allTypes.optionalArrayOfEnums = std::move(tempArray);
             }
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             allTypes.optionalArrayOfEnums = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'optional_array_of_enums' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -336,8 +366,11 @@ AllTypes AllTypes::FromRapidJsonObject(const rapidjson::Value& jsonObj)
                 allTypes.optionalArrayOfDatetimes = std::move(tempArray);
             }
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             allTypes.optionalArrayOfDatetimes = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'optional_array_of_datetimes' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -376,8 +409,11 @@ AllTypes AllTypes::FromRapidJsonObject(const rapidjson::Value& jsonObj)
                 allTypes.optionalArrayOfDurations = std::move(tempArray);
             }
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             allTypes.optionalArrayOfDurations = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'optional_array_of_durations' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -416,8 +452,11 @@ AllTypes AllTypes::FromRapidJsonObject(const rapidjson::Value& jsonObj)
                 allTypes.optionalArrayOfBinaries = std::move(tempArray);
             }
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             allTypes.optionalArrayOfBinaries = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'optional_array_of_binaries' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -450,8 +489,11 @@ AllTypes AllTypes::FromRapidJsonObject(const rapidjson::Value& jsonObj)
                 allTypes.optionalArrayOfEntryObjects = std::move(tempArray);
             }
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             allTypes.optionalArrayOfEntryObjects = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'optional_array_of_entry_objects' argument doesn't have required value/type");
         }
     }
 

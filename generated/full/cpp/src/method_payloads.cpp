@@ -37,8 +37,11 @@ AddNumbersRequestArguments AddNumbersRequestArguments::FromRapidJsonObject(const
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             addNumbersArgs.third = itr->value.GetInt();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             addNumbersArgs.third = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'third' argument doesn't have required value/type");
         }
     }
 

@@ -51,8 +51,11 @@ SingleOptionalIntPayload SingleOptionalIntPayload::FromRapidJsonObject(const rap
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             singleOptionalIntPayload.value = itr->value.GetInt();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             singleOptionalIntPayload.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -93,8 +96,11 @@ ThreeIntegersPayload ThreeIntegersPayload::FromRapidJsonObject(const rapidjson::
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             threeIntegersPayload.third = itr->value.GetInt();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             threeIntegersPayload.third = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'third' argument doesn't have required value/type");
         }
     }
 
@@ -148,8 +154,11 @@ SingleOptionalStringPayload SingleOptionalStringPayload::FromRapidJsonObject(con
         if (itr != jsonObj.MemberEnd() && itr->value.IsString()) {
             singleOptionalStringPayload.value = itr->value.GetString();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             singleOptionalStringPayload.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -193,8 +202,11 @@ ThreeStringsPayload ThreeStringsPayload::FromRapidJsonObject(const rapidjson::Va
         if (itr != jsonObj.MemberEnd() && itr->value.IsString()) {
             threeStringsPayload.third = itr->value.GetString();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             threeStringsPayload.third = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'third' argument doesn't have required value/type");
         }
     }
 
@@ -255,8 +267,11 @@ SingleOptionalEnumPayload SingleOptionalEnumPayload::FromRapidJsonObject(const r
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             singleOptionalEnumPayload.value = static_cast<Numbers>(itr->value.GetInt());
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             singleOptionalEnumPayload.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -296,8 +311,11 @@ ThreeEnumsPayload ThreeEnumsPayload::FromRapidJsonObject(const rapidjson::Value&
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             threeEnumsPayload.third = static_cast<Numbers>(itr->value.GetInt());
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             threeEnumsPayload.third = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'third' argument doesn't have required value/type");
         }
     }
 
@@ -353,8 +371,11 @@ SingleOptionalStructPayload SingleOptionalStructPayload::FromRapidJsonObject(con
         if (itr != jsonObj.MemberEnd() && itr->value.IsObject()) {
             singleOptionalStructPayload.value = AllTypes::FromRapidJsonObject(itr->value);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             singleOptionalStructPayload.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -403,8 +424,11 @@ ThreeStructsPayload ThreeStructsPayload::FromRapidJsonObject(const rapidjson::Va
         if (itr != jsonObj.MemberEnd() && itr->value.IsObject()) {
             threeStructsPayload.third = AllTypes::FromRapidJsonObject(itr->value);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             threeStructsPayload.third = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'third' argument doesn't have required value/type");
         }
     }
 
@@ -483,8 +507,11 @@ SingleOptionalDatetimePayload SingleOptionalDatetimePayload::FromRapidJsonObject
             auto tempValueIsoString = itr->value.GetString();
             singleOptionalDatetimePayload.value = stinger::utils::parseIsoTimestamp(tempValueIsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             singleOptionalDatetimePayload.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -532,8 +559,11 @@ ThreeDateTimesPayload ThreeDateTimesPayload::FromRapidJsonObject(const rapidjson
             auto tempThirdIsoString = itr->value.GetString();
             threeDateTimesPayload.third = stinger::utils::parseIsoTimestamp(tempThirdIsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             threeDateTimesPayload.third = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'third' argument doesn't have required value/type");
         }
     }
 
@@ -604,8 +634,11 @@ SingleOptionalDurationPayload SingleOptionalDurationPayload::FromRapidJsonObject
             auto tempValueIsoString = itr->value.GetString();
             singleOptionalDurationPayload.value = stinger::utils::parseIsoDuration(tempValueIsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             singleOptionalDurationPayload.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -653,8 +686,11 @@ ThreeDurationsPayload ThreeDurationsPayload::FromRapidJsonObject(const rapidjson
             auto tempThirdIsoString = itr->value.GetString();
             threeDurationsPayload.third = stinger::utils::parseIsoDuration(tempThirdIsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             threeDurationsPayload.third = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'third' argument doesn't have required value/type");
         }
     }
 
@@ -725,8 +761,11 @@ SingleOptionalBinaryPayload SingleOptionalBinaryPayload::FromRapidJsonObject(con
             auto tempValueB64String = itr->value.GetString();
             singleOptionalBinaryPayload.value = stinger::utils::base64Decode(tempValueB64String);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             singleOptionalBinaryPayload.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -774,8 +813,11 @@ ThreeBinariesPayload ThreeBinariesPayload::FromRapidJsonObject(const rapidjson::
             auto tempThirdB64String = itr->value.GetString();
             threeBinariesPayload.third = stinger::utils::base64Decode(tempThirdB64String);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             threeBinariesPayload.third = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'third' argument doesn't have required value/type");
         }
     }
 
@@ -862,8 +904,11 @@ SingleOptionalArrayOfStringsPayload SingleOptionalArrayOfStringsPayload::FromRap
                 singleOptionalArrayOfStringsPayload.values = std::move(tempArray);
             }
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             singleOptionalArrayOfStringsPayload.values = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'values' argument doesn't have required value/type");
         }
     }
 

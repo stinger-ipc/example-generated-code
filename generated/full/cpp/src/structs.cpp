@@ -52,8 +52,11 @@ Lunch Lunch::FromRapidJsonObject(const rapidjson::Value& jsonObj)
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             lunch.orderNumber = itr->value.GetInt();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             lunch.orderNumber = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'order_number' argument doesn't have required value/type");
         }
     }
     { // Scoping

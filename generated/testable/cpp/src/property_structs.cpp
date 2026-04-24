@@ -61,8 +61,11 @@ ReadWriteOptionalIntegerProperty ReadWriteOptionalIntegerProperty::FromRapidJson
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             readWriteOptionalInteger.value = itr->value.GetInt();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteOptionalInteger.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -93,8 +96,11 @@ ReadWriteTwoIntegersProperty ReadWriteTwoIntegersProperty::FromRapidJsonObject(c
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             readWriteTwoIntegers.second = itr->value.GetInt();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteTwoIntegers.second = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'second' argument doesn't have required value/type");
         }
     }
 
@@ -170,8 +176,11 @@ ReadWriteOptionalStringProperty ReadWriteOptionalStringProperty::FromRapidJsonOb
         if (itr != jsonObj.MemberEnd() && itr->value.IsString()) {
             readWriteOptionalString.value = itr->value.GetString();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteOptionalString.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -205,8 +214,11 @@ ReadWriteTwoStringsProperty ReadWriteTwoStringsProperty::FromRapidJsonObject(con
         if (itr != jsonObj.MemberEnd() && itr->value.IsString()) {
             readWriteTwoStrings.second = itr->value.GetString();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteTwoStrings.second = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'second' argument doesn't have required value/type");
         }
     }
 
@@ -266,8 +278,11 @@ ReadWriteOptionalStructProperty ReadWriteOptionalStructProperty::FromRapidJsonOb
         if (itr != jsonObj.MemberEnd() && itr->value.IsObject()) {
             readWriteOptionalStruct.value = AllTypes::FromRapidJsonObject(itr->value);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteOptionalStruct.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -306,8 +321,11 @@ ReadWriteTwoStructsProperty ReadWriteTwoStructsProperty::FromRapidJsonObject(con
         if (itr != jsonObj.MemberEnd() && itr->value.IsObject()) {
             readWriteTwoStructs.second = AllTypes::FromRapidJsonObject(itr->value);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteTwoStructs.second = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'second' argument doesn't have required value/type");
         }
     }
 
@@ -390,8 +408,11 @@ ReadWriteOptionalEnumProperty ReadWriteOptionalEnumProperty::FromRapidJsonObject
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             readWriteOptionalEnum.value = static_cast<Numbers>(itr->value.GetInt());
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteOptionalEnum.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -421,8 +442,11 @@ ReadWriteTwoEnumsProperty ReadWriteTwoEnumsProperty::FromRapidJsonObject(const r
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             readWriteTwoEnums.second = static_cast<Numbers>(itr->value.GetInt());
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteTwoEnums.second = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'second' argument doesn't have required value/type");
         }
     }
 
@@ -474,8 +498,11 @@ ReadWriteOptionalDatetimeProperty ReadWriteOptionalDatetimeProperty::FromRapidJs
             auto tempValueIsoString = itr->value.GetString();
             readWriteOptionalDatetime.value = stinger::utils::parseIsoTimestamp(tempValueIsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteOptionalDatetime.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -512,8 +539,11 @@ ReadWriteTwoDatetimesProperty ReadWriteTwoDatetimesProperty::FromRapidJsonObject
             auto tempSecondIsoString = itr->value.GetString();
             readWriteTwoDatetimes.second = stinger::utils::parseIsoTimestamp(tempSecondIsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteTwoDatetimes.second = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'second' argument doesn't have required value/type");
         }
     }
 
@@ -575,8 +605,11 @@ ReadWriteOptionalDurationProperty ReadWriteOptionalDurationProperty::FromRapidJs
             auto tempValueIsoString = itr->value.GetString();
             readWriteOptionalDuration.value = stinger::utils::parseIsoDuration(tempValueIsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteOptionalDuration.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -613,8 +646,11 @@ ReadWriteTwoDurationsProperty ReadWriteTwoDurationsProperty::FromRapidJsonObject
             auto tempSecondIsoString = itr->value.GetString();
             readWriteTwoDurations.second = stinger::utils::parseIsoDuration(tempSecondIsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteTwoDurations.second = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'second' argument doesn't have required value/type");
         }
     }
 
@@ -676,8 +712,11 @@ ReadWriteOptionalBinaryProperty ReadWriteOptionalBinaryProperty::FromRapidJsonOb
             auto tempValueB64String = itr->value.GetString();
             readWriteOptionalBinary.value = stinger::utils::base64Decode(tempValueB64String);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteOptionalBinary.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -714,8 +753,11 @@ ReadWriteTwoBinariesProperty ReadWriteTwoBinariesProperty::FromRapidJsonObject(c
             auto tempSecondB64String = itr->value.GetString();
             readWriteTwoBinaries.second = stinger::utils::base64Decode(tempSecondB64String);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteTwoBinaries.second = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'second' argument doesn't have required value/type");
         }
     }
 
@@ -815,8 +857,11 @@ ReadWriteListsProperty ReadWriteListsProperty::FromRapidJsonObject(const rapidjs
                 readWriteLists.optionalList = std::move(tempArray);
             }
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             readWriteLists.optionalList = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'optionalList' argument doesn't have required value/type");
         }
     }
 

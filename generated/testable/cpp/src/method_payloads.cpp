@@ -89,8 +89,11 @@ CallOptionalIntegerRequestArguments CallOptionalIntegerRequestArguments::FromRap
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             callOptionalIntegerArgs.input1 = itr->value.GetInt();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalIntegerArgs.input1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input1' argument doesn't have required value/type");
         }
     }
 
@@ -113,8 +116,11 @@ CallOptionalIntegerReturnValues CallOptionalIntegerReturnValues::FromRapidJsonOb
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             callOptionalIntegerRc.output1 = itr->value.GetInt();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalIntegerRc.output1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output1' argument doesn't have required value/type");
         }
     }
 
@@ -155,8 +161,11 @@ CallThreeIntegersRequestArguments CallThreeIntegersRequestArguments::FromRapidJs
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             callThreeIntegersArgs.input3 = itr->value.GetInt();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callThreeIntegersArgs.input3 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input3' argument doesn't have required value/type");
         }
     }
 
@@ -201,8 +210,11 @@ CallThreeIntegersReturnValues CallThreeIntegersReturnValues::FromRapidJsonObject
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             callThreeIntegersRc.output3 = itr->value.GetInt();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callThreeIntegersRc.output3 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output3' argument doesn't have required value/type");
         }
     }
 
@@ -283,8 +295,11 @@ CallOptionalStringRequestArguments CallOptionalStringRequestArguments::FromRapid
         if (itr != jsonObj.MemberEnd() && itr->value.IsString()) {
             callOptionalStringArgs.input1 = itr->value.GetString();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalStringArgs.input1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input1' argument doesn't have required value/type");
         }
     }
 
@@ -310,8 +325,11 @@ CallOptionalStringReturnValues CallOptionalStringReturnValues::FromRapidJsonObje
         if (itr != jsonObj.MemberEnd() && itr->value.IsString()) {
             callOptionalStringRc.output1 = itr->value.GetString();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalStringRc.output1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output1' argument doesn't have required value/type");
         }
     }
 
@@ -346,8 +364,11 @@ CallThreeStringsRequestArguments CallThreeStringsRequestArguments::FromRapidJson
         if (itr != jsonObj.MemberEnd() && itr->value.IsString()) {
             callThreeStringsArgs.input2 = itr->value.GetString();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callThreeStringsArgs.input2 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input2' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -403,8 +424,11 @@ CallThreeStringsReturnValues CallThreeStringsReturnValues::FromRapidJsonObject(c
         if (itr != jsonObj.MemberEnd() && itr->value.IsString()) {
             callThreeStringsRc.output2 = itr->value.GetString();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callThreeStringsRc.output2 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output2' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -497,8 +521,11 @@ CallOptionalEnumRequestArguments CallOptionalEnumRequestArguments::FromRapidJson
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             callOptionalEnumArgs.input1 = static_cast<Numbers>(itr->value.GetInt());
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalEnumArgs.input1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input1' argument doesn't have required value/type");
         }
     }
 
@@ -520,8 +547,11 @@ CallOptionalEnumReturnValues CallOptionalEnumReturnValues::FromRapidJsonObject(c
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             callOptionalEnumRc.output1 = static_cast<Numbers>(itr->value.GetInt());
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalEnumRc.output1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output1' argument doesn't have required value/type");
         }
     }
 
@@ -561,8 +591,11 @@ CallThreeEnumsRequestArguments CallThreeEnumsRequestArguments::FromRapidJsonObje
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             callThreeEnumsArgs.input3 = static_cast<Numbers>(itr->value.GetInt());
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callThreeEnumsArgs.input3 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input3' argument doesn't have required value/type");
         }
     }
 
@@ -606,8 +639,11 @@ CallThreeEnumsReturnValues CallThreeEnumsReturnValues::FromRapidJsonObject(const
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             callThreeEnumsRc.output3 = static_cast<Numbers>(itr->value.GetInt());
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callThreeEnumsRc.output3 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output3' argument doesn't have required value/type");
         }
     }
 
@@ -693,8 +729,11 @@ CallOptionalStructRequestArguments CallOptionalStructRequestArguments::FromRapid
         if (itr != jsonObj.MemberEnd() && itr->value.IsObject()) {
             callOptionalStructArgs.input1 = AllTypes::FromRapidJsonObject(itr->value);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalStructArgs.input1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input1' argument doesn't have required value/type");
         }
     }
 
@@ -725,8 +764,11 @@ CallOptionalStructReturnValues CallOptionalStructReturnValues::FromRapidJsonObje
         if (itr != jsonObj.MemberEnd() && itr->value.IsObject()) {
             callOptionalStructRc.output1 = AllTypes::FromRapidJsonObject(itr->value);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalStructRc.output1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output1' argument doesn't have required value/type");
         }
     }
 
@@ -757,8 +799,11 @@ CallThreeStructsRequestArguments CallThreeStructsRequestArguments::FromRapidJson
         if (itr != jsonObj.MemberEnd() && itr->value.IsObject()) {
             callThreeStructsArgs.input1 = AllTypes::FromRapidJsonObject(itr->value);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callThreeStructsArgs.input1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input1' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -825,8 +870,11 @@ CallThreeStructsReturnValues CallThreeStructsReturnValues::FromRapidJsonObject(c
         if (itr != jsonObj.MemberEnd() && itr->value.IsObject()) {
             callThreeStructsRc.output1 = AllTypes::FromRapidJsonObject(itr->value);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callThreeStructsRc.output1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output1' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -952,8 +1000,11 @@ CallOptionalDateTimeRequestArguments CallOptionalDateTimeRequestArguments::FromR
             auto tempInput1IsoString = itr->value.GetString();
             callOptionalDateTimeArgs.input1 = stinger::utils::parseIsoTimestamp(tempInput1IsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalDateTimeArgs.input1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input1' argument doesn't have required value/type");
         }
     }
 
@@ -981,8 +1032,11 @@ CallOptionalDateTimeReturnValues CallOptionalDateTimeReturnValues::FromRapidJson
             auto tempOutput1IsoString = itr->value.GetString();
             callOptionalDateTimeRc.output1 = stinger::utils::parseIsoTimestamp(tempOutput1IsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalDateTimeRc.output1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output1' argument doesn't have required value/type");
         }
     }
 
@@ -1030,8 +1084,11 @@ CallThreeDateTimesRequestArguments CallThreeDateTimesRequestArguments::FromRapid
             auto tempInput3IsoString = itr->value.GetString();
             callThreeDateTimesArgs.input3 = stinger::utils::parseIsoTimestamp(tempInput3IsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callThreeDateTimesArgs.input3 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input3' argument doesn't have required value/type");
         }
     }
 
@@ -1093,8 +1150,11 @@ CallThreeDateTimesReturnValues CallThreeDateTimesReturnValues::FromRapidJsonObje
             auto tempOutput3IsoString = itr->value.GetString();
             callThreeDateTimesRc.output3 = stinger::utils::parseIsoTimestamp(tempOutput3IsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callThreeDateTimesRc.output3 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output3' argument doesn't have required value/type");
         }
     }
 
@@ -1194,8 +1254,11 @@ CallOptionalDurationRequestArguments CallOptionalDurationRequestArguments::FromR
             auto tempInput1IsoString = itr->value.GetString();
             callOptionalDurationArgs.input1 = stinger::utils::parseIsoDuration(tempInput1IsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalDurationArgs.input1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input1' argument doesn't have required value/type");
         }
     }
 
@@ -1223,8 +1286,11 @@ CallOptionalDurationReturnValues CallOptionalDurationReturnValues::FromRapidJson
             auto tempOutput1IsoString = itr->value.GetString();
             callOptionalDurationRc.output1 = stinger::utils::parseIsoDuration(tempOutput1IsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalDurationRc.output1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output1' argument doesn't have required value/type");
         }
     }
 
@@ -1272,8 +1338,11 @@ CallThreeDurationsRequestArguments CallThreeDurationsRequestArguments::FromRapid
             auto tempInput3IsoString = itr->value.GetString();
             callThreeDurationsArgs.input3 = stinger::utils::parseIsoDuration(tempInput3IsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callThreeDurationsArgs.input3 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input3' argument doesn't have required value/type");
         }
     }
 
@@ -1335,8 +1404,11 @@ CallThreeDurationsReturnValues CallThreeDurationsReturnValues::FromRapidJsonObje
             auto tempOutput3IsoString = itr->value.GetString();
             callThreeDurationsRc.output3 = stinger::utils::parseIsoDuration(tempOutput3IsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callThreeDurationsRc.output3 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output3' argument doesn't have required value/type");
         }
     }
 
@@ -1436,8 +1508,11 @@ CallOptionalBinaryRequestArguments CallOptionalBinaryRequestArguments::FromRapid
             auto tempInput1B64String = itr->value.GetString();
             callOptionalBinaryArgs.input1 = stinger::utils::base64Decode(tempInput1B64String);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalBinaryArgs.input1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input1' argument doesn't have required value/type");
         }
     }
 
@@ -1465,8 +1540,11 @@ CallOptionalBinaryReturnValues CallOptionalBinaryReturnValues::FromRapidJsonObje
             auto tempOutput1B64String = itr->value.GetString();
             callOptionalBinaryRc.output1 = stinger::utils::base64Decode(tempOutput1B64String);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalBinaryRc.output1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output1' argument doesn't have required value/type");
         }
     }
 
@@ -1514,8 +1592,11 @@ CallThreeBinariesRequestArguments CallThreeBinariesRequestArguments::FromRapidJs
             auto tempInput3B64String = itr->value.GetString();
             callThreeBinariesArgs.input3 = stinger::utils::base64Decode(tempInput3B64String);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callThreeBinariesArgs.input3 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input3' argument doesn't have required value/type");
         }
     }
 
@@ -1577,8 +1658,11 @@ CallThreeBinariesReturnValues CallThreeBinariesReturnValues::FromRapidJsonObject
             auto tempOutput3B64String = itr->value.GetString();
             callThreeBinariesRc.output3 = stinger::utils::base64Decode(tempOutput3B64String);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callThreeBinariesRc.output3 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output3' argument doesn't have required value/type");
         }
     }
 
@@ -1703,8 +1787,11 @@ CallOptionalListOfFloatsRequestArguments CallOptionalListOfFloatsRequestArgument
                 callOptionalListOfFloatsArgs.input1 = std::move(tempArray);
             }
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalListOfFloatsArgs.input1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input1' argument doesn't have required value/type");
         }
     }
 
@@ -1741,8 +1828,11 @@ CallOptionalListOfFloatsReturnValues CallOptionalListOfFloatsReturnValues::FromR
                 callOptionalListOfFloatsRc.output1 = std::move(tempArray);
             }
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callOptionalListOfFloatsRc.output1 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output1' argument doesn't have required value/type");
         }
     }
 
@@ -1796,8 +1886,11 @@ CallTwoListsRequestArguments CallTwoListsRequestArguments::FromRapidJsonObject(c
                 callTwoListsArgs.input2 = std::move(tempArray);
             }
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callTwoListsArgs.input2 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'input2' argument doesn't have required value/type");
         }
     }
 
@@ -1862,8 +1955,11 @@ CallTwoListsReturnValues CallTwoListsReturnValues::FromRapidJsonObject(const rap
                 callTwoListsRc.output2 = std::move(tempArray);
             }
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             callTwoListsRc.output2 = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'output2' argument doesn't have required value/type");
         }
     }
 

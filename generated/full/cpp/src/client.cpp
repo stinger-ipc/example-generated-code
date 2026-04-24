@@ -624,8 +624,11 @@ void FullClient::_receiveFavoriteFoodsPropertyUpdate(const stinger::mqtt::Messag
         if (itr != doc.MemberEnd() && itr->value.IsString()) {
             tempValue.breakfast = itr->value.GetString();
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.breakfast = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'breakfast' argument doesn't have required value/type");
         }
     }
 
@@ -964,8 +967,11 @@ void FullClient::_receiveLastBirthdaysPropertyUpdate(const stinger::mqtt::Messag
             auto tempSisterIsoString = itr->value.GetString();
             tempValue.sister = stinger::utils::parseIsoTimestamp(tempSisterIsoString);
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.sister = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'sister' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -973,8 +979,11 @@ void FullClient::_receiveLastBirthdaysPropertyUpdate(const stinger::mqtt::Messag
         if (itr != doc.MemberEnd() && itr->value.IsInt()) {
             tempValue.brothersAge = itr->value.GetInt();
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.brothersAge = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'brothers_age' argument doesn't have required value/type");
         }
     }
 

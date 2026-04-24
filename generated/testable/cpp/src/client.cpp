@@ -3699,8 +3699,11 @@ void TestableClient::_receiveReadWriteOptionalIntegerPropertyUpdate(const stinge
         if (itr != doc.MemberEnd() && itr->value.IsInt()) {
             tempValue.value = itr->value.GetInt();
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -3787,8 +3790,11 @@ void TestableClient::_receiveReadWriteTwoIntegersPropertyUpdate(const stinger::m
         if (itr != doc.MemberEnd() && itr->value.IsInt()) {
             tempValue.second = itr->value.GetInt();
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.second = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'second' argument doesn't have required value/type");
         }
     }
 
@@ -4004,8 +4010,11 @@ void TestableClient::_receiveReadWriteOptionalStringPropertyUpdate(const stinger
         if (itr != doc.MemberEnd() && itr->value.IsString()) {
             tempValue.value = itr->value.GetString();
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -4095,8 +4104,11 @@ void TestableClient::_receiveReadWriteTwoStringsPropertyUpdate(const stinger::mq
         if (itr != doc.MemberEnd() && itr->value.IsString()) {
             tempValue.second = itr->value.GetString();
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.second = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'second' argument doesn't have required value/type");
         }
     }
 
@@ -4268,8 +4280,11 @@ void TestableClient::_receiveReadWriteOptionalStructPropertyUpdate(const stinger
         if (itr != doc.MemberEnd() && itr->value.IsObject()) {
             tempValue.value = AllTypes::FromRapidJsonObject(itr->value);
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -4364,8 +4379,11 @@ void TestableClient::_receiveReadWriteTwoStructsPropertyUpdate(const stinger::mq
         if (itr != doc.MemberEnd() && itr->value.IsObject()) {
             tempValue.second = AllTypes::FromRapidJsonObject(itr->value);
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.second = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'second' argument doesn't have required value/type");
         }
     }
 
@@ -4592,8 +4610,11 @@ void TestableClient::_receiveReadWriteOptionalEnumPropertyUpdate(const stinger::
         if (itr != doc.MemberEnd() && itr->value.IsInt()) {
             tempValue.value = static_cast<Numbers>(itr->value.GetInt());
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -4679,8 +4700,11 @@ void TestableClient::_receiveReadWriteTwoEnumsPropertyUpdate(const stinger::mqtt
         if (itr != doc.MemberEnd() && itr->value.IsInt()) {
             tempValue.second = static_cast<Numbers>(itr->value.GetInt());
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.second = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'second' argument doesn't have required value/type");
         }
     }
 
@@ -4844,8 +4868,11 @@ void TestableClient::_receiveReadWriteOptionalDatetimePropertyUpdate(const sting
             auto tempValueIsoString = itr->value.GetString();
             tempValue.value = stinger::utils::parseIsoTimestamp(tempValueIsoString);
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -4938,8 +4965,11 @@ void TestableClient::_receiveReadWriteTwoDatetimesPropertyUpdate(const stinger::
             auto tempSecondIsoString = itr->value.GetString();
             tempValue.second = stinger::utils::parseIsoTimestamp(tempSecondIsoString);
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.second = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'second' argument doesn't have required value/type");
         }
     }
 
@@ -5113,8 +5143,11 @@ void TestableClient::_receiveReadWriteOptionalDurationPropertyUpdate(const sting
             auto tempValueIsoString = itr->value.GetString();
             tempValue.value = stinger::utils::parseIsoDuration(tempValueIsoString);
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -5207,8 +5240,11 @@ void TestableClient::_receiveReadWriteTwoDurationsPropertyUpdate(const stinger::
             auto tempSecondIsoString = itr->value.GetString();
             tempValue.second = stinger::utils::parseIsoDuration(tempSecondIsoString);
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.second = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'second' argument doesn't have required value/type");
         }
     }
 
@@ -5382,8 +5418,11 @@ void TestableClient::_receiveReadWriteOptionalBinaryPropertyUpdate(const stinger
             auto tempValueB64String = itr->value.GetString();
             tempValue.value = stinger::utils::base64Decode(tempValueB64String);
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.value = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
         }
     }
 
@@ -5476,8 +5515,11 @@ void TestableClient::_receiveReadWriteTwoBinariesPropertyUpdate(const stinger::m
             auto tempSecondB64String = itr->value.GetString();
             tempValue.second = stinger::utils::base64Decode(tempSecondB64String);
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.second = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'second' argument doesn't have required value/type");
         }
     }
 
@@ -5689,8 +5731,11 @@ void TestableClient::_receiveReadWriteListsPropertyUpdate(const stinger::mqtt::M
                 tempValue.optionalList = std::move(tempArray);
             }
 
-        } else {
+        } else if (itr == doc.MemberEnd() || itr->value.IsNull()) {
             tempValue.optionalList = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'optionalList' argument doesn't have required value/type");
         }
     }
 

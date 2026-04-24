@@ -57,8 +57,11 @@ FavoriteFoodsProperty FavoriteFoodsProperty::FromRapidJsonObject(const rapidjson
         if (itr != jsonObj.MemberEnd() && itr->value.IsString()) {
             favoriteFoods.breakfast = itr->value.GetString();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             favoriteFoods.breakfast = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'breakfast' argument doesn't have required value/type");
         }
     }
 
@@ -213,8 +216,11 @@ LastBirthdaysProperty LastBirthdaysProperty::FromRapidJsonObject(const rapidjson
             auto tempSisterIsoString = itr->value.GetString();
             lastBirthdays.sister = stinger::utils::parseIsoTimestamp(tempSisterIsoString);
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             lastBirthdays.sister = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'sister' argument doesn't have required value/type");
         }
     }
     { // Scoping
@@ -222,8 +228,11 @@ LastBirthdaysProperty LastBirthdaysProperty::FromRapidJsonObject(const rapidjson
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             lastBirthdays.brothersAge = itr->value.GetInt();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             lastBirthdays.brothersAge = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'brothers_age' argument doesn't have required value/type");
         }
     }
 

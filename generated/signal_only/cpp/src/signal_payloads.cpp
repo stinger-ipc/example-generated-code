@@ -92,8 +92,11 @@ MaybeNumberPayload MaybeNumberPayload::FromRapidJsonObject(const rapidjson::Valu
         if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
             maybeNumberPayload.number = itr->value.GetInt();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             maybeNumberPayload.number = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'number' argument doesn't have required value/type");
         }
     }
 
@@ -116,8 +119,11 @@ MaybeNamePayload MaybeNamePayload::FromRapidJsonObject(const rapidjson::Value& j
         if (itr != jsonObj.MemberEnd() && itr->value.IsString()) {
             maybeNamePayload.name = itr->value.GetString();
 
-        } else {
+        } else if (itr == jsonObj.MemberEnd() || itr->value.IsNull()) {
             maybeNamePayload.name = std::nullopt;
+
+        } else {
+            throw std::runtime_error("Received payload for the 'name' argument doesn't have required value/type");
         }
     }
 
