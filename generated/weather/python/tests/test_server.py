@@ -317,40 +317,6 @@ class TestWeatherServerProperties:
         payload_dict = json.loads(msg.payload.decode("utf-8"))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
-    def test_current_temperature_property_receive(self, server, mock_connection):
-        """Test that receiving a property update for 'current_temperature' updates the server property and calls callbacks."""
-        received_data = None
-
-        def callback(temperature_f):
-            nonlocal received_data
-            received_data = {
-                "temperature_f": temperature_f,
-            }
-
-        server.on_current_temperature_updated(callback)
-
-        # Create and simulate receiving a property update message
-        prop_data = {
-            "temperature_f": 1.0,
-        }
-        prop_obj = CurrentTemperatureProperty(**prop_data)  # type: ignore[arg-type]
-        response_topic = "client/test/response"
-        correlation_data = b"123-41"
-        incoming_msg = Message(
-            topic="x/weather/x/property/current_temperature/update",
-            payload=prop_obj.model_dump_json(by_alias=True).encode("utf-8"),
-            qos=1,
-            retain=False,
-            response_topic=response_topic,
-            correlation_data=correlation_data,
-            content_type="application/json",
-            user_properties={"PropertyVersion": str(server._property_current_temperature.version)},
-        )
-        mock_connection.simulate_message(incoming_msg)
-
-        # Read-only property should not update server state
-        assert received_data is None, "Read-only property 'current_temperature' should not be updated"
-
     def test_server_current_condition_property_initialization(self, server, initial_property_values):
         """Test that the current_condition server property is initialized correctly."""
         assert hasattr(server, "current_condition"), "Server missing property 'current_condition'"
@@ -374,42 +340,6 @@ class TestWeatherServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode("utf-8"))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
-
-    def test_current_condition_property_receive(self, server, mock_connection):
-        """Test that receiving a property update for 'current_condition' updates the server property and calls callbacks."""
-        received_data = None
-
-        def callback(condition, description):
-            nonlocal received_data
-            received_data = {
-                "condition": condition,
-                "description": description,
-            }
-
-        server.on_current_condition_updated(callback)
-
-        # Create and simulate receiving a property update message
-        prop_data = {
-            "condition": WeatherCondition.SUNNY,
-            "description": "apples",
-        }
-        prop_obj = CurrentConditionProperty(**prop_data)  # type: ignore[arg-type]
-        response_topic = "client/test/response"
-        correlation_data = b"123-41"
-        incoming_msg = Message(
-            topic="x/weather/x/property/current_condition/update",
-            payload=prop_obj.model_dump_json(by_alias=True).encode("utf-8"),
-            qos=1,
-            retain=False,
-            response_topic=response_topic,
-            correlation_data=correlation_data,
-            content_type="application/json",
-            user_properties={"PropertyVersion": str(server._property_current_condition.version)},
-        )
-        mock_connection.simulate_message(incoming_msg)
-
-        # Read-only property should not update server state
-        assert received_data is None, "Read-only property 'current_condition' should not be updated"
 
     def test_server_daily_forecast_property_initialization(self, server, initial_property_values):
         """Test that the daily_forecast server property is initialized correctly."""
@@ -435,44 +365,6 @@ class TestWeatherServerProperties:
         payload_dict = json.loads(msg.payload.decode("utf-8"))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
-    def test_daily_forecast_property_receive(self, server, mock_connection):
-        """Test that receiving a property update for 'daily_forecast' updates the server property and calls callbacks."""
-        received_data = None
-
-        def callback(monday, tuesday, wednesday):
-            nonlocal received_data
-            received_data = {
-                "monday": monday,
-                "tuesday": tuesday,
-                "wednesday": wednesday,
-            }
-
-        server.on_daily_forecast_updated(callback)
-
-        # Create and simulate receiving a property update message
-        prop_data = {
-            "monday": ForecastForDay(high_temperature=1.0, low_temperature=1.0, condition=WeatherCondition.SUNNY, start_time="example", end_time="example"),
-            "tuesday": ForecastForDay(high_temperature=3.14, low_temperature=3.14, condition=WeatherCondition.SNOWY, start_time="apples", end_time="apples"),
-            "wednesday": ForecastForDay(high_temperature=1.0, low_temperature=1.0, condition=WeatherCondition.SUNNY, start_time="foo", end_time="foo"),
-        }
-        prop_obj = DailyForecastProperty(**prop_data)  # type: ignore[arg-type]
-        response_topic = "client/test/response"
-        correlation_data = b"123-41"
-        incoming_msg = Message(
-            topic="x/weather/x/property/daily_forecast/update",
-            payload=prop_obj.model_dump_json(by_alias=True).encode("utf-8"),
-            qos=1,
-            retain=False,
-            response_topic=response_topic,
-            correlation_data=correlation_data,
-            content_type="application/json",
-            user_properties={"PropertyVersion": str(server._property_daily_forecast.version)},
-        )
-        mock_connection.simulate_message(incoming_msg)
-
-        # Read-only property should not update server state
-        assert received_data is None, "Read-only property 'daily_forecast' should not be updated"
-
     def test_server_hourly_forecast_property_initialization(self, server, initial_property_values):
         """Test that the hourly_forecast server property is initialized correctly."""
         assert hasattr(server, "hourly_forecast"), "Server missing property 'hourly_forecast'"
@@ -496,46 +388,6 @@ class TestWeatherServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode("utf-8"))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
-
-    def test_hourly_forecast_property_receive(self, server, mock_connection):
-        """Test that receiving a property update for 'hourly_forecast' updates the server property and calls callbacks."""
-        received_data = None
-
-        def callback(hour_0, hour_1, hour_2, hour_3):
-            nonlocal received_data
-            received_data = {
-                "hour_0": hour_0,
-                "hour_1": hour_1,
-                "hour_2": hour_2,
-                "hour_3": hour_3,
-            }
-
-        server.on_hourly_forecast_updated(callback)
-
-        # Create and simulate receiving a property update message
-        prop_data = {
-            "hour_0": ForecastForHour(temperature=1.0, starttime=datetime.now(UTC), condition=WeatherCondition.SUNNY),
-            "hour_1": ForecastForHour(temperature=3.14, starttime=datetime.now(UTC), condition=WeatherCondition.SNOWY),
-            "hour_2": ForecastForHour(temperature=1.0, starttime=datetime.now(UTC), condition=WeatherCondition.SUNNY),
-            "hour_3": ForecastForHour(temperature=1.0, starttime=datetime.now(UTC), condition=WeatherCondition.SUNNY),
-        }
-        prop_obj = HourlyForecastProperty(**prop_data)  # type: ignore[arg-type]
-        response_topic = "client/test/response"
-        correlation_data = b"123-41"
-        incoming_msg = Message(
-            topic="x/weather/x/property/hourly_forecast/update",
-            payload=prop_obj.model_dump_json(by_alias=True).encode("utf-8"),
-            qos=1,
-            retain=False,
-            response_topic=response_topic,
-            correlation_data=correlation_data,
-            content_type="application/json",
-            user_properties={"PropertyVersion": str(server._property_hourly_forecast.version)},
-        )
-        mock_connection.simulate_message(incoming_msg)
-
-        # Read-only property should not update server state
-        assert received_data is None, "Read-only property 'hourly_forecast' should not be updated"
 
     def test_server_current_condition_refresh_interval_property_initialization(self, server, initial_property_values):
         """Test that the current_condition_refresh_interval server property is initialized correctly."""

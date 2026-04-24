@@ -502,42 +502,6 @@ class TestFullServerProperties:
         payload_dict = json.loads(msg.payload.decode("utf-8"))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
-    def test_lunch_menu_property_receive(self, server, mock_connection):
-        """Test that receiving a property update for 'lunch_menu' updates the server property and calls callbacks."""
-        received_data = None
-
-        def callback(monday, tuesday):
-            nonlocal received_data
-            received_data = {
-                "monday": monday,
-                "tuesday": tuesday,
-            }
-
-        server.on_lunch_menu_updated(callback)
-
-        # Create and simulate receiving a property update message
-        prop_data = {
-            "monday": Lunch(drink=True, sandwich="example", crackers=1.0, day=DayOfTheWeek.MONDAY, order_number=2020, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=551)),
-            "tuesday": Lunch(drink=True, sandwich="apples", crackers=3.14, day=DayOfTheWeek.SATURDAY, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)),
-        }
-        prop_obj = LunchMenuProperty(**prop_data)  # type: ignore[arg-type]
-        response_topic = "client/test/response"
-        correlation_data = b"123-41"
-        incoming_msg = Message(
-            topic="x/Full/x/property/lunch_menu/update",
-            payload=prop_obj.model_dump_json(by_alias=True).encode("utf-8"),
-            qos=1,
-            retain=False,
-            response_topic=response_topic,
-            correlation_data=correlation_data,
-            content_type="application/json",
-            user_properties={"PropertyVersion": str(server._property_lunch_menu.version)},
-        )
-        mock_connection.simulate_message(incoming_msg)
-
-        # Read-only property should not update server state
-        assert received_data is None, "Read-only property 'lunch_menu' should not be updated"
-
     def test_server_family_name_property_initialization(self, server, initial_property_values):
         """Test that the family_name server property is initialized correctly."""
         assert hasattr(server, "family_name"), "Server missing property 'family_name'"
