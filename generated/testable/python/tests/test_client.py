@@ -176,7 +176,7 @@ def initial_property_values():
             second=Numbers.ONE,
         ),
         read_write_datetime=datetime.now(UTC),
-        read_write_optional_datetime=datetime.now(UTC),
+        read_write_optional_datetime=None,
         read_write_two_datetimes=ReadWriteTwoDatetimesProperty(
             first=datetime.now(UTC),
             second=datetime.now(UTC),
@@ -389,7 +389,7 @@ class TestClientProperties:
             optional_string="apples",
             optional_enum=Numbers.ONE,
             optional_entry_object=Entry(key=42, value="apples"),
-            optional_date_time=None,
+            optional_date_time=datetime.now(UTC),
             optional_duration=None,
             optional_binary=b"example binary data",
             array_of_integers=[42, 2022],
@@ -462,7 +462,7 @@ class TestClientProperties:
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=None,
+                optional_date_time=datetime.now(UTC),
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -538,7 +538,7 @@ class TestClientProperties:
         client.read_write_datetime = new_read_write_datetime_value
 
     def test_read_write_optional_datetime_setter(self, client):
-        new_read_write_optional_datetime_value = None
+        new_read_write_optional_datetime_value = datetime.now(UTC)
 
         client.read_write_optional_datetime = new_read_write_optional_datetime_value
 
@@ -800,7 +800,7 @@ class TestClientMethods:
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=None,
+                optional_date_time=datetime.now(UTC),
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -832,7 +832,7 @@ class TestClientMethods:
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=datetime.now(UTC),
+                optional_date_time=None,
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -864,7 +864,7 @@ class TestClientMethods:
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=datetime.now(UTC),
+                optional_date_time=None,
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
