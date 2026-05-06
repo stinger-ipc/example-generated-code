@@ -2,6 +2,7 @@
 
 import concurrent.futures as futures
 from datetime import datetime, timedelta
+from json import dumps as json_dumps
 import isodate
 from typing import List, Optional, Any, Dict
 from textual.app import ComposeResult # typing: ignore
@@ -10,7 +11,7 @@ from textual.widgets import Header, Footer, Static, RichLog, Button, Input, Labe
 from textual.containers import Horizontal, VerticalScroll, Vertical # typing: ignore
 from signalonlyipc.interface_types import *
 from signalonlyipc.client import SignalOnlyClient
-from pydantic import TypeAdapter
+from pydantic import TypeAdapter, BaseModel
 import logging
 
 # Configure logging

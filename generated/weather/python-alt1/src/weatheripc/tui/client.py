@@ -2,6 +2,7 @@
 
 import concurrent.futures as futures
 from datetime import datetime, timedelta
+from json import dumps as json_dumps
 import isodate
 from typing import List, Optional, Any, Dict
 from textual.app import ComposeResult # typing: ignore
@@ -10,7 +11,7 @@ from textual.widgets import Header, Footer, Static, RichLog, Button, Input, Labe
 from textual.containers import Horizontal, VerticalScroll, Vertical # typing: ignore
 from weatheripc.interface_types import *
 from weatheripc.client import WeatherClient
-from pydantic import TypeAdapter
+from pydantic import TypeAdapter, BaseModel
 import logging
 
 # Configure logging
@@ -141,10 +142,14 @@ class PropertyEditModal(ModalScreen[bool]):
             yield Label(f"Current value: {self.current_value}", classes="property_input_label")
             if self.property_name == 'location':
                     yield Label(f"latitude", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"latitude value", value=str(self.current_value.latitude), classes="property_input_value", id="property_input_latitude")
+                    
                 
                     yield Label(f"longitude", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"longitude value", value=str(self.current_value.longitude), classes="property_input_value", id="property_input_longitude")
+                    
                 
             if self.property_name == 'current_temperature':
                 
@@ -153,33 +158,51 @@ class PropertyEditModal(ModalScreen[bool]):
                 
             if self.property_name == 'current_condition':
                     yield Label(f"condition", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"condition value", value=str(self.current_value.condition), classes="property_input_value", id="property_input_condition")
+                    
                 
                     yield Label(f"description", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"description value", value=str(self.current_value.description), classes="property_input_value", id="property_input_description")
+                    
                 
             if self.property_name == 'daily_forecast':
                     yield Label(f"monday (JSON)", classes="property_input_value_label")
-                    yield Input(placeholder=f"monday value", value=self.current_value.monday.model_dump_json(), classes="property_input_value", id="property_input_monday")
+                    
+                    yield TextArea.code_editor(language="json", text=f"{self.current_value.monday.model_dump_json()}", id="property_input_monday")
+                    
                 
                     yield Label(f"tuesday (JSON)", classes="property_input_value_label")
-                    yield Input(placeholder=f"tuesday value", value=self.current_value.tuesday.model_dump_json(), classes="property_input_value", id="property_input_tuesday")
+                    
+                    yield TextArea.code_editor(language="json", text=f"{self.current_value.tuesday.model_dump_json()}", id="property_input_tuesday")
+                    
                 
                     yield Label(f"wednesday (JSON)", classes="property_input_value_label")
-                    yield Input(placeholder=f"wednesday value", value=self.current_value.wednesday.model_dump_json(), classes="property_input_value", id="property_input_wednesday")
+                    
+                    yield TextArea.code_editor(language="json", text=f"{self.current_value.wednesday.model_dump_json()}", id="property_input_wednesday")
+                    
                 
             if self.property_name == 'hourly_forecast':
                     yield Label(f"hour_0 (JSON)", classes="property_input_value_label")
-                    yield Input(placeholder=f"hour_0 value", value=self.current_value.hour_0.model_dump_json(), classes="property_input_value", id="property_input_hour_0")
+                    
+                    yield TextArea.code_editor(language="json", text=f"{self.current_value.hour_0.model_dump_json()}", id="property_input_hour_0")
+                    
                 
                     yield Label(f"hour_1 (JSON)", classes="property_input_value_label")
-                    yield Input(placeholder=f"hour_1 value", value=self.current_value.hour_1.model_dump_json(), classes="property_input_value", id="property_input_hour_1")
+                    
+                    yield TextArea.code_editor(language="json", text=f"{self.current_value.hour_1.model_dump_json()}", id="property_input_hour_1")
+                    
                 
                     yield Label(f"hour_2 (JSON)", classes="property_input_value_label")
-                    yield Input(placeholder=f"hour_2 value", value=self.current_value.hour_2.model_dump_json(), classes="property_input_value", id="property_input_hour_2")
+                    
+                    yield TextArea.code_editor(language="json", text=f"{self.current_value.hour_2.model_dump_json()}", id="property_input_hour_2")
+                    
                 
                     yield Label(f"hour_3 (JSON)", classes="property_input_value_label")
-                    yield Input(placeholder=f"hour_3 value", value=self.current_value.hour_3.model_dump_json(), classes="property_input_value", id="property_input_hour_3")
+                    
+                    yield TextArea.code_editor(language="json", text=f"{self.current_value.hour_3.model_dump_json()}", id="property_input_hour_3")
+                    
                 
             if self.property_name == 'current_condition_refresh_interval':
                 
@@ -212,11 +235,15 @@ class PropertyEditModal(ModalScreen[bool]):
                 if self.property_name == 'location':
                     input_widget_latitude = self.query_one("#property_input_latitude", Input)
                     # latitude should be ArgPrimitiveType.FLOAT
+                    
                     new_location_value_latitude = float(input_widget_latitude.value)
+                    
                     
                     input_widget_longitude = self.query_one("#property_input_longitude", Input)
                     # longitude should be ArgPrimitiveType.FLOAT
+                    
                     new_location_value_longitude = float(input_widget_longitude.value)
+                    
                     
                     new_location_value = LocationProperty(
                         latitude=new_location_value_latitude,
@@ -226,17 +253,23 @@ class PropertyEditModal(ModalScreen[bool]):
                     self.client.location = new_location_value
                 elif self.property_name == 'current_condition_refresh_interval':
                     input_widget = self.query_one("#property_input")
+                    
                     new_current_condition_refresh_interval_value = int(input_widget.value)
+                    
                     
                     self.client.current_condition_refresh_interval = new_current_condition_refresh_interval_value
                 elif self.property_name == 'hourly_forecast_refresh_interval':
                     input_widget = self.query_one("#property_input")
+                    
                     new_hourly_forecast_refresh_interval_value = int(input_widget.value)
+                    
                     
                     self.client.hourly_forecast_refresh_interval = new_hourly_forecast_refresh_interval_value
                 elif self.property_name == 'daily_forecast_refresh_interval':
                     input_widget = self.query_one("#property_input")
+                    
                     new_daily_forecast_refresh_interval_value = int(input_widget.value)
+                    
                     
                     self.client.daily_forecast_refresh_interval = new_daily_forecast_refresh_interval_value
                 

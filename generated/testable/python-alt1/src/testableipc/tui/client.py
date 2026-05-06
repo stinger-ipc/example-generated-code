@@ -2,6 +2,7 @@
 
 import concurrent.futures as futures
 from datetime import datetime, timedelta
+from json import dumps as json_dumps
 import isodate
 from typing import List, Optional, Any, Dict
 from textual.app import ComposeResult # typing: ignore
@@ -10,7 +11,7 @@ from textual.widgets import Header, Footer, Static, RichLog, Button, Input, Labe
 from textual.containers import Horizontal, VerticalScroll, Vertical # typing: ignore
 from testableipc.interface_types import *
 from testableipc.client import TestableClient
-from pydantic import TypeAdapter
+from pydantic import TypeAdapter, BaseModel
 import logging
 
 # Configure logging
@@ -156,10 +157,14 @@ class PropertyEditModal(ModalScreen[bool]):
                 
             if self.property_name == 'read_write_two_integers':
                     yield Label(f"first", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"first value", value=str(self.current_value.first), classes="property_input_value", id="property_input_first")
+                    
                 
                     yield Label(f"second", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"second value", value=str(self.current_value.second), classes="property_input_value", id="property_input_second")
+                    
                 
             if self.property_name == 'read_only_string':
                 
@@ -178,27 +183,35 @@ class PropertyEditModal(ModalScreen[bool]):
                 
             if self.property_name == 'read_write_two_strings':
                     yield Label(f"first", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"first value", value=str(self.current_value.first), classes="property_input_value", id="property_input_first")
+                    
                 
                     yield Label(f"second", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"second value", value=str(self.current_value.second), classes="property_input_value", id="property_input_second")
+                    
                 
             if self.property_name == 'read_write_struct':
                 
-                yield Input(placeholder=f"Enter new value", value=str(self.current_value) if self.current_value is not None else "", id="property_input")
+                yield TextArea.code_editor(language="json", text=f"{self.current_value.model_dump_json()}", id="property_input")
                 
                 
             if self.property_name == 'read_write_optional_struct':
                 
-                yield Input(placeholder=f"Enter new value", value=str(self.current_value) if self.current_value is not None else "", id="property_input")
+                yield TextArea.code_editor(language="json", text=f"{self.current_value.model_dump_json()}", id="property_input")
                 
                 
             if self.property_name == 'read_write_two_structs':
                     yield Label(f"first (JSON)", classes="property_input_value_label")
-                    yield Input(placeholder=f"first value", value=self.current_value.first.model_dump_json(), classes="property_input_value", id="property_input_first")
+                    
+                    yield TextArea.code_editor(language="json", text=f"{self.current_value.first.model_dump_json()}", id="property_input_first")
+                    
                 
                     yield Label(f"second (JSON)", classes="property_input_value_label")
-                    yield Input(placeholder=f"second value", value=self.current_value.second.model_dump_json(), classes="property_input_value", id="property_input_second")
+                    
+                    yield TextArea.code_editor(language="json", text=f"{self.current_value.second.model_dump_json()}", id="property_input_second")
+                    
                 
             if self.property_name == 'read_only_enum':
                 
@@ -229,10 +242,14 @@ class PropertyEditModal(ModalScreen[bool]):
                 
             if self.property_name == 'read_write_two_enums':
                     yield Label(f"first", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"first value", value=str(self.current_value.first), classes="property_input_value", id="property_input_first")
+                    
                 
                     yield Label(f"second", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"second value", value=str(self.current_value.second), classes="property_input_value", id="property_input_second")
+                    
                 
             if self.property_name == 'read_write_datetime':
                 
@@ -246,10 +263,14 @@ class PropertyEditModal(ModalScreen[bool]):
                 
             if self.property_name == 'read_write_two_datetimes':
                     yield Label(f"first", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"first value", value=str(self.current_value.first), classes="property_input_value", id="property_input_first")
+                    
                 
                     yield Label(f"second", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"second value", value=str(self.current_value.second), classes="property_input_value", id="property_input_second")
+                    
                 
             if self.property_name == 'read_write_duration':
                 
@@ -263,10 +284,14 @@ class PropertyEditModal(ModalScreen[bool]):
                 
             if self.property_name == 'read_write_two_durations':
                     yield Label(f"first", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"first value", value=str(self.current_value.first), classes="property_input_value", id="property_input_first")
+                    
                 
                     yield Label(f"second", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"second value", value=str(self.current_value.second), classes="property_input_value", id="property_input_second")
+                    
                 
             if self.property_name == 'read_write_binary':
                 
@@ -280,22 +305,32 @@ class PropertyEditModal(ModalScreen[bool]):
                 
             if self.property_name == 'read_write_two_binaries':
                     yield Label(f"first", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"first value", value=str(self.current_value.first), classes="property_input_value", id="property_input_first")
+                    
                 
                     yield Label(f"second", classes="property_input_value_label")
+                    
                     yield Input(placeholder=f"second value", value=str(self.current_value.second), classes="property_input_value", id="property_input_second")
+                    
                 
             if self.property_name == 'read_write_list_of_strings':
                 
-                yield Input(placeholder=f"Enter new value", value=str(self.current_value) if self.current_value is not None else "", id="property_input")
+                yield TextArea.code_editor(language="json", text=f"[{", ".join([(x.model_dump_json() if isinstance(x, BaseModel) else json_dumps(x)) for x in self.current_value])}]", id="property_input")
                 
                 
             if self.property_name == 'read_write_lists':
-                    yield Label(f"the_list", classes="property_input_value_label")
-                    yield Input(placeholder=f"the_list value", value=str(self.current_value.the_list), classes="property_input_value", id="property_input_the_list")
+                    yield Label(f"the_list (JSON)", classes="property_input_value_label")
+                    
+                    type_adapter = TypeAdapter(List[Numbers])
+                    yield TextArea.code_editor(language="json", text=f"{type_adapter.dump_json(self.current_value.the_list).decode('utf-8')}", id="property_input_the_list")
+                    
                 
-                    yield Label(f"optionalList", classes="property_input_value_label")
-                    yield Input(placeholder=f"optionalList value", value=str(self.current_value.optional_list), classes="property_input_value", id="property_input_optional_list")
+                    yield Label(f"optionalList (JSON)", classes="property_input_value_label")
+                    
+                    type_adapter = TypeAdapter(Optional[List[datetime]])
+                    yield TextArea.code_editor(language="json", text=f"{type_adapter.dump_json(self.current_value.optional_list).decode('utf-8')}", id="property_input_optional_list")
+                    
                 
             
             
@@ -312,22 +347,30 @@ class PropertyEditModal(ModalScreen[bool]):
             try:
                 if self.property_name == 'read_write_integer':
                     input_widget = self.query_one("#property_input")
+                    
                     new_read_write_integer_value = int(input_widget.value)
+                    
                     
                     self.client.read_write_integer = new_read_write_integer_value
                 elif self.property_name == 'read_write_optional_integer':
                     input_widget = self.query_one("#property_input")
+                    
                     new_read_write_optional_integer_value = int(input_widget.value) if input_widget.value else None
+                    
                     
                     self.client.read_write_optional_integer = new_read_write_optional_integer_value
                 elif self.property_name == 'read_write_two_integers':
                     input_widget_first = self.query_one("#property_input_first", Input)
                     # first should be ArgPrimitiveType.INTEGER
+                    
                     new_read_write_two_integers_value_first = int(input_widget_first.value)
+                    
                     
                     input_widget_second = self.query_one("#property_input_second", Input)
                     # second should be ArgPrimitiveType.INTEGER
+                    
                     new_read_write_two_integers_value_second = int(input_widget_second.value) if input_widget_second.value else None
+                    
                     
                     new_read_write_two_integers_value = ReadWriteTwoIntegersProperty(
                         first=new_read_write_two_integers_value_first,
@@ -337,22 +380,30 @@ class PropertyEditModal(ModalScreen[bool]):
                     self.client.read_write_two_integers = new_read_write_two_integers_value
                 elif self.property_name == 'read_write_string':
                     input_widget = self.query_one("#property_input")
+                    
                     new_read_write_string_value = str(input_widget.value)
+                    
                     
                     self.client.read_write_string = new_read_write_string_value
                 elif self.property_name == 'read_write_optional_string':
                     input_widget = self.query_one("#property_input")
+                    
                     new_read_write_optional_string_value = str(input_widget.value) if input_widget.value else None
+                    
                     
                     self.client.read_write_optional_string = new_read_write_optional_string_value
                 elif self.property_name == 'read_write_two_strings':
                     input_widget_first = self.query_one("#property_input_first", Input)
                     # first should be ArgPrimitiveType.STRING
+                    
                     new_read_write_two_strings_value_first = str(input_widget_first.value)
+                    
                     
                     input_widget_second = self.query_one("#property_input_second", Input)
                     # second should be ArgPrimitiveType.STRING
+                    
                     new_read_write_two_strings_value_second = str(input_widget_second.value) if input_widget_second.value else None
+                    
                     
                     new_read_write_two_strings_value = ReadWriteTwoStringsProperty(
                         first=new_read_write_two_strings_value_first,
@@ -362,22 +413,30 @@ class PropertyEditModal(ModalScreen[bool]):
                     self.client.read_write_two_strings = new_read_write_two_strings_value
                 elif self.property_name == 'read_write_struct':
                     input_widget = self.query_one("#property_input")
+                    
                     new_read_write_struct_value = AllTypes.model_validate_json(input_widget.value)
+                    
                     
                     self.client.read_write_struct = new_read_write_struct_value
                 elif self.property_name == 'read_write_optional_struct':
                     input_widget = self.query_one("#property_input")
+                    
                     new_read_write_optional_struct_value = AllTypes.model_validate_json(input_widget.value) if input_widget.value else None
+                    
                     
                     self.client.read_write_optional_struct = new_read_write_optional_struct_value
                 elif self.property_name == 'read_write_two_structs':
-                    input_widget_first = self.query_one("#property_input_first", Input)
+                    input_widget_first = self.query_one("#property_input_first", TextArea)
                     # first should be 
+                    
                     new_read_write_two_structs_value_first = AllTypes.model_validate_json(input_widget_first.value)
                     
-                    input_widget_second = self.query_one("#property_input_second", Input)
+                    
+                    input_widget_second = self.query_one("#property_input_second", TextArea)
                     # second should be 
+                    
                     new_read_write_two_structs_value_second = AllTypes.model_validate_json(input_widget_second.value) if input_widget_second.value else None
+                    
                     
                     new_read_write_two_structs_value = ReadWriteTwoStructsProperty(
                         first=new_read_write_two_structs_value_first,
@@ -387,22 +446,30 @@ class PropertyEditModal(ModalScreen[bool]):
                     self.client.read_write_two_structs = new_read_write_two_structs_value
                 elif self.property_name == 'read_write_enum':
                     input_widget = self.query_one("#property_input")
+                    
                     new_read_write_enum_value = Numbers(input_widget.value)
+                    
                     
                     self.client.read_write_enum = new_read_write_enum_value
                 elif self.property_name == 'read_write_optional_enum':
                     input_widget = self.query_one("#property_input")
+                    
                     new_read_write_optional_enum_value = Numbers(input_widget.value) if input_widget.value else None
+                    
                     
                     self.client.read_write_optional_enum = new_read_write_optional_enum_value
                 elif self.property_name == 'read_write_two_enums':
                     input_widget_first = self.query_one("#property_input_first", Input)
                     # first should be 
+                    
                     new_read_write_two_enums_value_first = Numbers(input_widget_first.value)
+                    
                     
                     input_widget_second = self.query_one("#property_input_second", Input)
                     # second should be 
+                    
                     new_read_write_two_enums_value_second = Numbers(input_widget_second.value) if input_widget_second.value else None
+                    
                     
                     new_read_write_two_enums_value = ReadWriteTwoEnumsProperty(
                         first=new_read_write_two_enums_value_first,
@@ -412,22 +479,30 @@ class PropertyEditModal(ModalScreen[bool]):
                     self.client.read_write_two_enums = new_read_write_two_enums_value
                 elif self.property_name == 'read_write_datetime':
                     input_widget = self.query_one("#property_input")
+                    
                     new_read_write_datetime_value = datetime.fromisoformat(input_widget.value)
+                    
                     
                     self.client.read_write_datetime = new_read_write_datetime_value
                 elif self.property_name == 'read_write_optional_datetime':
                     input_widget = self.query_one("#property_input")
+                    
                     new_read_write_optional_datetime_value = datetime.fromisoformat(input_widget.value) if input_widget.value else None
+                    
                     
                     self.client.read_write_optional_datetime = new_read_write_optional_datetime_value
                 elif self.property_name == 'read_write_two_datetimes':
                     input_widget_first = self.query_one("#property_input_first", Input)
                     # first should be 
+                    
                     new_read_write_two_datetimes_value_first = datetime.fromisoformat(input_widget_first.value)
+                    
                     
                     input_widget_second = self.query_one("#property_input_second", Input)
                     # second should be 
+                    
                     new_read_write_two_datetimes_value_second = datetime.fromisoformat(input_widget_second.value) if input_widget_second.value else None
+                    
                     
                     new_read_write_two_datetimes_value = ReadWriteTwoDatetimesProperty(
                         first=new_read_write_two_datetimes_value_first,
@@ -437,22 +512,30 @@ class PropertyEditModal(ModalScreen[bool]):
                     self.client.read_write_two_datetimes = new_read_write_two_datetimes_value
                 elif self.property_name == 'read_write_duration':
                     input_widget = self.query_one("#property_input")
+                    
                     new_read_write_duration_value = isodate.parse_duration(input_widget.value)
+                    
                     
                     self.client.read_write_duration = new_read_write_duration_value
                 elif self.property_name == 'read_write_optional_duration':
                     input_widget = self.query_one("#property_input")
+                    
                     new_read_write_optional_duration_value = isodate.parse_duration(input_widget.value) if input_widget.value else None
+                    
                     
                     self.client.read_write_optional_duration = new_read_write_optional_duration_value
                 elif self.property_name == 'read_write_two_durations':
                     input_widget_first = self.query_one("#property_input_first", Input)
                     # first should be 
+                    
                     new_read_write_two_durations_value_first = isodate.parse_duration(input_widget_first.value)
+                    
                     
                     input_widget_second = self.query_one("#property_input_second", Input)
                     # second should be 
+                    
                     new_read_write_two_durations_value_second = isodate.parse_duration(input_widget_second.value) if input_widget_second.value else None
+                    
                     
                     new_read_write_two_durations_value = ReadWriteTwoDurationsProperty(
                         first=new_read_write_two_durations_value_first,
@@ -462,22 +545,30 @@ class PropertyEditModal(ModalScreen[bool]):
                     self.client.read_write_two_durations = new_read_write_two_durations_value
                 elif self.property_name == 'read_write_binary':
                     input_widget = self.query_one("#property_input")
+                    
                     new_read_write_binary_value = input_widget.value.encode('utf-8')
+                    
                     
                     self.client.read_write_binary = new_read_write_binary_value
                 elif self.property_name == 'read_write_optional_binary':
                     input_widget = self.query_one("#property_input")
+                    
                     new_read_write_optional_binary_value = input_widget.value.encode('utf-8') if input_widget.value else None
+                    
                     
                     self.client.read_write_optional_binary = new_read_write_optional_binary_value
                 elif self.property_name == 'read_write_two_binaries':
                     input_widget_first = self.query_one("#property_input_first", Input)
                     # first should be 
+                    
                     new_read_write_two_binaries_value_first = input_widget_first.value.encode('utf-8')
+                    
                     
                     input_widget_second = self.query_one("#property_input_second", Input)
                     # second should be 
+                    
                     new_read_write_two_binaries_value_second = input_widget_second.value.encode('utf-8') if input_widget_second.value else None
+                    
                     
                     new_read_write_two_binaries_value = ReadWriteTwoBinariesProperty(
                         first=new_read_write_two_binaries_value_first,
@@ -487,17 +578,26 @@ class PropertyEditModal(ModalScreen[bool]):
                     self.client.read_write_two_binaries = new_read_write_two_binaries_value
                 elif self.property_name == 'read_write_list_of_strings':
                     input_widget = self.query_one("#property_input")
-                    new_read_write_list_of_strings_value = [str(v) for v in input_widget.value.split(',')]
+                    
+                    type_adapter = TypeAdapter(List[str])
+                    new_read_write_list_of_strings_value = type_adapter.validate_json(input_widget.text.strip())
+                    
                     
                     self.client.read_write_list_of_strings = new_read_write_list_of_strings_value
                 elif self.property_name == 'read_write_lists':
-                    input_widget_the_list = self.query_one("#property_input_the_list", Input)
+                    input_widget_the_list = self.query_one("#property_input_the_list", TextArea)
                     # the_list should be 
-                    new_read_write_lists_value_the_list = [Numbers(v) for v in input_widget_the_list.value.split(',')]
                     
-                    input_widget_optional_list = self.query_one("#property_input_optional_list", Input)
+                    type_adapter = TypeAdapter(List[Numbers])
+                    new_read_write_lists_value_the_list = type_adapter.validate_json(input_widget_the_list.text.strip())
+                    
+                    
+                    input_widget_optional_list = self.query_one("#property_input_optional_list", TextArea)
                     # optionalList should be 
-                    new_read_write_lists_value_optional_list = [datetime.fromisoformat(v) for v in input_widget_optional_list.value.split(',')] if input_widget_optional_list.value else None
+                    
+                    type_adapter = TypeAdapter(Optional[List[datetime]])
+                    new_read_write_lists_value_optional_list = type_adapter.validate_json(input_widget_optional_list.text.strip())
+                    
                     
                     new_read_write_lists_value = ReadWriteListsProperty(
                         the_list=new_read_write_lists_value_the_list,
@@ -1504,7 +1604,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             
             if self.method_name == "call_one_list_of_integers":
                 
-                type_adapter = TypeAdapter(list)
+                type_adapter = TypeAdapter(List[int])
 
                 try:
                     call_one_list_of_integers_input1_input_widget = self.query_one(f"#input_input1", TextArea)
@@ -1522,7 +1622,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             
             if self.method_name == "call_optional_list_of_floats":
                 
-                type_adapter = TypeAdapter(list)
+                type_adapter = TypeAdapter(Optional[List[float]])
 
                 try:
                     call_optional_list_of_floats_input1_input_widget = self.query_one(f"#input_input1", TextArea)
@@ -1540,7 +1640,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
             
             if self.method_name == "call_two_lists":
                 
-                type_adapter = TypeAdapter(list)
+                type_adapter = TypeAdapter(List[Numbers])
 
                 try:
                     call_two_lists_input1_input_widget = self.query_one(f"#input_input1", TextArea)
@@ -1554,7 +1654,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                 
                 
                 
-                type_adapter = TypeAdapter(list)
+                type_adapter = TypeAdapter(Optional[List[str]])
 
                 try:
                     call_two_lists_input2_input_widget = self.query_one(f"#input_input2", TextArea)
@@ -2128,33 +2228,33 @@ class ClientScreen(Screen):
                         
                         values.append(f"[bold]value.OptionalBinary[/bold]: { value.optional_binary!r }") # struct member BINARY
                         
-                        values.append(f"[bold]value.array_of_integers[/bold]: { value.array_of_integers }") # struct member ARRAY
+                        values.append(f"[bold]value.array_of_integers[/bold]: { ", ".join([ str(v) for v in value.array_of_integers]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.optional_array_of_integers[/bold]: { value.optional_array_of_integers }") # struct member ARRAY
+                        values.append(f"[bold]value.optional_array_of_integers[/bold]: { ", ".join([ str(v) for v in value.optional_array_of_integers]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.array_of_strings[/bold]: { value.array_of_strings }") # struct member ARRAY
+                        values.append(f"[bold]value.array_of_strings[/bold]: { ", ".join([ str(v) for v in value.array_of_strings]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.optional_array_of_strings[/bold]: { value.optional_array_of_strings }") # struct member ARRAY
+                        values.append(f"[bold]value.optional_array_of_strings[/bold]: { ", ".join([ str(v) for v in value.optional_array_of_strings]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.array_of_enums[/bold]: { value.array_of_enums }") # struct member ARRAY
+                        values.append(f"[bold]value.array_of_enums[/bold]: { ", ".join([ str(v) for v in value.array_of_enums]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.optional_array_of_enums[/bold]: { value.optional_array_of_enums }") # struct member ARRAY
+                        values.append(f"[bold]value.optional_array_of_enums[/bold]: { ", ".join([ str(v) for v in value.optional_array_of_enums]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.array_of_datetimes[/bold]: { value.array_of_datetimes }") # struct member ARRAY
+                        values.append(f"[bold]value.array_of_datetimes[/bold]: { ", ".join([ str(v) for v in value.array_of_datetimes]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.optional_array_of_datetimes[/bold]: { value.optional_array_of_datetimes }") # struct member ARRAY
+                        values.append(f"[bold]value.optional_array_of_datetimes[/bold]: { ", ".join([ str(v) for v in value.optional_array_of_datetimes]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.array_of_durations[/bold]: { value.array_of_durations }") # struct member ARRAY
+                        values.append(f"[bold]value.array_of_durations[/bold]: { ", ".join([ str(v) for v in value.array_of_durations]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.optional_array_of_durations[/bold]: { value.optional_array_of_durations }") # struct member ARRAY
+                        values.append(f"[bold]value.optional_array_of_durations[/bold]: { ", ".join([ str(v) for v in value.optional_array_of_durations]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.array_of_binaries[/bold]: { value.array_of_binaries }") # struct member ARRAY
+                        values.append(f"[bold]value.array_of_binaries[/bold]: { ", ".join([ str(v) for v in value.array_of_binaries]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.optional_array_of_binaries[/bold]: { value.optional_array_of_binaries }") # struct member ARRAY
+                        values.append(f"[bold]value.optional_array_of_binaries[/bold]: { ", ".join([ str(v) for v in value.optional_array_of_binaries]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.array_of_entry_objects[/bold]: { value.array_of_entry_objects }") # struct member ARRAY
+                        values.append(f"[bold]value.array_of_entry_objects[/bold]: { ", ".join([ str(v) for v in value.array_of_entry_objects]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.optional_array_of_entry_objects[/bold]: { value.optional_array_of_entry_objects }") # struct member ARRAY
+                        values.append(f"[bold]value.optional_array_of_entry_objects[/bold]: { ", ".join([ str(v) for v in value.optional_array_of_entry_objects]) }") # struct member ARRAY
                         
                         
                     
@@ -2213,33 +2313,33 @@ class ClientScreen(Screen):
                         
                         values.append(f"[bold]value.OptionalBinary[/bold]: { value.optional_binary!r }") # struct member BINARY
                         
-                        values.append(f"[bold]value.array_of_integers[/bold]: { value.array_of_integers }") # struct member ARRAY
+                        values.append(f"[bold]value.array_of_integers[/bold]: { ", ".join([ str(v) for v in value.array_of_integers]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.optional_array_of_integers[/bold]: { value.optional_array_of_integers }") # struct member ARRAY
+                        values.append(f"[bold]value.optional_array_of_integers[/bold]: { ", ".join([ str(v) for v in value.optional_array_of_integers]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.array_of_strings[/bold]: { value.array_of_strings }") # struct member ARRAY
+                        values.append(f"[bold]value.array_of_strings[/bold]: { ", ".join([ str(v) for v in value.array_of_strings]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.optional_array_of_strings[/bold]: { value.optional_array_of_strings }") # struct member ARRAY
+                        values.append(f"[bold]value.optional_array_of_strings[/bold]: { ", ".join([ str(v) for v in value.optional_array_of_strings]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.array_of_enums[/bold]: { value.array_of_enums }") # struct member ARRAY
+                        values.append(f"[bold]value.array_of_enums[/bold]: { ", ".join([ str(v) for v in value.array_of_enums]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.optional_array_of_enums[/bold]: { value.optional_array_of_enums }") # struct member ARRAY
+                        values.append(f"[bold]value.optional_array_of_enums[/bold]: { ", ".join([ str(v) for v in value.optional_array_of_enums]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.array_of_datetimes[/bold]: { value.array_of_datetimes }") # struct member ARRAY
+                        values.append(f"[bold]value.array_of_datetimes[/bold]: { ", ".join([ str(v) for v in value.array_of_datetimes]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.optional_array_of_datetimes[/bold]: { value.optional_array_of_datetimes }") # struct member ARRAY
+                        values.append(f"[bold]value.optional_array_of_datetimes[/bold]: { ", ".join([ str(v) for v in value.optional_array_of_datetimes]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.array_of_durations[/bold]: { value.array_of_durations }") # struct member ARRAY
+                        values.append(f"[bold]value.array_of_durations[/bold]: { ", ".join([ str(v) for v in value.array_of_durations]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.optional_array_of_durations[/bold]: { value.optional_array_of_durations }") # struct member ARRAY
+                        values.append(f"[bold]value.optional_array_of_durations[/bold]: { ", ".join([ str(v) for v in value.optional_array_of_durations]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.array_of_binaries[/bold]: { value.array_of_binaries }") # struct member ARRAY
+                        values.append(f"[bold]value.array_of_binaries[/bold]: { ", ".join([ str(v) for v in value.array_of_binaries]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.optional_array_of_binaries[/bold]: { value.optional_array_of_binaries }") # struct member ARRAY
+                        values.append(f"[bold]value.optional_array_of_binaries[/bold]: { ", ".join([ str(v) for v in value.optional_array_of_binaries]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.array_of_entry_objects[/bold]: { value.array_of_entry_objects }") # struct member ARRAY
+                        values.append(f"[bold]value.array_of_entry_objects[/bold]: { ", ".join([ str(v) for v in value.array_of_entry_objects]) }") # struct member ARRAY
                         
-                        values.append(f"[bold]value.optional_array_of_entry_objects[/bold]: { value.optional_array_of_entry_objects }") # struct member ARRAY
+                        values.append(f"[bold]value.optional_array_of_entry_objects[/bold]: { ", ".join([ str(v) for v in value.optional_array_of_entry_objects]) }") # struct member ARRAY
                         
                         
                     
@@ -2281,20 +2381,20 @@ class ClientScreen(Screen):
                         values.append(f"[bold]first.OptionalDateTime[/bold]: { value.first.optional_date_time }") # Struct Member
                         values.append(f"[bold]first.OptionalDuration[/bold]: { value.first.optional_duration }") # Struct Member
                         values.append(f"[bold]first.OptionalBinary[/bold]: { value.first.optional_binary!r }") # Struct Member
-                        values.append(f"[bold]first.array_of_integers[/bold]: { value.first.array_of_integers }") # Struct Member
-                        values.append(f"[bold]first.optional_array_of_integers[/bold]: { value.first.optional_array_of_integers }") # Struct Member
-                        values.append(f"[bold]first.array_of_strings[/bold]: { value.first.array_of_strings }") # Struct Member
-                        values.append(f"[bold]first.optional_array_of_strings[/bold]: { value.first.optional_array_of_strings }") # Struct Member
-                        values.append(f"[bold]first.array_of_enums[/bold]: { value.first.array_of_enums }") # Struct Member
-                        values.append(f"[bold]first.optional_array_of_enums[/bold]: { value.first.optional_array_of_enums }") # Struct Member
-                        values.append(f"[bold]first.array_of_datetimes[/bold]: { value.first.array_of_datetimes }") # Struct Member
-                        values.append(f"[bold]first.optional_array_of_datetimes[/bold]: { value.first.optional_array_of_datetimes }") # Struct Member
-                        values.append(f"[bold]first.array_of_durations[/bold]: { value.first.array_of_durations }") # Struct Member
-                        values.append(f"[bold]first.optional_array_of_durations[/bold]: { value.first.optional_array_of_durations }") # Struct Member
-                        values.append(f"[bold]first.array_of_binaries[/bold]: { value.first.array_of_binaries }") # Struct Member
-                        values.append(f"[bold]first.optional_array_of_binaries[/bold]: { value.first.optional_array_of_binaries }") # Struct Member
-                        values.append(f"[bold]first.array_of_entry_objects[/bold]: { value.first.array_of_entry_objects }") # Struct Member
-                        values.append(f"[bold]first.optional_array_of_entry_objects[/bold]: { value.first.optional_array_of_entry_objects }") # Struct Member
+                        values.append(f"[bold]first.array_of_integers[/bold]: { ", ".join([ str(v) for v in value.first.array_of_integers]) }") # Struct Member
+                        values.append(f"[bold]first.optional_array_of_integers[/bold]: { ", ".join([ str(v) for v in value.first.optional_array_of_integers]) }") # Struct Member
+                        values.append(f"[bold]first.array_of_strings[/bold]: { ", ".join([ str(v) for v in value.first.array_of_strings]) }") # Struct Member
+                        values.append(f"[bold]first.optional_array_of_strings[/bold]: { ", ".join([ str(v) for v in value.first.optional_array_of_strings]) }") # Struct Member
+                        values.append(f"[bold]first.array_of_enums[/bold]: { ", ".join([ str(v) for v in value.first.array_of_enums]) }") # Struct Member
+                        values.append(f"[bold]first.optional_array_of_enums[/bold]: { ", ".join([ str(v) for v in value.first.optional_array_of_enums]) }") # Struct Member
+                        values.append(f"[bold]first.array_of_datetimes[/bold]: { ", ".join([ str(v) for v in value.first.array_of_datetimes]) }") # Struct Member
+                        values.append(f"[bold]first.optional_array_of_datetimes[/bold]: { ", ".join([ str(v) for v in value.first.optional_array_of_datetimes]) }") # Struct Member
+                        values.append(f"[bold]first.array_of_durations[/bold]: { ", ".join([ str(v) for v in value.first.array_of_durations]) }") # Struct Member
+                        values.append(f"[bold]first.optional_array_of_durations[/bold]: { ", ".join([ str(v) for v in value.first.optional_array_of_durations]) }") # Struct Member
+                        values.append(f"[bold]first.array_of_binaries[/bold]: { ", ".join([ str(v) for v in value.first.array_of_binaries]) }") # Struct Member
+                        values.append(f"[bold]first.optional_array_of_binaries[/bold]: { ", ".join([ str(v) for v in value.first.optional_array_of_binaries]) }") # Struct Member
+                        values.append(f"[bold]first.array_of_entry_objects[/bold]: { ", ".join([ str(v) for v in value.first.array_of_entry_objects]) }") # Struct Member
+                        values.append(f"[bold]first.optional_array_of_entry_objects[/bold]: { ", ".join([ str(v) for v in value.first.optional_array_of_entry_objects]) }") # Struct Member
                         
                     
                     
@@ -2317,20 +2417,20 @@ class ClientScreen(Screen):
                         values.append(f"[bold]second.OptionalDateTime[/bold]: { value.second.optional_date_time }") # Struct Member
                         values.append(f"[bold]second.OptionalDuration[/bold]: { value.second.optional_duration }") # Struct Member
                         values.append(f"[bold]second.OptionalBinary[/bold]: { value.second.optional_binary!r }") # Struct Member
-                        values.append(f"[bold]second.array_of_integers[/bold]: { value.second.array_of_integers }") # Struct Member
-                        values.append(f"[bold]second.optional_array_of_integers[/bold]: { value.second.optional_array_of_integers }") # Struct Member
-                        values.append(f"[bold]second.array_of_strings[/bold]: { value.second.array_of_strings }") # Struct Member
-                        values.append(f"[bold]second.optional_array_of_strings[/bold]: { value.second.optional_array_of_strings }") # Struct Member
-                        values.append(f"[bold]second.array_of_enums[/bold]: { value.second.array_of_enums }") # Struct Member
-                        values.append(f"[bold]second.optional_array_of_enums[/bold]: { value.second.optional_array_of_enums }") # Struct Member
-                        values.append(f"[bold]second.array_of_datetimes[/bold]: { value.second.array_of_datetimes }") # Struct Member
-                        values.append(f"[bold]second.optional_array_of_datetimes[/bold]: { value.second.optional_array_of_datetimes }") # Struct Member
-                        values.append(f"[bold]second.array_of_durations[/bold]: { value.second.array_of_durations }") # Struct Member
-                        values.append(f"[bold]second.optional_array_of_durations[/bold]: { value.second.optional_array_of_durations }") # Struct Member
-                        values.append(f"[bold]second.array_of_binaries[/bold]: { value.second.array_of_binaries }") # Struct Member
-                        values.append(f"[bold]second.optional_array_of_binaries[/bold]: { value.second.optional_array_of_binaries }") # Struct Member
-                        values.append(f"[bold]second.array_of_entry_objects[/bold]: { value.second.array_of_entry_objects }") # Struct Member
-                        values.append(f"[bold]second.optional_array_of_entry_objects[/bold]: { value.second.optional_array_of_entry_objects }") # Struct Member
+                        values.append(f"[bold]second.array_of_integers[/bold]: { ", ".join([ str(v) for v in value.second.array_of_integers]) }") # Struct Member
+                        values.append(f"[bold]second.optional_array_of_integers[/bold]: { ", ".join([ str(v) for v in value.second.optional_array_of_integers]) }") # Struct Member
+                        values.append(f"[bold]second.array_of_strings[/bold]: { ", ".join([ str(v) for v in value.second.array_of_strings]) }") # Struct Member
+                        values.append(f"[bold]second.optional_array_of_strings[/bold]: { ", ".join([ str(v) for v in value.second.optional_array_of_strings]) }") # Struct Member
+                        values.append(f"[bold]second.array_of_enums[/bold]: { ", ".join([ str(v) for v in value.second.array_of_enums]) }") # Struct Member
+                        values.append(f"[bold]second.optional_array_of_enums[/bold]: { ", ".join([ str(v) for v in value.second.optional_array_of_enums]) }") # Struct Member
+                        values.append(f"[bold]second.array_of_datetimes[/bold]: { ", ".join([ str(v) for v in value.second.array_of_datetimes]) }") # Struct Member
+                        values.append(f"[bold]second.optional_array_of_datetimes[/bold]: { ", ".join([ str(v) for v in value.second.optional_array_of_datetimes]) }") # Struct Member
+                        values.append(f"[bold]second.array_of_durations[/bold]: { ", ".join([ str(v) for v in value.second.array_of_durations]) }") # Struct Member
+                        values.append(f"[bold]second.optional_array_of_durations[/bold]: { ", ".join([ str(v) for v in value.second.optional_array_of_durations]) }") # Struct Member
+                        values.append(f"[bold]second.array_of_binaries[/bold]: { ", ".join([ str(v) for v in value.second.array_of_binaries]) }") # Struct Member
+                        values.append(f"[bold]second.optional_array_of_binaries[/bold]: { ", ".join([ str(v) for v in value.second.optional_array_of_binaries]) }") # Struct Member
+                        values.append(f"[bold]second.array_of_entry_objects[/bold]: { ", ".join([ str(v) for v in value.second.array_of_entry_objects]) }") # Struct Member
+                        values.append(f"[bold]second.optional_array_of_entry_objects[/bold]: { ", ".join([ str(v) for v in value.second.optional_array_of_entry_objects]) }") # Struct Member
                         
                     
                     

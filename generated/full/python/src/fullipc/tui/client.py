@@ -2,6 +2,7 @@
 
 import concurrent.futures as futures
 from datetime import datetime, timedelta
+from json import dumps as json_dumps
 import isodate
 from typing import List, Optional, Any, Dict
 from textual.app import ComposeResult  # typing: ignore
@@ -10,7 +11,7 @@ from textual.widgets import Header, Footer, Static, RichLog, Button, Input, Labe
 from textual.containers import Horizontal, VerticalScroll, Vertical  # typing: ignore
 from fullipc.interface_types import *
 from fullipc.client import FullClient
-from pydantic import TypeAdapter
+from pydantic import TypeAdapter, BaseModel
 import logging
 
 # Configure logging
@@ -147,20 +148,25 @@ class PropertyEditModal(ModalScreen[bool]):
 
             if self.property_name == "favorite_foods":
                 yield Label(f"drink", classes="property_input_value_label")
+
                 yield Input(placeholder=f"drink value", value=str(self.current_value.drink), classes="property_input_value", id="property_input_drink")
 
                 yield Label(f"slices_of_pizza", classes="property_input_value_label")
+
                 yield Input(placeholder=f"slices_of_pizza value", value=str(self.current_value.slices_of_pizza), classes="property_input_value", id="property_input_slices_of_pizza")
 
                 yield Label(f"breakfast", classes="property_input_value_label")
+
                 yield Input(placeholder=f"breakfast value", value=str(self.current_value.breakfast), classes="property_input_value", id="property_input_breakfast")
 
             if self.property_name == "lunch_menu":
                 yield Label(f"monday (JSON)", classes="property_input_value_label")
-                yield Input(placeholder=f"monday value", value=self.current_value.monday.model_dump_json(), classes="property_input_value", id="property_input_monday")
+
+                yield TextArea.code_editor(language="json", text=f"{self.current_value.monday.model_dump_json()}", id="property_input_monday")
 
                 yield Label(f"tuesday (JSON)", classes="property_input_value_label")
-                yield Input(placeholder=f"tuesday value", value=self.current_value.tuesday.model_dump_json(), classes="property_input_value", id="property_input_tuesday")
+
+                yield TextArea.code_editor(language="json", text=f"{self.current_value.tuesday.model_dump_json()}", id="property_input_tuesday")
 
             if self.property_name == "family_name":
 
@@ -172,15 +178,19 @@ class PropertyEditModal(ModalScreen[bool]):
 
             if self.property_name == "last_birthdays":
                 yield Label(f"mom", classes="property_input_value_label")
+
                 yield Input(placeholder=f"mom value", value=str(self.current_value.mom), classes="property_input_value", id="property_input_mom")
 
                 yield Label(f"dad", classes="property_input_value_label")
+
                 yield Input(placeholder=f"dad value", value=str(self.current_value.dad), classes="property_input_value", id="property_input_dad")
 
                 yield Label(f"sister", classes="property_input_value_label")
+
                 yield Input(placeholder=f"sister value", value=str(self.current_value.sister), classes="property_input_value", id="property_input_sister")
 
                 yield Label(f"brothers_age", classes="property_input_value_label")
+
                 yield Input(placeholder=f"brothers_age value", value=str(self.current_value.brothers_age), classes="property_input_value", id="property_input_brothers_age")
 
             with Horizontal(id="property_button_container"):
@@ -194,20 +204,24 @@ class PropertyEditModal(ModalScreen[bool]):
             try:
                 if self.property_name == "favorite_number":
                     input_widget = self.query_one("#property_input")
+
                     new_favorite_number_value = int(input_widget.value)
 
                     self.client.favorite_number = new_favorite_number_value
                 elif self.property_name == "favorite_foods":
                     input_widget_drink = self.query_one("#property_input_drink", Input)
                     # drink should be ArgPrimitiveType.STRING
+
                     new_favorite_foods_value_drink = str(input_widget_drink.value)
 
                     input_widget_slices_of_pizza = self.query_one("#property_input_slices_of_pizza", Input)
                     # slices_of_pizza should be ArgPrimitiveType.INTEGER
+
                     new_favorite_foods_value_slices_of_pizza = int(input_widget_slices_of_pizza.value)
 
                     input_widget_breakfast = self.query_one("#property_input_breakfast", Input)
                     # breakfast should be ArgPrimitiveType.STRING
+
                     new_favorite_foods_value_breakfast = str(input_widget_breakfast.value) if input_widget_breakfast.value else None
 
                     new_favorite_foods_value = FavoriteFoodsProperty(
@@ -219,29 +233,35 @@ class PropertyEditModal(ModalScreen[bool]):
                     self.client.favorite_foods = new_favorite_foods_value
                 elif self.property_name == "family_name":
                     input_widget = self.query_one("#property_input")
+
                     new_family_name_value = str(input_widget.value)
 
                     self.client.family_name = new_family_name_value
                 elif self.property_name == "last_breakfast_time":
                     input_widget = self.query_one("#property_input")
+
                     new_last_breakfast_time_value = datetime.fromisoformat(input_widget.value)
 
                     self.client.last_breakfast_time = new_last_breakfast_time_value
                 elif self.property_name == "last_birthdays":
                     input_widget_mom = self.query_one("#property_input_mom", Input)
                     # mom should be
+
                     new_last_birthdays_value_mom = datetime.fromisoformat(input_widget_mom.value)
 
                     input_widget_dad = self.query_one("#property_input_dad", Input)
                     # dad should be
+
                     new_last_birthdays_value_dad = datetime.fromisoformat(input_widget_dad.value)
 
                     input_widget_sister = self.query_one("#property_input_sister", Input)
                     # sister should be
+
                     new_last_birthdays_value_sister = datetime.fromisoformat(input_widget_sister.value) if input_widget_sister.value else None
 
                     input_widget_brothers_age = self.query_one("#property_input_brothers_age", Input)
                     # brothers_age should be ArgPrimitiveType.INTEGER
+
                     new_last_birthdays_value_brothers_age = int(input_widget_brothers_age.value) if input_widget_brothers_age.value else None
 
                     new_last_birthdays_value = LastBirthdaysProperty(
