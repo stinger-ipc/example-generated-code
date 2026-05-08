@@ -36,14 +36,14 @@ build-backend = "setuptools.build_meta"
 
 
 [project.scripts]
-simple-tui = "simpleipc.tui.app:main"
+simple-tui = "simpleipc.tui.app:cli"
 
 
 [tool.setuptools.package-data]
 packages = ["simpleipc"]
 
 [stinger-ipc]
-generator_version = "0.8.12"
+generator_version = "0.8.13"
 
 [tool.mypy]
 [[tool.mypy.overrides]]
