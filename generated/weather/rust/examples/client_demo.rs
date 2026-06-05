@@ -19,6 +19,7 @@ use tokio::time::{sleep, Duration};
 use tracing::{debug, error, info, warn};
 use weather_ipc::client::WeatherClient;
 use weather_ipc::discovery::WeatherDiscovery;
+use weather_ipc::lwt::StingerAvailability;
 #[allow(unused_imports)]
 use weather_ipc::payloads::{MethodReturnCode, *};
 #[tokio::main]
@@ -35,12 +36,14 @@ async fn main() {
 
     // Create an MQTT client that implements the MqttPubSub trait.
     // Application code is responsible for managing the client object.
+    let lwt = StingerAvailability::new("example");
     let mqttier_options = MqttierOptionsBuilder::default()
         .connection(Connection::Tcp(TcpConnection::from_env_with_defaults(
             "localhost",
             1883,
         )))
         .client_id("rust-client-demo".to_string())
+        .availability_helper(Some(lwt))
         .build()
         .unwrap();
     let mut mqttier_client = MqttierClient::new(mqttier_options).unwrap();

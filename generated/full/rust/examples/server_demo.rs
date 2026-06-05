@@ -8,14 +8,15 @@ LICENSE: This generated code is not subject to any license restrictions from the
 TODO: Get license text from stinger file
 */
 use std::any::Any;
+use std::sync::Arc;
 
+use full_ipc::lwt::StingerAvailability;
 use full_ipc::property::FullInitialPropertyValues;
 use full_ipc::server::{FullMethodHandlers, FullServer};
 use mqttier::{Connection, MqttierClient, MqttierOptionsBuilder, TcpConnection};
 use tokio::time::{sleep, Duration};
 
 use async_trait::async_trait;
-use std::sync::Arc;
 use tokio::sync::Mutex;
 use tracing_subscriber;
 
@@ -96,12 +97,14 @@ async fn main() {
         .init();
 
     // Set up an MQTT client connection.
+    let lwt = StingerAvailability::new("example");
     let mqttier_options = MqttierOptionsBuilder::default()
         .connection(Connection::Tcp(TcpConnection::from_env_with_defaults(
             "localhost",
             1883,
         )))
         .client_id("rust-server-demo".to_string())
+        .availability_helper(Some(lwt))
         .build()
         .unwrap();
     let mut connection = MqttierClient::new(mqttier_options).unwrap();
