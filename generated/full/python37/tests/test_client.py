@@ -140,7 +140,7 @@ class TestClientProperties:
         new_last_birthdays_value = LastBirthdaysProperty(
             mom=datetime.now(UTC),
             dad=datetime.now(UTC),
-            sister=None,
+            sister=datetime.now(UTC),
             brothers_age=42,
         )
         client.last_birthdays = new_last_birthdays_value
