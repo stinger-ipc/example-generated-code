@@ -19,3 +19,7 @@ def StingerPresence(client_id: str,) -> OnlinePresence:
         online=_create_message(is_online=True),
         offline=_create_message(is_online=False),
     )
+
+def ClientIdCreator(client_id: str,) -> str:
+    """Helper function to generate a client ID string for StingerIPC clients based on the provided topic template parameters."""
+    return f"{client_id}".format(client_id=client_id, )

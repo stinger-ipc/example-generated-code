@@ -74,6 +74,12 @@ impl AvailabilityHelper for StingerAvailability {
     }
 }
 
+pub fn client_id_creator(client_id: impl Into<String>) -> String {
+    let client_id = client_id.into();
+
+    format!("{client_id}", client_id = client_id,)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
