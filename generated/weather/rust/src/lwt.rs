@@ -1,3 +1,4 @@
+#![cfg(feature = "lwt")]
 use bytes::Bytes;
 use jsonpath_rust::JsonPath;
 use std::str::FromStr;

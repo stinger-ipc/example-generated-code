@@ -14,6 +14,7 @@ TODO: Get license text from stinger file
 
 use full_ipc::client::FullClient;
 use full_ipc::discovery::FullDiscovery;
+#[cfg(feature = "lwt")]
 use full_ipc::lwt::StingerAvailability;
 #[allow(unused_imports)]
 use full_ipc::payloads::{MethodReturnCode, *};
@@ -36,16 +37,22 @@ async fn main() {
 
     // Create an MQTT client that implements the MqttPubSub trait.
     // Application code is responsible for managing the client object.
+    #[cfg(feature = "lwt")]
     let lwt = StingerAvailability::new("example");
-    let mqttier_options = MqttierOptionsBuilder::default()
+    let mut mqttier_options_builder = MqttierOptionsBuilder::default();
+    mqttier_options_builder
         .connection(Connection::Tcp(TcpConnection::from_env_with_defaults(
             "localhost",
             1883,
         )))
-        .client_id("rust-client-demo".to_string())
+        .client_id("rust-client-demo".to_string());
+    #[cfg(feature = "lwt")]
+    let mqttier_options = mqttier_options_builder
         .availability_helper(Some(lwt))
         .build()
         .unwrap();
+    #[cfg(not(feature = "lwt"))]
+    let mqttier_options = mqttier_options_builder.build().unwrap();
     let mut mqttier_client = MqttierClient::new(mqttier_options).unwrap();
     let _ = mqttier_client.start().await;
 

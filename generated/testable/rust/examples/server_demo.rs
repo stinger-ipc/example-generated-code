@@ -11,6 +11,7 @@ use std::any::Any;
 use std::sync::Arc;
 
 use mqttier::{Connection, MqttierClient, MqttierOptionsBuilder, TcpConnection};
+#[cfg(feature = "lwt")]
 use testable_ipc::lwt::StingerAvailability;
 use testable_ipc::property::TestableInitialPropertyValues;
 use testable_ipc::server::{TestableMethodHandlers, TestableServer};
@@ -712,16 +713,22 @@ async fn main() {
         .init();
 
     // Set up an MQTT client connection.
+    #[cfg(feature = "lwt")]
     let lwt = StingerAvailability::new("example");
-    let mqttier_options = MqttierOptionsBuilder::default()
+    let mut mqttier_options_builder = MqttierOptionsBuilder::default();
+    mqttier_options_builder
         .connection(Connection::Tcp(TcpConnection::from_env_with_defaults(
             "localhost",
             1883,
         )))
-        .client_id("rust-server-demo".to_string())
+        .client_id("rust-server-demo".to_string());
+    #[cfg(feature = "lwt")]
+    let mqttier_options = mqttier_options_builder
         .availability_helper(Some(lwt))
         .build()
         .unwrap();
+    #[cfg(not(feature = "lwt"))]
+    let mqttier_options = mqttier_options_builder.build().unwrap();
     let mut connection = MqttierClient::new(mqttier_options).unwrap();
     let _ = connection.start().await.unwrap();
 
