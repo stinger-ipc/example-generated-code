@@ -111,7 +111,7 @@ def request_loop(client: TestableClient):
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=None,
+                optional_date_time=datetime.now(UTC),
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -152,7 +152,7 @@ def request_loop(client: TestableClient):
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=datetime.now(UTC),
+                optional_date_time=None,
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -225,7 +225,7 @@ def request_loop(client: TestableClient):
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=datetime.now(UTC),
+                optional_date_time=None,
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -477,7 +477,7 @@ def request_loop(client: TestableClient):
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=None,
+                optional_date_time=datetime.now(UTC),
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -544,7 +544,7 @@ def request_loop(client: TestableClient):
 
         client.read_write_two_datetimes = ReadWriteTwoDatetimesProperty(
             first=datetime.now(UTC),
-            second=datetime.now(UTC),
+            second=None,
         )
 
         client.read_write_duration = timedelta(seconds=3536)
