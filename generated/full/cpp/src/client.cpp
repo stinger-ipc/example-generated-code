@@ -8,6 +8,7 @@
 #include <ctime>
 #include <syslog.h>
 #include <sstream>
+#include <typeinfo>
 #include <stinger/utils/iconnection.hpp>
 #include <stinger/utils/uuid.hpp>
 #include <stinger/utils/format.hpp>
@@ -140,7 +141,13 @@ void FullClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_todayIsSignalCallbacksMutex);
                 for (const auto& cb: _todayIsSignalCallbacks) {
-                    cb(tempDayOfMonth, tempDayOfWeek);
+                    try {
+                        cb(tempDayOfMonth, tempDayOfWeek);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in todayIs signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in todayIs signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -195,7 +202,13 @@ void FullClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_randomWordSignalCallbacksMutex);
                 for (const auto& cb: _randomWordSignalCallbacks) {
-                    cb(tempWord, tempTime);
+                    try {
+                        cb(tempWord, tempTime);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in randomWord signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in randomWord signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -543,7 +556,13 @@ void FullClient::_receiveFavoriteNumberPropertyUpdate(const stinger::mqtt::Messa
         std::lock_guard<std::mutex> lock(_favoriteNumberPropertyCallbacksMutex);
         for (const auto& cb: _favoriteNumberPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.number);
+            try {
+                cb(tempValue.number);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in favorite_number property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in favorite_number property callback");
+            }
         }
     }
 }
@@ -642,7 +661,13 @@ void FullClient::_receiveFavoriteFoodsPropertyUpdate(const stinger::mqtt::Messag
         std::lock_guard<std::mutex> lock(_favoriteFoodsPropertyCallbacksMutex);
         for (const auto& cb: _favoriteFoodsPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.drink, tempValue.slicesOfPizza, tempValue.breakfast);
+            try {
+                cb(tempValue.drink, tempValue.slicesOfPizza, tempValue.breakfast);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in favorite_foods property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in favorite_foods property callback");
+            }
         }
     }
 }
@@ -741,7 +766,13 @@ void FullClient::_receiveLunchMenuPropertyUpdate(const stinger::mqtt::Message& m
         std::lock_guard<std::mutex> lock(_lunchMenuPropertyCallbacksMutex);
         for (const auto& cb: _lunchMenuPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.monday, tempValue.tuesday);
+            try {
+                cb(tempValue.monday, tempValue.tuesday);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in lunch_menu property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in lunch_menu property callback");
+            }
         }
     }
 }
@@ -795,7 +826,13 @@ void FullClient::_receiveFamilyNamePropertyUpdate(const stinger::mqtt::Message& 
         std::lock_guard<std::mutex> lock(_familyNamePropertyCallbacksMutex);
         for (const auto& cb: _familyNamePropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.familyName);
+            try {
+                cb(tempValue.familyName);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in family_name property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in family_name property callback");
+            }
         }
     }
 }
@@ -878,7 +915,13 @@ void FullClient::_receiveLastBreakfastTimePropertyUpdate(const stinger::mqtt::Me
         std::lock_guard<std::mutex> lock(_lastBreakfastTimePropertyCallbacksMutex);
         for (const auto& cb: _lastBreakfastTimePropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.timestamp);
+            try {
+                cb(tempValue.timestamp);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in last_breakfast_time property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in last_breakfast_time property callback");
+            }
         }
     }
 }
@@ -997,7 +1040,13 @@ void FullClient::_receiveLastBirthdaysPropertyUpdate(const stinger::mqtt::Messag
         std::lock_guard<std::mutex> lock(_lastBirthdaysPropertyCallbacksMutex);
         for (const auto& cb: _lastBirthdaysPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.mom, tempValue.dad, tempValue.sister, tempValue.brothersAge);
+            try {
+                cb(tempValue.mom, tempValue.dad, tempValue.sister, tempValue.brothersAge);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in last_birthdays property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in last_birthdays property callback");
+            }
         }
     }
 }

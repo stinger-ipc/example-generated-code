@@ -8,6 +8,7 @@
 #include <ctime>
 #include <syslog.h>
 #include <sstream>
+#include <typeinfo>
 #include <stinger/utils/iconnection.hpp>
 #include <stinger/utils/uuid.hpp>
 #include <stinger/utils/format.hpp>
@@ -330,7 +331,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_emptySignalCallbacksMutex);
                 for (const auto& cb: _emptySignalCallbacks) {
-                    cb();
+                    try {
+                        cb();
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in empty signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in empty signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -368,7 +375,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleIntSignalCallbacksMutex);
                 for (const auto& cb: _singleIntSignalCallbacks) {
-                    cb(tempValue);
+                    try {
+                        cb(tempValue);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleInt signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleInt signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -406,7 +419,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleOptionalIntSignalCallbacksMutex);
                 for (const auto& cb: _singleOptionalIntSignalCallbacks) {
-                    cb(tempValue);
+                    try {
+                        cb(tempValue);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleOptionalInt signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleOptionalInt signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -466,7 +485,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_threeIntegersSignalCallbacksMutex);
                 for (const auto& cb: _threeIntegersSignalCallbacks) {
-                    cb(tempFirst, tempSecond, tempThird);
+                    try {
+                        cb(tempFirst, tempSecond, tempThird);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in threeIntegers signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in threeIntegers signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -504,7 +529,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleStringSignalCallbacksMutex);
                 for (const auto& cb: _singleStringSignalCallbacks) {
-                    cb(tempValue);
+                    try {
+                        cb(tempValue);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleString signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleString signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -542,7 +573,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleOptionalStringSignalCallbacksMutex);
                 for (const auto& cb: _singleOptionalStringSignalCallbacks) {
-                    cb(tempValue);
+                    try {
+                        cb(tempValue);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleOptionalString signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleOptionalString signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -602,7 +639,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_threeStringsSignalCallbacksMutex);
                 for (const auto& cb: _threeStringsSignalCallbacks) {
-                    cb(tempFirst, tempSecond, tempThird);
+                    try {
+                        cb(tempFirst, tempSecond, tempThird);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in threeStrings signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in threeStrings signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -640,7 +683,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleEnumSignalCallbacksMutex);
                 for (const auto& cb: _singleEnumSignalCallbacks) {
-                    cb(tempValue);
+                    try {
+                        cb(tempValue);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleEnum signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleEnum signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -678,7 +727,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleOptionalEnumSignalCallbacksMutex);
                 for (const auto& cb: _singleOptionalEnumSignalCallbacks) {
-                    cb(tempValue);
+                    try {
+                        cb(tempValue);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleOptionalEnum signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleOptionalEnum signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -738,7 +793,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_threeEnumsSignalCallbacksMutex);
                 for (const auto& cb: _threeEnumsSignalCallbacks) {
-                    cb(tempFirst, tempSecond, tempThird);
+                    try {
+                        cb(tempFirst, tempSecond, tempThird);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in threeEnums signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in threeEnums signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -774,7 +835,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleStructSignalCallbacksMutex);
                 for (const auto& cb: _singleStructSignalCallbacks) {
-                    cb(tempValue);
+                    try {
+                        cb(tempValue);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleStruct signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleStruct signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -810,7 +877,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleOptionalStructSignalCallbacksMutex);
                 for (const auto& cb: _singleOptionalStructSignalCallbacks) {
-                    cb(tempValue);
+                    try {
+                        cb(tempValue);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleOptionalStruct signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleOptionalStruct signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -864,7 +937,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_threeStructsSignalCallbacksMutex);
                 for (const auto& cb: _threeStructsSignalCallbacks) {
-                    cb(tempFirst, tempSecond, tempThird);
+                    try {
+                        cb(tempFirst, tempSecond, tempThird);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in threeStructs signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in threeStructs signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -908,7 +987,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleDateTimeSignalCallbacksMutex);
                 for (const auto& cb: _singleDateTimeSignalCallbacks) {
-                    cb(tempValue);
+                    try {
+                        cb(tempValue);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleDateTime signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleDateTime signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -952,7 +1037,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleOptionalDatetimeSignalCallbacksMutex);
                 for (const auto& cb: _singleOptionalDatetimeSignalCallbacks) {
-                    cb(tempValue);
+                    try {
+                        cb(tempValue);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleOptionalDatetime signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleOptionalDatetime signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -1030,7 +1121,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_threeDateTimesSignalCallbacksMutex);
                 for (const auto& cb: _threeDateTimesSignalCallbacks) {
-                    cb(tempFirst, tempSecond, tempThird);
+                    try {
+                        cb(tempFirst, tempSecond, tempThird);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in threeDateTimes signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in threeDateTimes signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -1068,7 +1165,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleDurationSignalCallbacksMutex);
                 for (const auto& cb: _singleDurationSignalCallbacks) {
-                    cb(tempValue);
+                    try {
+                        cb(tempValue);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleDuration signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleDuration signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -1106,7 +1209,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleOptionalDurationSignalCallbacksMutex);
                 for (const auto& cb: _singleOptionalDurationSignalCallbacks) {
-                    cb(tempValue);
+                    try {
+                        cb(tempValue);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleOptionalDuration signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleOptionalDuration signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -1166,7 +1275,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_threeDurationsSignalCallbacksMutex);
                 for (const auto& cb: _threeDurationsSignalCallbacks) {
-                    cb(tempFirst, tempSecond, tempThird);
+                    try {
+                        cb(tempFirst, tempSecond, tempThird);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in threeDurations signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in threeDurations signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -1204,7 +1319,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleBinarySignalCallbacksMutex);
                 for (const auto& cb: _singleBinarySignalCallbacks) {
-                    cb(tempValue);
+                    try {
+                        cb(tempValue);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleBinary signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleBinary signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -1242,7 +1363,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleOptionalBinarySignalCallbacksMutex);
                 for (const auto& cb: _singleOptionalBinarySignalCallbacks) {
-                    cb(tempValue);
+                    try {
+                        cb(tempValue);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleOptionalBinary signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleOptionalBinary signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -1302,7 +1429,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_threeBinariesSignalCallbacksMutex);
                 for (const auto& cb: _threeBinariesSignalCallbacks) {
-                    cb(tempFirst, tempSecond, tempThird);
+                    try {
+                        cb(tempFirst, tempSecond, tempThird);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in threeBinaries signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in threeBinaries signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -1338,7 +1471,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleArrayOfIntegersSignalCallbacksMutex);
                 for (const auto& cb: _singleArrayOfIntegersSignalCallbacks) {
-                    cb(tempValues);
+                    try {
+                        cb(tempValues);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleArrayOfIntegers signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleArrayOfIntegers signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -1374,7 +1513,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_singleOptionalArrayOfStringsSignalCallbacksMutex);
                 for (const auto& cb: _singleOptionalArrayOfStringsSignalCallbacks) {
-                    cb(tempValues);
+                    try {
+                        cb(tempValues);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in singleOptionalArrayOfStrings signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in singleOptionalArrayOfStrings signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -1473,7 +1618,13 @@ void TestableClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_arrayOfEveryTypeSignalCallbacksMutex);
                 for (const auto& cb: _arrayOfEveryTypeSignalCallbacks) {
-                    cb(tempFirstOfIntegers, tempSecondOfFloats, tempThirdOfStrings, tempFourthOfEnums, tempFifthOfStructs, tempSixthOfDatetimes, tempSeventhOfDurations, tempEighthOfBinaries);
+                    try {
+                        cb(tempFirstOfIntegers, tempSecondOfFloats, tempThirdOfStrings, tempFourthOfEnums, tempFifthOfStructs, tempSixthOfDatetimes, tempSeventhOfDurations, tempEighthOfBinaries);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in arrayOfEveryType signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in arrayOfEveryType signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -3582,7 +3733,13 @@ void TestableClient::_receiveReadWriteIntegerPropertyUpdate(const stinger::mqtt:
         std::lock_guard<std::mutex> lock(_readWriteIntegerPropertyCallbacksMutex);
         for (const auto& cb: _readWriteIntegerPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_integer property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_integer property callback");
+            }
         }
     }
 }
@@ -3660,7 +3817,13 @@ void TestableClient::_receiveReadOnlyIntegerPropertyUpdate(const stinger::mqtt::
         std::lock_guard<std::mutex> lock(_readOnlyIntegerPropertyCallbacksMutex);
         for (const auto& cb: _readOnlyIntegerPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_only_integer property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_only_integer property callback");
+            }
         }
     }
 }
@@ -3717,7 +3880,13 @@ void TestableClient::_receiveReadWriteOptionalIntegerPropertyUpdate(const stinge
         std::lock_guard<std::mutex> lock(_readWriteOptionalIntegerPropertyCallbacksMutex);
         for (const auto& cb: _readWriteOptionalIntegerPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_optional_integer property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_optional_integer property callback");
+            }
         }
     }
 }
@@ -3808,7 +3977,13 @@ void TestableClient::_receiveReadWriteTwoIntegersPropertyUpdate(const stinger::m
         std::lock_guard<std::mutex> lock(_readWriteTwoIntegersPropertyCallbacksMutex);
         for (const auto& cb: _readWriteTwoIntegersPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.first, tempValue.second);
+            try {
+                cb(tempValue.first, tempValue.second);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_two_integers property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_two_integers property callback");
+            }
         }
     }
 }
@@ -3889,7 +4064,13 @@ void TestableClient::_receiveReadOnlyStringPropertyUpdate(const stinger::mqtt::M
         std::lock_guard<std::mutex> lock(_readOnlyStringPropertyCallbacksMutex);
         for (const auto& cb: _readOnlyStringPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_only_string property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_only_string property callback");
+            }
         }
     }
 }
@@ -3943,7 +4124,13 @@ void TestableClient::_receiveReadWriteStringPropertyUpdate(const stinger::mqtt::
         std::lock_guard<std::mutex> lock(_readWriteStringPropertyCallbacksMutex);
         for (const auto& cb: _readWriteStringPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_string property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_string property callback");
+            }
         }
     }
 }
@@ -4028,7 +4215,13 @@ void TestableClient::_receiveReadWriteOptionalStringPropertyUpdate(const stinger
         std::lock_guard<std::mutex> lock(_readWriteOptionalStringPropertyCallbacksMutex);
         for (const auto& cb: _readWriteOptionalStringPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_optional_string property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_optional_string property callback");
+            }
         }
     }
 }
@@ -4122,7 +4315,13 @@ void TestableClient::_receiveReadWriteTwoStringsPropertyUpdate(const stinger::mq
         std::lock_guard<std::mutex> lock(_readWriteTwoStringsPropertyCallbacksMutex);
         for (const auto& cb: _readWriteTwoStringsPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.first, tempValue.second);
+            try {
+                cb(tempValue.first, tempValue.second);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_two_strings property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_two_strings property callback");
+            }
         }
     }
 }
@@ -4210,7 +4409,13 @@ void TestableClient::_receiveReadWriteStructPropertyUpdate(const stinger::mqtt::
         std::lock_guard<std::mutex> lock(_readWriteStructPropertyCallbacksMutex);
         for (const auto& cb: _readWriteStructPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_struct property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_struct property callback");
+            }
         }
     }
 }
@@ -4298,7 +4503,13 @@ void TestableClient::_receiveReadWriteOptionalStructPropertyUpdate(const stinger
         std::lock_guard<std::mutex> lock(_readWriteOptionalStructPropertyCallbacksMutex);
         for (const auto& cb: _readWriteOptionalStructPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_optional_struct property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_optional_struct property callback");
+            }
         }
     }
 }
@@ -4397,7 +4608,13 @@ void TestableClient::_receiveReadWriteTwoStructsPropertyUpdate(const stinger::mq
         std::lock_guard<std::mutex> lock(_readWriteTwoStructsPropertyCallbacksMutex);
         for (const auto& cb: _readWriteTwoStructsPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.first, tempValue.second);
+            try {
+                cb(tempValue.first, tempValue.second);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_two_structs property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_two_structs property callback");
+            }
         }
     }
 }
@@ -4493,7 +4710,13 @@ void TestableClient::_receiveReadOnlyEnumPropertyUpdate(const stinger::mqtt::Mes
         std::lock_guard<std::mutex> lock(_readOnlyEnumPropertyCallbacksMutex);
         for (const auto& cb: _readOnlyEnumPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_only_enum property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_only_enum property callback");
+            }
         }
     }
 }
@@ -4547,7 +4770,13 @@ void TestableClient::_receiveReadWriteEnumPropertyUpdate(const stinger::mqtt::Me
         std::lock_guard<std::mutex> lock(_readWriteEnumPropertyCallbacksMutex);
         for (const auto& cb: _readWriteEnumPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_enum property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_enum property callback");
+            }
         }
     }
 }
@@ -4628,7 +4857,13 @@ void TestableClient::_receiveReadWriteOptionalEnumPropertyUpdate(const stinger::
         std::lock_guard<std::mutex> lock(_readWriteOptionalEnumPropertyCallbacksMutex);
         for (const auto& cb: _readWriteOptionalEnumPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_optional_enum property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_optional_enum property callback");
+            }
         }
     }
 }
@@ -4718,7 +4953,13 @@ void TestableClient::_receiveReadWriteTwoEnumsPropertyUpdate(const stinger::mqtt
         std::lock_guard<std::mutex> lock(_readWriteTwoEnumsPropertyCallbacksMutex);
         for (const auto& cb: _readWriteTwoEnumsPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.first, tempValue.second);
+            try {
+                cb(tempValue.first, tempValue.second);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_two_enums property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_two_enums property callback");
+            }
         }
     }
 }
@@ -4799,7 +5040,13 @@ void TestableClient::_receiveReadWriteDatetimePropertyUpdate(const stinger::mqtt
         std::lock_guard<std::mutex> lock(_readWriteDatetimePropertyCallbacksMutex);
         for (const auto& cb: _readWriteDatetimePropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_datetime property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_datetime property callback");
+            }
         }
     }
 }
@@ -4886,7 +5133,13 @@ void TestableClient::_receiveReadWriteOptionalDatetimePropertyUpdate(const sting
         std::lock_guard<std::mutex> lock(_readWriteOptionalDatetimePropertyCallbacksMutex);
         for (const auto& cb: _readWriteOptionalDatetimePropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_optional_datetime property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_optional_datetime property callback");
+            }
         }
     }
 }
@@ -4983,7 +5236,13 @@ void TestableClient::_receiveReadWriteTwoDatetimesPropertyUpdate(const stinger::
         std::lock_guard<std::mutex> lock(_readWriteTwoDatetimesPropertyCallbacksMutex);
         for (const auto& cb: _readWriteTwoDatetimesPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.first, tempValue.second);
+            try {
+                cb(tempValue.first, tempValue.second);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_two_datetimes property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_two_datetimes property callback");
+            }
         }
     }
 }
@@ -5074,7 +5333,13 @@ void TestableClient::_receiveReadWriteDurationPropertyUpdate(const stinger::mqtt
         std::lock_guard<std::mutex> lock(_readWriteDurationPropertyCallbacksMutex);
         for (const auto& cb: _readWriteDurationPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_duration property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_duration property callback");
+            }
         }
     }
 }
@@ -5161,7 +5426,13 @@ void TestableClient::_receiveReadWriteOptionalDurationPropertyUpdate(const sting
         std::lock_guard<std::mutex> lock(_readWriteOptionalDurationPropertyCallbacksMutex);
         for (const auto& cb: _readWriteOptionalDurationPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_optional_duration property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_optional_duration property callback");
+            }
         }
     }
 }
@@ -5258,7 +5529,13 @@ void TestableClient::_receiveReadWriteTwoDurationsPropertyUpdate(const stinger::
         std::lock_guard<std::mutex> lock(_readWriteTwoDurationsPropertyCallbacksMutex);
         for (const auto& cb: _readWriteTwoDurationsPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.first, tempValue.second);
+            try {
+                cb(tempValue.first, tempValue.second);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_two_durations property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_two_durations property callback");
+            }
         }
     }
 }
@@ -5349,7 +5626,13 @@ void TestableClient::_receiveReadWriteBinaryPropertyUpdate(const stinger::mqtt::
         std::lock_guard<std::mutex> lock(_readWriteBinaryPropertyCallbacksMutex);
         for (const auto& cb: _readWriteBinaryPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_binary property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_binary property callback");
+            }
         }
     }
 }
@@ -5436,7 +5719,13 @@ void TestableClient::_receiveReadWriteOptionalBinaryPropertyUpdate(const stinger
         std::lock_guard<std::mutex> lock(_readWriteOptionalBinaryPropertyCallbacksMutex);
         for (const auto& cb: _readWriteOptionalBinaryPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_optional_binary property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_optional_binary property callback");
+            }
         }
     }
 }
@@ -5533,7 +5822,13 @@ void TestableClient::_receiveReadWriteTwoBinariesPropertyUpdate(const stinger::m
         std::lock_guard<std::mutex> lock(_readWriteTwoBinariesPropertyCallbacksMutex);
         for (const auto& cb: _readWriteTwoBinariesPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.first, tempValue.second);
+            try {
+                cb(tempValue.first, tempValue.second);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_two_binaries property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_two_binaries property callback");
+            }
         }
     }
 }
@@ -5631,7 +5926,13 @@ void TestableClient::_receiveReadWriteListOfStringsPropertyUpdate(const stinger:
         std::lock_guard<std::mutex> lock(_readWriteListOfStringsPropertyCallbacksMutex);
         for (const auto& cb: _readWriteListOfStringsPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.value);
+            try {
+                cb(tempValue.value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_list_of_strings property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_list_of_strings property callback");
+            }
         }
     }
 }
@@ -5749,7 +6050,13 @@ void TestableClient::_receiveReadWriteListsPropertyUpdate(const stinger::mqtt::M
         std::lock_guard<std::mutex> lock(_readWriteListsPropertyCallbacksMutex);
         for (const auto& cb: _readWriteListsPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.theList, tempValue.optionalList);
+            try {
+                cb(tempValue.theList, tempValue.optionalList);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_lists property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_lists property callback");
+            }
         }
     }
 }

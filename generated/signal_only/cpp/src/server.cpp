@@ -2,6 +2,8 @@
 #include <vector>
 #include <iostream>
 #include <syslog.h>
+#include <typeinfo>
+#include <future>
 
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>

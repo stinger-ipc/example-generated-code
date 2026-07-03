@@ -2,6 +2,8 @@
 #include <vector>
 #include <iostream>
 #include <syslog.h>
+#include <typeinfo>
+#include <future>
 
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
@@ -163,22 +165,42 @@ void SimpleServer::_callTradeNumbersHandler(
 
     auto requestArgs = TradeNumbersRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _tradeNumbersHandler(requestArgs.yourNumber);
-    TradeNumbersReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _tradeNumbersHandler(requestArgs.yourNumber);
+        TradeNumbersReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in trade_numbers method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in trade_numbers method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in trade_numbers method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -207,7 +229,13 @@ void SimpleServer::updateSchoolProperty(std::string name)
     { // Scope lock
         std::lock_guard<std::mutex> lock(_schoolPropertyCallbacksMutex);
         for (const auto& cb: _schoolPropertyCallbacks) {
-            cb(name);
+            try {
+                cb(name);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in school property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in school property callback");
+            }
         }
     }
     republishSchoolProperty();

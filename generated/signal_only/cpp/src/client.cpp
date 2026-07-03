@@ -8,6 +8,7 @@
 #include <ctime>
 #include <syslog.h>
 #include <sstream>
+#include <typeinfo>
 #include <stinger/utils/iconnection.hpp>
 #include <stinger/utils/uuid.hpp>
 #include <stinger/utils/format.hpp>
@@ -118,7 +119,13 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_anotherSignalSignalCallbacksMutex);
                 for (const auto& cb: _anotherSignalSignalCallbacks) {
-                    cb(tempOne, tempTwo, tempThree);
+                    try {
+                        cb(tempOne, tempTwo, tempThree);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in anotherSignal signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in anotherSignal signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -156,7 +163,13 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_barkSignalCallbacksMutex);
                 for (const auto& cb: _barkSignalCallbacks) {
-                    cb(tempWord);
+                    try {
+                        cb(tempWord);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in bark signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in bark signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -194,7 +207,13 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_maybeNumberSignalCallbacksMutex);
                 for (const auto& cb: _maybeNumberSignalCallbacks) {
-                    cb(tempNumber);
+                    try {
+                        cb(tempNumber);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in maybe_number signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in maybe_number signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -232,7 +251,13 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_maybeNameSignalCallbacksMutex);
                 for (const auto& cb: _maybeNameSignalCallbacks) {
-                    cb(tempName);
+                    try {
+                        cb(tempName);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in maybe_name signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in maybe_name signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -276,7 +301,13 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_nowSignalCallbacksMutex);
                 for (const auto& cb: _nowSignalCallbacks) {
-                    cb(tempTimestamp);
+                    try {
+                        cb(tempTimestamp);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in now signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in now signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {

@@ -2,6 +2,8 @@
 #include <vector>
 #include <iostream>
 #include <syslog.h>
+#include <typeinfo>
+#include <future>
 
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
@@ -1881,22 +1883,42 @@ void TestableServer::_callCallWithNothingHandler(
         return;
     }
 
-    // Method doesn't have any return values.
-    _callWithNothingHandler();
-    auto returnValues = CallWithNothingReturnValues();
+    try {
+        // Method doesn't have any return values.
+        _callWithNothingHandler();
+        auto returnValues = CallWithNothingReturnValues();
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callWithNothing method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callWithNothing method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callWithNothing method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -1915,22 +1937,42 @@ void TestableServer::_callCallOneIntegerHandler(
 
     auto requestArgs = CallOneIntegerRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOneIntegerHandler(requestArgs.input1);
-    CallOneIntegerReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOneIntegerHandler(requestArgs.input1);
+        CallOneIntegerReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneInteger method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneInteger method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOneInteger method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -1949,22 +1991,42 @@ void TestableServer::_callCallOptionalIntegerHandler(
 
     auto requestArgs = CallOptionalIntegerRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOptionalIntegerHandler(requestArgs.input1);
-    CallOptionalIntegerReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOptionalIntegerHandler(requestArgs.input1);
+        CallOptionalIntegerReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalInteger method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalInteger method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOptionalInteger method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -1983,21 +2045,41 @@ void TestableServer::_callCallThreeIntegersHandler(
 
     auto requestArgs = CallThreeIntegersRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has multiple return values.
-    auto returnValues = _callThreeIntegersHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
+    try {
+        // Method has multiple return values.
+        auto returnValues = _callThreeIntegersHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callThreeIntegers method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callThreeIntegers method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callThreeIntegers method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2016,22 +2098,42 @@ void TestableServer::_callCallOneStringHandler(
 
     auto requestArgs = CallOneStringRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOneStringHandler(requestArgs.input1);
-    CallOneStringReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOneStringHandler(requestArgs.input1);
+        CallOneStringReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneString method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneString method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOneString method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2050,22 +2152,42 @@ void TestableServer::_callCallOptionalStringHandler(
 
     auto requestArgs = CallOptionalStringRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOptionalStringHandler(requestArgs.input1);
-    CallOptionalStringReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOptionalStringHandler(requestArgs.input1);
+        CallOptionalStringReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalString method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalString method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOptionalString method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2084,21 +2206,41 @@ void TestableServer::_callCallThreeStringsHandler(
 
     auto requestArgs = CallThreeStringsRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has multiple return values.
-    auto returnValues = _callThreeStringsHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
+    try {
+        // Method has multiple return values.
+        auto returnValues = _callThreeStringsHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callThreeStrings method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callThreeStrings method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callThreeStrings method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2117,22 +2259,42 @@ void TestableServer::_callCallOneEnumHandler(
 
     auto requestArgs = CallOneEnumRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOneEnumHandler(requestArgs.input1);
-    CallOneEnumReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOneEnumHandler(requestArgs.input1);
+        CallOneEnumReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneEnum method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneEnum method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOneEnum method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2151,22 +2313,42 @@ void TestableServer::_callCallOptionalEnumHandler(
 
     auto requestArgs = CallOptionalEnumRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOptionalEnumHandler(requestArgs.input1);
-    CallOptionalEnumReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOptionalEnumHandler(requestArgs.input1);
+        CallOptionalEnumReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalEnum method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalEnum method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOptionalEnum method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2185,21 +2367,41 @@ void TestableServer::_callCallThreeEnumsHandler(
 
     auto requestArgs = CallThreeEnumsRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has multiple return values.
-    auto returnValues = _callThreeEnumsHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
+    try {
+        // Method has multiple return values.
+        auto returnValues = _callThreeEnumsHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callThreeEnums method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callThreeEnums method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callThreeEnums method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2218,22 +2420,42 @@ void TestableServer::_callCallOneStructHandler(
 
     auto requestArgs = CallOneStructRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOneStructHandler(requestArgs.input1);
-    CallOneStructReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOneStructHandler(requestArgs.input1);
+        CallOneStructReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneStruct method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneStruct method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOneStruct method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2252,22 +2474,42 @@ void TestableServer::_callCallOptionalStructHandler(
 
     auto requestArgs = CallOptionalStructRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOptionalStructHandler(requestArgs.input1);
-    CallOptionalStructReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOptionalStructHandler(requestArgs.input1);
+        CallOptionalStructReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalStruct method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalStruct method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOptionalStruct method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2286,21 +2528,41 @@ void TestableServer::_callCallThreeStructsHandler(
 
     auto requestArgs = CallThreeStructsRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has multiple return values.
-    auto returnValues = _callThreeStructsHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
+    try {
+        // Method has multiple return values.
+        auto returnValues = _callThreeStructsHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callThreeStructs method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callThreeStructs method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callThreeStructs method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2319,22 +2581,42 @@ void TestableServer::_callCallOneDateTimeHandler(
 
     auto requestArgs = CallOneDateTimeRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOneDateTimeHandler(requestArgs.input1);
-    CallOneDateTimeReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOneDateTimeHandler(requestArgs.input1);
+        CallOneDateTimeReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneDateTime method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneDateTime method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOneDateTime method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2353,22 +2635,42 @@ void TestableServer::_callCallOptionalDateTimeHandler(
 
     auto requestArgs = CallOptionalDateTimeRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOptionalDateTimeHandler(requestArgs.input1);
-    CallOptionalDateTimeReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOptionalDateTimeHandler(requestArgs.input1);
+        CallOptionalDateTimeReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalDateTime method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalDateTime method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOptionalDateTime method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2387,21 +2689,41 @@ void TestableServer::_callCallThreeDateTimesHandler(
 
     auto requestArgs = CallThreeDateTimesRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has multiple return values.
-    auto returnValues = _callThreeDateTimesHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
+    try {
+        // Method has multiple return values.
+        auto returnValues = _callThreeDateTimesHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callThreeDateTimes method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callThreeDateTimes method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callThreeDateTimes method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2420,22 +2742,42 @@ void TestableServer::_callCallOneDurationHandler(
 
     auto requestArgs = CallOneDurationRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOneDurationHandler(requestArgs.input1);
-    CallOneDurationReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOneDurationHandler(requestArgs.input1);
+        CallOneDurationReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneDuration method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneDuration method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOneDuration method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2454,22 +2796,42 @@ void TestableServer::_callCallOptionalDurationHandler(
 
     auto requestArgs = CallOptionalDurationRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOptionalDurationHandler(requestArgs.input1);
-    CallOptionalDurationReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOptionalDurationHandler(requestArgs.input1);
+        CallOptionalDurationReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalDuration method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalDuration method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOptionalDuration method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2488,21 +2850,41 @@ void TestableServer::_callCallThreeDurationsHandler(
 
     auto requestArgs = CallThreeDurationsRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has multiple return values.
-    auto returnValues = _callThreeDurationsHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
+    try {
+        // Method has multiple return values.
+        auto returnValues = _callThreeDurationsHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callThreeDurations method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callThreeDurations method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callThreeDurations method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2521,22 +2903,42 @@ void TestableServer::_callCallOneBinaryHandler(
 
     auto requestArgs = CallOneBinaryRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOneBinaryHandler(requestArgs.input1);
-    CallOneBinaryReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOneBinaryHandler(requestArgs.input1);
+        CallOneBinaryReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneBinary method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneBinary method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOneBinary method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2555,22 +2957,42 @@ void TestableServer::_callCallOptionalBinaryHandler(
 
     auto requestArgs = CallOptionalBinaryRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOptionalBinaryHandler(requestArgs.input1);
-    CallOptionalBinaryReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOptionalBinaryHandler(requestArgs.input1);
+        CallOptionalBinaryReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalBinary method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalBinary method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOptionalBinary method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2589,21 +3011,41 @@ void TestableServer::_callCallThreeBinariesHandler(
 
     auto requestArgs = CallThreeBinariesRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has multiple return values.
-    auto returnValues = _callThreeBinariesHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
+    try {
+        // Method has multiple return values.
+        auto returnValues = _callThreeBinariesHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callThreeBinaries method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callThreeBinaries method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callThreeBinaries method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2622,22 +3064,42 @@ void TestableServer::_callCallOneListOfIntegersHandler(
 
     auto requestArgs = CallOneListOfIntegersRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOneListOfIntegersHandler(requestArgs.input1);
-    CallOneListOfIntegersReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOneListOfIntegersHandler(requestArgs.input1);
+        CallOneListOfIntegersReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneListOfIntegers method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOneListOfIntegers method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOneListOfIntegers method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2656,22 +3118,42 @@ void TestableServer::_callCallOptionalListOfFloatsHandler(
 
     auto requestArgs = CallOptionalListOfFloatsRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has a single return value.
-    auto returnValue = _callOptionalListOfFloatsHandler(requestArgs.input1);
-    CallOptionalListOfFloatsReturnValues returnValues = { returnValue };
+    try {
+        // Method has a single return value.
+        auto returnValue = _callOptionalListOfFloatsHandler(requestArgs.input1);
+        CallOptionalListOfFloatsReturnValues returnValues = { returnValue };
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalListOfFloats method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callOptionalListOfFloats method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callOptionalListOfFloats method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2690,21 +3172,41 @@ void TestableServer::_callCallTwoListsHandler(
 
     auto requestArgs = CallTwoListsRequestArguments::FromRapidJsonObject(doc);
 
-    // Method has multiple return values.
-    auto returnValues = _callTwoListsHandler(requestArgs.input1, requestArgs.input2);
+    try {
+        // Method has multiple return values.
+        auto returnValues = _callTwoListsHandler(requestArgs.input1, requestArgs.input2);
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in callTwoLists method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in callTwoLists method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in callTwoLists method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -2733,7 +3235,13 @@ void TestableServer::updateReadWriteIntegerProperty(int value)
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteIntegerPropertyCallbacksMutex);
         for (const auto& cb: _readWriteIntegerPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_integer property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_integer property callback");
+            }
         }
     }
     republishReadWriteIntegerProperty();
@@ -2818,7 +3326,13 @@ void TestableServer::updateReadOnlyIntegerProperty(int value)
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readOnlyIntegerPropertyCallbacksMutex);
         for (const auto& cb: _readOnlyIntegerPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_only_integer property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_only_integer property callback");
+            }
         }
     }
     republishReadOnlyIntegerProperty();
@@ -2903,7 +3417,13 @@ void TestableServer::updateReadWriteOptionalIntegerProperty(std::optional<int> v
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteOptionalIntegerPropertyCallbacksMutex);
         for (const auto& cb: _readWriteOptionalIntegerPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_optional_integer property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_optional_integer property callback");
+            }
         }
     }
     republishReadWriteOptionalIntegerProperty();
@@ -2988,7 +3508,13 @@ void TestableServer::updateReadWriteTwoIntegersProperty(int first, std::optional
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteTwoIntegersPropertyCallbacksMutex);
         for (const auto& cb: _readWriteTwoIntegersPropertyCallbacks) {
-            cb(first, second);
+            try {
+                cb(first, second);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_two_integers property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_two_integers property callback");
+            }
         }
     }
     republishReadWriteTwoIntegersProperty();
@@ -3073,7 +3599,13 @@ void TestableServer::updateReadOnlyStringProperty(std::string value)
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readOnlyStringPropertyCallbacksMutex);
         for (const auto& cb: _readOnlyStringPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_only_string property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_only_string property callback");
+            }
         }
     }
     republishReadOnlyStringProperty();
@@ -3158,7 +3690,13 @@ void TestableServer::updateReadWriteStringProperty(std::string value)
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteStringPropertyCallbacksMutex);
         for (const auto& cb: _readWriteStringPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_string property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_string property callback");
+            }
         }
     }
     republishReadWriteStringProperty();
@@ -3243,7 +3781,13 @@ void TestableServer::updateReadWriteOptionalStringProperty(std::optional<std::st
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteOptionalStringPropertyCallbacksMutex);
         for (const auto& cb: _readWriteOptionalStringPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_optional_string property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_optional_string property callback");
+            }
         }
     }
     republishReadWriteOptionalStringProperty();
@@ -3328,7 +3872,13 @@ void TestableServer::updateReadWriteTwoStringsProperty(std::string first, std::o
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteTwoStringsPropertyCallbacksMutex);
         for (const auto& cb: _readWriteTwoStringsPropertyCallbacks) {
-            cb(first, second);
+            try {
+                cb(first, second);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_two_strings property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_two_strings property callback");
+            }
         }
     }
     republishReadWriteTwoStringsProperty();
@@ -3413,7 +3963,13 @@ void TestableServer::updateReadWriteStructProperty(AllTypes value)
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteStructPropertyCallbacksMutex);
         for (const auto& cb: _readWriteStructPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_struct property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_struct property callback");
+            }
         }
     }
     republishReadWriteStructProperty();
@@ -3498,7 +4054,13 @@ void TestableServer::updateReadWriteOptionalStructProperty(std::optional<AllType
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteOptionalStructPropertyCallbacksMutex);
         for (const auto& cb: _readWriteOptionalStructPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_optional_struct property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_optional_struct property callback");
+            }
         }
     }
     republishReadWriteOptionalStructProperty();
@@ -3583,7 +4145,13 @@ void TestableServer::updateReadWriteTwoStructsProperty(AllTypes first, std::opti
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteTwoStructsPropertyCallbacksMutex);
         for (const auto& cb: _readWriteTwoStructsPropertyCallbacks) {
-            cb(first, second);
+            try {
+                cb(first, second);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_two_structs property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_two_structs property callback");
+            }
         }
     }
     republishReadWriteTwoStructsProperty();
@@ -3668,7 +4236,13 @@ void TestableServer::updateReadOnlyEnumProperty(Numbers value)
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readOnlyEnumPropertyCallbacksMutex);
         for (const auto& cb: _readOnlyEnumPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_only_enum property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_only_enum property callback");
+            }
         }
     }
     republishReadOnlyEnumProperty();
@@ -3753,7 +4327,13 @@ void TestableServer::updateReadWriteEnumProperty(Numbers value)
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteEnumPropertyCallbacksMutex);
         for (const auto& cb: _readWriteEnumPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_enum property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_enum property callback");
+            }
         }
     }
     republishReadWriteEnumProperty();
@@ -3838,7 +4418,13 @@ void TestableServer::updateReadWriteOptionalEnumProperty(std::optional<Numbers> 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteOptionalEnumPropertyCallbacksMutex);
         for (const auto& cb: _readWriteOptionalEnumPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_optional_enum property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_optional_enum property callback");
+            }
         }
     }
     republishReadWriteOptionalEnumProperty();
@@ -3923,7 +4509,13 @@ void TestableServer::updateReadWriteTwoEnumsProperty(Numbers first, std::optiona
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteTwoEnumsPropertyCallbacksMutex);
         for (const auto& cb: _readWriteTwoEnumsPropertyCallbacks) {
-            cb(first, second);
+            try {
+                cb(first, second);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_two_enums property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_two_enums property callback");
+            }
         }
     }
     republishReadWriteTwoEnumsProperty();
@@ -4008,7 +4600,13 @@ void TestableServer::updateReadWriteDatetimeProperty(std::chrono::time_point<std
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteDatetimePropertyCallbacksMutex);
         for (const auto& cb: _readWriteDatetimePropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_datetime property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_datetime property callback");
+            }
         }
     }
     republishReadWriteDatetimeProperty();
@@ -4093,7 +4691,13 @@ void TestableServer::updateReadWriteOptionalDatetimeProperty(std::optional<std::
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteOptionalDatetimePropertyCallbacksMutex);
         for (const auto& cb: _readWriteOptionalDatetimePropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_optional_datetime property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_optional_datetime property callback");
+            }
         }
     }
     republishReadWriteOptionalDatetimeProperty();
@@ -4178,7 +4782,13 @@ void TestableServer::updateReadWriteTwoDatetimesProperty(std::chrono::time_point
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteTwoDatetimesPropertyCallbacksMutex);
         for (const auto& cb: _readWriteTwoDatetimesPropertyCallbacks) {
-            cb(first, second);
+            try {
+                cb(first, second);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_two_datetimes property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_two_datetimes property callback");
+            }
         }
     }
     republishReadWriteTwoDatetimesProperty();
@@ -4263,7 +4873,13 @@ void TestableServer::updateReadWriteDurationProperty(std::chrono::duration<doubl
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteDurationPropertyCallbacksMutex);
         for (const auto& cb: _readWriteDurationPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_duration property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_duration property callback");
+            }
         }
     }
     republishReadWriteDurationProperty();
@@ -4348,7 +4964,13 @@ void TestableServer::updateReadWriteOptionalDurationProperty(std::optional<std::
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteOptionalDurationPropertyCallbacksMutex);
         for (const auto& cb: _readWriteOptionalDurationPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_optional_duration property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_optional_duration property callback");
+            }
         }
     }
     republishReadWriteOptionalDurationProperty();
@@ -4433,7 +5055,13 @@ void TestableServer::updateReadWriteTwoDurationsProperty(std::chrono::duration<d
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteTwoDurationsPropertyCallbacksMutex);
         for (const auto& cb: _readWriteTwoDurationsPropertyCallbacks) {
-            cb(first, second);
+            try {
+                cb(first, second);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_two_durations property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_two_durations property callback");
+            }
         }
     }
     republishReadWriteTwoDurationsProperty();
@@ -4518,7 +5146,13 @@ void TestableServer::updateReadWriteBinaryProperty(std::vector<uint8_t> value)
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteBinaryPropertyCallbacksMutex);
         for (const auto& cb: _readWriteBinaryPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_binary property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_binary property callback");
+            }
         }
     }
     republishReadWriteBinaryProperty();
@@ -4603,7 +5237,13 @@ void TestableServer::updateReadWriteOptionalBinaryProperty(std::optional<std::ve
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteOptionalBinaryPropertyCallbacksMutex);
         for (const auto& cb: _readWriteOptionalBinaryPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_optional_binary property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_optional_binary property callback");
+            }
         }
     }
     republishReadWriteOptionalBinaryProperty();
@@ -4688,7 +5328,13 @@ void TestableServer::updateReadWriteTwoBinariesProperty(std::vector<uint8_t> fir
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteTwoBinariesPropertyCallbacksMutex);
         for (const auto& cb: _readWriteTwoBinariesPropertyCallbacks) {
-            cb(first, second);
+            try {
+                cb(first, second);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_two_binaries property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_two_binaries property callback");
+            }
         }
     }
     republishReadWriteTwoBinariesProperty();
@@ -4773,7 +5419,13 @@ void TestableServer::updateReadWriteListOfStringsProperty(std::vector<std::strin
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteListOfStringsPropertyCallbacksMutex);
         for (const auto& cb: _readWriteListOfStringsPropertyCallbacks) {
-            cb(value);
+            try {
+                cb(value);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_list_of_strings property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_list_of_strings property callback");
+            }
         }
     }
     republishReadWriteListOfStringsProperty();
@@ -4858,7 +5510,13 @@ void TestableServer::updateReadWriteListsProperty(std::vector<Numbers> theList, 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteListsPropertyCallbacksMutex);
         for (const auto& cb: _readWriteListsPropertyCallbacks) {
-            cb(theList, optionalList);
+            try {
+                cb(theList, optionalList);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in read_write_lists property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in read_write_lists property callback");
+            }
         }
     }
     republishReadWriteListsProperty();

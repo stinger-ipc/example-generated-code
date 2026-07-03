@@ -8,6 +8,7 @@
 #include <ctime>
 #include <syslog.h>
 #include <sstream>
+#include <typeinfo>
 #include <stinger/utils/iconnection.hpp>
 #include <stinger/utils/uuid.hpp>
 #include <stinger/utils/format.hpp>
@@ -97,7 +98,13 @@ void SimpleClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_personEnteredSignalCallbacksMutex);
                 for (const auto& cb: _personEnteredSignalCallbacks) {
-                    cb(tempPerson);
+                    try {
+                        cb(tempPerson);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in person_entered signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in person_entered signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -221,7 +228,13 @@ void SimpleClient::_receiveSchoolPropertyUpdate(const stinger::mqtt::Message& ms
         std::lock_guard<std::mutex> lock(_schoolPropertyCallbacksMutex);
         for (const auto& cb: _schoolPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.name);
+            try {
+                cb(tempValue.name);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in school property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in school property callback");
+            }
         }
     }
 }

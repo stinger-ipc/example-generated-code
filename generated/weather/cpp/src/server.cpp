@@ -2,6 +2,8 @@
 #include <vector>
 #include <iostream>
 #include <syslog.h>
+#include <typeinfo>
+#include <future>
 
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
@@ -271,22 +273,42 @@ void WeatherServer::_callRefreshDailyForecastHandler(
         return;
     }
 
-    // Method doesn't have any return values.
-    _refreshDailyForecastHandler();
-    auto returnValues = RefreshDailyForecastReturnValues();
+    try {
+        // Method doesn't have any return values.
+        _refreshDailyForecastHandler();
+        auto returnValues = RefreshDailyForecastReturnValues();
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in refresh_daily_forecast method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in refresh_daily_forecast method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in refresh_daily_forecast method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -303,22 +325,42 @@ void WeatherServer::_callRefreshHourlyForecastHandler(
         return;
     }
 
-    // Method doesn't have any return values.
-    _refreshHourlyForecastHandler();
-    auto returnValues = RefreshHourlyForecastReturnValues();
+    try {
+        // Method doesn't have any return values.
+        _refreshHourlyForecastHandler();
+        auto returnValues = RefreshHourlyForecastReturnValues();
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in refresh_hourly_forecast method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in refresh_hourly_forecast method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in refresh_hourly_forecast method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -335,22 +377,42 @@ void WeatherServer::_callRefreshCurrentConditionsHandler(
         return;
     }
 
-    // Method doesn't have any return values.
-    _refreshCurrentConditionsHandler();
-    auto returnValues = RefreshCurrentConditionsReturnValues();
+    try {
+        // Method doesn't have any return values.
+        _refreshCurrentConditionsHandler();
+        auto returnValues = RefreshCurrentConditionsReturnValues();
 
-    if (optResponseTopic) {
-        rapidjson::Document responseJson;
-        responseJson.SetObject();
+        if (optResponseTopic) {
+            rapidjson::Document responseJson;
+            responseJson.SetObject();
 
-        returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
+            returnValues.AddToRapidJsonObject(responseJson, responseJson.GetAllocator());
 
-        rapidjson::StringBuffer buf;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-        responseJson.Accept(writer);
+            rapidjson::StringBuffer buf;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+            responseJson.Accept(writer);
 
-        auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
-        _broker->Publish(msg);
+            auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            _broker->Publish(msg);
+        }
+    } catch (const stinger::error::StingerMethodException& e) {
+        _broker->Log(LOG_ERR, "Exception in refresh_current_conditions method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            _broker->Publish(errMsg);
+        }
+    } catch (const std::exception& e) {
+        _broker->Log(LOG_ERR, "Exception in refresh_current_conditions method handler [%s]: %s", typeid(e).name(), e.what());
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            _broker->Publish(errMsg);
+        }
+    } catch (...) {
+        _broker->Log(LOG_ERR, "Unknown exception in refresh_current_conditions method handler");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            _broker->Publish(errMsg);
+        }
     }
 }
 
@@ -379,7 +441,13 @@ void WeatherServer::updateLocationProperty(double latitude, double longitude)
     { // Scope lock
         std::lock_guard<std::mutex> lock(_locationPropertyCallbacksMutex);
         for (const auto& cb: _locationPropertyCallbacks) {
-            cb(latitude, longitude);
+            try {
+                cb(latitude, longitude);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in location property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in location property callback");
+            }
         }
     }
     republishLocationProperty();
@@ -464,7 +532,13 @@ void WeatherServer::updateCurrentTemperatureProperty(double temperatureF)
     { // Scope lock
         std::lock_guard<std::mutex> lock(_currentTemperaturePropertyCallbacksMutex);
         for (const auto& cb: _currentTemperaturePropertyCallbacks) {
-            cb(temperatureF);
+            try {
+                cb(temperatureF);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in current_temperature property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in current_temperature property callback");
+            }
         }
     }
     republishCurrentTemperatureProperty();
@@ -549,7 +623,13 @@ void WeatherServer::updateCurrentConditionProperty(WeatherCondition condition, s
     { // Scope lock
         std::lock_guard<std::mutex> lock(_currentConditionPropertyCallbacksMutex);
         for (const auto& cb: _currentConditionPropertyCallbacks) {
-            cb(condition, description);
+            try {
+                cb(condition, description);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in current_condition property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in current_condition property callback");
+            }
         }
     }
     republishCurrentConditionProperty();
@@ -634,7 +714,13 @@ void WeatherServer::updateDailyForecastProperty(ForecastForDay monday, ForecastF
     { // Scope lock
         std::lock_guard<std::mutex> lock(_dailyForecastPropertyCallbacksMutex);
         for (const auto& cb: _dailyForecastPropertyCallbacks) {
-            cb(monday, tuesday, wednesday);
+            try {
+                cb(monday, tuesday, wednesday);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in daily_forecast property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in daily_forecast property callback");
+            }
         }
     }
     republishDailyForecastProperty();
@@ -719,7 +805,13 @@ void WeatherServer::updateHourlyForecastProperty(ForecastForHour hour0, Forecast
     { // Scope lock
         std::lock_guard<std::mutex> lock(_hourlyForecastPropertyCallbacksMutex);
         for (const auto& cb: _hourlyForecastPropertyCallbacks) {
-            cb(hour0, hour1, hour2, hour3);
+            try {
+                cb(hour0, hour1, hour2, hour3);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in hourly_forecast property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in hourly_forecast property callback");
+            }
         }
     }
     republishHourlyForecastProperty();
@@ -804,7 +896,13 @@ void WeatherServer::updateCurrentConditionRefreshIntervalProperty(int seconds)
     { // Scope lock
         std::lock_guard<std::mutex> lock(_currentConditionRefreshIntervalPropertyCallbacksMutex);
         for (const auto& cb: _currentConditionRefreshIntervalPropertyCallbacks) {
-            cb(seconds);
+            try {
+                cb(seconds);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in current_condition_refresh_interval property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in current_condition_refresh_interval property callback");
+            }
         }
     }
     republishCurrentConditionRefreshIntervalProperty();
@@ -889,7 +987,13 @@ void WeatherServer::updateHourlyForecastRefreshIntervalProperty(int seconds)
     { // Scope lock
         std::lock_guard<std::mutex> lock(_hourlyForecastRefreshIntervalPropertyCallbacksMutex);
         for (const auto& cb: _hourlyForecastRefreshIntervalPropertyCallbacks) {
-            cb(seconds);
+            try {
+                cb(seconds);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in hourly_forecast_refresh_interval property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in hourly_forecast_refresh_interval property callback");
+            }
         }
     }
     republishHourlyForecastRefreshIntervalProperty();
@@ -974,7 +1078,13 @@ void WeatherServer::updateDailyForecastRefreshIntervalProperty(int seconds)
     { // Scope lock
         std::lock_guard<std::mutex> lock(_dailyForecastRefreshIntervalPropertyCallbacksMutex);
         for (const auto& cb: _dailyForecastRefreshIntervalPropertyCallbacks) {
-            cb(seconds);
+            try {
+                cb(seconds);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in daily_forecast_refresh_interval property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in daily_forecast_refresh_interval property callback");
+            }
         }
     }
     republishDailyForecastRefreshIntervalProperty();

@@ -913,7 +913,7 @@ class TestFullServerProperties:
         prop_data = {
             "mom": datetime.now(UTC),
             "dad": datetime.now(UTC),
-            "sister": None,
+            "sister": datetime.now(UTC),
             "brothers_age": 2022,
         }
         prop_obj = LastBirthdaysProperty(**prop_data)  # type: ignore[arg-type]
@@ -960,7 +960,7 @@ class TestFullServerProperties:
         prop_data = {
             "mom": datetime.now(UTC),
             "dad": datetime.now(UTC),
-            "sister": None,
+            "sister": datetime.now(UTC),
             "brothers_age": 2022,
         }
         prop_obj = LastBirthdaysProperty(**prop_data)  # type: ignore[arg-type]

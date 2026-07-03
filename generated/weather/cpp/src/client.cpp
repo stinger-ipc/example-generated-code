@@ -8,6 +8,7 @@
 #include <ctime>
 #include <syslog.h>
 #include <sstream>
+#include <typeinfo>
 #include <stinger/utils/iconnection.hpp>
 #include <stinger/utils/uuid.hpp>
 #include <stinger/utils/format.hpp>
@@ -125,7 +126,13 @@ void WeatherClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
                 std::lock_guard<std::mutex> lock(_currentTimeSignalCallbacksMutex);
                 for (const auto& cb: _currentTimeSignalCallbacks) {
-                    cb(tempCurrentTime);
+                    try {
+                        cb(tempCurrentTime);
+                    } catch (const std::exception& e) {
+                        _broker->Log(LOG_ERR, "Exception in current_time signal callback [%s]: %s", typeid(e).name(), e.what());
+                    } catch (...) {
+                        _broker->Log(LOG_ERR, "Unknown exception in current_time signal callback");
+                    }
                 }
             }
         } catch (const std::exception&) {
@@ -367,7 +374,13 @@ void WeatherClient::_receiveLocationPropertyUpdate(const stinger::mqtt::Message&
         std::lock_guard<std::mutex> lock(_locationPropertyCallbacksMutex);
         for (const auto& cb: _locationPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.latitude, tempValue.longitude);
+            try {
+                cb(tempValue.latitude, tempValue.longitude);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in location property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in location property callback");
+            }
         }
     }
 }
@@ -447,7 +460,13 @@ void WeatherClient::_receiveCurrentTemperaturePropertyUpdate(const stinger::mqtt
         std::lock_guard<std::mutex> lock(_currentTemperaturePropertyCallbacksMutex);
         for (const auto& cb: _currentTemperaturePropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.temperatureF);
+            try {
+                cb(tempValue.temperatureF);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in current_temperature property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in current_temperature property callback");
+            }
         }
     }
 }
@@ -510,7 +529,13 @@ void WeatherClient::_receiveCurrentConditionPropertyUpdate(const stinger::mqtt::
         std::lock_guard<std::mutex> lock(_currentConditionPropertyCallbacksMutex);
         for (const auto& cb: _currentConditionPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.condition, tempValue.description);
+            try {
+                cb(tempValue.condition, tempValue.description);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in current_condition property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in current_condition property callback");
+            }
         }
     }
 }
@@ -582,7 +607,13 @@ void WeatherClient::_receiveDailyForecastPropertyUpdate(const stinger::mqtt::Mes
         std::lock_guard<std::mutex> lock(_dailyForecastPropertyCallbacksMutex);
         for (const auto& cb: _dailyForecastPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.monday, tempValue.tuesday, tempValue.wednesday);
+            try {
+                cb(tempValue.monday, tempValue.tuesday, tempValue.wednesday);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in daily_forecast property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in daily_forecast property callback");
+            }
         }
     }
 }
@@ -663,7 +694,13 @@ void WeatherClient::_receiveHourlyForecastPropertyUpdate(const stinger::mqtt::Me
         std::lock_guard<std::mutex> lock(_hourlyForecastPropertyCallbacksMutex);
         for (const auto& cb: _hourlyForecastPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.hour0, tempValue.hour1, tempValue.hour2, tempValue.hour3);
+            try {
+                cb(tempValue.hour0, tempValue.hour1, tempValue.hour2, tempValue.hour3);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in hourly_forecast property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in hourly_forecast property callback");
+            }
         }
     }
 }
@@ -717,7 +754,13 @@ void WeatherClient::_receiveCurrentConditionRefreshIntervalPropertyUpdate(const 
         std::lock_guard<std::mutex> lock(_currentConditionRefreshIntervalPropertyCallbacksMutex);
         for (const auto& cb: _currentConditionRefreshIntervalPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.seconds);
+            try {
+                cb(tempValue.seconds);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in current_condition_refresh_interval property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in current_condition_refresh_interval property callback");
+            }
         }
     }
 }
@@ -795,7 +838,13 @@ void WeatherClient::_receiveHourlyForecastRefreshIntervalPropertyUpdate(const st
         std::lock_guard<std::mutex> lock(_hourlyForecastRefreshIntervalPropertyCallbacksMutex);
         for (const auto& cb: _hourlyForecastRefreshIntervalPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.seconds);
+            try {
+                cb(tempValue.seconds);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in hourly_forecast_refresh_interval property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in hourly_forecast_refresh_interval property callback");
+            }
         }
     }
 }
@@ -873,7 +922,13 @@ void WeatherClient::_receiveDailyForecastRefreshIntervalPropertyUpdate(const sti
         std::lock_guard<std::mutex> lock(_dailyForecastRefreshIntervalPropertyCallbacksMutex);
         for (const auto& cb: _dailyForecastRefreshIntervalPropertyCallbacks) {
             // Don't need a mutex since we're using tempValue.
-            cb(tempValue.seconds);
+            try {
+                cb(tempValue.seconds);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in daily_forecast_refresh_interval property callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in daily_forecast_refresh_interval property callback");
+            }
         }
     }
 }

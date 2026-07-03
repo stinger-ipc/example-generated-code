@@ -6,6 +6,8 @@
 #include <iostream>
 #include <algorithm>
 #include <sstream>
+#include <syslog.h>
+#include <typeinfo>
 
 namespace stinger {
 
@@ -454,7 +456,13 @@ void TestableDiscovery::_onMessage(const stinger::mqtt::Message& msg)
 
         // Call the discovery callback if set
         if (_discovery_callback) {
-            _discovery_callback(*infoPtr);
+            try {
+                _discovery_callback(*infoPtr);
+            } catch (const std::exception& e) {
+                _broker->Log(LOG_ERR, "Exception in discovery callback [%s]: %s", typeid(e).name(), e.what());
+            } catch (...) {
+                _broker->Log(LOG_ERR, "Unknown exception in discovery callback");
+            }
         }
     }
 } // end of _onMessage
