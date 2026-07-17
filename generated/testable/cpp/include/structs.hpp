@@ -30,6 +30,17 @@ struct Entry {
     std::string value;
 };
 
+struct Lunch {
+    static Lunch FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    bool drink;
+    std::string sandwich;
+    double crackers;
+    std::optional<int> orderNumber;
+    std::chrono::time_point<std::chrono::system_clock> timeOfLunch;
+    std::chrono::duration<double> durationOfLunch;
+};
+
 struct AllTypes {
     static AllTypes FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
@@ -38,7 +49,7 @@ struct AllTypes {
     double theNumber;
     std::string theStr;
     Numbers theEnum;
-    Entry anEntryObject;
+    Lunch anEntryObject;
     std::chrono::time_point<std::chrono::system_clock> dateAndTime;
     std::chrono::duration<double> timeDuration;
     std::vector<uint8_t> data;

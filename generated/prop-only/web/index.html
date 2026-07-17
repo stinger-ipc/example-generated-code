@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Property Only Interface Web Interface</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <!--
+    This is automatically generated code.
+    LICENSE: This generated content is not subject to any license restrictions.
+    TODO: Get license text from stinger file
+    -->
+  </head>
+  
+  <body ng-app="myApp" ng-controller="myCtrl">
+    <div class="infobox-background" ng-show="!online || showoutput" id="offline">Connecting</div>
+
+    <div class="interface-box">
+      <h1>Property Only Interface</h1>
+      <p id="interface-summary"><i>Example StingerAPI interface which only has properties, plus a struct and an enum.</i></p>
+      <p id="interface-doc">
+      
+      </p>
+    </div>
+    <!------------- SIGNALS ------------->
+    
+
+    <!------------- PROPERTIES ------------->
+    
+    <div class="component-box prop-box" id="prop-box-home_address">
+        <h3 class="component-title prop-title">Property: home_address</h3>
+        <div class="component-doc prop-doc">
+<p>The current home address.</p>
+        
+        </div>
+        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7f38c751b440>></div>-->
+        <div class="last-received property-value">
+          
+          <table class="arglist">
+          
+            <tr class="argrow">
+              <td class="arg-name-cell">
+                <div class="arg-name">address</div>
+                
+              </td>
+              <td class="arg-value-cell">
+                
+                <div class="struct-arg">
+                  
+                  
+          <table class="arglist">
+          
+            <tr class="argrow">
+              <td class="arg-name-cell">
+                <div class="arg-name">street</div>
+                
+                <div class="arg-description">The street address.</div>
+                
+              </td>
+              <td class="arg-value-cell">
+                
+                <input type="text" ng-model="properties.homeAddress.received.address.street" />
+                 
+              </td>
+            </tr>
+          
+            <tr class="argrow">
+              <td class="arg-name-cell">
+                <div class="arg-name">city</div>
+                
+                <div class="arg-description">The city name.</div>
+                
+              </td>
+              <td class="arg-value-cell">
+                
+                <input type="text" ng-model="properties.homeAddress.received.address.city" />
+                 
+              </td>
+            </tr>
+          
+            <tr class="argrow">
+              <td class="arg-name-cell">
+                <div class="arg-name">state</div>
+                
+                <div class="arg-description">The state or province.</div>
+                
+              </td>
+              <td class="arg-value-cell">
+                
+                <input type="text" ng-model="properties.homeAddress.received.address.state" />
+                 
+              </td>
+            </tr>
+          
+            <tr class="argrow">
+              <td class="arg-name-cell">
+                <div class="arg-name">postal_code</div>
+                
+                <div class="arg-description">The postal or ZIP code.</div>
+                
+              </td>
+              <td class="arg-value-cell">
+                
+                <input type="text" ng-model="properties.homeAddress.received.address.postal_code" />
+                 
+              </td>
+            </tr>
+          
+            <tr class="argrow">
+              <td class="arg-name-cell">
+                <div class="arg-name">country</div>
+                
+              </td>
+              <td class="arg-value-cell">
+                
+                <select ng-model="properties.homeAddress.received.address.country" ng-options="n.id as n.name for n in enums.country">
+                </select>
+                 
+              </td>
+            </tr>
+          
+          </table>
+                </div>
+                 
+              </td>
+            </tr>
+          
+          </table>
+        </div>
+        
+        <input type="button" class="publish-button" value="Update" ng-click="updateProperty(properties.homeAddress)" />
+        
+    </div>
+    
+    <div class="component-box prop-box" id="prop-box-favorite_country">
+        <h3 class="component-title prop-title">Property: favorite_country</h3>
+        <div class="component-doc prop-doc">
+<p>The user&rsquo;s favorite country.</p>
+        
+        </div>
+        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7f38c751b830>></div>-->
+        <div class="last-received property-value">
+          
+          <table class="arglist">
+          
+            <tr class="argrow">
+              <td class="arg-name-cell">
+                <div class="arg-name">country</div>
+                
+              </td>
+              <td class="arg-value-cell">
+                
+                <select ng-model="properties.favoriteCountry.received.country" ng-options="n.id as n.name for n in enums.country">
+                </select>
+                 
+              </td>
+            </tr>
+          
+          </table>
+        </div>
+        
+        <input type="button" class="publish-button" value="Update" ng-click="updateProperty(properties.favoriteCountry)" />
+        
+    </div>
+     
+
+    <!------------- METHODS ------------->
+     
+
+    
+    <div id="console" ng-class="{ 'expanded' : (console.showing) }">
+      <div class="top" ng-click=" console.showing = !console.showing ">Request Console <span ng-show="console.showing && console.requests.length > 0" ng-click="console.requests = []"> - Clear</span>
+        <p class="expanded-toggle">{{ console.showing ? 'Hide' : 'Show' }}</p>
+      </div>
+      <div id="request-list">
+        <p ng-repeat="msg in console.requests" class="entry">
+          <strong>{{msg.name}}:</strong> <em>{{msg.topic}}</em> <span class="elapsedTime" ng-show="msg.responseTime">{{msg.responseTime - msg.requestTime}}ms</span><span class="elapsedTime" ng-show="msg.eventTime">{{msg.eventTime}}</span>
+          <span class="outgoing" ng-show="msg.payload">{{msg.payload}}</span>
+          <span class="incoming" ng-show="msg.response">{{msg.response}}</span>
+          <span ng-repeat="result in msg.results" class="action-result">{{result}}</span>
+        </p>
+      </div>
+    </div>
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
+    <script src="https://unpkg.com/mqtt@5.14.0/dist/mqtt.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

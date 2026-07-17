@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package prop_only;
+
+
+
+
+enum Country {
+    COUNTRY_UNSPECIFIED = 0; 
+    COUNTRY_USA = 1;
+    COUNTRY_CANADA = 2;
+    COUNTRY_MEXICO = 3;
+}
+
+
+message Address {
+    string street = 1;
+    string city = 2;
+    string state = 3;
+    string postal_code = 4;
+    Country country = 5;
+}
+
+
+
+
+
+message HomeAddressProperty {
+    Address address = 1;
+}
+
+message FavoriteCountryProperty {
+    Country country = 1;
+}
+
+
