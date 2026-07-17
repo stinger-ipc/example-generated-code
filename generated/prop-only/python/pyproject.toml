@@ -43,7 +43,7 @@ prop-only-tui = "proponlyipc.tui.app:cli"
 packages = ["proponlyipc"]
 
 [stinger-ipc]
-generator_version = "0.9.7"
+generator_version = "0.9.7.post0"
 
 [tool.mypy]
 [[tool.mypy.overrides]]

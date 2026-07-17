@@ -43,7 +43,7 @@ testable-tui = "testableipc.tui.app:cli"
 packages = ["testableipc"]
 
 [stinger-ipc]
-generator_version = "0.9.7"
+generator_version = "0.9.7.post0"
 
 [tool.mypy]
 [[tool.mypy.overrides]]
