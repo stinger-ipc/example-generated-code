@@ -2,8 +2,7 @@
 
 <!--
 This is automatically generated documentation.
-LICENSE: This generated content is not subject to any license restrictions.
-TODO: Get license text from stinger file
+
 --> 
 _Example StingerAPI interface which only has properties, plus a struct and an enum._
 

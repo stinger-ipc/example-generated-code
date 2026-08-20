@@ -12,6 +12,7 @@
 #include "structs.hpp"
 #include "server.hpp"
 #include "method_payloads.hpp"
+#include "signal_payloads.hpp"
 #include "enums.hpp"
 #include <stinger/utils/iconnection.hpp>
 #include <stinger/utils/format.hpp>
@@ -185,6 +186,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     if (subscriptionId == _callWithNothingMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callWithNothing method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callWithNothingHandler) {
@@ -209,6 +213,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOneIntegerMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOneInteger method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOneIntegerHandler) {
@@ -233,6 +240,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOptionalIntegerMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOptionalInteger method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOptionalIntegerHandler) {
@@ -257,6 +267,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callThreeIntegersMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callThreeIntegers method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callThreeIntegersHandler) {
@@ -281,6 +294,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOneStringMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOneString method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOneStringHandler) {
@@ -305,6 +321,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOptionalStringMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOptionalString method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOptionalStringHandler) {
@@ -329,6 +348,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callThreeStringsMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callThreeStrings method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callThreeStringsHandler) {
@@ -353,6 +375,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOneEnumMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOneEnum method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOneEnumHandler) {
@@ -377,6 +402,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOptionalEnumMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOptionalEnum method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOptionalEnumHandler) {
@@ -401,6 +429,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callThreeEnumsMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callThreeEnums method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callThreeEnumsHandler) {
@@ -425,6 +456,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOneStructMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOneStruct method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOneStructHandler) {
@@ -449,6 +483,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOptionalStructMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOptionalStruct method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOptionalStructHandler) {
@@ -473,6 +510,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callThreeStructsMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callThreeStructs method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callThreeStructsHandler) {
@@ -497,6 +537,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOneDateTimeMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOneDateTime method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOneDateTimeHandler) {
@@ -521,6 +564,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOptionalDateTimeMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOptionalDateTime method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOptionalDateTimeHandler) {
@@ -545,6 +591,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callThreeDateTimesMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callThreeDateTimes method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callThreeDateTimesHandler) {
@@ -569,6 +618,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOneDurationMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOneDuration method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOneDurationHandler) {
@@ -593,6 +645,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOptionalDurationMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOptionalDuration method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOptionalDurationHandler) {
@@ -617,6 +672,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callThreeDurationsMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callThreeDurations method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callThreeDurationsHandler) {
@@ -641,6 +699,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOneBinaryMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOneBinary method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOneBinaryHandler) {
@@ -665,6 +726,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOptionalBinaryMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOptionalBinary method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOptionalBinaryHandler) {
@@ -689,6 +753,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callThreeBinariesMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callThreeBinaries method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callThreeBinariesHandler) {
@@ -713,6 +780,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOneListOfIntegersMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOneListOfIntegers method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOneListOfIntegersHandler) {
@@ -737,6 +807,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callOptionalListOfFloatsMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callOptionalListOfFloats method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callOptionalListOfFloatsHandler) {
@@ -761,6 +834,9 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _callTwoListsMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as callTwoLists method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_callTwoListsHandler) {
@@ -916,8 +992,18 @@ void TestableServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
 std::future<bool> TestableServer::emitEmptySignal()
 {
+    EmptyPayload signalPayload{};
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'empty' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
+
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
     doc.Accept(writer);
@@ -935,10 +1021,17 @@ std::future<bool> TestableServer::emitEmptySignal()
 
 std::future<bool> TestableServer::emitSingleIntSignal(int value)
 {
+    SingleIntPayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleInt' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    doc.AddMember("value", value, doc.GetAllocator());
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -955,12 +1048,48 @@ std::future<bool> TestableServer::emitSingleIntSignal(int value)
     return _broker->Publish(msg);
 }
 
-std::future<bool> TestableServer::emitSingleOptionalIntSignal(std::optional<int> value)
+std::future<bool> TestableServer::emitJsonSchemaValidatedIntSignal(int value)
 {
+    JsonSchemaValidatedIntPayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'jsonSchemaValidatedInt' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-    if (value)
-        doc.AddMember("value", *value, doc.GetAllocator());
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
+
+    rapidjson::StringBuffer buf;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+    doc.Accept(writer);
+
+    std::map<std::string, std::string> topicArgs;
+    topicArgs["service_id"] = _instanceId;
+    topicArgs["interface_name"] = NAME;
+    topicArgs["client_id"] = _broker->GetClientId();
+    topicArgs["signal_name"] = "jsonSchemaValidatedInt";
+    topicArgs["prefix"] = _prefixTopicParam;
+    auto topic = stinger::utils::format("{prefix}/testable/{service_id}/signal/jsonSchemaValidatedInt", topicArgs);
+    auto msg = stinger::mqtt::Message::Signal(topic, buf.GetString());
+    return _broker->Publish(msg);
+}
+
+std::future<bool> TestableServer::emitSingleOptionalIntSignal(std::optional<int> value)
+{
+    SingleOptionalIntPayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleOptionalInt' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
+    rapidjson::Document doc;
+    doc.SetObject();
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -979,15 +1108,17 @@ std::future<bool> TestableServer::emitSingleOptionalIntSignal(std::optional<int>
 
 std::future<bool> TestableServer::emitThreeIntegersSignal(int first, int second, std::optional<int> third)
 {
+    ThreeIntegersPayload signalPayload{ first, second, third };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'threeIntegers' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    doc.AddMember("first", first, doc.GetAllocator());
-
-    doc.AddMember("second", second, doc.GetAllocator());
-
-    if (third)
-        doc.AddMember("third", *third, doc.GetAllocator());
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1006,14 +1137,17 @@ std::future<bool> TestableServer::emitThreeIntegersSignal(int first, int second,
 
 std::future<bool> TestableServer::emitSingleStringSignal(std::string value)
 {
+    SingleStringPayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleString' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // restrict scope
-        rapidjson::Value tempStringValue;
-        tempStringValue.SetString(value.c_str(), value.size(), doc.GetAllocator());
-        doc.AddMember("value", tempStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1030,15 +1164,48 @@ std::future<bool> TestableServer::emitSingleStringSignal(std::string value)
     return _broker->Publish(msg);
 }
 
-std::future<bool> TestableServer::emitSingleOptionalStringSignal(std::optional<std::string> value)
+std::future<bool> TestableServer::emitJsonSchemaValidatedStringSignal(std::string value)
 {
+    JsonSchemaValidatedStringPayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'jsonSchemaValidatedString' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-    if (value) {
-        rapidjson::Value tempStringValue;
-        tempStringValue.SetString(value->c_str(), value->size(), doc.GetAllocator());
-        doc.AddMember("value", tempStringValue, doc.GetAllocator());
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
+
+    rapidjson::StringBuffer buf;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+    doc.Accept(writer);
+
+    std::map<std::string, std::string> topicArgs;
+    topicArgs["service_id"] = _instanceId;
+    topicArgs["interface_name"] = NAME;
+    topicArgs["client_id"] = _broker->GetClientId();
+    topicArgs["signal_name"] = "jsonSchemaValidatedString";
+    topicArgs["prefix"] = _prefixTopicParam;
+    auto topic = stinger::utils::format("{prefix}/testable/{service_id}/signal/jsonSchemaValidatedString", topicArgs);
+    auto msg = stinger::mqtt::Message::Signal(topic, buf.GetString());
+    return _broker->Publish(msg);
+}
+
+std::future<bool> TestableServer::emitSingleOptionalStringSignal(std::optional<std::string> value)
+{
+    SingleOptionalStringPayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleOptionalString' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
     }
+
+    rapidjson::Document doc;
+    doc.SetObject();
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1057,26 +1224,17 @@ std::future<bool> TestableServer::emitSingleOptionalStringSignal(std::optional<s
 
 std::future<bool> TestableServer::emitThreeStringsSignal(std::string first, std::string second, std::optional<std::string> third)
 {
+    ThreeStringsPayload signalPayload{ first, second, third };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'threeStrings' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // restrict scope
-        rapidjson::Value tempStringValue;
-        tempStringValue.SetString(first.c_str(), first.size(), doc.GetAllocator());
-        doc.AddMember("first", tempStringValue, doc.GetAllocator());
-    }
-
-    { // restrict scope
-        rapidjson::Value tempStringValue;
-        tempStringValue.SetString(second.c_str(), second.size(), doc.GetAllocator());
-        doc.AddMember("second", tempStringValue, doc.GetAllocator());
-    }
-
-    if (third) {
-        rapidjson::Value tempStringValue;
-        tempStringValue.SetString(third->c_str(), third->size(), doc.GetAllocator());
-        doc.AddMember("third", tempStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1095,10 +1253,17 @@ std::future<bool> TestableServer::emitThreeStringsSignal(std::string first, std:
 
 std::future<bool> TestableServer::emitSingleEnumSignal(Numbers value)
 {
+    SingleEnumPayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleEnum' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    doc.AddMember("value", static_cast<int>(value), doc.GetAllocator());
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1112,15 +1277,23 @@ std::future<bool> TestableServer::emitSingleEnumSignal(Numbers value)
     topicArgs["prefix"] = _prefixTopicParam;
     auto topic = stinger::utils::format("{prefix}/testable/{service_id}/signal/singleEnum", topicArgs);
     auto msg = stinger::mqtt::Message::Signal(topic, buf.GetString());
+    msg.properties.version = "0.1.0";
     return _broker->Publish(msg);
 }
 
 std::future<bool> TestableServer::emitSingleOptionalEnumSignal(std::optional<Numbers> value)
 {
+    SingleOptionalEnumPayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleOptionalEnum' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    doc.AddMember("value", static_cast<int>(*value), doc.GetAllocator());
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1139,14 +1312,17 @@ std::future<bool> TestableServer::emitSingleOptionalEnumSignal(std::optional<Num
 
 std::future<bool> TestableServer::emitThreeEnumsSignal(Numbers first, Numbers second, std::optional<Numbers> third)
 {
+    ThreeEnumsPayload signalPayload{ first, second, third };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'threeEnums' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    doc.AddMember("first", static_cast<int>(first), doc.GetAllocator());
-
-    doc.AddMember("second", static_cast<int>(second), doc.GetAllocator());
-
-    doc.AddMember("third", static_cast<int>(*third), doc.GetAllocator());
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1165,17 +1341,17 @@ std::future<bool> TestableServer::emitThreeEnumsSignal(Numbers first, Numbers se
 
 std::future<bool> TestableServer::emitSingleStructSignal(AllTypes value)
 {
+    SingleStructPayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleStruct' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // Restrict Scope for struct serialization
-        rapidjson::Value tempStructValue;
-
-        tempStructValue.SetObject();
-        value.AddToRapidJsonObject(tempStructValue, doc.GetAllocator());
-
-        doc.AddMember("value", tempStructValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1194,19 +1370,17 @@ std::future<bool> TestableServer::emitSingleStructSignal(AllTypes value)
 
 std::future<bool> TestableServer::emitSingleOptionalStructSignal(std::optional<AllTypes> value)
 {
+    SingleOptionalStructPayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleOptionalStruct' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // Restrict Scope for struct serialization
-        rapidjson::Value tempStructValue;
-        if (value) {
-            tempStructValue.SetObject();
-            value->AddToRapidJsonObject(tempStructValue, doc.GetAllocator());
-        } else {
-            tempStructValue.SetNull();
-        }
-        doc.AddMember("value", tempStructValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1225,37 +1399,17 @@ std::future<bool> TestableServer::emitSingleOptionalStructSignal(std::optional<A
 
 std::future<bool> TestableServer::emitThreeStructsSignal(AllTypes first, AllTypes second, std::optional<AllTypes> third)
 {
+    ThreeStructsPayload signalPayload{ first, second, third };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'threeStructs' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // Restrict Scope for struct serialization
-        rapidjson::Value tempStructValue;
-
-        tempStructValue.SetObject();
-        first.AddToRapidJsonObject(tempStructValue, doc.GetAllocator());
-
-        doc.AddMember("first", tempStructValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for struct serialization
-        rapidjson::Value tempStructValue;
-
-        tempStructValue.SetObject();
-        second.AddToRapidJsonObject(tempStructValue, doc.GetAllocator());
-
-        doc.AddMember("second", tempStructValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for struct serialization
-        rapidjson::Value tempStructValue;
-        if (third) {
-            tempStructValue.SetObject();
-            third->AddToRapidJsonObject(tempStructValue, doc.GetAllocator());
-        } else {
-            tempStructValue.SetNull();
-        }
-        doc.AddMember("third", tempStructValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1274,15 +1428,17 @@ std::future<bool> TestableServer::emitThreeStructsSignal(AllTypes first, AllType
 
 std::future<bool> TestableServer::emitSingleDateTimeSignal(std::chrono::time_point<std::chrono::system_clock> value)
 {
+    SingleDateTimePayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleDateTime' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // Restrict Scope for datetime ISO string conversion
-        rapidjson::Value tempValueStringValue;
-        std::string valueIsoString = stinger::utils::timePointToIsoString(value);
-        tempValueStringValue.SetString(valueIsoString.c_str(), valueIsoString.size(), doc.GetAllocator());
-        doc.AddMember("value", tempValueStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1301,15 +1457,17 @@ std::future<bool> TestableServer::emitSingleDateTimeSignal(std::chrono::time_poi
 
 std::future<bool> TestableServer::emitSingleOptionalDatetimeSignal(std::optional<std::chrono::time_point<std::chrono::system_clock>> value)
 {
+    SingleOptionalDatetimePayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleOptionalDatetime' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // Restrict Scope for datetime ISO string conversion
-        rapidjson::Value tempValueStringValue;
-        std::string valueIsoString = stinger::utils::timePointToIsoString(*value);
-        tempValueStringValue.SetString(valueIsoString.c_str(), valueIsoString.size(), doc.GetAllocator());
-        doc.AddMember("value", tempValueStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1328,29 +1486,17 @@ std::future<bool> TestableServer::emitSingleOptionalDatetimeSignal(std::optional
 
 std::future<bool> TestableServer::emitThreeDateTimesSignal(std::chrono::time_point<std::chrono::system_clock> first, std::chrono::time_point<std::chrono::system_clock> second, std::optional<std::chrono::time_point<std::chrono::system_clock>> third)
 {
+    ThreeDateTimesPayload signalPayload{ first, second, third };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'threeDateTimes' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // Restrict Scope for datetime ISO string conversion
-        rapidjson::Value tempFirstStringValue;
-        std::string firstIsoString = stinger::utils::timePointToIsoString(first);
-        tempFirstStringValue.SetString(firstIsoString.c_str(), firstIsoString.size(), doc.GetAllocator());
-        doc.AddMember("first", tempFirstStringValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for datetime ISO string conversion
-        rapidjson::Value tempSecondStringValue;
-        std::string secondIsoString = stinger::utils::timePointToIsoString(second);
-        tempSecondStringValue.SetString(secondIsoString.c_str(), secondIsoString.size(), doc.GetAllocator());
-        doc.AddMember("second", tempSecondStringValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for datetime ISO string conversion
-        rapidjson::Value tempThirdStringValue;
-        std::string thirdIsoString = stinger::utils::timePointToIsoString(*third);
-        tempThirdStringValue.SetString(thirdIsoString.c_str(), thirdIsoString.size(), doc.GetAllocator());
-        doc.AddMember("third", tempThirdStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1369,15 +1515,17 @@ std::future<bool> TestableServer::emitThreeDateTimesSignal(std::chrono::time_poi
 
 std::future<bool> TestableServer::emitSingleDurationSignal(std::chrono::duration<double> value)
 {
+    SingleDurationPayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleDuration' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // Restrict Scope for duration ISO string conversion
-        rapidjson::Value tempValueStringValue;
-        std::string valueIsoString = stinger::utils::durationToIsoString(value);
-        tempValueStringValue.SetString(valueIsoString.c_str(), valueIsoString.size(), doc.GetAllocator());
-        doc.AddMember("value", tempValueStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1396,15 +1544,17 @@ std::future<bool> TestableServer::emitSingleDurationSignal(std::chrono::duration
 
 std::future<bool> TestableServer::emitSingleOptionalDurationSignal(std::optional<std::chrono::duration<double>> value)
 {
+    SingleOptionalDurationPayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleOptionalDuration' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // Restrict Scope for duration ISO string conversion
-        rapidjson::Value tempValueStringValue;
-        std::string valueIsoString = stinger::utils::durationToIsoString(*value);
-        tempValueStringValue.SetString(valueIsoString.c_str(), valueIsoString.size(), doc.GetAllocator());
-        doc.AddMember("value", tempValueStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1423,29 +1573,17 @@ std::future<bool> TestableServer::emitSingleOptionalDurationSignal(std::optional
 
 std::future<bool> TestableServer::emitThreeDurationsSignal(std::chrono::duration<double> first, std::chrono::duration<double> second, std::optional<std::chrono::duration<double>> third)
 {
+    ThreeDurationsPayload signalPayload{ first, second, third };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'threeDurations' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // Restrict Scope for duration ISO string conversion
-        rapidjson::Value tempFirstStringValue;
-        std::string firstIsoString = stinger::utils::durationToIsoString(first);
-        tempFirstStringValue.SetString(firstIsoString.c_str(), firstIsoString.size(), doc.GetAllocator());
-        doc.AddMember("first", tempFirstStringValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for duration ISO string conversion
-        rapidjson::Value tempSecondStringValue;
-        std::string secondIsoString = stinger::utils::durationToIsoString(second);
-        tempSecondStringValue.SetString(secondIsoString.c_str(), secondIsoString.size(), doc.GetAllocator());
-        doc.AddMember("second", tempSecondStringValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for duration ISO string conversion
-        rapidjson::Value tempThirdStringValue;
-        std::string thirdIsoString = stinger::utils::durationToIsoString(*third);
-        tempThirdStringValue.SetString(thirdIsoString.c_str(), thirdIsoString.size(), doc.GetAllocator());
-        doc.AddMember("third", tempThirdStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1464,15 +1602,17 @@ std::future<bool> TestableServer::emitThreeDurationsSignal(std::chrono::duration
 
 std::future<bool> TestableServer::emitSingleBinarySignal(std::vector<uint8_t> value)
 {
+    SingleBinaryPayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleBinary' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // Restrict Scope for binary base64 encoding
-        rapidjson::Value tempValueStringValue;
-        std::string valueB64String = stinger::utils::base64Encode(value);
-        tempValueStringValue.SetString(valueB64String.c_str(), valueB64String.size(), doc.GetAllocator());
-        doc.AddMember("value", tempValueStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1491,15 +1631,17 @@ std::future<bool> TestableServer::emitSingleBinarySignal(std::vector<uint8_t> va
 
 std::future<bool> TestableServer::emitSingleOptionalBinarySignal(std::optional<std::vector<uint8_t>> value)
 {
+    SingleOptionalBinaryPayload signalPayload{ value };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleOptionalBinary' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // Restrict Scope for binary base64 encoding
-        rapidjson::Value tempValueStringValue;
-        std::string valueB64String = stinger::utils::base64Encode(*value);
-        tempValueStringValue.SetString(valueB64String.c_str(), valueB64String.size(), doc.GetAllocator());
-        doc.AddMember("value", tempValueStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1518,29 +1660,17 @@ std::future<bool> TestableServer::emitSingleOptionalBinarySignal(std::optional<s
 
 std::future<bool> TestableServer::emitThreeBinariesSignal(std::vector<uint8_t> first, std::vector<uint8_t> second, std::optional<std::vector<uint8_t>> third)
 {
+    ThreeBinariesPayload signalPayload{ first, second, third };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'threeBinaries' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // Restrict Scope for binary base64 encoding
-        rapidjson::Value tempFirstStringValue;
-        std::string firstB64String = stinger::utils::base64Encode(first);
-        tempFirstStringValue.SetString(firstB64String.c_str(), firstB64String.size(), doc.GetAllocator());
-        doc.AddMember("first", tempFirstStringValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for binary base64 encoding
-        rapidjson::Value tempSecondStringValue;
-        std::string secondB64String = stinger::utils::base64Encode(second);
-        tempSecondStringValue.SetString(secondB64String.c_str(), secondB64String.size(), doc.GetAllocator());
-        doc.AddMember("second", tempSecondStringValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for binary base64 encoding
-        rapidjson::Value tempThirdStringValue;
-        std::string thirdB64String = stinger::utils::base64Encode(*third);
-        tempThirdStringValue.SetString(thirdB64String.c_str(), thirdB64String.size(), doc.GetAllocator());
-        doc.AddMember("third", tempThirdStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -1559,17 +1689,18 @@ std::future<bool> TestableServer::emitThreeBinariesSignal(std::vector<uint8_t> f
 
 std::future<bool> TestableServer::emitSingleArrayOfIntegersSignal(std::vector<int> values)
 {
+    SingleArrayOfIntegersPayload signalPayload{ values };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleArrayOfIntegers' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
-    { // Restrict Scope for array serialization
-        rapidjson::Value tempArrayValue;
-        tempArrayValue.SetArray();
-        for (const auto& item: values) {
-            tempArrayValue.PushBack(item, doc.GetAllocator());
-        }
-        doc.AddMember("values", tempArrayValue, doc.GetAllocator());
-    }
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
     doc.Accept(writer);
@@ -1587,19 +1718,18 @@ std::future<bool> TestableServer::emitSingleArrayOfIntegersSignal(std::vector<in
 
 std::future<bool> TestableServer::emitSingleOptionalArrayOfStringsSignal(std::optional<std::vector<std::string>> values)
 {
+    SingleOptionalArrayOfStringsPayload signalPayload{ values };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'singleOptionalArrayOfStrings' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
-    { // Restrict Scope for array serialization
-        rapidjson::Value tempArrayValue;
-        tempArrayValue.SetArray();
-        for (const auto& item: *values) {
-            rapidjson::Value tempValuesStringValue;
-            tempValuesStringValue.SetString(item.c_str(), item.size(), doc.GetAllocator());
-            tempArrayValue.PushBack(tempValuesStringValue, doc.GetAllocator());
-        }
-        doc.AddMember("values", tempArrayValue, doc.GetAllocator());
-    }
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
     doc.Accept(writer);
@@ -1617,94 +1747,18 @@ std::future<bool> TestableServer::emitSingleOptionalArrayOfStringsSignal(std::op
 
 std::future<bool> TestableServer::emitArrayOfEveryTypeSignal(std::vector<int> firstOfIntegers, std::vector<double> secondOfFloats, std::vector<std::string> thirdOfStrings, std::vector<Numbers> fourthOfEnums, std::vector<Entry> fifthOfStructs, std::vector<std::chrono::time_point<std::chrono::system_clock>> sixthOfDatetimes, std::vector<std::chrono::duration<double>> seventhOfDurations, std::vector<std::vector<uint8_t>> eighthOfBinaries)
 {
+    ArrayOfEveryTypePayload signalPayload{ firstOfIntegers, secondOfFloats, thirdOfStrings, fourthOfEnums, fifthOfStructs, sixthOfDatetimes, seventhOfDurations, eighthOfBinaries };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'arrayOfEveryType' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
-    { // Restrict Scope for array serialization
-        rapidjson::Value tempArrayValue;
-        tempArrayValue.SetArray();
-        for (const auto& item: firstOfIntegers) {
-            tempArrayValue.PushBack(item, doc.GetAllocator());
-        }
-        doc.AddMember("first_of_integers", tempArrayValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for array serialization
-        rapidjson::Value tempArrayValue;
-        tempArrayValue.SetArray();
-        for (const auto& item: secondOfFloats) {
-            tempArrayValue.PushBack(item, doc.GetAllocator());
-        }
-        doc.AddMember("second_of_floats", tempArrayValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for array serialization
-        rapidjson::Value tempArrayValue;
-        tempArrayValue.SetArray();
-        for (const auto& item: thirdOfStrings) {
-            rapidjson::Value tempThirdOfStringsStringValue;
-            tempThirdOfStringsStringValue.SetString(item.c_str(), item.size(), doc.GetAllocator());
-            tempArrayValue.PushBack(tempThirdOfStringsStringValue, doc.GetAllocator());
-        }
-        doc.AddMember("third_of_strings", tempArrayValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for array serialization
-        rapidjson::Value tempArrayValue;
-        tempArrayValue.SetArray();
-        for (const auto& item: fourthOfEnums) {
-            tempArrayValue.PushBack(static_cast<int>(item), doc.GetAllocator());
-        }
-        doc.AddMember("fourth_of_enums", tempArrayValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for array serialization
-        rapidjson::Value tempArrayValue;
-        tempArrayValue.SetArray();
-        for (const auto& item: fifthOfStructs) {
-            rapidjson::Value tempFifthOfStructsObjectValue;
-            tempFifthOfStructsObjectValue.SetObject();
-            item.AddToRapidJsonObject(tempFifthOfStructsObjectValue, doc.GetAllocator());
-            tempArrayValue.PushBack(tempFifthOfStructsObjectValue, doc.GetAllocator());
-        }
-        doc.AddMember("fifth_of_structs", tempArrayValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for array serialization
-        rapidjson::Value tempArrayValue;
-        tempArrayValue.SetArray();
-        for (const auto& item: sixthOfDatetimes) {
-            rapidjson::Value tempSixthOfDatetimesStringValue;
-            std::string itemIsoString = stinger::utils::timePointToIsoString(item);
-            tempSixthOfDatetimesStringValue.SetString(itemIsoString.c_str(), itemIsoString.size(), doc.GetAllocator());
-            tempArrayValue.PushBack(tempSixthOfDatetimesStringValue, doc.GetAllocator());
-        }
-        doc.AddMember("sixth_of_datetimes", tempArrayValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for array serialization
-        rapidjson::Value tempArrayValue;
-        tempArrayValue.SetArray();
-        for (const auto& item: seventhOfDurations) {
-            rapidjson::Value tempSeventhOfDurationsStringValue;
-            std::string itemIsoString = stinger::utils::durationToIsoString(item);
-            tempSeventhOfDurationsStringValue.SetString(itemIsoString.c_str(), itemIsoString.size(), doc.GetAllocator());
-            tempArrayValue.PushBack(tempSeventhOfDurationsStringValue, doc.GetAllocator());
-        }
-        doc.AddMember("seventh_of_durations", tempArrayValue, doc.GetAllocator());
-    }
-
-    { // Restrict Scope for array serialization
-        rapidjson::Value tempArrayValue;
-        tempArrayValue.SetArray();
-        for (const auto& item: eighthOfBinaries) {
-            rapidjson::Value tempEighthOfBinariesStringValue;
-            std::string itemB64String = stinger::utils::base64Encode(item);
-            tempEighthOfBinariesStringValue.SetString(itemB64String.c_str(), itemB64String.size(), doc.GetAllocator());
-            tempArrayValue.PushBack(tempEighthOfBinariesStringValue, doc.GetAllocator());
-        }
-        doc.AddMember("eighth_of_binaries", tempArrayValue, doc.GetAllocator());
-    }
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
     doc.Accept(writer);
@@ -1888,6 +1942,13 @@ void TestableServer::_callCallWithNothingHandler(
         _callWithNothingHandler();
         auto returnValues = CallWithNothingReturnValues();
 
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callWithNothing failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callWithNothing failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
+
         if (optResponseTopic) {
             rapidjson::Document responseJson;
             responseJson.SetObject();
@@ -1904,19 +1965,19 @@ void TestableServer::_callCallWithNothingHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callWithNothing method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callWithNothing method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callWithNothing method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callWithNothing method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -1936,11 +1997,26 @@ void TestableServer::_callCallOneIntegerHandler(
     }
 
     auto requestArgs = CallOneIntegerRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOneInteger failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOneInteger failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOneIntegerHandler(requestArgs.input1);
         CallOneIntegerReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOneInteger failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOneInteger failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -1958,19 +2034,19 @@ void TestableServer::_callCallOneIntegerHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOneInteger method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOneInteger method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOneInteger method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOneInteger method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -1990,11 +2066,26 @@ void TestableServer::_callCallOptionalIntegerHandler(
     }
 
     auto requestArgs = CallOptionalIntegerRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOptionalInteger failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOptionalInteger failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOptionalIntegerHandler(requestArgs.input1);
         CallOptionalIntegerReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOptionalInteger failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOptionalInteger failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2012,19 +2103,19 @@ void TestableServer::_callCallOptionalIntegerHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalInteger method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalInteger method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOptionalInteger method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOptionalInteger method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2044,10 +2135,25 @@ void TestableServer::_callCallThreeIntegersHandler(
     }
 
     auto requestArgs = CallThreeIntegersRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callThreeIntegers failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callThreeIntegers failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has multiple return values.
         auto returnValues = _callThreeIntegersHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callThreeIntegers failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callThreeIntegers failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2065,19 +2171,19 @@ void TestableServer::_callCallThreeIntegersHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callThreeIntegers method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callThreeIntegers method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callThreeIntegers method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callThreeIntegers method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2097,11 +2203,26 @@ void TestableServer::_callCallOneStringHandler(
     }
 
     auto requestArgs = CallOneStringRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOneString failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOneString failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOneStringHandler(requestArgs.input1);
         CallOneStringReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOneString failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOneString failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2119,19 +2240,19 @@ void TestableServer::_callCallOneStringHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOneString method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOneString method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOneString method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOneString method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2151,11 +2272,26 @@ void TestableServer::_callCallOptionalStringHandler(
     }
 
     auto requestArgs = CallOptionalStringRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOptionalString failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOptionalString failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOptionalStringHandler(requestArgs.input1);
         CallOptionalStringReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOptionalString failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOptionalString failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2173,19 +2309,19 @@ void TestableServer::_callCallOptionalStringHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalString method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalString method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOptionalString method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOptionalString method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2205,10 +2341,25 @@ void TestableServer::_callCallThreeStringsHandler(
     }
 
     auto requestArgs = CallThreeStringsRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callThreeStrings failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callThreeStrings failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has multiple return values.
         auto returnValues = _callThreeStringsHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callThreeStrings failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callThreeStrings failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2226,19 +2377,19 @@ void TestableServer::_callCallThreeStringsHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callThreeStrings method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callThreeStrings method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callThreeStrings method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callThreeStrings method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2258,11 +2409,26 @@ void TestableServer::_callCallOneEnumHandler(
     }
 
     auto requestArgs = CallOneEnumRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOneEnum failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOneEnum failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOneEnumHandler(requestArgs.input1);
         CallOneEnumReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOneEnum failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOneEnum failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2280,19 +2446,19 @@ void TestableServer::_callCallOneEnumHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOneEnum method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOneEnum method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOneEnum method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOneEnum method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2312,11 +2478,26 @@ void TestableServer::_callCallOptionalEnumHandler(
     }
 
     auto requestArgs = CallOptionalEnumRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOptionalEnum failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOptionalEnum failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOptionalEnumHandler(requestArgs.input1);
         CallOptionalEnumReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOptionalEnum failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOptionalEnum failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2334,19 +2515,19 @@ void TestableServer::_callCallOptionalEnumHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalEnum method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalEnum method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOptionalEnum method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOptionalEnum method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2366,10 +2547,25 @@ void TestableServer::_callCallThreeEnumsHandler(
     }
 
     auto requestArgs = CallThreeEnumsRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callThreeEnums failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callThreeEnums failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has multiple return values.
         auto returnValues = _callThreeEnumsHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callThreeEnums failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callThreeEnums failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2387,19 +2583,19 @@ void TestableServer::_callCallThreeEnumsHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callThreeEnums method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callThreeEnums method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callThreeEnums method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callThreeEnums method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2419,11 +2615,26 @@ void TestableServer::_callCallOneStructHandler(
     }
 
     auto requestArgs = CallOneStructRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOneStruct failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOneStruct failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOneStructHandler(requestArgs.input1);
         CallOneStructReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOneStruct failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOneStruct failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2441,19 +2652,19 @@ void TestableServer::_callCallOneStructHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOneStruct method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOneStruct method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOneStruct method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOneStruct method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2473,11 +2684,26 @@ void TestableServer::_callCallOptionalStructHandler(
     }
 
     auto requestArgs = CallOptionalStructRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOptionalStruct failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOptionalStruct failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOptionalStructHandler(requestArgs.input1);
         CallOptionalStructReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOptionalStruct failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOptionalStruct failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2495,19 +2721,19 @@ void TestableServer::_callCallOptionalStructHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalStruct method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalStruct method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOptionalStruct method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOptionalStruct method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2527,10 +2753,25 @@ void TestableServer::_callCallThreeStructsHandler(
     }
 
     auto requestArgs = CallThreeStructsRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callThreeStructs failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callThreeStructs failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has multiple return values.
         auto returnValues = _callThreeStructsHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callThreeStructs failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callThreeStructs failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2548,19 +2789,19 @@ void TestableServer::_callCallThreeStructsHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callThreeStructs method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callThreeStructs method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callThreeStructs method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callThreeStructs method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2580,11 +2821,26 @@ void TestableServer::_callCallOneDateTimeHandler(
     }
 
     auto requestArgs = CallOneDateTimeRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOneDateTime failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOneDateTime failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOneDateTimeHandler(requestArgs.input1);
         CallOneDateTimeReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOneDateTime failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOneDateTime failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2602,19 +2858,19 @@ void TestableServer::_callCallOneDateTimeHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOneDateTime method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOneDateTime method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOneDateTime method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOneDateTime method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2634,11 +2890,26 @@ void TestableServer::_callCallOptionalDateTimeHandler(
     }
 
     auto requestArgs = CallOptionalDateTimeRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOptionalDateTime failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOptionalDateTime failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOptionalDateTimeHandler(requestArgs.input1);
         CallOptionalDateTimeReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOptionalDateTime failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOptionalDateTime failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2656,19 +2927,19 @@ void TestableServer::_callCallOptionalDateTimeHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalDateTime method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalDateTime method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOptionalDateTime method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOptionalDateTime method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2688,10 +2959,25 @@ void TestableServer::_callCallThreeDateTimesHandler(
     }
 
     auto requestArgs = CallThreeDateTimesRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callThreeDateTimes failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callThreeDateTimes failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has multiple return values.
         auto returnValues = _callThreeDateTimesHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callThreeDateTimes failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callThreeDateTimes failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2709,19 +2995,19 @@ void TestableServer::_callCallThreeDateTimesHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callThreeDateTimes method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callThreeDateTimes method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callThreeDateTimes method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callThreeDateTimes method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2741,11 +3027,26 @@ void TestableServer::_callCallOneDurationHandler(
     }
 
     auto requestArgs = CallOneDurationRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOneDuration failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOneDuration failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOneDurationHandler(requestArgs.input1);
         CallOneDurationReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOneDuration failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOneDuration failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2763,19 +3064,19 @@ void TestableServer::_callCallOneDurationHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOneDuration method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOneDuration method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOneDuration method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOneDuration method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2795,11 +3096,26 @@ void TestableServer::_callCallOptionalDurationHandler(
     }
 
     auto requestArgs = CallOptionalDurationRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOptionalDuration failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOptionalDuration failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOptionalDurationHandler(requestArgs.input1);
         CallOptionalDurationReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOptionalDuration failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOptionalDuration failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2817,19 +3133,19 @@ void TestableServer::_callCallOptionalDurationHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalDuration method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalDuration method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOptionalDuration method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOptionalDuration method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2849,10 +3165,25 @@ void TestableServer::_callCallThreeDurationsHandler(
     }
 
     auto requestArgs = CallThreeDurationsRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callThreeDurations failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callThreeDurations failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has multiple return values.
         auto returnValues = _callThreeDurationsHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callThreeDurations failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callThreeDurations failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2870,19 +3201,19 @@ void TestableServer::_callCallThreeDurationsHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callThreeDurations method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callThreeDurations method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callThreeDurations method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callThreeDurations method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2902,11 +3233,26 @@ void TestableServer::_callCallOneBinaryHandler(
     }
 
     auto requestArgs = CallOneBinaryRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOneBinary failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOneBinary failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOneBinaryHandler(requestArgs.input1);
         CallOneBinaryReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOneBinary failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOneBinary failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2924,19 +3270,19 @@ void TestableServer::_callCallOneBinaryHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOneBinary method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOneBinary method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOneBinary method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOneBinary method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -2956,11 +3302,26 @@ void TestableServer::_callCallOptionalBinaryHandler(
     }
 
     auto requestArgs = CallOptionalBinaryRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOptionalBinary failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOptionalBinary failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOptionalBinaryHandler(requestArgs.input1);
         CallOptionalBinaryReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOptionalBinary failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOptionalBinary failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -2978,19 +3339,19 @@ void TestableServer::_callCallOptionalBinaryHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalBinary method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalBinary method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOptionalBinary method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOptionalBinary method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -3010,10 +3371,25 @@ void TestableServer::_callCallThreeBinariesHandler(
     }
 
     auto requestArgs = CallThreeBinariesRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callThreeBinaries failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callThreeBinaries failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has multiple return values.
         auto returnValues = _callThreeBinariesHandler(requestArgs.input1, requestArgs.input2, requestArgs.input3);
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callThreeBinaries failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callThreeBinaries failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -3031,19 +3407,19 @@ void TestableServer::_callCallThreeBinariesHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callThreeBinaries method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callThreeBinaries method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callThreeBinaries method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callThreeBinaries method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -3063,11 +3439,26 @@ void TestableServer::_callCallOneListOfIntegersHandler(
     }
 
     auto requestArgs = CallOneListOfIntegersRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOneListOfIntegers failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOneListOfIntegers failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOneListOfIntegersHandler(requestArgs.input1);
         CallOneListOfIntegersReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOneListOfIntegers failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOneListOfIntegers failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -3085,19 +3476,19 @@ void TestableServer::_callCallOneListOfIntegersHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOneListOfIntegers method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOneListOfIntegers method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOneListOfIntegers method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOneListOfIntegers method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -3117,11 +3508,26 @@ void TestableServer::_callCallOptionalListOfFloatsHandler(
     }
 
     auto requestArgs = CallOptionalListOfFloatsRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callOptionalListOfFloats failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callOptionalListOfFloats failed schema validation.");
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has a single return value.
         auto returnValue = _callOptionalListOfFloatsHandler(requestArgs.input1);
         CallOptionalListOfFloatsReturnValues returnValues = { returnValue };
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callOptionalListOfFloats failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callOptionalListOfFloats failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -3139,19 +3545,19 @@ void TestableServer::_callCallOptionalListOfFloatsHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalListOfFloats method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callOptionalListOfFloats method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callOptionalListOfFloats method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callOptionalListOfFloats method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -3171,10 +3577,27 @@ void TestableServer::_callCallTwoListsHandler(
     }
 
     auto requestArgs = CallTwoListsRequestArguments::FromRapidJsonObject(doc);
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for callTwoLists failed schema validation.");
+        if (optResponseTopic) {
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::CLIENT_DESERIALIZATION_ERROR, "Request payload for callTwoLists failed schema validation.");
+            errMsg.properties.version = "0.1.0";
+            _broker->Publish(errMsg);
+        }
+        return;
+    }
 
     try {
         // Method has multiple return values.
         auto returnValues = _callTwoListsHandler(requestArgs.input1, requestArgs.input2);
+
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for callTwoLists failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for callTwoLists failed schema validation.");
+            errMsg.properties.version = "0.1.0";
+            _broker->Publish(errMsg);
+            return;
+        }
 
         if (optResponseTopic) {
             rapidjson::Document responseJson;
@@ -3187,24 +3610,28 @@ void TestableServer::_callCallTwoListsHandler(
             responseJson.Accept(writer);
 
             auto msg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, buf.GetString(), optCorrelationData, stinger::error::MethodReturnCode::SUCCESS);
+            msg.properties.version = "0.1.0";
             _broker->Publish(msg);
         }
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in callTwoLists method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
+            errMsg.properties.version = "0.1.0";
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in callTwoLists method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
+            errMsg.properties.version = "0.1.0";
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in callTwoLists method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in callTwoLists method handler");
+            errMsg.properties.version = "0.1.0";
             _broker->Publish(errMsg);
         }
     }
@@ -3252,6 +3679,10 @@ void TestableServer::republishReadWriteIntegerProperty() const
     std::lock_guard<std::mutex> lock(_readWriteIntegerPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteIntegerProperty) {
+        if (!_readWriteIntegerProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_integer' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteIntegerProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -3276,6 +3707,9 @@ void TestableServer::republishReadWriteIntegerProperty() const
 
 void TestableServer::_receiveReadWriteIntegerPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -3292,6 +3726,10 @@ void TestableServer::_receiveReadWriteIntegerPropertyUpdate(const stinger::mqtt:
 
     // Deserialize 1 values into struct.
     ReadWriteIntegerProperty tempValue = ReadWriteIntegerProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_integer' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteIntegerPropertyMutex);
@@ -3343,6 +3781,10 @@ void TestableServer::republishReadOnlyIntegerProperty() const
     std::lock_guard<std::mutex> lock(_readOnlyIntegerPropertyMutex);
     rapidjson::Document doc;
     if (_readOnlyIntegerProperty) {
+        if (!_readOnlyIntegerProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_only_integer' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readOnlyIntegerProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -3362,11 +3804,15 @@ void TestableServer::republishReadOnlyIntegerProperty() const
 
     auto topic = stinger::utils::format("{prefix}/testable/{service_id}/property/read_only_integer/value", topicArgs);
     auto msg = stinger::mqtt::Message::PropertyValue(topic, buf.GetString(), _lastReadOnlyIntegerPropertyVersion);
+    msg.properties.version = "0.2.3";
     _broker->Publish(msg);
 }
 
 void TestableServer::_receiveReadOnlyIntegerPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -3383,6 +3829,10 @@ void TestableServer::_receiveReadOnlyIntegerPropertyUpdate(const stinger::mqtt::
 
     // Deserialize 1 values into struct.
     ReadOnlyIntegerProperty tempValue = ReadOnlyIntegerProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_only_integer' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readOnlyIntegerPropertyMutex);
@@ -3434,6 +3884,10 @@ void TestableServer::republishReadWriteOptionalIntegerProperty() const
     std::lock_guard<std::mutex> lock(_readWriteOptionalIntegerPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteOptionalIntegerProperty) {
+        if (!_readWriteOptionalIntegerProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_optional_integer' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteOptionalIntegerProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -3458,6 +3912,9 @@ void TestableServer::republishReadWriteOptionalIntegerProperty() const
 
 void TestableServer::_receiveReadWriteOptionalIntegerPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -3474,6 +3931,10 @@ void TestableServer::_receiveReadWriteOptionalIntegerPropertyUpdate(const stinge
 
     // Deserialize 1 values into struct.
     ReadWriteOptionalIntegerProperty tempValue = ReadWriteOptionalIntegerProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_optional_integer' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteOptionalIntegerPropertyMutex);
@@ -3525,6 +3986,10 @@ void TestableServer::republishReadWriteTwoIntegersProperty() const
     std::lock_guard<std::mutex> lock(_readWriteTwoIntegersPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteTwoIntegersProperty) {
+        if (!_readWriteTwoIntegersProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_two_integers' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteTwoIntegersProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -3549,6 +4014,9 @@ void TestableServer::republishReadWriteTwoIntegersProperty() const
 
 void TestableServer::_receiveReadWriteTwoIntegersPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -3565,6 +4033,10 @@ void TestableServer::_receiveReadWriteTwoIntegersPropertyUpdate(const stinger::m
 
     // Deserialize 2 values into struct.
     ReadWriteTwoIntegersProperty tempValue = ReadWriteTwoIntegersProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_two_integers' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteTwoIntegersPropertyMutex);
@@ -3616,6 +4088,10 @@ void TestableServer::republishReadOnlyStringProperty() const
     std::lock_guard<std::mutex> lock(_readOnlyStringPropertyMutex);
     rapidjson::Document doc;
     if (_readOnlyStringProperty) {
+        if (!_readOnlyStringProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_only_string' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readOnlyStringProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -3640,6 +4116,9 @@ void TestableServer::republishReadOnlyStringProperty() const
 
 void TestableServer::_receiveReadOnlyStringPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -3656,6 +4135,10 @@ void TestableServer::_receiveReadOnlyStringPropertyUpdate(const stinger::mqtt::M
 
     // Deserialize 1 values into struct.
     ReadOnlyStringProperty tempValue = ReadOnlyStringProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_only_string' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readOnlyStringPropertyMutex);
@@ -3707,6 +4190,10 @@ void TestableServer::republishReadWriteStringProperty() const
     std::lock_guard<std::mutex> lock(_readWriteStringPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteStringProperty) {
+        if (!_readWriteStringProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_string' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteStringProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -3731,6 +4218,9 @@ void TestableServer::republishReadWriteStringProperty() const
 
 void TestableServer::_receiveReadWriteStringPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -3747,6 +4237,10 @@ void TestableServer::_receiveReadWriteStringPropertyUpdate(const stinger::mqtt::
 
     // Deserialize 1 values into struct.
     ReadWriteStringProperty tempValue = ReadWriteStringProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_string' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteStringPropertyMutex);
@@ -3798,6 +4292,10 @@ void TestableServer::republishReadWriteOptionalStringProperty() const
     std::lock_guard<std::mutex> lock(_readWriteOptionalStringPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteOptionalStringProperty) {
+        if (!_readWriteOptionalStringProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_optional_string' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteOptionalStringProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -3822,6 +4320,9 @@ void TestableServer::republishReadWriteOptionalStringProperty() const
 
 void TestableServer::_receiveReadWriteOptionalStringPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -3838,6 +4339,10 @@ void TestableServer::_receiveReadWriteOptionalStringPropertyUpdate(const stinger
 
     // Deserialize 1 values into struct.
     ReadWriteOptionalStringProperty tempValue = ReadWriteOptionalStringProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_optional_string' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteOptionalStringPropertyMutex);
@@ -3889,6 +4394,10 @@ void TestableServer::republishReadWriteTwoStringsProperty() const
     std::lock_guard<std::mutex> lock(_readWriteTwoStringsPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteTwoStringsProperty) {
+        if (!_readWriteTwoStringsProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_two_strings' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteTwoStringsProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -3913,6 +4422,9 @@ void TestableServer::republishReadWriteTwoStringsProperty() const
 
 void TestableServer::_receiveReadWriteTwoStringsPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -3929,6 +4441,10 @@ void TestableServer::_receiveReadWriteTwoStringsPropertyUpdate(const stinger::mq
 
     // Deserialize 2 values into struct.
     ReadWriteTwoStringsProperty tempValue = ReadWriteTwoStringsProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_two_strings' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteTwoStringsPropertyMutex);
@@ -3980,6 +4496,10 @@ void TestableServer::republishReadWriteStructProperty() const
     std::lock_guard<std::mutex> lock(_readWriteStructPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteStructProperty) {
+        if (!_readWriteStructProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_struct' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteStructProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -4004,6 +4524,9 @@ void TestableServer::republishReadWriteStructProperty() const
 
 void TestableServer::_receiveReadWriteStructPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -4020,6 +4543,10 @@ void TestableServer::_receiveReadWriteStructPropertyUpdate(const stinger::mqtt::
 
     // Deserialize 1 values into struct.
     ReadWriteStructProperty tempValue = ReadWriteStructProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_struct' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteStructPropertyMutex);
@@ -4071,6 +4598,10 @@ void TestableServer::republishReadWriteOptionalStructProperty() const
     std::lock_guard<std::mutex> lock(_readWriteOptionalStructPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteOptionalStructProperty) {
+        if (!_readWriteOptionalStructProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_optional_struct' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteOptionalStructProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -4095,6 +4626,9 @@ void TestableServer::republishReadWriteOptionalStructProperty() const
 
 void TestableServer::_receiveReadWriteOptionalStructPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -4111,6 +4645,10 @@ void TestableServer::_receiveReadWriteOptionalStructPropertyUpdate(const stinger
 
     // Deserialize 1 values into struct.
     ReadWriteOptionalStructProperty tempValue = ReadWriteOptionalStructProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_optional_struct' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteOptionalStructPropertyMutex);
@@ -4162,6 +4700,10 @@ void TestableServer::republishReadWriteTwoStructsProperty() const
     std::lock_guard<std::mutex> lock(_readWriteTwoStructsPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteTwoStructsProperty) {
+        if (!_readWriteTwoStructsProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_two_structs' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteTwoStructsProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -4186,6 +4728,9 @@ void TestableServer::republishReadWriteTwoStructsProperty() const
 
 void TestableServer::_receiveReadWriteTwoStructsPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -4202,6 +4747,10 @@ void TestableServer::_receiveReadWriteTwoStructsPropertyUpdate(const stinger::mq
 
     // Deserialize 2 values into struct.
     ReadWriteTwoStructsProperty tempValue = ReadWriteTwoStructsProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_two_structs' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteTwoStructsPropertyMutex);
@@ -4253,6 +4802,10 @@ void TestableServer::republishReadOnlyEnumProperty() const
     std::lock_guard<std::mutex> lock(_readOnlyEnumPropertyMutex);
     rapidjson::Document doc;
     if (_readOnlyEnumProperty) {
+        if (!_readOnlyEnumProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_only_enum' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readOnlyEnumProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -4277,6 +4830,9 @@ void TestableServer::republishReadOnlyEnumProperty() const
 
 void TestableServer::_receiveReadOnlyEnumPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -4293,6 +4849,10 @@ void TestableServer::_receiveReadOnlyEnumPropertyUpdate(const stinger::mqtt::Mes
 
     // Deserialize 1 values into struct.
     ReadOnlyEnumProperty tempValue = ReadOnlyEnumProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_only_enum' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readOnlyEnumPropertyMutex);
@@ -4344,6 +4904,10 @@ void TestableServer::republishReadWriteEnumProperty() const
     std::lock_guard<std::mutex> lock(_readWriteEnumPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteEnumProperty) {
+        if (!_readWriteEnumProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_enum' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteEnumProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -4368,6 +4932,9 @@ void TestableServer::republishReadWriteEnumProperty() const
 
 void TestableServer::_receiveReadWriteEnumPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -4384,6 +4951,10 @@ void TestableServer::_receiveReadWriteEnumPropertyUpdate(const stinger::mqtt::Me
 
     // Deserialize 1 values into struct.
     ReadWriteEnumProperty tempValue = ReadWriteEnumProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_enum' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteEnumPropertyMutex);
@@ -4435,6 +5006,10 @@ void TestableServer::republishReadWriteOptionalEnumProperty() const
     std::lock_guard<std::mutex> lock(_readWriteOptionalEnumPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteOptionalEnumProperty) {
+        if (!_readWriteOptionalEnumProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_optional_enum' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteOptionalEnumProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -4459,6 +5034,9 @@ void TestableServer::republishReadWriteOptionalEnumProperty() const
 
 void TestableServer::_receiveReadWriteOptionalEnumPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -4475,6 +5053,10 @@ void TestableServer::_receiveReadWriteOptionalEnumPropertyUpdate(const stinger::
 
     // Deserialize 1 values into struct.
     ReadWriteOptionalEnumProperty tempValue = ReadWriteOptionalEnumProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_optional_enum' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteOptionalEnumPropertyMutex);
@@ -4526,6 +5108,10 @@ void TestableServer::republishReadWriteTwoEnumsProperty() const
     std::lock_guard<std::mutex> lock(_readWriteTwoEnumsPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteTwoEnumsProperty) {
+        if (!_readWriteTwoEnumsProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_two_enums' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteTwoEnumsProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -4550,6 +5136,9 @@ void TestableServer::republishReadWriteTwoEnumsProperty() const
 
 void TestableServer::_receiveReadWriteTwoEnumsPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -4566,6 +5155,10 @@ void TestableServer::_receiveReadWriteTwoEnumsPropertyUpdate(const stinger::mqtt
 
     // Deserialize 2 values into struct.
     ReadWriteTwoEnumsProperty tempValue = ReadWriteTwoEnumsProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_two_enums' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteTwoEnumsPropertyMutex);
@@ -4617,6 +5210,10 @@ void TestableServer::republishReadWriteDatetimeProperty() const
     std::lock_guard<std::mutex> lock(_readWriteDatetimePropertyMutex);
     rapidjson::Document doc;
     if (_readWriteDatetimeProperty) {
+        if (!_readWriteDatetimeProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_datetime' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteDatetimeProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -4641,6 +5238,9 @@ void TestableServer::republishReadWriteDatetimeProperty() const
 
 void TestableServer::_receiveReadWriteDatetimePropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -4657,6 +5257,10 @@ void TestableServer::_receiveReadWriteDatetimePropertyUpdate(const stinger::mqtt
 
     // Deserialize 1 values into struct.
     ReadWriteDatetimeProperty tempValue = ReadWriteDatetimeProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_datetime' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteDatetimePropertyMutex);
@@ -4708,6 +5312,10 @@ void TestableServer::republishReadWriteOptionalDatetimeProperty() const
     std::lock_guard<std::mutex> lock(_readWriteOptionalDatetimePropertyMutex);
     rapidjson::Document doc;
     if (_readWriteOptionalDatetimeProperty) {
+        if (!_readWriteOptionalDatetimeProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_optional_datetime' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteOptionalDatetimeProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -4732,6 +5340,9 @@ void TestableServer::republishReadWriteOptionalDatetimeProperty() const
 
 void TestableServer::_receiveReadWriteOptionalDatetimePropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -4748,6 +5359,10 @@ void TestableServer::_receiveReadWriteOptionalDatetimePropertyUpdate(const sting
 
     // Deserialize 1 values into struct.
     ReadWriteOptionalDatetimeProperty tempValue = ReadWriteOptionalDatetimeProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_optional_datetime' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteOptionalDatetimePropertyMutex);
@@ -4799,6 +5414,10 @@ void TestableServer::republishReadWriteTwoDatetimesProperty() const
     std::lock_guard<std::mutex> lock(_readWriteTwoDatetimesPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteTwoDatetimesProperty) {
+        if (!_readWriteTwoDatetimesProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_two_datetimes' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteTwoDatetimesProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -4823,6 +5442,9 @@ void TestableServer::republishReadWriteTwoDatetimesProperty() const
 
 void TestableServer::_receiveReadWriteTwoDatetimesPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -4839,6 +5461,10 @@ void TestableServer::_receiveReadWriteTwoDatetimesPropertyUpdate(const stinger::
 
     // Deserialize 2 values into struct.
     ReadWriteTwoDatetimesProperty tempValue = ReadWriteTwoDatetimesProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_two_datetimes' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteTwoDatetimesPropertyMutex);
@@ -4890,6 +5516,10 @@ void TestableServer::republishReadWriteDurationProperty() const
     std::lock_guard<std::mutex> lock(_readWriteDurationPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteDurationProperty) {
+        if (!_readWriteDurationProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_duration' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteDurationProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -4914,6 +5544,9 @@ void TestableServer::republishReadWriteDurationProperty() const
 
 void TestableServer::_receiveReadWriteDurationPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -4930,6 +5563,10 @@ void TestableServer::_receiveReadWriteDurationPropertyUpdate(const stinger::mqtt
 
     // Deserialize 1 values into struct.
     ReadWriteDurationProperty tempValue = ReadWriteDurationProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_duration' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteDurationPropertyMutex);
@@ -4981,6 +5618,10 @@ void TestableServer::republishReadWriteOptionalDurationProperty() const
     std::lock_guard<std::mutex> lock(_readWriteOptionalDurationPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteOptionalDurationProperty) {
+        if (!_readWriteOptionalDurationProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_optional_duration' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteOptionalDurationProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -5005,6 +5646,9 @@ void TestableServer::republishReadWriteOptionalDurationProperty() const
 
 void TestableServer::_receiveReadWriteOptionalDurationPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -5021,6 +5665,10 @@ void TestableServer::_receiveReadWriteOptionalDurationPropertyUpdate(const sting
 
     // Deserialize 1 values into struct.
     ReadWriteOptionalDurationProperty tempValue = ReadWriteOptionalDurationProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_optional_duration' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteOptionalDurationPropertyMutex);
@@ -5072,6 +5720,10 @@ void TestableServer::republishReadWriteTwoDurationsProperty() const
     std::lock_guard<std::mutex> lock(_readWriteTwoDurationsPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteTwoDurationsProperty) {
+        if (!_readWriteTwoDurationsProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_two_durations' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteTwoDurationsProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -5096,6 +5748,9 @@ void TestableServer::republishReadWriteTwoDurationsProperty() const
 
 void TestableServer::_receiveReadWriteTwoDurationsPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -5112,6 +5767,10 @@ void TestableServer::_receiveReadWriteTwoDurationsPropertyUpdate(const stinger::
 
     // Deserialize 2 values into struct.
     ReadWriteTwoDurationsProperty tempValue = ReadWriteTwoDurationsProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_two_durations' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteTwoDurationsPropertyMutex);
@@ -5163,6 +5822,10 @@ void TestableServer::republishReadWriteBinaryProperty() const
     std::lock_guard<std::mutex> lock(_readWriteBinaryPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteBinaryProperty) {
+        if (!_readWriteBinaryProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_binary' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteBinaryProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -5187,6 +5850,9 @@ void TestableServer::republishReadWriteBinaryProperty() const
 
 void TestableServer::_receiveReadWriteBinaryPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -5203,6 +5869,10 @@ void TestableServer::_receiveReadWriteBinaryPropertyUpdate(const stinger::mqtt::
 
     // Deserialize 1 values into struct.
     ReadWriteBinaryProperty tempValue = ReadWriteBinaryProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_binary' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteBinaryPropertyMutex);
@@ -5254,6 +5924,10 @@ void TestableServer::republishReadWriteOptionalBinaryProperty() const
     std::lock_guard<std::mutex> lock(_readWriteOptionalBinaryPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteOptionalBinaryProperty) {
+        if (!_readWriteOptionalBinaryProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_optional_binary' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteOptionalBinaryProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -5278,6 +5952,9 @@ void TestableServer::republishReadWriteOptionalBinaryProperty() const
 
 void TestableServer::_receiveReadWriteOptionalBinaryPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -5294,6 +5971,10 @@ void TestableServer::_receiveReadWriteOptionalBinaryPropertyUpdate(const stinger
 
     // Deserialize 1 values into struct.
     ReadWriteOptionalBinaryProperty tempValue = ReadWriteOptionalBinaryProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_optional_binary' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteOptionalBinaryPropertyMutex);
@@ -5345,6 +6026,10 @@ void TestableServer::republishReadWriteTwoBinariesProperty() const
     std::lock_guard<std::mutex> lock(_readWriteTwoBinariesPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteTwoBinariesProperty) {
+        if (!_readWriteTwoBinariesProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_two_binaries' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteTwoBinariesProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -5369,6 +6054,9 @@ void TestableServer::republishReadWriteTwoBinariesProperty() const
 
 void TestableServer::_receiveReadWriteTwoBinariesPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -5385,6 +6073,10 @@ void TestableServer::_receiveReadWriteTwoBinariesPropertyUpdate(const stinger::m
 
     // Deserialize 2 values into struct.
     ReadWriteTwoBinariesProperty tempValue = ReadWriteTwoBinariesProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_two_binaries' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteTwoBinariesPropertyMutex);
@@ -5436,6 +6128,10 @@ void TestableServer::republishReadWriteListOfStringsProperty() const
     std::lock_guard<std::mutex> lock(_readWriteListOfStringsPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteListOfStringsProperty) {
+        if (!_readWriteListOfStringsProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_list_of_strings' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteListOfStringsProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -5460,6 +6156,9 @@ void TestableServer::republishReadWriteListOfStringsProperty() const
 
 void TestableServer::_receiveReadWriteListOfStringsPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -5476,6 +6175,10 @@ void TestableServer::_receiveReadWriteListOfStringsPropertyUpdate(const stinger:
 
     // Deserialize 1 values into struct.
     ReadWriteListOfStringsProperty tempValue = ReadWriteListOfStringsProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_list_of_strings' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteListOfStringsPropertyMutex);
@@ -5527,6 +6230,10 @@ void TestableServer::republishReadWriteListsProperty() const
     std::lock_guard<std::mutex> lock(_readWriteListsPropertyMutex);
     rapidjson::Document doc;
     if (_readWriteListsProperty) {
+        if (!_readWriteListsProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'read_write_lists' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _readWriteListsProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -5551,6 +6258,9 @@ void TestableServer::republishReadWriteListsProperty() const
 
 void TestableServer::_receiveReadWriteListsPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -5567,6 +6277,10 @@ void TestableServer::_receiveReadWriteListsPropertyUpdate(const stinger::mqtt::M
 
     // Deserialize 2 values into struct.
     ReadWriteListsProperty tempValue = ReadWriteListsProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'read_write_lists' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_readWriteListsPropertyMutex);
@@ -5596,6 +6310,14 @@ void TestableServer::_advertisementThreadLoop()
         doc.AddMember("timestamp", rapidjson::Value(timestamp.c_str(), allocator), allocator);
 
         doc.AddMember("prefix", rapidjson::Value(_prefixTopicParam.c_str(), allocator), allocator);
+
+        {
+            rapidjson::Value methodsObj(rapidjson::kObjectType);
+
+            methodsObj.AddMember("callTwoLists", rapidjson::Value("0.1.0", allocator), allocator);
+
+            doc.AddMember("methods", methodsObj, allocator);
+        }
 
         // Convert to JSON string
         rapidjson::StringBuffer buf;

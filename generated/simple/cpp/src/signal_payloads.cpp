@@ -1,5 +1,7 @@
 
 #include "signal_payloads.hpp"
+#include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 
 namespace stinger {
 
@@ -34,6 +36,11 @@ void PersonEnteredPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidj
 
         parent.AddMember("person", tempStructValue, allocator);
     }
+}
+
+bool PersonEnteredPayload::ValidateSchema() const
+{
+    return true;
 }
 
 } // namespace simple

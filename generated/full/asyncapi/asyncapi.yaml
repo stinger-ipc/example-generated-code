@@ -1,0 +1,2193 @@
+asyncapi: 3.0.0
+channels:
+  addNumbers_request:
+    address: '{prefix}/Full/{service_id}/method/addNumbers/request'
+    messages:
+      addNumbers_request:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: client/[^\}]+/Full/method/addNumbers/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the arguments for the method call.  It
+          is encoded as a JSON object.\n            \n            Correlation data
+          must be provided as an MQTT property.  The data can be any binary data,
+          but must be unique to this method.  Typically, using a UUID is sufficient
+          to ensure uniqueness.  The server will include the same correlation data
+          in the response message, so the client can match responses to requests when
+          multiple requests are in-flight.\n            \n            A response topic
+          must be provided as an MQTT property.  The server will publish the response
+          message to the provided response topic.  The method-calling client must
+          have a valid subscription to the MQTT response topic.\n            "
+        name: addNumbers_request
+        payload:
+          properties:
+            first:
+              type: integer
+            second:
+              type: integer
+            third:
+              type:
+              - integer
+              - 'null'
+          required:
+          - first
+          - second
+          type: object
+        tags:
+        - name: method
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  addNumbers_response:
+    address: client/{client_id}/Full/method/addNumbers/response
+    messages:
+      addNumbers_return_values:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "\n            This payload represents the {% if self.method.return_arg_list
+          | length > 1 %}return values{%elif self.method.return_arg_list | length
+          == 1 %}return value{% else %}completion{% endif %} of the method call response.\
+          \  It is encoded as a JSON object.\n            \n            A \"correlation
+          data\" MQTT property will be included in the response message, and will
+          match the correlation data provided in the request message, so the client
+          can match responses to requests when multiple requests are in-flight.  Whatever
+          binary data was provided as correlation data in the request will be provided
+          as correlation data in the response.\n            (Hint: any blob of data
+          works, so you could include extra tracking information like a timestamp
+          if you needed it).\n            "
+        name: addNumbers return values
+        payload:
+          properties:
+            sum:
+              type: integer
+          required:
+          - sum
+          type: object
+        tags:
+        - name: method
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+  doSomething_request:
+    address: '{prefix}/Full/{service_id}/method/doSomething/request'
+    messages:
+      doSomething_request:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: client/[^\}]+/Full/method/doSomething/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the arguments for the method call.  It
+          is encoded as a JSON object.\n            \n            Correlation data
+          must be provided as an MQTT property.  The data can be any binary data,
+          but must be unique to this method.  Typically, using a UUID is sufficient
+          to ensure uniqueness.  The server will include the same correlation data
+          in the response message, so the client can match responses to requests when
+          multiple requests are in-flight.\n            \n            A response topic
+          must be provided as an MQTT property.  The server will publish the response
+          message to the provided response topic.  The method-calling client must
+          have a valid subscription to the MQTT response topic.\n            "
+        name: doSomething_request
+        payload:
+          properties:
+            task_to_do:
+              type: string
+          required:
+          - task_to_do
+          type: object
+        tags:
+        - name: method
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  doSomething_response:
+    address: client/{client_id}/Full/method/doSomething/response
+    messages:
+      doSomething_return_values:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "\n            This payload represents the {% if self.method.return_arg_list
+          | length > 1 %}return values{%elif self.method.return_arg_list | length
+          == 1 %}return value{% else %}completion{% endif %} of the method call response.\
+          \  It is encoded as a JSON object.\n            \n            A \"correlation
+          data\" MQTT property will be included in the response message, and will
+          match the correlation data provided in the request message, so the client
+          can match responses to requests when multiple requests are in-flight.  Whatever
+          binary data was provided as correlation data in the request will be provided
+          as correlation data in the response.\n            (Hint: any blob of data
+          works, so you could include extra tracking information like a timestamp
+          if you needed it).\n            "
+        name: doSomething return values
+        payload:
+          properties:
+            identifier:
+              type: integer
+            label:
+              type: string
+          required:
+          - label
+          - identifier
+          type: object
+        tags:
+        - name: method
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+  family_name_update_request:
+    address: '{prefix}/Full/{service_id}/property/family_name/update'
+    description: This is to test a property with a single string value.
+    messages:
+      family_name:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: client/[^\}]+/Full/property/family_name/update/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the new property value that the client
+          wants to set.\n            \n                The entirety of the JSON object
+          must be provided, and will completely replace the\n                current
+          value of the property if the update is accepted.\n                \n   \
+          \             The `PropertyVersion` user property value (a number provided
+          as an MQTT string)\n                should be the same `PropertyVersion`
+          value that was most recently received."
+        headers:
+          properties:
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: FamilyNameUpdateRequest
+        payload:
+          $ref: '#/components/schemas/family_name_property'
+        summary: A request to update the 'family_name' property.
+        tags:
+        - name: property
+        - name: update
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: A request to update the 'family_name' property.
+    title: FamilyNameUpdateRequest
+  family_name_update_response:
+    address: client/{client_id}/Full/property/family_name/update/response
+    description: This is to test a property with a single string value.
+    messages:
+      family_name:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+        contentType: application/json
+        description: "The payload represents the latest value of the property after
+          the update attempt.\n            \n            If the property update was
+          successful, then there should be a `ReturnCode` user property with value
+          `0`, and the payload should match the value that was sent in the update
+          request.\n            The `PropertyValue` user property will be the newest
+          version of the property value after the update.\n            The `DebugInfo`
+          user property is usually empty or unset on success, but is not required
+          to be empty.  If provided, the\n            client should log or print the
+          provided `DebugInfo` string for debugging purposes.\n\n            If the
+          property update was unsuccessful, then there should be a `ReturnCode` user
+          property with a non-zero value, and the payload will contain the server's
+          current value for the property.\n            The `PropertyValue` user property
+          will be the version of the current property value (which may or may not
+          be what it was before).\n            The `DebugInfo` user property should
+          contain a string describing why the update was unsuccessful, and the client
+          should log or print it for debugging purposes, but the client is not to
+          specifically parse the `DebugInfo` for programatic meaning.\n          \
+          \  "
+        headers:
+          properties:
+            DebugInfo:
+              description: A string describing why the update was unsuccessful, 
+                if applicable.
+              type: string
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              minimum: -1
+              type: integer
+            ReturnCode:
+              description: 'SUCCESS: 0 | CLIENT_ERROR: 1 | SERVER_ERROR: 2 | TRANSPORT_ERROR:
+                3 | PAYLOAD_ERROR: 4 | CLIENT_SERIALIZATION_ERROR: 5 | CLIENT_DESERIALIZATION_ERROR:
+                6 | SERVER_SERIALIZATION_ERROR: 7 | SERVER_DESERIALIZATION_ERROR:
+                8 | METHOD_NOT_FOUND: 9 | UNAUTHORIZED: 10 | TIMEOUT: 11 | OUT_OF_SYNC:
+                12 | UNKNOWN_ERROR: 13 | NOT_IMPLEMENTED: 14 | SERVICE_UNAVAILABLE:
+                15'
+              enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              type: integer
+          required:
+          - PropertyValue
+          - ReturnCode
+          - DebugInfo
+          type: object
+        name: FamilyNameUpdateResponse
+        payload:
+          $ref: '#/components/schemas/family_name_property'
+        summary: The response after updating the 'family_name' property.
+        tags:
+        - name: property
+        - name: update
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+    summary: A response to the update request for the 'family_name' property.
+    title: FamilyNameUpdateResponse
+  family_name_value:
+    address: '{prefix}/Full/{service_id}/property/family_name/value'
+    description: This is to test a property with a single string value.
+    messages:
+      family_name:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: FamilyNamePropertyValue
+        payload:
+          $ref: '#/components/schemas/family_name_property'
+        summary: The current value of the 'family_name' property.
+        tags:
+        - name: property
+        - name: value
+        title: family_name value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'family_name' property.
+    tags:
+    - name: property
+    - name: value
+    title: FamilyNamePropertyValue
+  favorite_foods_update_request:
+    address: '{prefix}/Full/{service_id}/property/favorite_foods/update'
+    messages:
+      favorite_foods:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: 
+                client/[^\}]+/Full/property/favorite_foods/update/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the new property value that the client
+          wants to set.\n            \n                The entirety of the JSON object
+          must be provided, and will completely replace the\n                current
+          value of the property if the update is accepted.\n                \n   \
+          \             The `PropertyVersion` user property value (a number provided
+          as an MQTT string)\n                should be the same `PropertyVersion`
+          value that was most recently received."
+        headers:
+          properties:
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: FavoriteFoodsUpdateRequest
+        payload:
+          $ref: '#/components/schemas/favorite_foods_property'
+        summary: A request to update the 'favorite_foods' property.
+        tags:
+        - name: property
+        - name: update
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: A request to update the 'favorite_foods' property.
+    title: FavoriteFoodsUpdateRequest
+  favorite_foods_update_response:
+    address: client/{client_id}/Full/property/favorite_foods/update/response
+    messages:
+      favorite_foods:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+        contentType: application/json
+        description: "The payload represents the latest value of the property after
+          the update attempt.\n            \n            If the property update was
+          successful, then there should be a `ReturnCode` user property with value
+          `0`, and the payload should match the value that was sent in the update
+          request.\n            The `PropertyValue` user property will be the newest
+          version of the property value after the update.\n            The `DebugInfo`
+          user property is usually empty or unset on success, but is not required
+          to be empty.  If provided, the\n            client should log or print the
+          provided `DebugInfo` string for debugging purposes.\n\n            If the
+          property update was unsuccessful, then there should be a `ReturnCode` user
+          property with a non-zero value, and the payload will contain the server's
+          current value for the property.\n            The `PropertyValue` user property
+          will be the version of the current property value (which may or may not
+          be what it was before).\n            The `DebugInfo` user property should
+          contain a string describing why the update was unsuccessful, and the client
+          should log or print it for debugging purposes, but the client is not to
+          specifically parse the `DebugInfo` for programatic meaning.\n          \
+          \  "
+        headers:
+          properties:
+            DebugInfo:
+              description: A string describing why the update was unsuccessful, 
+                if applicable.
+              type: string
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              minimum: -1
+              type: integer
+            ReturnCode:
+              description: 'SUCCESS: 0 | CLIENT_ERROR: 1 | SERVER_ERROR: 2 | TRANSPORT_ERROR:
+                3 | PAYLOAD_ERROR: 4 | CLIENT_SERIALIZATION_ERROR: 5 | CLIENT_DESERIALIZATION_ERROR:
+                6 | SERVER_SERIALIZATION_ERROR: 7 | SERVER_DESERIALIZATION_ERROR:
+                8 | METHOD_NOT_FOUND: 9 | UNAUTHORIZED: 10 | TIMEOUT: 11 | OUT_OF_SYNC:
+                12 | UNKNOWN_ERROR: 13 | NOT_IMPLEMENTED: 14 | SERVICE_UNAVAILABLE:
+                15'
+              enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              type: integer
+          required:
+          - PropertyValue
+          - ReturnCode
+          - DebugInfo
+          type: object
+        name: FavoriteFoodsUpdateResponse
+        payload:
+          $ref: '#/components/schemas/favorite_foods_property'
+        summary: The response after updating the 'favorite_foods' property.
+        tags:
+        - name: property
+        - name: update
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+    summary: A response to the update request for the 'favorite_foods' property.
+    title: FavoriteFoodsUpdateResponse
+  favorite_foods_value:
+    address: '{prefix}/Full/{service_id}/property/favorite_foods/value'
+    messages:
+      favorite_foods:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: FavoriteFoodsPropertyValue
+        payload:
+          $ref: '#/components/schemas/favorite_foods_property'
+        summary: The current value of the 'favorite_foods' property.
+        tags:
+        - name: property
+        - name: value
+        title: favorite_foods value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'favorite_foods' property.
+    tags:
+    - name: property
+    - name: value
+    title: FavoriteFoodsPropertyValue
+  favorite_number_update_request:
+    address: '{prefix}/Full/{service_id}/property/favorite_number/update'
+    description: "My favorite number\n"
+    messages:
+      favorite_number:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: 
+                client/[^\}]+/Full/property/favorite_number/update/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the new property value that the client
+          wants to set.\n            \n                The entirety of the JSON object
+          must be provided, and will completely replace the\n                current
+          value of the property if the update is accepted.\n                \n   \
+          \             The `PropertyVersion` user property value (a number provided
+          as an MQTT string)\n                should be the same `PropertyVersion`
+          value that was most recently received."
+        headers:
+          properties:
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: FavoriteNumberUpdateRequest
+        payload:
+          $ref: '#/components/schemas/favorite_number_property'
+        summary: A request to update the 'favorite_number' property.
+        tags:
+        - name: property
+        - name: update
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: A request to update the 'favorite_number' property.
+    title: FavoriteNumberUpdateRequest
+  favorite_number_update_response:
+    address: client/{client_id}/Full/property/favorite_number/update/response
+    description: "My favorite number\n"
+    messages:
+      favorite_number:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+        contentType: application/json
+        description: "The payload represents the latest value of the property after
+          the update attempt.\n            \n            If the property update was
+          successful, then there should be a `ReturnCode` user property with value
+          `0`, and the payload should match the value that was sent in the update
+          request.\n            The `PropertyValue` user property will be the newest
+          version of the property value after the update.\n            The `DebugInfo`
+          user property is usually empty or unset on success, but is not required
+          to be empty.  If provided, the\n            client should log or print the
+          provided `DebugInfo` string for debugging purposes.\n\n            If the
+          property update was unsuccessful, then there should be a `ReturnCode` user
+          property with a non-zero value, and the payload will contain the server's
+          current value for the property.\n            The `PropertyValue` user property
+          will be the version of the current property value (which may or may not
+          be what it was before).\n            The `DebugInfo` user property should
+          contain a string describing why the update was unsuccessful, and the client
+          should log or print it for debugging purposes, but the client is not to
+          specifically parse the `DebugInfo` for programatic meaning.\n          \
+          \  "
+        headers:
+          properties:
+            DebugInfo:
+              description: A string describing why the update was unsuccessful, 
+                if applicable.
+              type: string
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              minimum: -1
+              type: integer
+            ReturnCode:
+              description: 'SUCCESS: 0 | CLIENT_ERROR: 1 | SERVER_ERROR: 2 | TRANSPORT_ERROR:
+                3 | PAYLOAD_ERROR: 4 | CLIENT_SERIALIZATION_ERROR: 5 | CLIENT_DESERIALIZATION_ERROR:
+                6 | SERVER_SERIALIZATION_ERROR: 7 | SERVER_DESERIALIZATION_ERROR:
+                8 | METHOD_NOT_FOUND: 9 | UNAUTHORIZED: 10 | TIMEOUT: 11 | OUT_OF_SYNC:
+                12 | UNKNOWN_ERROR: 13 | NOT_IMPLEMENTED: 14 | SERVICE_UNAVAILABLE:
+                15'
+              enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              type: integer
+          required:
+          - PropertyValue
+          - ReturnCode
+          - DebugInfo
+          type: object
+        name: FavoriteNumberUpdateResponse
+        payload:
+          $ref: '#/components/schemas/favorite_number_property'
+        summary: The response after updating the 'favorite_number' property.
+        tags:
+        - name: property
+        - name: update
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+    summary: A response to the update request for the 'favorite_number' 
+      property.
+    title: FavoriteNumberUpdateResponse
+  favorite_number_value:
+    address: '{prefix}/Full/{service_id}/property/favorite_number/value'
+    description: "My favorite number\n"
+    messages:
+      favorite_number:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: FavoriteNumberPropertyValue
+        payload:
+          $ref: '#/components/schemas/favorite_number_property'
+        summary: The current value of the 'favorite_number' property.
+        tags:
+        - name: property
+        - name: value
+        title: favorite_number value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'favorite_number' property.
+    tags:
+    - name: property
+    - name: value
+    title: FavoriteNumberPropertyValue
+  hold_temperature_request:
+    address: '{prefix}/Full/{service_id}/method/hold_temperature/request'
+    description: Hold a temperature for a specified duration.
+    messages:
+      hold_temperature_request:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: client/[^\}]+/Full/method/hold_temperature/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the arguments for the method call.  It
+          is encoded as a JSON object.\n            \n            Correlation data
+          must be provided as an MQTT property.  The data can be any binary data,
+          but must be unique to this method.  Typically, using a UUID is sufficient
+          to ensure uniqueness.  The server will include the same correlation data
+          in the response message, so the client can match responses to requests when
+          multiple requests are in-flight.\n            \n            A response topic
+          must be provided as an MQTT property.  The server will publish the response
+          message to the provided response topic.  The method-calling client must
+          have a valid subscription to the MQTT response topic.\n            "
+        name: hold_temperature_request
+        payload:
+          properties:
+            temperature_celsius:
+              description: The temperature to hold in degrees Celsius.
+              type: number
+          required:
+          - temperature_celsius
+          type: object
+        tags:
+        - name: method
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  hold_temperature_response:
+    address: client/{client_id}/Full/method/hold_temperature/response
+    description: Hold a temperature for a specified duration.
+    messages:
+      hold_temperature_return_values:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "\n            This payload represents the {% if self.method.return_arg_list
+          | length > 1 %}return values{%elif self.method.return_arg_list | length
+          == 1 %}return value{% else %}completion{% endif %} of the method call response.\
+          \  It is encoded as a JSON object.\n            \n            A \"correlation
+          data\" MQTT property will be included in the response message, and will
+          match the correlation data provided in the request message, so the client
+          can match responses to requests when multiple requests are in-flight.  Whatever
+          binary data was provided as correlation data in the request will be provided
+          as correlation data in the response.\n            (Hint: any blob of data
+          works, so you could include extra tracking information like a timestamp
+          if you needed it).\n            "
+        name: hold_temperature return values
+        payload:
+          properties:
+            success:
+              type: boolean
+          required:
+          - success
+          type: object
+        tags:
+        - name: method
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+  interface_info:
+    address: '{prefix}/Full/{service_id}/interface'
+    description: Advertisement/discovery channel for the 'Full' interface.
+    messages:
+      interface_info:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: The server periodically publishes this message (with a 
+          message-expiry interval) so that clients can discover running 
+          instances of the interface and the versions of the methods they 
+          support.
+        name: InterfaceInfo
+        payload:
+          properties:
+            connection_topic:
+              type: string
+            instance:
+              type: string
+            interface_name:
+              type: string
+            methods:
+              additionalProperties:
+                type: string
+              description: Maps method names to their version string, for 
+                methods that declare a version.
+              type: object
+            prefix:
+              type: string
+            timestamp:
+              format: date-time
+              type: string
+            title:
+              type: string
+            version:
+              type: string
+          required:
+          - interface_name
+          - title
+          - version
+          - instance
+          - connection_topic
+          - timestamp
+          - prefix
+          type: object
+        summary: Advertisement/discovery information for the 'Full' interface.
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  last_birthdays_update_request:
+    address: '{prefix}/Full/{service_id}/property/last_birthdays/update'
+    description: This is to test a property with multiple datetime values.
+    messages:
+      last_birthdays:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: 
+                client/[^\}]+/Full/property/last_birthdays/update/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the new property value that the client
+          wants to set.\n            \n                The entirety of the JSON object
+          must be provided, and will completely replace the\n                current
+          value of the property if the update is accepted.\n                \n   \
+          \             The `PropertyVersion` user property value (a number provided
+          as an MQTT string)\n                should be the same `PropertyVersion`
+          value that was most recently received."
+        headers:
+          properties:
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: LastBirthdaysUpdateRequest
+        payload:
+          $ref: '#/components/schemas/last_birthdays_property'
+        summary: A request to update the 'last_birthdays' property.
+        tags:
+        - name: property
+        - name: update
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: A request to update the 'last_birthdays' property.
+    title: LastBirthdaysUpdateRequest
+  last_birthdays_update_response:
+    address: client/{client_id}/Full/property/last_birthdays/update/response
+    description: This is to test a property with multiple datetime values.
+    messages:
+      last_birthdays:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+        contentType: application/json
+        description: "The payload represents the latest value of the property after
+          the update attempt.\n            \n            If the property update was
+          successful, then there should be a `ReturnCode` user property with value
+          `0`, and the payload should match the value that was sent in the update
+          request.\n            The `PropertyValue` user property will be the newest
+          version of the property value after the update.\n            The `DebugInfo`
+          user property is usually empty or unset on success, but is not required
+          to be empty.  If provided, the\n            client should log or print the
+          provided `DebugInfo` string for debugging purposes.\n\n            If the
+          property update was unsuccessful, then there should be a `ReturnCode` user
+          property with a non-zero value, and the payload will contain the server's
+          current value for the property.\n            The `PropertyValue` user property
+          will be the version of the current property value (which may or may not
+          be what it was before).\n            The `DebugInfo` user property should
+          contain a string describing why the update was unsuccessful, and the client
+          should log or print it for debugging purposes, but the client is not to
+          specifically parse the `DebugInfo` for programatic meaning.\n          \
+          \  "
+        headers:
+          properties:
+            DebugInfo:
+              description: A string describing why the update was unsuccessful, 
+                if applicable.
+              type: string
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              minimum: -1
+              type: integer
+            ReturnCode:
+              description: 'SUCCESS: 0 | CLIENT_ERROR: 1 | SERVER_ERROR: 2 | TRANSPORT_ERROR:
+                3 | PAYLOAD_ERROR: 4 | CLIENT_SERIALIZATION_ERROR: 5 | CLIENT_DESERIALIZATION_ERROR:
+                6 | SERVER_SERIALIZATION_ERROR: 7 | SERVER_DESERIALIZATION_ERROR:
+                8 | METHOD_NOT_FOUND: 9 | UNAUTHORIZED: 10 | TIMEOUT: 11 | OUT_OF_SYNC:
+                12 | UNKNOWN_ERROR: 13 | NOT_IMPLEMENTED: 14 | SERVICE_UNAVAILABLE:
+                15'
+              enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              type: integer
+          required:
+          - PropertyValue
+          - ReturnCode
+          - DebugInfo
+          type: object
+        name: LastBirthdaysUpdateResponse
+        payload:
+          $ref: '#/components/schemas/last_birthdays_property'
+        summary: The response after updating the 'last_birthdays' property.
+        tags:
+        - name: property
+        - name: update
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+    summary: A response to the update request for the 'last_birthdays' property.
+    title: LastBirthdaysUpdateResponse
+  last_birthdays_value:
+    address: '{prefix}/Full/{service_id}/property/last_birthdays/value'
+    description: This is to test a property with multiple datetime values.
+    messages:
+      last_birthdays:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: LastBirthdaysPropertyValue
+        payload:
+          $ref: '#/components/schemas/last_birthdays_property'
+        summary: The current value of the 'last_birthdays' property.
+        tags:
+        - name: property
+        - name: value
+        title: last_birthdays value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'last_birthdays' property.
+    tags:
+    - name: property
+    - name: value
+    title: LastBirthdaysPropertyValue
+  last_breakfast_time_update_request:
+    address: '{prefix}/Full/{service_id}/property/last_breakfast_time/update'
+    description: This is to test a property with a single datetime value.
+    messages:
+      last_breakfast_time:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: 
+                client/[^\}]+/Full/property/last_breakfast_time/update/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the new property value that the client
+          wants to set.\n            \n                The entirety of the JSON object
+          must be provided, and will completely replace the\n                current
+          value of the property if the update is accepted.\n                \n   \
+          \             The `PropertyVersion` user property value (a number provided
+          as an MQTT string)\n                should be the same `PropertyVersion`
+          value that was most recently received."
+        headers:
+          properties:
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: LastBreakfastTimeUpdateRequest
+        payload:
+          $ref: '#/components/schemas/last_breakfast_time_property'
+        summary: A request to update the 'last_breakfast_time' property.
+        tags:
+        - name: property
+        - name: update
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: A request to update the 'last_breakfast_time' property.
+    title: LastBreakfastTimeUpdateRequest
+  last_breakfast_time_update_response:
+    address: 
+      client/{client_id}/Full/property/last_breakfast_time/update/response
+    description: This is to test a property with a single datetime value.
+    messages:
+      last_breakfast_time:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+        contentType: application/json
+        description: "The payload represents the latest value of the property after
+          the update attempt.\n            \n            If the property update was
+          successful, then there should be a `ReturnCode` user property with value
+          `0`, and the payload should match the value that was sent in the update
+          request.\n            The `PropertyValue` user property will be the newest
+          version of the property value after the update.\n            The `DebugInfo`
+          user property is usually empty or unset on success, but is not required
+          to be empty.  If provided, the\n            client should log or print the
+          provided `DebugInfo` string for debugging purposes.\n\n            If the
+          property update was unsuccessful, then there should be a `ReturnCode` user
+          property with a non-zero value, and the payload will contain the server's
+          current value for the property.\n            The `PropertyValue` user property
+          will be the version of the current property value (which may or may not
+          be what it was before).\n            The `DebugInfo` user property should
+          contain a string describing why the update was unsuccessful, and the client
+          should log or print it for debugging purposes, but the client is not to
+          specifically parse the `DebugInfo` for programatic meaning.\n          \
+          \  "
+        headers:
+          properties:
+            DebugInfo:
+              description: A string describing why the update was unsuccessful, 
+                if applicable.
+              type: string
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              minimum: -1
+              type: integer
+            ReturnCode:
+              description: 'SUCCESS: 0 | CLIENT_ERROR: 1 | SERVER_ERROR: 2 | TRANSPORT_ERROR:
+                3 | PAYLOAD_ERROR: 4 | CLIENT_SERIALIZATION_ERROR: 5 | CLIENT_DESERIALIZATION_ERROR:
+                6 | SERVER_SERIALIZATION_ERROR: 7 | SERVER_DESERIALIZATION_ERROR:
+                8 | METHOD_NOT_FOUND: 9 | UNAUTHORIZED: 10 | TIMEOUT: 11 | OUT_OF_SYNC:
+                12 | UNKNOWN_ERROR: 13 | NOT_IMPLEMENTED: 14 | SERVICE_UNAVAILABLE:
+                15'
+              enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              type: integer
+          required:
+          - PropertyValue
+          - ReturnCode
+          - DebugInfo
+          type: object
+        name: LastBreakfastTimeUpdateResponse
+        payload:
+          $ref: '#/components/schemas/last_breakfast_time_property'
+        summary: The response after updating the 'last_breakfast_time' property.
+        tags:
+        - name: property
+        - name: update
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+    summary: A response to the update request for the 'last_breakfast_time' 
+      property.
+    title: LastBreakfastTimeUpdateResponse
+  last_breakfast_time_value:
+    address: '{prefix}/Full/{service_id}/property/last_breakfast_time/value'
+    description: This is to test a property with a single datetime value.
+    messages:
+      last_breakfast_time:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: LastBreakfastTimePropertyValue
+        payload:
+          $ref: '#/components/schemas/last_breakfast_time_property'
+        summary: The current value of the 'last_breakfast_time' property.
+        tags:
+        - name: property
+        - name: value
+        title: last_breakfast_time value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'last_breakfast_time' property.
+    tags:
+    - name: property
+    - name: value
+    title: LastBreakfastTimePropertyValue
+  lunch_menu_value:
+    address: '{prefix}/Full/{service_id}/property/lunch_menu/value'
+    messages:
+      lunch_menu:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: LunchMenuPropertyValue
+        payload:
+          $ref: '#/components/schemas/lunch_menu_property'
+        summary: The current value of the 'lunch_menu' property.
+        tags:
+        - name: property
+        - name: value
+        title: lunch_menu value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'lunch_menu' property.
+    tags:
+    - name: property
+    - name: value
+    title: LunchMenuPropertyValue
+  randomWord:
+    address: '{prefix}/Full/{service_id}/signal/randomWord'
+    messages:
+      randomWord:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: The payload represents the data for the signal.  It is 
+          encoded as a JSON object.
+        name: randomWord
+        payload:
+          properties:
+            time:
+              type: string
+            word:
+              type: string
+          required:
+          - word
+          - time
+          type: object
+        summary: The message for the 'randomWord' signal.
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  todayIs:
+    address: '{prefix}/Full/{service_id}/signal/todayIs'
+    messages:
+      todayIs:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: The payload represents the data for the signal.  It is 
+          encoded as a JSON object.
+        name: todayIs
+        payload:
+          properties:
+            dayOfMonth:
+              description: The calendar day of the month.
+              type: integer
+            dayOfWeek:
+              $ref: '#/components/schemas/dayOfTheWeek'
+          required:
+          - dayOfMonth
+          - dayOfWeek
+          type: object
+        summary: The message for the 'todayIs' signal.
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  what_time_is_it_request:
+    address: '{prefix}/Full/{service_id}/method/what_time_is_it/request'
+    description: Get the current date and time.
+    messages:
+      what_time_is_it_request:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: client/[^\}]+/Full/method/what_time_is_it/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the arguments for the method call.  It
+          is encoded as a JSON object.\n            \n            Correlation data
+          must be provided as an MQTT property.  The data can be any binary data,
+          but must be unique to this method.  Typically, using a UUID is sufficient
+          to ensure uniqueness.  The server will include the same correlation data
+          in the response message, so the client can match responses to requests when
+          multiple requests are in-flight.\n            \n            A response topic
+          must be provided as an MQTT property.  The server will publish the response
+          message to the provided response topic.  The method-calling client must
+          have a valid subscription to the MQTT response topic.\n            "
+        name: what_time_is_it_request
+        payload:
+          properties: {}
+          type: object
+        tags:
+        - name: method
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  what_time_is_it_response:
+    address: client/{client_id}/Full/method/what_time_is_it/response
+    description: Get the current date and time.
+    messages:
+      what_time_is_it_return_values:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "\n            This payload represents the {% if self.method.return_arg_list
+          | length > 1 %}return values{%elif self.method.return_arg_list | length
+          == 1 %}return value{% else %}completion{% endif %} of the method call response.\
+          \  It is encoded as a JSON object.\n            \n            A \"correlation
+          data\" MQTT property will be included in the response message, and will
+          match the correlation data provided in the request message, so the client
+          can match responses to requests when multiple requests are in-flight.  Whatever
+          binary data was provided as correlation data in the request will be provided
+          as correlation data in the response.\n            (Hint: any blob of data
+          works, so you could include extra tracking information like a timestamp
+          if you needed it).\n            "
+        name: what_time_is_it return values
+        payload:
+          properties:
+            timestamp:
+              type: string
+          required:
+          - timestamp
+          type: object
+        tags:
+        - name: method
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+components:
+  parameters:
+    client_id:
+      description: The MQTT Client ID
+    prefix:
+      description: Topic parameter 'prefix'
+    service_id:
+      description: The ID of the service/instance
+  schemas:
+    dayOfTheWeek:
+      description: "The days of the week.\nJSON Value `1` is `Sunday` - First day
+        of the week.\nJSON Value `2` is `Monday` - \nJSON Value `3` is `Tuesday` -\
+        \ \nJSON Value `4` is `Wednesday` - \nJSON Value `5` is `Thursday` - \nJSON
+        Value `6` is `Friday` - \nJSON Value `7` is `Saturday` - "
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      type: integer
+    family_name_property:
+      properties:
+        family_name:
+          type: string
+      required:
+      - family_name
+      type: object
+    favorite_foods_property:
+      properties:
+        breakfast:
+          type:
+          - string
+          - 'null'
+        drink:
+          type: string
+        slices_of_pizza:
+          type: integer
+      required:
+      - drink
+      - slices_of_pizza
+      type: object
+    favorite_number_property:
+      properties:
+        number:
+          type: integer
+      required:
+      - number
+      type: object
+    last_birthdays_property:
+      properties:
+        brothers_age:
+          description: The age of my brothers in years.
+          type:
+          - integer
+          - 'null'
+        dad:
+          type: string
+        mom:
+          type: string
+        sister:
+          type: string
+      required:
+      - mom
+      - dad
+      type: object
+    last_breakfast_time_property:
+      properties:
+        timestamp:
+          type: string
+      required:
+      - timestamp
+      type: object
+    lunch:
+      description: Structure representing a lunch order.
+      properties:
+        crackers:
+          description: The number of crackers that come with lunch.
+          type: number
+        day:
+          $ref: '#/components/schemas/dayOfTheWeek'
+        drink:
+          description: Whether or not lunch comes with a drink
+          type: boolean
+        duration_of_lunch:
+          description: The amount of time lunch lasts. The value should be an 
+            ISO 8601 duration string, e.g. 'PT1H30M' for 1 hour and 30 minutes.
+          format: duration
+          type: string
+        order_number:
+          type:
+          - integer
+          - 'null'
+        sandwich:
+          description: The type of sandwich which will be served.
+          type: string
+        time_of_lunch:
+          description: The time when lunch is served.
+          format: date-time
+          type: string
+      required:
+      - drink
+      - sandwich
+      - crackers
+      - day
+      - time_of_lunch
+      - duration_of_lunch
+      type: object
+    lunch_menu_property:
+      properties:
+        monday:
+          $ref: '#/components/schemas/lunch'
+        tuesday:
+          $ref: '#/components/schemas/lunch'
+      required:
+      - monday
+      - tuesday
+      type: object
+    multiplesOfTen:
+      description: "Enumeration of multiples of ten.\nJSON Value `10` is `Ten` - First
+        multiple of ten.\nJSON Value `20` is `Twenty` - Second multiple of ten.\n\
+        JSON Value `30` is `Thirty` - \nJSON Value `40` is `Forty` - \nJSON Value
+        `50` is `Fifty` - "
+      enum:
+      - 10
+      - 20
+      - 30
+      - 40
+      - 50
+      type: integer
+info:
+  description: Example StingerAPI interface which demonstrates many features.
+  tags:
+  - name: signal
+  - name: method
+  - name: property
+  - name: discovery
+  title: Full
+  version: 0.0.2
+operations:
+  addNumbers_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/addNumbers_request'
+    description: "\n            A method may call one of the server's methods by publishing
+      a message to the method's request topic.\n\n            ```plantuml\n      \
+      \      Client -> MQTT Broker: Method Request\n            MQTT Broker -> Server:
+      Method Request\n            Server -> Server: Process method call\n        \
+      \    Server -> MQTT Broker: Method Response\n            MQTT Broker -> Client:
+      Method Response\n            ```\n            "
+    messages:
+    - $ref: '#/channels/addNumbers_request/messages/addNumbers_request'
+    reply:
+      channel:
+        $ref: '#/channels/addNumbers_response'
+    tags:
+    - name: method
+    - name: request
+  addNumbers_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/addNumbers_response'
+    description: "\n            The server will publish a response message to the
+      response topic provided in the request message.  The response message will contain
+      the return value(s) of the method call.\n\n            ```plantuml\n       \
+      \     Client -> MQTT Broker: Method Request\n            MQTT Broker -> Server:
+      Method Request\n            Server -> Server: Process method call\n        \
+      \    Server -> MQTT Broker: Method Response\n            MQTT Broker -> Client:
+      Method Response\n            ```\n            "
+    messages:
+    - $ref: '#/channels/addNumbers_response/messages/addNumbers_return_values'
+    tags:
+    - name: method
+    - name: response
+  doSomething_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/doSomething_request'
+    description: "\n            A method may call one of the server's methods by publishing
+      a message to the method's request topic.\n\n            ```plantuml\n      \
+      \      Client -> MQTT Broker: Method Request\n            MQTT Broker -> Server:
+      Method Request\n            Server -> Server: Process method call\n        \
+      \    Server -> MQTT Broker: Method Response\n            MQTT Broker -> Client:
+      Method Response\n            ```\n            "
+    messages:
+    - $ref: '#/channels/doSomething_request/messages/doSomething_request'
+    reply:
+      channel:
+        $ref: '#/channels/doSomething_response'
+    tags:
+    - name: method
+    - name: request
+  doSomething_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/doSomething_response'
+    description: "\n            The server will publish a response message to the
+      response topic provided in the request message.  The response message will contain
+      the return value(s) of the method call.\n\n            ```plantuml\n       \
+      \     Client -> MQTT Broker: Method Request\n            MQTT Broker -> Server:
+      Method Request\n            Server -> Server: Process method call\n        \
+      \    Server -> MQTT Broker: Method Response\n            MQTT Broker -> Client:
+      Method Response\n            ```\n            "
+    messages:
+    - $ref: '#/channels/doSomething_response/messages/doSomething_return_values'
+    tags:
+    - name: method
+    - name: response
+  family_name_update_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/family_name_update_request'
+    description: "\n            A client publishes to this topic in order to request
+      that the server updates the property value to provided value.\n\n          \
+      \  The server will respond with a message on the response topic indicating whether
+      the update was successful, and what the new property value is after the update
+      attempt.\n\n            ```plantuml\n            Server -> MQTT Broker: Subscribe
+      to {prefix}/Full/{service_id}/property/family_name/update\n            Client
+      -> MQTT Broker: Update Request\n            MQTT Broker -> Server:  Update Request\n\
+      \            Server -> Server: Update property value\n            Server ->
+      MQTT Broker: New Property Value\n            MQTT Broker -> Client: New Property
+      Value\n            Server -> MQTT Broker: Property Update Response\n       \
+      \     MQTT Broker -> Client: Property Update Response\n            ```\n   \
+      \         "
+    messages:
+    - $ref: '#/channels/family_name_update_request/messages/family_name'
+    reply:
+      channel:
+        $ref: '#/channels/family_name_update_response'
+    tags:
+    - name: property
+  family_name_update_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/family_name_update_response'
+    description: "\n            A server publishes to this topic in order to provide
+      the response to an update request.\n\n            The server will respond with
+      a message on the response topic indicating whether the update was successful,
+      and what the new property value is after the update attempt.\n\n           \
+      \ ```plantuml\n            Server -> MQTT Broker: Subscribe to {prefix}/Full/{service_id}/property/family_name/update\n\
+      \            Client -> MQTT Broker: Update Request\n            MQTT Broker
+      -> Server:  Update Request\n            Server -> Server: Update property value\n\
+      \            Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n\n            If the update failed, the most recent property value
+      will be included in the response payload, \n            and the client should
+      update its local cached property value to match the value in the response, \n\
+      \            as that is the current value of the property on the server.\n \
+      \           "
+    messages:
+    - $ref: '#/channels/family_name_update_response/messages/family_name'
+    tags:
+    - name: property
+  family_name_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/family_name_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'family_name'
+      Value (retain=true)\n            Client -> MQTT Broker: Subscribe\n        \
+      \    MQTT Broker -> Client: 'family_name' Value\n            ```\n         \
+      \   "
+    messages:
+    - $ref: '#/channels/family_name_value/messages/family_name'
+    summary: Receive the current value of the 'family_name' property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveFamilyNamePropertyValue
+  favorite_foods_update_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/favorite_foods_update_request'
+    description: "\n            A client publishes to this topic in order to request
+      that the server updates the property value to provided value.\n\n          \
+      \  The server will respond with a message on the response topic indicating whether
+      the update was successful, and what the new property value is after the update
+      attempt.\n\n            ```plantuml\n            Server -> MQTT Broker: Subscribe
+      to {prefix}/Full/{service_id}/property/favorite_foods/update\n            Client
+      -> MQTT Broker: Update Request\n            MQTT Broker -> Server:  Update Request\n\
+      \            Server -> Server: Update property value\n            Server ->
+      MQTT Broker: New Property Value\n            MQTT Broker -> Client: New Property
+      Value\n            Server -> MQTT Broker: Property Update Response\n       \
+      \     MQTT Broker -> Client: Property Update Response\n            ```\n   \
+      \         "
+    messages:
+    - $ref: '#/channels/favorite_foods_update_request/messages/favorite_foods'
+    reply:
+      channel:
+        $ref: '#/channels/favorite_foods_update_response'
+    tags:
+    - name: property
+  favorite_foods_update_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/favorite_foods_update_response'
+    description: "\n            A server publishes to this topic in order to provide
+      the response to an update request.\n\n            The server will respond with
+      a message on the response topic indicating whether the update was successful,
+      and what the new property value is after the update attempt.\n\n           \
+      \ ```plantuml\n            Server -> MQTT Broker: Subscribe to {prefix}/Full/{service_id}/property/favorite_foods/update\n\
+      \            Client -> MQTT Broker: Update Request\n            MQTT Broker
+      -> Server:  Update Request\n            Server -> Server: Update property value\n\
+      \            Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n\n            If the update failed, the most recent property value
+      will be included in the response payload, \n            and the client should
+      update its local cached property value to match the value in the response, \n\
+      \            as that is the current value of the property on the server.\n \
+      \           "
+    messages:
+    - $ref: '#/channels/favorite_foods_update_response/messages/favorite_foods'
+    tags:
+    - name: property
+  favorite_foods_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/favorite_foods_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'favorite_foods'
+      Value (retain=true)\n            Client -> MQTT Broker: Subscribe\n        \
+      \    MQTT Broker -> Client: 'favorite_foods' Value\n            ```\n      \
+      \      "
+    messages:
+    - $ref: '#/channels/favorite_foods_value/messages/favorite_foods'
+    summary: Receive the current value of the 'favorite_foods' property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveFavoriteFoodsPropertyValue
+  favorite_number_update_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/favorite_number_update_request'
+    description: "\n            A client publishes to this topic in order to request
+      that the server updates the property value to provided value.\n\n          \
+      \  The server will respond with a message on the response topic indicating whether
+      the update was successful, and what the new property value is after the update
+      attempt.\n\n            ```plantuml\n            Server -> MQTT Broker: Subscribe
+      to {prefix}/Full/{service_id}/property/favorite_number/update\n            Client
+      -> MQTT Broker: Update Request\n            MQTT Broker -> Server:  Update Request\n\
+      \            Server -> Server: Update property value\n            Server ->
+      MQTT Broker: New Property Value\n            MQTT Broker -> Client: New Property
+      Value\n            Server -> MQTT Broker: Property Update Response\n       \
+      \     MQTT Broker -> Client: Property Update Response\n            ```\n   \
+      \         "
+    messages:
+    - $ref: '#/channels/favorite_number_update_request/messages/favorite_number'
+    reply:
+      channel:
+        $ref: '#/channels/favorite_number_update_response'
+    tags:
+    - name: property
+  favorite_number_update_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/favorite_number_update_response'
+    description: "\n            A server publishes to this topic in order to provide
+      the response to an update request.\n\n            The server will respond with
+      a message on the response topic indicating whether the update was successful,
+      and what the new property value is after the update attempt.\n\n           \
+      \ ```plantuml\n            Server -> MQTT Broker: Subscribe to {prefix}/Full/{service_id}/property/favorite_number/update\n\
+      \            Client -> MQTT Broker: Update Request\n            MQTT Broker
+      -> Server:  Update Request\n            Server -> Server: Update property value\n\
+      \            Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n\n            If the update failed, the most recent property value
+      will be included in the response payload, \n            and the client should
+      update its local cached property value to match the value in the response, \n\
+      \            as that is the current value of the property on the server.\n \
+      \           "
+    messages:
+    - $ref: '#/channels/favorite_number_update_response/messages/favorite_number'
+    tags:
+    - name: property
+  favorite_number_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/favorite_number_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'favorite_number'
+      Value (retain=true)\n            Client -> MQTT Broker: Subscribe\n        \
+      \    MQTT Broker -> Client: 'favorite_number' Value\n            ```\n     \
+      \       "
+    messages:
+    - $ref: '#/channels/favorite_number_value/messages/favorite_number'
+    summary: Receive the current value of the 'favorite_number' property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveFavoriteNumberPropertyValue
+  hold_temperature_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/hold_temperature_request'
+    description: "\n            A method may call one of the server's methods by publishing
+      a message to the method's request topic.\n\n            ```plantuml\n      \
+      \      Client -> MQTT Broker: Method Request\n            MQTT Broker -> Server:
+      Method Request\n            Server -> Server: Process method call\n        \
+      \    Server -> MQTT Broker: Method Response\n            MQTT Broker -> Client:
+      Method Response\n            ```\n            "
+    messages:
+    - $ref: '#/channels/hold_temperature_request/messages/hold_temperature_request'
+    reply:
+      channel:
+        $ref: '#/channels/hold_temperature_response'
+    tags:
+    - name: method
+    - name: request
+  hold_temperature_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/hold_temperature_response'
+    description: "\n            The server will publish a response message to the
+      response topic provided in the request message.  The response message will contain
+      the return value(s) of the method call.\n\n            ```plantuml\n       \
+      \     Client -> MQTT Broker: Method Request\n            MQTT Broker -> Server:
+      Method Request\n            Server -> Server: Process method call\n        \
+      \    Server -> MQTT Broker: Method Response\n            MQTT Broker -> Client:
+      Method Response\n            ```\n            "
+    messages:
+    - $ref: '#/channels/hold_temperature_response/messages/hold_temperature_return_values'
+    tags:
+    - name: method
+    - name: response
+  interface_info:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 1
+        retain: false
+    channel:
+      $ref: '#/channels/interface_info'
+    description: "\n            The server publishes this message periodically (with
+      a message-expiry interval) so that clients can discover running server instances
+      and the method versions they advertise.\n\n            ```plantuml\n       \
+      \     Server -> MQTT Broker: Interface Info (with message expiry)\n        \
+      \    Client -> MQTT Broker: Subscribe\n            MQTT Broker -> Client: Interface
+      Info\n            ```\n            "
+    messages:
+    - $ref: '#/channels/interface_info/messages/interface_info'
+    summary: Receive 'Full' interface advertisement/discovery information.
+    tags:
+    - name: discovery
+  last_birthdays_update_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/last_birthdays_update_request'
+    description: "\n            A client publishes to this topic in order to request
+      that the server updates the property value to provided value.\n\n          \
+      \  The server will respond with a message on the response topic indicating whether
+      the update was successful, and what the new property value is after the update
+      attempt.\n\n            ```plantuml\n            Server -> MQTT Broker: Subscribe
+      to {prefix}/Full/{service_id}/property/last_birthdays/update\n            Client
+      -> MQTT Broker: Update Request\n            MQTT Broker -> Server:  Update Request\n\
+      \            Server -> Server: Update property value\n            Server ->
+      MQTT Broker: New Property Value\n            MQTT Broker -> Client: New Property
+      Value\n            Server -> MQTT Broker: Property Update Response\n       \
+      \     MQTT Broker -> Client: Property Update Response\n            ```\n   \
+      \         "
+    messages:
+    - $ref: '#/channels/last_birthdays_update_request/messages/last_birthdays'
+    reply:
+      channel:
+        $ref: '#/channels/last_birthdays_update_response'
+    tags:
+    - name: property
+  last_birthdays_update_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/last_birthdays_update_response'
+    description: "\n            A server publishes to this topic in order to provide
+      the response to an update request.\n\n            The server will respond with
+      a message on the response topic indicating whether the update was successful,
+      and what the new property value is after the update attempt.\n\n           \
+      \ ```plantuml\n            Server -> MQTT Broker: Subscribe to {prefix}/Full/{service_id}/property/last_birthdays/update\n\
+      \            Client -> MQTT Broker: Update Request\n            MQTT Broker
+      -> Server:  Update Request\n            Server -> Server: Update property value\n\
+      \            Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n\n            If the update failed, the most recent property value
+      will be included in the response payload, \n            and the client should
+      update its local cached property value to match the value in the response, \n\
+      \            as that is the current value of the property on the server.\n \
+      \           "
+    messages:
+    - $ref: '#/channels/last_birthdays_update_response/messages/last_birthdays'
+    tags:
+    - name: property
+  last_birthdays_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/last_birthdays_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'last_birthdays'
+      Value (retain=true)\n            Client -> MQTT Broker: Subscribe\n        \
+      \    MQTT Broker -> Client: 'last_birthdays' Value\n            ```\n      \
+      \      "
+    messages:
+    - $ref: '#/channels/last_birthdays_value/messages/last_birthdays'
+    summary: Receive the current value of the 'last_birthdays' property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveLastBirthdaysPropertyValue
+  last_breakfast_time_update_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/last_breakfast_time_update_request'
+    description: "\n            A client publishes to this topic in order to request
+      that the server updates the property value to provided value.\n\n          \
+      \  The server will respond with a message on the response topic indicating whether
+      the update was successful, and what the new property value is after the update
+      attempt.\n\n            ```plantuml\n            Server -> MQTT Broker: Subscribe
+      to {prefix}/Full/{service_id}/property/last_breakfast_time/update\n        \
+      \    Client -> MQTT Broker: Update Request\n            MQTT Broker -> Server:\
+      \  Update Request\n            Server -> Server: Update property value\n   \
+      \         Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n            "
+    messages:
+    - $ref: '#/channels/last_breakfast_time_update_request/messages/last_breakfast_time'
+    reply:
+      channel:
+        $ref: '#/channels/last_breakfast_time_update_response'
+    tags:
+    - name: property
+  last_breakfast_time_update_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/last_breakfast_time_update_response'
+    description: "\n            A server publishes to this topic in order to provide
+      the response to an update request.\n\n            The server will respond with
+      a message on the response topic indicating whether the update was successful,
+      and what the new property value is after the update attempt.\n\n           \
+      \ ```plantuml\n            Server -> MQTT Broker: Subscribe to {prefix}/Full/{service_id}/property/last_breakfast_time/update\n\
+      \            Client -> MQTT Broker: Update Request\n            MQTT Broker
+      -> Server:  Update Request\n            Server -> Server: Update property value\n\
+      \            Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n\n            If the update failed, the most recent property value
+      will be included in the response payload, \n            and the client should
+      update its local cached property value to match the value in the response, \n\
+      \            as that is the current value of the property on the server.\n \
+      \           "
+    messages:
+    - $ref: '#/channels/last_breakfast_time_update_response/messages/last_breakfast_time'
+    tags:
+    - name: property
+  last_breakfast_time_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/last_breakfast_time_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'last_breakfast_time'
+      Value (retain=true)\n            Client -> MQTT Broker: Subscribe\n        \
+      \    MQTT Broker -> Client: 'last_breakfast_time' Value\n            ```\n \
+      \           "
+    messages:
+    - $ref: '#/channels/last_breakfast_time_value/messages/last_breakfast_time'
+    summary: Receive the current value of the 'last_breakfast_time' property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveLastBreakfastTimePropertyValue
+  lunch_menu_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/lunch_menu_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'lunch_menu' Value
+      (retain=true)\n            Client -> MQTT Broker: Subscribe\n            MQTT
+      Broker -> Client: 'lunch_menu' Value\n            ```\n            "
+    messages:
+    - $ref: '#/channels/lunch_menu_value/messages/lunch_menu'
+    summary: Receive the current value of the 'lunch_menu' property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveLunchMenuPropertyValue
+  randomWord:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/randomWord'
+    description: "\n            The server publishes a message to the signal topic
+      whenever the signal is emitted.\n            Clients can subscribe to the signal
+      topic to receive messages whenever the signal is emitted.\n\n            ```plantuml\n\
+      \            Client -> MQTT Broker: Subscribe\n            Server -> MQTT Broker:
+      'randomWord' Signal\n            MQTT Broker -> Client: 'randomWord' Signal\n\
+      \            ```\n\n            The message is not retained, so clients will
+      only receive the signal message when the signal is emitted while they are subscribed.\n\
+      \            "
+    messages:
+    - $ref: '#/channels/randomWord/messages/randomWord'
+    summary: Receive the 'randomWord' signal.
+    tags:
+    - name: signal
+  todayIs:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/todayIs'
+    description: "\n            The server publishes a message to the signal topic
+      whenever the signal is emitted.\n            Clients can subscribe to the signal
+      topic to receive messages whenever the signal is emitted.\n\n            ```plantuml\n\
+      \            Client -> MQTT Broker: Subscribe\n            Server -> MQTT Broker:
+      'todayIs' Signal\n            MQTT Broker -> Client: 'todayIs' Signal\n    \
+      \        ```\n\n            The message is not retained, so clients will only
+      receive the signal message when the signal is emitted while they are subscribed.\n\
+      \            "
+    messages:
+    - $ref: '#/channels/todayIs/messages/todayIs'
+    summary: Receive the 'todayIs' signal.
+    tags:
+    - name: signal
+  what_time_is_it_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/what_time_is_it_request'
+    description: "\n            A method may call one of the server's methods by publishing
+      a message to the method's request topic.\n\n            ```plantuml\n      \
+      \      Client -> MQTT Broker: Method Request\n            MQTT Broker -> Server:
+      Method Request\n            Server -> Server: Process method call\n        \
+      \    Server -> MQTT Broker: Method Response\n            MQTT Broker -> Client:
+      Method Response\n            ```\n            "
+    messages:
+    - $ref: '#/channels/what_time_is_it_request/messages/what_time_is_it_request'
+    reply:
+      channel:
+        $ref: '#/channels/what_time_is_it_response'
+    tags:
+    - name: method
+    - name: request
+  what_time_is_it_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/what_time_is_it_response'
+    description: "\n            The server will publish a response message to the
+      response topic provided in the request message.  The response message will contain
+      the return value(s) of the method call.\n\n            ```plantuml\n       \
+      \     Client -> MQTT Broker: Method Request\n            MQTT Broker -> Server:
+      Method Request\n            Server -> Server: Process method call\n        \
+      \    Server -> MQTT Broker: Method Response\n            MQTT Broker -> Client:
+      Method Response\n            ```\n            "
+    messages:
+    - $ref: '#/channels/what_time_is_it_response/messages/what_time_is_it_return_values'
+    tags:
+    - name: method
+    - name: response

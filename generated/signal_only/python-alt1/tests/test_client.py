@@ -1,6 +1,7 @@
 """
 Tests for SignalOnly client.
 """
+
 import pytest
 import sys
 from pathlib import Path

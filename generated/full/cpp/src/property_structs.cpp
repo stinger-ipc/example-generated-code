@@ -2,6 +2,7 @@
 
 #include "property_structs.hpp"
 #include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 
 namespace stinger {
 
@@ -28,6 +29,11 @@ FavoriteNumberProperty FavoriteNumberProperty::FromRapidJsonObject(const rapidjs
 void FavoriteNumberProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("number", number, allocator);
+}
+
+bool FavoriteNumberProperty::ValidateSchema() const
+{
+    return true;
 }
 
 FavoriteFoodsProperty FavoriteFoodsProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -85,6 +91,11 @@ void FavoriteFoodsProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapid
     }
 }
 
+bool FavoriteFoodsProperty::ValidateSchema() const
+{
+    return true;
+}
+
 LunchMenuProperty LunchMenuProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     LunchMenuProperty lunchMenu;
@@ -132,6 +143,11 @@ void LunchMenuProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson
     }
 }
 
+bool LunchMenuProperty::ValidateSchema() const
+{
+    return true;
+}
+
 FamilyNameProperty FamilyNameProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     FamilyNameProperty familyName;
@@ -156,6 +172,11 @@ void FamilyNameProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapidjso
         tempStringValue.SetString(familyName.c_str(), familyName.size(), allocator);
         parent.AddMember("family_name", tempStringValue, allocator);
     }
+}
+
+bool FamilyNameProperty::ValidateSchema() const
+{
+    return true;
 }
 
 LastBreakfastTimeProperty LastBreakfastTimeProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -184,6 +205,11 @@ void LastBreakfastTimeProperty::AddToRapidJsonObject(rapidjson::Value& parent, r
         tempTimestampStringValue.SetString(timestampIsoString.c_str(), timestampIsoString.size(), allocator);
         parent.AddMember("timestamp", tempTimestampStringValue, allocator);
     }
+}
+
+bool LastBreakfastTimeProperty::ValidateSchema() const
+{
+    return true;
 }
 
 LastBirthdaysProperty LastBirthdaysProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -264,6 +290,11 @@ void LastBirthdaysProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapid
 
     if (brothersAge)
         parent.AddMember("brothers_age", *brothersAge, allocator);
+}
+
+bool LastBirthdaysProperty::ValidateSchema() const
+{
+    return true;
 }
 
 } // namespace full

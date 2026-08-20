@@ -8,8 +8,7 @@ on the next generation.
 
 This is the Server for the prop-only interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #[allow(unused_imports)]
@@ -370,28 +369,38 @@ impl<C: Mqtt5PubSub + Clone + Send> PropOnlyServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<HomeAddressProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'home_address' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'home_address' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the address field of the struct.
-                        *write_request = new_property_structure.address.clone();
-                        debug!(
-                            "Updating 'home_address' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the address field of the struct.
+                            *write_request = new_property_structure.address.clone();
+                            debug!(
+                                "Updating 'home_address' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'home_address' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'home_address' property change".to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'home_address' property change");
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'home_address' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -537,29 +546,38 @@ impl<C: Mqtt5PubSub + Clone + Send> PropOnlyServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<FavoriteCountryProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'favorite_country' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'favorite_country' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the country field of the struct.
-                        *write_request = new_property_structure.country.clone();
-                        debug!(
-                            "Updating 'favorite_country' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the country field of the struct.
+                            *write_request = new_property_structure.country.clone();
+                            debug!(
+                                "Updating 'favorite_country' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'favorite_country' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'favorite_country' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'favorite_country' property change");
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'favorite_country' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -679,6 +697,13 @@ impl<C: Mqtt5PubSub + Clone + Send> PropOnlyServer<C> {
                             address: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'home_address' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = home_address_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -733,6 +758,13 @@ impl<C: Mqtt5PubSub + Clone + Send> PropOnlyServer<C> {
                             country: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'favorite_country' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = favorite_country_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -769,6 +801,9 @@ impl<C: Mqtt5PubSub + Clone + Send> PropOnlyServer<C> {
             }
         }
 
+        // Static map of method names to their declared version, used in periodic interface info advertisements.
+        let interface_info_methods: HashMap<String, String> = HashMap::from([]);
+
         // Spawn a task to periodically publish interface info.
         let mut interface_publisher = self.mqtt_client.clone();
         let instance_id = self.instance_id.clone();
@@ -786,6 +821,7 @@ impl<C: Mqtt5PubSub + Clone + Send> PropOnlyServer<C> {
                     .interface_name("prop-only".to_string())
                     .title("Property Only Interface".to_string())
                     .version("0.0.1".to_string())
+                    .methods(interface_info_methods.clone())
                     .instance(instance_id.clone())
                     .connection_topic(topic.clone())
                     .prefix(topic_param_map_for_info.get("prefix").unwrap().to_string())

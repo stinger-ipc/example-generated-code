@@ -4,8 +4,7 @@ on the next generation.
 
 It contains enumerations used by the testable interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 use std::any::Any;
 use std::sync::Arc;
@@ -1237,6 +1236,15 @@ async fn main() {
             println!("Signal 'singleInt' was sent: {:?}", signal_result);
 
             sleep(Duration::from_secs(1)).await;
+            println!("Emitting signal 'jsonSchemaValidatedInt'");
+            let signal_result_future = server_clone1.emit_json_schema_validated_int(42).await;
+            let signal_result = signal_result_future.await;
+            println!(
+                "Signal 'jsonSchemaValidatedInt' was sent: {:?}",
+                signal_result
+            );
+
+            sleep(Duration::from_secs(1)).await;
             println!("Emitting signal 'singleOptionalInt'");
             let signal_result_future = server_clone1.emit_single_optional_int(Some(42)).await;
             let signal_result = signal_result_future.await;
@@ -1253,6 +1261,17 @@ async fn main() {
             let signal_result_future = server_clone1.emit_single_string("apples".to_string()).await;
             let signal_result = signal_result_future.await;
             println!("Signal 'singleString' was sent: {:?}", signal_result);
+
+            sleep(Duration::from_secs(1)).await;
+            println!("Emitting signal 'jsonSchemaValidatedString'");
+            let signal_result_future = server_clone1
+                .emit_json_schema_validated_string("apples".to_string())
+                .await;
+            let signal_result = signal_result_future.await;
+            println!(
+                "Signal 'jsonSchemaValidatedString' was sent: {:?}",
+                signal_result
+            );
 
             sleep(Duration::from_secs(1)).await;
             println!("Emitting signal 'singleOptionalString'");

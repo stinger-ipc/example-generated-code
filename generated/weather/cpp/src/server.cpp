@@ -12,6 +12,7 @@
 #include "structs.hpp"
 #include "server.hpp"
 #include "method_payloads.hpp"
+#include "signal_payloads.hpp"
 #include "enums.hpp"
 #include <stinger/utils/iconnection.hpp>
 #include <stinger/utils/format.hpp>
@@ -105,6 +106,9 @@ void WeatherServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     if (subscriptionId == _refreshDailyForecastMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as refresh_daily_forecast method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_refreshDailyForecastHandler) {
@@ -129,6 +133,9 @@ void WeatherServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _refreshHourlyForecastMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as refresh_hourly_forecast method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_refreshHourlyForecastHandler) {
@@ -153,6 +160,9 @@ void WeatherServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
     else if (subscriptionId == _refreshCurrentConditionsMethodSubscriptionId) {
         _broker->Log(LOG_INFO, "Message to `%s` matched as refresh_current_conditions method request.", msg.topic.c_str());
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_refreshCurrentConditionsHandler) {
@@ -218,14 +228,17 @@ void WeatherServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
 std::future<bool> WeatherServer::emitCurrentTimeSignal(std::string currentTime)
 {
+    CurrentTimePayload signalPayload{ currentTime };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'current_time' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // restrict scope
-        rapidjson::Value tempStringValue;
-        tempStringValue.SetString(currentTime.c_str(), currentTime.size(), doc.GetAllocator());
-        doc.AddMember("current_time", tempStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -278,6 +291,13 @@ void WeatherServer::_callRefreshDailyForecastHandler(
         _refreshDailyForecastHandler();
         auto returnValues = RefreshDailyForecastReturnValues();
 
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for refresh_daily_forecast failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for refresh_daily_forecast failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
+
         if (optResponseTopic) {
             rapidjson::Document responseJson;
             responseJson.SetObject();
@@ -294,19 +314,19 @@ void WeatherServer::_callRefreshDailyForecastHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in refresh_daily_forecast method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in refresh_daily_forecast method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in refresh_daily_forecast method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in refresh_daily_forecast method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -330,6 +350,13 @@ void WeatherServer::_callRefreshHourlyForecastHandler(
         _refreshHourlyForecastHandler();
         auto returnValues = RefreshHourlyForecastReturnValues();
 
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for refresh_hourly_forecast failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for refresh_hourly_forecast failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
+
         if (optResponseTopic) {
             rapidjson::Document responseJson;
             responseJson.SetObject();
@@ -346,19 +373,19 @@ void WeatherServer::_callRefreshHourlyForecastHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in refresh_hourly_forecast method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in refresh_hourly_forecast method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in refresh_hourly_forecast method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in refresh_hourly_forecast method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -382,6 +409,13 @@ void WeatherServer::_callRefreshCurrentConditionsHandler(
         _refreshCurrentConditionsHandler();
         auto returnValues = RefreshCurrentConditionsReturnValues();
 
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for refresh_current_conditions failed schema validation.");
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_SERIALIZATION_ERROR, "Response payload for refresh_current_conditions failed schema validation.");
+            _broker->Publish(errMsg);
+            return;
+        }
+
         if (optResponseTopic) {
             rapidjson::Document responseJson;
             responseJson.SetObject();
@@ -398,19 +432,19 @@ void WeatherServer::_callRefreshCurrentConditionsHandler(
     } catch (const stinger::error::StingerMethodException& e) {
         _broker->Log(LOG_ERR, "Exception in refresh_current_conditions method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code());
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, e.code(), e.what());
             _broker->Publish(errMsg);
         }
     } catch (const std::exception& e) {
         _broker->Log(LOG_ERR, "Exception in refresh_current_conditions method handler [%s]: %s", typeid(e).name(), e.what());
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::SERVER_ERROR, e.what());
             _broker->Publish(errMsg);
         }
     } catch (...) {
         _broker->Log(LOG_ERR, "Unknown exception in refresh_current_conditions method handler");
         if (optResponseTopic) {
-            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR);
+            auto errMsg = stinger::mqtt::Message::MethodResponse(*optResponseTopic, "{}", optCorrelationData, stinger::error::MethodReturnCode::UNKNOWN_ERROR, "Unknown exception in refresh_current_conditions method handler");
             _broker->Publish(errMsg);
         }
     }
@@ -458,6 +492,10 @@ void WeatherServer::republishLocationProperty() const
     std::lock_guard<std::mutex> lock(_locationPropertyMutex);
     rapidjson::Document doc;
     if (_locationProperty) {
+        if (!_locationProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'location' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _locationProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -482,6 +520,9 @@ void WeatherServer::republishLocationProperty() const
 
 void WeatherServer::_receiveLocationPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -498,6 +539,10 @@ void WeatherServer::_receiveLocationPropertyUpdate(const stinger::mqtt::Message&
 
     // Deserialize 2 values into struct.
     LocationProperty tempValue = LocationProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'location' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_locationPropertyMutex);
@@ -549,6 +594,10 @@ void WeatherServer::republishCurrentTemperatureProperty() const
     std::lock_guard<std::mutex> lock(_currentTemperaturePropertyMutex);
     rapidjson::Document doc;
     if (_currentTemperatureProperty) {
+        if (!_currentTemperatureProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'current_temperature' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _currentTemperatureProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -573,6 +622,9 @@ void WeatherServer::republishCurrentTemperatureProperty() const
 
 void WeatherServer::_receiveCurrentTemperaturePropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -589,6 +641,10 @@ void WeatherServer::_receiveCurrentTemperaturePropertyUpdate(const stinger::mqtt
 
     // Deserialize 1 values into struct.
     CurrentTemperatureProperty tempValue = CurrentTemperatureProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'current_temperature' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_currentTemperaturePropertyMutex);
@@ -640,6 +696,10 @@ void WeatherServer::republishCurrentConditionProperty() const
     std::lock_guard<std::mutex> lock(_currentConditionPropertyMutex);
     rapidjson::Document doc;
     if (_currentConditionProperty) {
+        if (!_currentConditionProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'current_condition' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _currentConditionProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -664,6 +724,9 @@ void WeatherServer::republishCurrentConditionProperty() const
 
 void WeatherServer::_receiveCurrentConditionPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -680,6 +743,10 @@ void WeatherServer::_receiveCurrentConditionPropertyUpdate(const stinger::mqtt::
 
     // Deserialize 2 values into struct.
     CurrentConditionProperty tempValue = CurrentConditionProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'current_condition' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_currentConditionPropertyMutex);
@@ -731,6 +798,10 @@ void WeatherServer::republishDailyForecastProperty() const
     std::lock_guard<std::mutex> lock(_dailyForecastPropertyMutex);
     rapidjson::Document doc;
     if (_dailyForecastProperty) {
+        if (!_dailyForecastProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'daily_forecast' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _dailyForecastProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -755,6 +826,9 @@ void WeatherServer::republishDailyForecastProperty() const
 
 void WeatherServer::_receiveDailyForecastPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -771,6 +845,10 @@ void WeatherServer::_receiveDailyForecastPropertyUpdate(const stinger::mqtt::Mes
 
     // Deserialize 3 values into struct.
     DailyForecastProperty tempValue = DailyForecastProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'daily_forecast' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_dailyForecastPropertyMutex);
@@ -822,6 +900,10 @@ void WeatherServer::republishHourlyForecastProperty() const
     std::lock_guard<std::mutex> lock(_hourlyForecastPropertyMutex);
     rapidjson::Document doc;
     if (_hourlyForecastProperty) {
+        if (!_hourlyForecastProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'hourly_forecast' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _hourlyForecastProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -846,6 +928,9 @@ void WeatherServer::republishHourlyForecastProperty() const
 
 void WeatherServer::_receiveHourlyForecastPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -862,6 +947,10 @@ void WeatherServer::_receiveHourlyForecastPropertyUpdate(const stinger::mqtt::Me
 
     // Deserialize 4 values into struct.
     HourlyForecastProperty tempValue = HourlyForecastProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'hourly_forecast' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_hourlyForecastPropertyMutex);
@@ -913,6 +1002,10 @@ void WeatherServer::republishCurrentConditionRefreshIntervalProperty() const
     std::lock_guard<std::mutex> lock(_currentConditionRefreshIntervalPropertyMutex);
     rapidjson::Document doc;
     if (_currentConditionRefreshIntervalProperty) {
+        if (!_currentConditionRefreshIntervalProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'current_condition_refresh_interval' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _currentConditionRefreshIntervalProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -937,6 +1030,9 @@ void WeatherServer::republishCurrentConditionRefreshIntervalProperty() const
 
 void WeatherServer::_receiveCurrentConditionRefreshIntervalPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -953,6 +1049,10 @@ void WeatherServer::_receiveCurrentConditionRefreshIntervalPropertyUpdate(const 
 
     // Deserialize 1 values into struct.
     CurrentConditionRefreshIntervalProperty tempValue = CurrentConditionRefreshIntervalProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'current_condition_refresh_interval' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_currentConditionRefreshIntervalPropertyMutex);
@@ -1004,6 +1104,10 @@ void WeatherServer::republishHourlyForecastRefreshIntervalProperty() const
     std::lock_guard<std::mutex> lock(_hourlyForecastRefreshIntervalPropertyMutex);
     rapidjson::Document doc;
     if (_hourlyForecastRefreshIntervalProperty) {
+        if (!_hourlyForecastRefreshIntervalProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'hourly_forecast_refresh_interval' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _hourlyForecastRefreshIntervalProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -1028,6 +1132,9 @@ void WeatherServer::republishHourlyForecastRefreshIntervalProperty() const
 
 void WeatherServer::_receiveHourlyForecastRefreshIntervalPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -1044,6 +1151,10 @@ void WeatherServer::_receiveHourlyForecastRefreshIntervalPropertyUpdate(const st
 
     // Deserialize 1 values into struct.
     HourlyForecastRefreshIntervalProperty tempValue = HourlyForecastRefreshIntervalProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'hourly_forecast_refresh_interval' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_hourlyForecastRefreshIntervalPropertyMutex);
@@ -1095,6 +1206,10 @@ void WeatherServer::republishDailyForecastRefreshIntervalProperty() const
     std::lock_guard<std::mutex> lock(_dailyForecastRefreshIntervalPropertyMutex);
     rapidjson::Document doc;
     if (_dailyForecastRefreshIntervalProperty) {
+        if (!_dailyForecastRefreshIntervalProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'daily_forecast_refresh_interval' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _dailyForecastRefreshIntervalProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -1119,6 +1234,9 @@ void WeatherServer::republishDailyForecastRefreshIntervalProperty() const
 
 void WeatherServer::_receiveDailyForecastRefreshIntervalPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -1135,6 +1253,10 @@ void WeatherServer::_receiveDailyForecastRefreshIntervalPropertyUpdate(const sti
 
     // Deserialize 1 values into struct.
     DailyForecastRefreshIntervalProperty tempValue = DailyForecastRefreshIntervalProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'daily_forecast_refresh_interval' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_dailyForecastRefreshIntervalPropertyMutex);
@@ -1164,6 +1286,12 @@ void WeatherServer::_advertisementThreadLoop()
         doc.AddMember("timestamp", rapidjson::Value(timestamp.c_str(), allocator), allocator);
 
         doc.AddMember("prefix", rapidjson::Value(_prefixTopicParam.c_str(), allocator), allocator);
+
+        {
+            rapidjson::Value methodsObj(rapidjson::kObjectType);
+
+            doc.AddMember("methods", methodsObj, allocator);
+        }
 
         // Convert to JSON string
         rapidjson::StringBuffer buf;

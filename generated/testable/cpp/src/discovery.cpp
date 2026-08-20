@@ -121,6 +121,14 @@ void InstanceInfo::UpdateFromRapidJsonObject(const rapidjson::Value& jsonObj)
     if (jsonObj.HasMember("prefix") && jsonObj["prefix"].IsString()) {
         prefix = jsonObj["prefix"].GetString();
     }
+    if (jsonObj.HasMember("methods") && jsonObj["methods"].IsObject()) {
+        methods.clear();
+        for (auto it = jsonObj["methods"].MemberBegin(); it != jsonObj["methods"].MemberEnd(); ++it) {
+            if (it->value.IsString()) {
+                methods[it->name.GetString()] = it->value.GetString();
+            }
+        }
+    }
 };
 
 void InstanceInfo::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
@@ -132,6 +140,13 @@ void InstanceInfo::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Doc
     }
     if (prefix.has_value()) {
         parent.AddMember("prefix", rapidjson::Value(prefix.value().c_str(), allocator), allocator);
+    }
+    if (!methods.empty()) {
+        rapidjson::Value methodsObj(rapidjson::kObjectType);
+        for (const auto& [methodName, methodVersion]: methods) {
+            methodsObj.AddMember(rapidjson::Value(methodName.c_str(), allocator), rapidjson::Value(methodVersion.c_str(), allocator), allocator);
+        }
+        parent.AddMember("methods", methodsObj, allocator);
     }
 }
 
@@ -197,9 +212,13 @@ std::vector<InstanceInfo> TestableDiscovery::GetInstances() const
 
 void TestableDiscovery::_onMessage(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Discovery DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
+
     // Check content type
     if (!msg.properties.contentType.has_value() || msg.properties.contentType.value() != "application/json") {
-        std::cerr << "Invalid content type in Discovery message. Expected 'application/json'" << std::endl;
+        _broker->Log(LOG_WARNING, "Invalid content type in Discovery message. Expected 'application/json'");
         return;
     }
 

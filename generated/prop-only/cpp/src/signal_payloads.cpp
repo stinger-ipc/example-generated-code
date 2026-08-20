@@ -1,5 +1,7 @@
 
 #include "signal_payloads.hpp"
+#include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 
 namespace stinger {
 

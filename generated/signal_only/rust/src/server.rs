@@ -8,8 +8,7 @@ on the next generation.
 
 This is the Server for the SignalOnly interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #[allow(unused_imports)]
@@ -124,6 +123,19 @@ impl<C: Mqtt5PubSub + Clone + Send> SignalOnlyServer<C> {
         three: String,
     ) -> SentMessageFuture {
         let data = AnotherSignalSignalPayload { one, two, three };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'anotherSignal' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'anotherSignal' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "SignalOnly".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -150,6 +162,16 @@ impl<C: Mqtt5PubSub + Clone + Send> SignalOnlyServer<C> {
         three: String,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = AnotherSignalSignalPayload { one, two, three };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'anotherSignal' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'anotherSignal' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "SignalOnly".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -169,6 +191,16 @@ impl<C: Mqtt5PubSub + Clone + Send> SignalOnlyServer<C> {
     /// Emits the bark signal with the given arguments.
     pub async fn emit_bark(&mut self, word: String) -> SentMessageFuture {
         let data = BarkSignalPayload { word };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'bark' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!("'bark' signal payload failed schema validation: {}", err),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "SignalOnly".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -193,6 +225,16 @@ impl<C: Mqtt5PubSub + Clone + Send> SignalOnlyServer<C> {
         word: String,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = BarkSignalPayload { word };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'bark' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'bark' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "SignalOnly".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -212,6 +254,19 @@ impl<C: Mqtt5PubSub + Clone + Send> SignalOnlyServer<C> {
     /// Emits the maybe_number signal with the given arguments.
     pub async fn emit_maybe_number(&mut self, number: Option<i32>) -> SentMessageFuture {
         let data = MaybeNumberSignalPayload { number };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'maybe_number' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'maybe_number' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "SignalOnly".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -236,6 +291,16 @@ impl<C: Mqtt5PubSub + Clone + Send> SignalOnlyServer<C> {
         number: Option<i32>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = MaybeNumberSignalPayload { number };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'maybe_number' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'maybe_number' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "SignalOnly".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -255,6 +320,19 @@ impl<C: Mqtt5PubSub + Clone + Send> SignalOnlyServer<C> {
     /// Emits the maybe_name signal with the given arguments.
     pub async fn emit_maybe_name(&mut self, name: Option<String>) -> SentMessageFuture {
         let data = MaybeNameSignalPayload { name };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'maybe_name' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'maybe_name' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "SignalOnly".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -279,6 +357,16 @@ impl<C: Mqtt5PubSub + Clone + Send> SignalOnlyServer<C> {
         name: Option<String>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = MaybeNameSignalPayload { name };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'maybe_name' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'maybe_name' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "SignalOnly".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -301,6 +389,16 @@ impl<C: Mqtt5PubSub + Clone + Send> SignalOnlyServer<C> {
         timestamp: chrono::DateTime<chrono::Utc>,
     ) -> SentMessageFuture {
         let data = NowSignalPayload { timestamp };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'now' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!("'now' signal payload failed schema validation: {}", err),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "SignalOnly".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -325,6 +423,16 @@ impl<C: Mqtt5PubSub + Clone + Send> SignalOnlyServer<C> {
         timestamp: chrono::DateTime<chrono::Utc>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = NowSignalPayload { timestamp };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'now' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'now' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "SignalOnly".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -357,6 +465,9 @@ impl<C: Mqtt5PubSub + Clone + Send> SignalOnlyServer<C> {
             ("prefix".to_string(), self.topic_param_prefix.clone()),
         ]);
 
+        // Static map of method names to their declared version, used in periodic interface info advertisements.
+        let interface_info_methods: HashMap<String, String> = HashMap::from([]);
+
         // Spawn a task to periodically publish interface info.
         let mut interface_publisher = self.mqtt_client.clone();
         let instance_id = self.instance_id.clone();
@@ -374,6 +485,7 @@ impl<C: Mqtt5PubSub + Clone + Send> SignalOnlyServer<C> {
                     .interface_name("SignalOnly".to_string())
                     .title("SignalOnly".to_string())
                     .version("0.0.1".to_string())
+                    .methods(interface_info_methods.clone())
                     .instance(instance_id.clone())
                     .connection_topic(topic.clone())
                     .prefix(topic_param_map_for_info.get("prefix").unwrap().to_string())

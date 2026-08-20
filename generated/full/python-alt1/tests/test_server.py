@@ -1,6 +1,7 @@
 """
 Tests for Full server.
 """
+
 import pytest
 from unittest.mock import Mock, patch, MagicMock
 import sys
@@ -54,7 +55,7 @@ class FullServerSetup:
             last_birthdays=LastBirthdaysProperty(
                 mom=datetime.now(UTC),
                 dad=datetime.now(UTC),
-                sister=None,
+                sister=datetime.now(UTC),
                 brothers_age=42,
             ),
         )
@@ -197,6 +198,26 @@ class TestFullServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_favorite_number_property_setter(self, server, mock_connection):
+        """Test that setting the 'favorite_number' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_favorite_number_value =42
+            
+        server.favorite_number = new_favorite_number_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'favorite_number'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'favorite_number' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'favorite_number' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'favorite_number' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_favorite_number_obj =FavoriteNumberProperty(number=new_favorite_number_value)
+        assert json.loads(new_favorite_number_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'favorite_number' setter did not publish the correct JSON payload"
+        
+
     def test_favorite_number_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -262,6 +283,32 @@ class TestFullServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_favorite_foods_property_setter(self, server, mock_connection):
+        """Test that setting the 'favorite_foods' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_favorite_foods_value =FavoriteFoodsProperty(
+                
+                drink="apples",
+                
+                slices_of_pizza=42,
+                
+                breakfast="apples",
+                
+            )
+        server.favorite_foods = new_favorite_foods_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'favorite_foods'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'favorite_foods' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'favorite_foods' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'favorite_foods' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_favorite_foods_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'favorite_foods' setter did not publish the correct JSON payload"
+        
 
     def test_favorite_foods_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -331,6 +378,30 @@ class TestFullServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_lunch_menu_property_setter(self, server, mock_connection):
+        """Test that setting the 'lunch_menu' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_lunch_menu_value =LunchMenuProperty(
+                
+                monday=Lunch(drink=True, sandwich="apples", crackers=3.14, day=DayOfTheWeek.SATURDAY, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)),
+                
+                tuesday=Lunch(drink=True, sandwich="apples", crackers=3.14, day=DayOfTheWeek.SATURDAY, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)),
+                
+            )
+        server.lunch_menu = new_lunch_menu_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'lunch_menu'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'lunch_menu' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'lunch_menu' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'lunch_menu' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_lunch_menu_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'lunch_menu' setter did not publish the correct JSON payload"
+        
+
     def test_lunch_menu_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -390,6 +461,26 @@ class TestFullServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_family_name_property_setter(self, server, mock_connection):
+        """Test that setting the 'family_name' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_family_name_value ="apples"
+            
+        server.family_name = new_family_name_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'family_name'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'family_name' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'family_name' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'family_name' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_family_name_obj =FamilyNameProperty(family_name=new_family_name_value)
+        assert json.loads(new_family_name_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'family_name' setter did not publish the correct JSON payload"
+        
 
     def test_family_name_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -457,6 +548,26 @@ class TestFullServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_last_breakfast_time_property_setter(self, server, mock_connection):
+        """Test that setting the 'last_breakfast_time' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_last_breakfast_time_value =datetime.now(UTC)
+            
+        server.last_breakfast_time = new_last_breakfast_time_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'last_breakfast_time'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'last_breakfast_time' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'last_breakfast_time' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'last_breakfast_time' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_last_breakfast_time_obj =LastBreakfastTimeProperty(timestamp=new_last_breakfast_time_value)
+        assert json.loads(new_last_breakfast_time_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'last_breakfast_time' setter did not publish the correct JSON payload"
+        
+
     def test_last_breakfast_time_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -522,6 +633,34 @@ class TestFullServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_last_birthdays_property_setter(self, server, mock_connection):
+        """Test that setting the 'last_birthdays' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_last_birthdays_value =LastBirthdaysProperty(
+                
+                mom=datetime.now(UTC),
+                
+                dad=datetime.now(UTC),
+                
+                sister=datetime.now(UTC),
+                
+                brothers_age=42,
+                
+            )
+        server.last_birthdays = new_last_birthdays_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'last_birthdays'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'last_birthdays' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'last_birthdays' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'last_birthdays' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_last_birthdays_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'last_birthdays' setter did not publish the correct JSON payload"
+        
 
     def test_last_birthdays_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()

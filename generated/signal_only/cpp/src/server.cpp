@@ -12,6 +12,7 @@
 #include "structs.hpp"
 #include "server.hpp"
 #include "method_payloads.hpp"
+#include "signal_payloads.hpp"
 #include "enums.hpp"
 #include <stinger/utils/iconnection.hpp>
 #include <stinger/utils/format.hpp>
@@ -80,18 +81,17 @@ void SignalOnlyServer::_receiveMessage(const stinger::mqtt::Message& msg)
 
 std::future<bool> SignalOnlyServer::emitAnotherSignalSignal(double one, bool two, std::string three)
 {
+    AnotherSignalPayload signalPayload{ one, two, three };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'anotherSignal' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    doc.AddMember("one", one, doc.GetAllocator());
-
-    doc.AddMember("two", two, doc.GetAllocator());
-
-    { // restrict scope
-        rapidjson::Value tempStringValue;
-        tempStringValue.SetString(three.c_str(), three.size(), doc.GetAllocator());
-        doc.AddMember("three", tempStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -110,14 +110,17 @@ std::future<bool> SignalOnlyServer::emitAnotherSignalSignal(double one, bool two
 
 std::future<bool> SignalOnlyServer::emitBarkSignal(std::string word)
 {
+    BarkPayload signalPayload{ word };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'bark' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // restrict scope
-        rapidjson::Value tempStringValue;
-        tempStringValue.SetString(word.c_str(), word.size(), doc.GetAllocator());
-        doc.AddMember("word", tempStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -136,10 +139,17 @@ std::future<bool> SignalOnlyServer::emitBarkSignal(std::string word)
 
 std::future<bool> SignalOnlyServer::emitMaybeNumberSignal(std::optional<int> number)
 {
+    MaybeNumberPayload signalPayload{ number };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'maybe_number' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-    if (number)
-        doc.AddMember("number", *number, doc.GetAllocator());
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -158,13 +168,17 @@ std::future<bool> SignalOnlyServer::emitMaybeNumberSignal(std::optional<int> num
 
 std::future<bool> SignalOnlyServer::emitMaybeNameSignal(std::optional<std::string> name)
 {
+    MaybeNamePayload signalPayload{ name };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'maybe_name' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-    if (name) {
-        rapidjson::Value tempStringValue;
-        tempStringValue.SetString(name->c_str(), name->size(), doc.GetAllocator());
-        doc.AddMember("name", tempStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -183,15 +197,17 @@ std::future<bool> SignalOnlyServer::emitMaybeNameSignal(std::optional<std::strin
 
 std::future<bool> SignalOnlyServer::emitNowSignal(std::chrono::time_point<std::chrono::system_clock> timestamp)
 {
+    NowPayload signalPayload{ timestamp };
+    if (!signalPayload.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Payload for 'now' signal failed schema validation; not emitting.");
+        std::promise<bool> failedPromise;
+        failedPromise.set_value(false);
+        return failedPromise.get_future();
+    }
+
     rapidjson::Document doc;
     doc.SetObject();
-
-    { // Restrict Scope for datetime ISO string conversion
-        rapidjson::Value tempTimestampStringValue;
-        std::string timestampIsoString = stinger::utils::timePointToIsoString(timestamp);
-        tempTimestampStringValue.SetString(timestampIsoString.c_str(), timestampIsoString.size(), doc.GetAllocator());
-        doc.AddMember("timestamp", tempTimestampStringValue, doc.GetAllocator());
-    }
+    signalPayload.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -228,6 +244,12 @@ void SignalOnlyServer::_advertisementThreadLoop()
         doc.AddMember("timestamp", rapidjson::Value(timestamp.c_str(), allocator), allocator);
 
         doc.AddMember("prefix", rapidjson::Value(_prefixTopicParam.c_str(), allocator), allocator);
+
+        {
+            rapidjson::Value methodsObj(rapidjson::kObjectType);
+
+            doc.AddMember("methods", methodsObj, allocator);
+        }
 
         // Convert to JSON string
         rapidjson::StringBuffer buf;

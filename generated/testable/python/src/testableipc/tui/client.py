@@ -1263,7 +1263,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
 
             if self.method_name == "call_one_list_of_integers":
 
-                type_adapter = TypeAdapter(List[int])
+                type_adapter = TypeAdapter(list)
 
                 try:
                     call_one_list_of_integers_input1_input_widget = self.query_one(f"#input_input1", TextArea)
@@ -1277,7 +1277,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
 
             if self.method_name == "call_optional_list_of_floats":
 
-                type_adapter = TypeAdapter(Optional[List[float]])
+                type_adapter = TypeAdapter(list)
 
                 try:
                     call_optional_list_of_floats_input1_input_widget = self.query_one(f"#input_input1", TextArea)
@@ -1291,7 +1291,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
 
             if self.method_name == "call_two_lists":
 
-                type_adapter = TypeAdapter(List[Numbers])
+                type_adapter = TypeAdapter(list)
 
                 try:
                     call_two_lists_input1_input_widget = self.query_one(f"#input_input1", TextArea)
@@ -1303,7 +1303,7 @@ class MethodCallModal(ModalScreen[Optional[str]]):
                 else:
                     kwargs["input1"] = call_two_lists_input1_values
 
-                type_adapter = TypeAdapter(Optional[List[str]])
+                type_adapter = TypeAdapter(list)
 
                 try:
                     call_two_lists_input2_input_widget = self.query_one(f"#input_input2", TextArea)
@@ -1594,12 +1594,16 @@ class ClientScreen(Screen):
         self.client.receive_empty(make_handler("empty"))
         logger.debug("Registering TUI handler for signal '%s'", "single_int")
         self.client.receive_single_int(make_handler("single_int"))
+        logger.debug("Registering TUI handler for signal '%s'", "json_schema_validated_int")
+        self.client.receive_json_schema_validated_int(make_handler("json_schema_validated_int"))
         logger.debug("Registering TUI handler for signal '%s'", "single_optional_int")
         self.client.receive_single_optional_int(make_handler("single_optional_int"))
         logger.debug("Registering TUI handler for signal '%s'", "three_integers")
         self.client.receive_three_integers(make_handler("three_integers"))
         logger.debug("Registering TUI handler for signal '%s'", "single_string")
         self.client.receive_single_string(make_handler("single_string"))
+        logger.debug("Registering TUI handler for signal '%s'", "json_schema_validated_string")
+        self.client.receive_json_schema_validated_string(make_handler("json_schema_validated_string"))
         logger.debug("Registering TUI handler for signal '%s'", "single_optional_string")
         self.client.receive_single_optional_string(make_handler("single_optional_string"))
         logger.debug("Registering TUI handler for signal '%s'", "three_strings")

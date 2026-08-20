@@ -1,6 +1,7 @@
 """
 Tests for Simple server.
 """
+
 import pytest
 from unittest.mock import Mock, patch, MagicMock
 import sys
@@ -124,6 +125,26 @@ class TestSimpleServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_school_property_setter(self, server, mock_connection):
+        """Test that setting the 'school' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_school_value ="apples"
+            
+        server.school = new_school_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'school'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'school' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'school' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'school' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_school_obj =SchoolProperty(name=new_school_value)
+        assert json.loads(new_school_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'school' setter did not publish the correct JSON payload"
+        
 
     def test_school_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()

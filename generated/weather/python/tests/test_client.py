@@ -126,27 +126,72 @@ class TestClientProperties:
         assert client.daily_forecast_refresh_interval is not None, "Property 'daily_forecast_refresh_interval' not initialized properly"
         assert client.daily_forecast_refresh_interval == initial_property_values.daily_forecast_refresh_interval, "Property 'daily_forecast_refresh_interval' value does not match expected value"
 
-    def test_location_setter(self, client):
+    def test_location_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_location_value = LocationProperty(
             latitude=3.14,
             longitude=3.14,
         )
         client.location = new_location_value
 
-    def test_current_condition_refresh_interval_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'location' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'location' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'location' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_location_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'location' setter did not publish the correct JSON payload"
+
+    def test_current_condition_refresh_interval_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_current_condition_refresh_interval_value = 42
 
         client.current_condition_refresh_interval = new_current_condition_refresh_interval_value
 
-    def test_hourly_forecast_refresh_interval_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'current_condition_refresh_interval' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'current_condition_refresh_interval' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'current_condition_refresh_interval' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_current_condition_refresh_interval_obj = CurrentConditionRefreshIntervalProperty(seconds=new_current_condition_refresh_interval_value)
+        assert (
+            json.loads(new_current_condition_refresh_interval_obj.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'current_condition_refresh_interval' setter did not publish the correct JSON payload"
+
+    def test_hourly_forecast_refresh_interval_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_hourly_forecast_refresh_interval_value = 42
 
         client.hourly_forecast_refresh_interval = new_hourly_forecast_refresh_interval_value
 
-    def test_daily_forecast_refresh_interval_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'hourly_forecast_refresh_interval' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'hourly_forecast_refresh_interval' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'hourly_forecast_refresh_interval' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_hourly_forecast_refresh_interval_obj = HourlyForecastRefreshIntervalProperty(seconds=new_hourly_forecast_refresh_interval_value)
+        assert (
+            json.loads(new_hourly_forecast_refresh_interval_obj.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'hourly_forecast_refresh_interval' setter did not publish the correct JSON payload"
+
+    def test_daily_forecast_refresh_interval_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_daily_forecast_refresh_interval_value = 42
 
         client.daily_forecast_refresh_interval = new_daily_forecast_refresh_interval_value
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'daily_forecast_refresh_interval' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'daily_forecast_refresh_interval' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'daily_forecast_refresh_interval' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_daily_forecast_refresh_interval_obj = DailyForecastRefreshIntervalProperty(seconds=new_daily_forecast_refresh_interval_value)
+        assert (
+            json.loads(new_daily_forecast_refresh_interval_obj.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'daily_forecast_refresh_interval' setter did not publish the correct JSON payload"
 
 
 class TestClientMethods:

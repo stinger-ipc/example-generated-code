@@ -4,8 +4,7 @@ on the next generation.
 
 It contains enumerations used by the Full interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #pragma once
@@ -23,6 +22,8 @@ namespace full {
 struct AddNumbersRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static AddNumbersRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     int first;
     int second;
@@ -32,6 +33,8 @@ struct AddNumbersRequestArguments {
 struct AddNumbersReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static AddNumbersReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     int sum;
 };
@@ -39,6 +42,8 @@ struct AddNumbersReturnValues {
 struct DoSomethingRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static DoSomethingRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::string taskToDo;
 };
@@ -46,6 +51,8 @@ struct DoSomethingRequestArguments {
 struct DoSomethingReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static DoSomethingReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::string label;
     int identifier;
@@ -54,11 +61,15 @@ struct DoSomethingReturnValues {
 struct WhatTimeIsItRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static WhatTimeIsItRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
 };
 
 struct WhatTimeIsItReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static WhatTimeIsItReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::chrono::time_point<std::chrono::system_clock> timestamp;
 };
@@ -66,6 +77,8 @@ struct WhatTimeIsItReturnValues {
 struct HoldTemperatureRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static HoldTemperatureRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     double temperatureCelsius;
 };
@@ -73,6 +86,8 @@ struct HoldTemperatureRequestArguments {
 struct HoldTemperatureReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static HoldTemperatureReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     bool success;
 };

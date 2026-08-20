@@ -31,6 +31,11 @@ class SuperAwesomeDoerOfThings:
         self.counter += 1
         print(f"{self.label}-{self.counter} printing signal 'singleInt' : args={args}, kwargs={kwargs}")
 
+    @client_builder.receive_json_schema_validated_int
+    def print_jsonSchemaValidatedInt_signal(self, *args, **kwargs):
+        self.counter += 1
+        print(f"{self.label}-{self.counter} printing signal 'jsonSchemaValidatedInt' : args={args}, kwargs={kwargs}")
+
     @client_builder.receive_single_optional_int
     def print_singleOptionalInt_signal(self, *args, **kwargs):
         self.counter += 1
@@ -45,6 +50,11 @@ class SuperAwesomeDoerOfThings:
     def print_singleString_signal(self, *args, **kwargs):
         self.counter += 1
         print(f"{self.label}-{self.counter} printing signal 'singleString' : args={args}, kwargs={kwargs}")
+
+    @client_builder.receive_json_schema_validated_string
+    def print_jsonSchemaValidatedString_signal(self, *args, **kwargs):
+        self.counter += 1
+        print(f"{self.label}-{self.counter} printing signal 'jsonSchemaValidatedString' : args={args}, kwargs={kwargs}")
 
     @client_builder.receive_single_optional_string
     def print_singleOptionalString_signal(self, *args, **kwargs):
@@ -464,7 +474,7 @@ class SuperAwesomeDoerOfThings:
                     optional_string="apples",
                     optional_enum=Numbers.ONE,
                     optional_entry_object=Entry(key=42, value="apples"),
-                    optional_date_time=None,
+                    optional_date_time=datetime.now(UTC),
                     optional_duration=None,
                     optional_binary=b"example binary data",
                     array_of_integers=[42, 2022],
@@ -496,7 +506,7 @@ class SuperAwesomeDoerOfThings:
                     optional_string="apples",
                     optional_enum=Numbers.ONE,
                     optional_entry_object=Entry(key=42, value="apples"),
-                    optional_date_time=datetime.now(UTC),
+                    optional_date_time=None,
                     optional_duration=None,
                     optional_binary=b"example binary data",
                     array_of_integers=[42, 2022],
@@ -530,7 +540,7 @@ class SuperAwesomeDoerOfThings:
             sleep(5)
 
             print("Making call to 'call_optional_date_time'")
-            future_resp = self.client.call_optional_date_time(input1=None)
+            future_resp = self.client.call_optional_date_time(input1=datetime.now(UTC))
             try:
                 print(f"RESULT:  {future_resp.result(5)}")
             except futures.TimeoutError:
@@ -649,7 +659,7 @@ class SuperAwesomeDoerOfThings:
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=None,
+                optional_date_time=datetime.now(UTC),
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -716,7 +726,7 @@ class SuperAwesomeDoerOfThings:
                     optional_string="apples",
                     optional_enum=Numbers.ONE,
                     optional_entry_object=Entry(key=42, value="apples"),
-                    optional_date_time=datetime.now(UTC),
+                    optional_date_time=None,
                     optional_duration=None,
                     optional_binary=b"example binary data",
                     array_of_integers=[42, 2022],
@@ -748,7 +758,7 @@ class SuperAwesomeDoerOfThings:
                     optional_string="apples",
                     optional_enum=Numbers.ONE,
                     optional_entry_object=Entry(key=42, value="apples"),
-                    optional_date_time=None,
+                    optional_date_time=datetime.now(UTC),
                     optional_duration=None,
                     optional_binary=b"example binary data",
                     array_of_integers=[42, 2022],

@@ -73,6 +73,9 @@ void SimpleClient::_receiveMessage(const stinger::mqtt::Message& msg)
     _broker->Log(LOG_DEBUG, "Received message on topic %s with subscription id=%d", msg.topic.c_str(), subscriptionId);
     if (subscriptionId == _personEnteredSignalSubscriptionId) {
         _broker->Log(LOG_INFO, "Handling person_entered signal");
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "person_entered signal debug from server: %s", msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_personEnteredSignalCallbacks.size() > 0) {
@@ -96,6 +99,11 @@ void SimpleClient::_receiveMessage(const stinger::mqtt::Message& msg)
                     }
                 }
 
+                PersonEnteredPayload signalPayload{ tempPerson };
+                if (!signalPayload.ValidateSchema()) {
+                    _broker->Log(LOG_WARNING, "Received 'person_entered' signal payload failed schema validation; ignoring.");
+                    return;
+                }
                 std::lock_guard<std::mutex> lock(_personEnteredSignalCallbacksMutex);
                 for (const auto& cb: _personEnteredSignalCallbacks) {
                     try {
@@ -138,7 +146,15 @@ std::future<int> SimpleClient::tradeNumbers(int yourNumber)
     rapidjson::Document doc;
     doc.SetObject();
 
-    doc.AddMember("your_number", yourNumber, doc.GetAllocator());
+    TradeNumbersRequestArguments requestArgs{ yourNumber };
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for 'trade_numbers' failed schema validation; not sending.");
+        _pendingTradeNumbersMethodCalls[correlationData].set_exception(
+                std::make_exception_ptr(std::runtime_error("Request payload for 'trade_numbers' failed schema validation"))
+        );
+        return _pendingTradeNumbersMethodCalls[correlationData].get_future();
+    }
+    requestArgs.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -164,6 +180,9 @@ void SimpleClient::_handleTradeNumbersResponse(
 )
 {
     _broker->Log(LOG_DEBUG, "In response handler for trade_numbers");
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "trade_numbers response debug from server: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
 
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
@@ -187,8 +206,15 @@ void SimpleClient::_handleTradeNumbersResponse(
         // Found the promise for this correlation ID.
 
         // Method has a single return value.
-        auto returnValue = TradeNumbersReturnValues::FromRapidJsonObject(doc).myNumber;
-        promiseItr->second.set_value(returnValue);
+        auto returnValues = TradeNumbersReturnValues::FromRapidJsonObject(doc);
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for 'trade_numbers' failed schema validation.");
+            promiseItr->second.set_exception(
+                    std::make_exception_ptr(std::runtime_error("Response payload for 'trade_numbers' failed schema validation"))
+            );
+            return;
+        }
+        promiseItr->second.set_value(returnValues.myNumber);
     }
 
     _broker->Log(LOG_DEBUG, "End of response handler for trade_numbers");
@@ -196,6 +222,9 @@ void SimpleClient::_handleTradeNumbersResponse(
 
 void SimpleClient::_receiveSchoolPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "school property update debug from server: %s", msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -216,6 +245,11 @@ void SimpleClient::_receiveSchoolPropertyUpdate(const stinger::mqtt::Message& ms
         } else {
             throw std::runtime_error("Received payload for the 'name' argument doesn't have required value/type");
         }
+    }
+
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'school' property update failed schema validation; ignoring.");
+        return;
     }
 
     { // Scope lock

@@ -1,5 +1,7 @@
 
 #include "signal_payloads.hpp"
+#include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 
 namespace stinger {
 
@@ -55,6 +57,11 @@ void AnotherSignalPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidj
     }
 }
 
+bool AnotherSignalPayload::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for bark signal payload ---
 BarkPayload BarkPayload::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -82,6 +89,11 @@ void BarkPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Docu
     }
 }
 
+bool BarkPayload::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for maybe_number signal payload ---
 MaybeNumberPayload MaybeNumberPayload::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -107,6 +119,11 @@ void MaybeNumberPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjso
 {
     if (number)
         parent.AddMember("number", *number, allocator);
+}
+
+bool MaybeNumberPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for maybe_name signal payload ---
@@ -139,6 +156,11 @@ void MaybeNamePayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson:
     }
 }
 
+bool MaybeNamePayload::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for now signal payload ---
 NowPayload NowPayload::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -166,6 +188,11 @@ void NowPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Docum
         tempTimestampStringValue.SetString(timestampIsoString.c_str(), timestampIsoString.size(), allocator);
         parent.AddMember("timestamp", tempTimestampStringValue, allocator);
     }
+}
+
+bool NowPayload::ValidateSchema() const
+{
+    return true;
 }
 
 } // namespace signal_only

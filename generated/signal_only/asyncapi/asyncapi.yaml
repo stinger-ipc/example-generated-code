@@ -1,0 +1,338 @@
+asyncapi: 3.0.0
+channels:
+  anotherSignal:
+    address: '{prefix}/SignalOnly/{service_id}/signal/anotherSignal'
+    messages:
+      anotherSignal:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: The payload represents the data for the signal.  It is 
+          encoded as a JSON object.
+        name: anotherSignal
+        payload:
+          properties:
+            one:
+              type: number
+            three:
+              type: string
+            two:
+              type: boolean
+          required:
+          - one
+          - two
+          - three
+          type: object
+        summary: The message for the 'anotherSignal' signal.
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  bark:
+    address: '{prefix}/SignalOnly/{service_id}/signal/bark'
+    description: Emitted when a dog barks.
+    messages:
+      bark:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: The payload represents the data for the signal.  It is 
+          encoded as a JSON object.
+        name: bark
+        payload:
+          properties:
+            word:
+              type: string
+          required:
+          - word
+          type: object
+        summary: The message for the 'bark' signal.
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  interface_info:
+    address: '{prefix}/SignalOnly/{service_id}/interface'
+    description: Advertisement/discovery channel for the 'SignalOnly' interface.
+    messages:
+      interface_info:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: The server periodically publishes this message (with a 
+          message-expiry interval) so that clients can discover running 
+          instances of the interface and the versions of the methods they 
+          support.
+        name: InterfaceInfo
+        payload:
+          properties:
+            connection_topic:
+              type: string
+            instance:
+              type: string
+            interface_name:
+              type: string
+            methods:
+              additionalProperties:
+                type: string
+              description: Maps method names to their version string, for 
+                methods that declare a version.
+              type: object
+            prefix:
+              type: string
+            timestamp:
+              format: date-time
+              type: string
+            title:
+              type: string
+            version:
+              type: string
+          required:
+          - interface_name
+          - title
+          - version
+          - instance
+          - connection_topic
+          - timestamp
+          - prefix
+          type: object
+        summary: Advertisement/discovery information for the 'SignalOnly' 
+          interface.
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  maybe_name:
+    address: '{prefix}/SignalOnly/{service_id}/signal/maybe_name'
+    description: A signal with optionally no payload.
+    messages:
+      maybe_name:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: The payload represents the data for the signal.  It is 
+          encoded as a JSON object.
+        name: maybe_name
+        payload:
+          properties:
+            name:
+              type:
+              - string
+              - 'null'
+          type: object
+        summary: The message for the 'maybe_name' signal.
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  maybe_number:
+    address: '{prefix}/SignalOnly/{service_id}/signal/maybe_number'
+    description: A signal with optionally no payload.
+    messages:
+      maybe_number:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: The payload represents the data for the signal.  It is 
+          encoded as a JSON object.
+        name: maybe_number
+        payload:
+          properties:
+            number:
+              type:
+              - integer
+              - 'null'
+          type: object
+        summary: The message for the 'maybe_number' signal.
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  now:
+    address: '{prefix}/SignalOnly/{service_id}/signal/now'
+    description: The current date and time.
+    messages:
+      now:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: The payload represents the data for the signal.  It is 
+          encoded as a JSON object.
+        name: now
+        payload:
+          properties:
+            timestamp:
+              type: string
+          required:
+          - timestamp
+          type: object
+        summary: The message for the 'now' signal.
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+components:
+  parameters:
+    client_id:
+      description: The MQTT Client ID
+    prefix:
+      description: Topic parameter 'prefix'
+    service_id:
+      description: The ID of the service/instance
+info:
+  tags:
+  - name: signal
+  - name: method
+  - name: property
+  - name: discovery
+  title: SignalOnly
+  version: 0.0.1
+operations:
+  anotherSignal:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/anotherSignal'
+    description: "\n            The server publishes a message to the signal topic
+      whenever the signal is emitted.\n            Clients can subscribe to the signal
+      topic to receive messages whenever the signal is emitted.\n\n            ```plantuml\n\
+      \            Client -> MQTT Broker: Subscribe\n            Server -> MQTT Broker:
+      'anotherSignal' Signal\n            MQTT Broker -> Client: 'anotherSignal' Signal\n\
+      \            ```\n\n            The message is not retained, so clients will
+      only receive the signal message when the signal is emitted while they are subscribed.\n\
+      \            "
+    messages:
+    - $ref: '#/channels/anotherSignal/messages/anotherSignal'
+    summary: Receive the 'anotherSignal' signal.
+    tags:
+    - name: signal
+  bark:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/bark'
+    description: "\n            The server publishes a message to the signal topic
+      whenever the signal is emitted.\n            Clients can subscribe to the signal
+      topic to receive messages whenever the signal is emitted.\n\n            ```plantuml\n\
+      \            Client -> MQTT Broker: Subscribe\n            Server -> MQTT Broker:
+      'bark' Signal\n            MQTT Broker -> Client: 'bark' Signal\n          \
+      \  ```\n\n            The message is not retained, so clients will only receive
+      the signal message when the signal is emitted while they are subscribed.\n \
+      \           "
+    messages:
+    - $ref: '#/channels/bark/messages/bark'
+    summary: Receive the 'bark' signal.
+    tags:
+    - name: signal
+  interface_info:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 1
+        retain: false
+    channel:
+      $ref: '#/channels/interface_info'
+    description: "\n            The server publishes this message periodically (with
+      a message-expiry interval) so that clients can discover running server instances
+      and the method versions they advertise.\n\n            ```plantuml\n       \
+      \     Server -> MQTT Broker: Interface Info (with message expiry)\n        \
+      \    Client -> MQTT Broker: Subscribe\n            MQTT Broker -> Client: Interface
+      Info\n            ```\n            "
+    messages:
+    - $ref: '#/channels/interface_info/messages/interface_info'
+    summary: Receive 'SignalOnly' interface advertisement/discovery information.
+    tags:
+    - name: discovery
+  maybe_name:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/maybe_name'
+    description: "\n            The server publishes a message to the signal topic
+      whenever the signal is emitted.\n            Clients can subscribe to the signal
+      topic to receive messages whenever the signal is emitted.\n\n            ```plantuml\n\
+      \            Client -> MQTT Broker: Subscribe\n            Server -> MQTT Broker:
+      'maybe_name' Signal\n            MQTT Broker -> Client: 'maybe_name' Signal\n\
+      \            ```\n\n            The message is not retained, so clients will
+      only receive the signal message when the signal is emitted while they are subscribed.\n\
+      \            "
+    messages:
+    - $ref: '#/channels/maybe_name/messages/maybe_name'
+    summary: Receive the 'maybe_name' signal.
+    tags:
+    - name: signal
+  maybe_number:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/maybe_number'
+    description: "\n            The server publishes a message to the signal topic
+      whenever the signal is emitted.\n            Clients can subscribe to the signal
+      topic to receive messages whenever the signal is emitted.\n\n            ```plantuml\n\
+      \            Client -> MQTT Broker: Subscribe\n            Server -> MQTT Broker:
+      'maybe_number' Signal\n            MQTT Broker -> Client: 'maybe_number' Signal\n\
+      \            ```\n\n            The message is not retained, so clients will
+      only receive the signal message when the signal is emitted while they are subscribed.\n\
+      \            "
+    messages:
+    - $ref: '#/channels/maybe_number/messages/maybe_number'
+    summary: Receive the 'maybe_number' signal.
+    tags:
+    - name: signal
+  now:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/now'
+    description: "\n            The server publishes a message to the signal topic
+      whenever the signal is emitted.\n            Clients can subscribe to the signal
+      topic to receive messages whenever the signal is emitted.\n\n            ```plantuml\n\
+      \            Client -> MQTT Broker: Subscribe\n            Server -> MQTT Broker:
+      'now' Signal\n            MQTT Broker -> Client: 'now' Signal\n            ```\n\
+      \n            The message is not retained, so clients will only receive the
+      signal message when the signal is emitted while they are subscribed.\n     \
+      \       "
+    messages:
+    - $ref: '#/channels/now/messages/now'
+    summary: Receive the 'now' signal.
+    tags:
+    - name: signal

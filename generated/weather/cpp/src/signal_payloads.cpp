@@ -1,5 +1,7 @@
 
 #include "signal_payloads.hpp"
+#include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 
 namespace stinger {
 
@@ -31,6 +33,11 @@ void CurrentTimePayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjso
         tempStringValue.SetString(currentTime.c_str(), currentTime.size(), allocator);
         parent.AddMember("current_time", tempStringValue, allocator);
     }
+}
+
+bool CurrentTimePayload::ValidateSchema() const
+{
+    return true;
 }
 
 } // namespace weather

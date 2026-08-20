@@ -12,6 +12,7 @@
 #include "structs.hpp"
 #include "server.hpp"
 #include "method_payloads.hpp"
+#include "signal_payloads.hpp"
 #include "enums.hpp"
 #include <stinger/utils/iconnection.hpp>
 #include <stinger/utils/format.hpp>
@@ -136,6 +137,10 @@ void PropOnlyServer::republishHomeAddressProperty() const
     std::lock_guard<std::mutex> lock(_homeAddressPropertyMutex);
     rapidjson::Document doc;
     if (_homeAddressProperty) {
+        if (!_homeAddressProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'home_address' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _homeAddressProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -160,6 +165,9 @@ void PropOnlyServer::republishHomeAddressProperty() const
 
 void PropOnlyServer::_receiveHomeAddressPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -176,6 +184,10 @@ void PropOnlyServer::_receiveHomeAddressPropertyUpdate(const stinger::mqtt::Mess
 
     // Deserialize 1 values into struct.
     HomeAddressProperty tempValue = HomeAddressProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'home_address' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_homeAddressPropertyMutex);
@@ -227,6 +239,10 @@ void PropOnlyServer::republishFavoriteCountryProperty() const
     std::lock_guard<std::mutex> lock(_favoriteCountryPropertyMutex);
     rapidjson::Document doc;
     if (_favoriteCountryProperty) {
+        if (!_favoriteCountryProperty->ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Value for 'favorite_country' property failed schema validation; not publishing.");
+            return;
+        }
         doc.SetObject();
         _favoriteCountryProperty->AddToRapidJsonObject(doc, doc.GetAllocator());
     } else {
@@ -251,6 +267,9 @@ void PropOnlyServer::republishFavoriteCountryProperty() const
 
 void PropOnlyServer::_receiveFavoriteCountryPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "Received DebugInfo on topic %s: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -267,6 +286,10 @@ void PropOnlyServer::_receiveFavoriteCountryPropertyUpdate(const stinger::mqtt::
 
     // Deserialize 1 values into struct.
     FavoriteCountryProperty tempValue = FavoriteCountryProperty::FromRapidJsonObject(doc);
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'favorite_country' property update failed schema validation; ignoring.");
+        return;
+    }
 
     { // Scope lock
         std::lock_guard<std::mutex> lock(_favoriteCountryPropertyMutex);
@@ -296,6 +319,12 @@ void PropOnlyServer::_advertisementThreadLoop()
         doc.AddMember("timestamp", rapidjson::Value(timestamp.c_str(), allocator), allocator);
 
         doc.AddMember("prefix", rapidjson::Value(_prefixTopicParam.c_str(), allocator), allocator);
+
+        {
+            rapidjson::Value methodsObj(rapidjson::kObjectType);
+
+            doc.AddMember("methods", methodsObj, allocator);
+        }
 
         // Convert to JSON string
         rapidjson::StringBuffer buf;

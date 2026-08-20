@@ -4,8 +4,7 @@ on the next generation.
 
 It contains enumerations used by the prop-only interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #pragma once
@@ -25,6 +24,8 @@ namespace prop_only {
 struct HomeAddressProperty {
     static HomeAddressProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     Address address;
 };
 
@@ -34,6 +35,8 @@ struct HomeAddressProperty {
 struct FavoriteCountryProperty {
     static FavoriteCountryProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     Country country;
 };
 

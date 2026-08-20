@@ -1,0 +1,673 @@
+asyncapi: 3.0.0
+channels:
+  favorite_country_update_request:
+    address: '{prefix}/prop-only/{service_id}/property/favorite_country/update'
+    description: The user's favorite country.
+    messages:
+      favorite_country:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: 
+                client/[^\}]+/prop-only/property/favorite_country/update/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the new property value that the client
+          wants to set.\n            \n                The entirety of the JSON object
+          must be provided, and will completely replace the\n                current
+          value of the property if the update is accepted.\n                \n   \
+          \             The `PropertyVersion` user property value (a number provided
+          as an MQTT string)\n                should be the same `PropertyVersion`
+          value that was most recently received."
+        headers:
+          properties:
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: FavoriteCountryUpdateRequest
+        payload:
+          $ref: '#/components/schemas/favorite_country_property'
+        summary: A request to update the 'favorite_country' property.
+        tags:
+        - name: property
+        - name: update
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: A request to update the 'favorite_country' property.
+    title: FavoriteCountryUpdateRequest
+  favorite_country_update_response:
+    address: 
+      client/{client_id}/prop-only/property/favorite_country/update/response
+    description: The user's favorite country.
+    messages:
+      favorite_country:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+        contentType: application/json
+        description: "The payload represents the latest value of the property after
+          the update attempt.\n            \n            If the property update was
+          successful, then there should be a `ReturnCode` user property with value
+          `0`, and the payload should match the value that was sent in the update
+          request.\n            The `PropertyValue` user property will be the newest
+          version of the property value after the update.\n            The `DebugInfo`
+          user property is usually empty or unset on success, but is not required
+          to be empty.  If provided, the\n            client should log or print the
+          provided `DebugInfo` string for debugging purposes.\n\n            If the
+          property update was unsuccessful, then there should be a `ReturnCode` user
+          property with a non-zero value, and the payload will contain the server's
+          current value for the property.\n            The `PropertyValue` user property
+          will be the version of the current property value (which may or may not
+          be what it was before).\n            The `DebugInfo` user property should
+          contain a string describing why the update was unsuccessful, and the client
+          should log or print it for debugging purposes, but the client is not to
+          specifically parse the `DebugInfo` for programatic meaning.\n          \
+          \  "
+        headers:
+          properties:
+            DebugInfo:
+              description: A string describing why the update was unsuccessful, 
+                if applicable.
+              type: string
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              minimum: -1
+              type: integer
+            ReturnCode:
+              description: 'SUCCESS: 0 | CLIENT_ERROR: 1 | SERVER_ERROR: 2 | TRANSPORT_ERROR:
+                3 | PAYLOAD_ERROR: 4 | CLIENT_SERIALIZATION_ERROR: 5 | CLIENT_DESERIALIZATION_ERROR:
+                6 | SERVER_SERIALIZATION_ERROR: 7 | SERVER_DESERIALIZATION_ERROR:
+                8 | METHOD_NOT_FOUND: 9 | UNAUTHORIZED: 10 | TIMEOUT: 11 | OUT_OF_SYNC:
+                12 | UNKNOWN_ERROR: 13 | NOT_IMPLEMENTED: 14 | SERVICE_UNAVAILABLE:
+                15'
+              enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              type: integer
+          required:
+          - PropertyValue
+          - ReturnCode
+          - DebugInfo
+          type: object
+        name: FavoriteCountryUpdateResponse
+        payload:
+          $ref: '#/components/schemas/favorite_country_property'
+        summary: The response after updating the 'favorite_country' property.
+        tags:
+        - name: property
+        - name: update
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+    summary: A response to the update request for the 'favorite_country' 
+      property.
+    title: FavoriteCountryUpdateResponse
+  favorite_country_value:
+    address: '{prefix}/prop-only/{service_id}/property/favorite_country/value'
+    description: The user's favorite country.
+    messages:
+      favorite_country:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: FavoriteCountryPropertyValue
+        payload:
+          $ref: '#/components/schemas/favorite_country_property'
+        summary: The current value of the 'favorite_country' property.
+        tags:
+        - name: property
+        - name: value
+        title: favorite_country value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'favorite_country' property.
+    tags:
+    - name: property
+    - name: value
+    title: FavoriteCountryPropertyValue
+  home_address_update_request:
+    address: '{prefix}/prop-only/{service_id}/property/home_address/update'
+    description: The current home address.
+    messages:
+      home_address:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: 
+                client/[^\}]+/prop-only/property/home_address/update/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the new property value that the client
+          wants to set.\n            \n                The entirety of the JSON object
+          must be provided, and will completely replace the\n                current
+          value of the property if the update is accepted.\n                \n   \
+          \             The `PropertyVersion` user property value (a number provided
+          as an MQTT string)\n                should be the same `PropertyVersion`
+          value that was most recently received."
+        headers:
+          properties:
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: HomeAddressUpdateRequest
+        payload:
+          $ref: '#/components/schemas/home_address_property'
+        summary: A request to update the 'home_address' property.
+        tags:
+        - name: property
+        - name: update
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: A request to update the 'home_address' property.
+    title: HomeAddressUpdateRequest
+  home_address_update_response:
+    address: client/{client_id}/prop-only/property/home_address/update/response
+    description: The current home address.
+    messages:
+      home_address:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+        contentType: application/json
+        description: "The payload represents the latest value of the property after
+          the update attempt.\n            \n            If the property update was
+          successful, then there should be a `ReturnCode` user property with value
+          `0`, and the payload should match the value that was sent in the update
+          request.\n            The `PropertyValue` user property will be the newest
+          version of the property value after the update.\n            The `DebugInfo`
+          user property is usually empty or unset on success, but is not required
+          to be empty.  If provided, the\n            client should log or print the
+          provided `DebugInfo` string for debugging purposes.\n\n            If the
+          property update was unsuccessful, then there should be a `ReturnCode` user
+          property with a non-zero value, and the payload will contain the server's
+          current value for the property.\n            The `PropertyValue` user property
+          will be the version of the current property value (which may or may not
+          be what it was before).\n            The `DebugInfo` user property should
+          contain a string describing why the update was unsuccessful, and the client
+          should log or print it for debugging purposes, but the client is not to
+          specifically parse the `DebugInfo` for programatic meaning.\n          \
+          \  "
+        headers:
+          properties:
+            DebugInfo:
+              description: A string describing why the update was unsuccessful, 
+                if applicable.
+              type: string
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              minimum: -1
+              type: integer
+            ReturnCode:
+              description: 'SUCCESS: 0 | CLIENT_ERROR: 1 | SERVER_ERROR: 2 | TRANSPORT_ERROR:
+                3 | PAYLOAD_ERROR: 4 | CLIENT_SERIALIZATION_ERROR: 5 | CLIENT_DESERIALIZATION_ERROR:
+                6 | SERVER_SERIALIZATION_ERROR: 7 | SERVER_DESERIALIZATION_ERROR:
+                8 | METHOD_NOT_FOUND: 9 | UNAUTHORIZED: 10 | TIMEOUT: 11 | OUT_OF_SYNC:
+                12 | UNKNOWN_ERROR: 13 | NOT_IMPLEMENTED: 14 | SERVICE_UNAVAILABLE:
+                15'
+              enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              type: integer
+          required:
+          - PropertyValue
+          - ReturnCode
+          - DebugInfo
+          type: object
+        name: HomeAddressUpdateResponse
+        payload:
+          $ref: '#/components/schemas/home_address_property'
+        summary: The response after updating the 'home_address' property.
+        tags:
+        - name: property
+        - name: update
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+    summary: A response to the update request for the 'home_address' property.
+    title: HomeAddressUpdateResponse
+  home_address_value:
+    address: '{prefix}/prop-only/{service_id}/property/home_address/value'
+    description: The current home address.
+    messages:
+      home_address:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: HomeAddressPropertyValue
+        payload:
+          $ref: '#/components/schemas/home_address_property'
+        summary: The current value of the 'home_address' property.
+        tags:
+        - name: property
+        - name: value
+        title: home_address value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'home_address' property.
+    tags:
+    - name: property
+    - name: value
+    title: HomeAddressPropertyValue
+  interface_info:
+    address: '{prefix}/prop-only/{service_id}/interface'
+    description: Advertisement/discovery channel for the 'prop-only' interface.
+    messages:
+      interface_info:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: The server periodically publishes this message (with a 
+          message-expiry interval) so that clients can discover running 
+          instances of the interface and the versions of the methods they 
+          support.
+        name: InterfaceInfo
+        payload:
+          properties:
+            connection_topic:
+              type: string
+            instance:
+              type: string
+            interface_name:
+              type: string
+            methods:
+              additionalProperties:
+                type: string
+              description: Maps method names to their version string, for 
+                methods that declare a version.
+              type: object
+            prefix:
+              type: string
+            timestamp:
+              format: date-time
+              type: string
+            title:
+              type: string
+            version:
+              type: string
+          required:
+          - interface_name
+          - title
+          - version
+          - instance
+          - connection_topic
+          - timestamp
+          - prefix
+          type: object
+        summary: Advertisement/discovery information for the 'prop-only' 
+          interface.
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+components:
+  parameters:
+    client_id:
+      description: The MQTT Client ID
+    prefix:
+      description: Topic parameter 'prefix'
+    service_id:
+      description: The ID of the service/instance
+  schemas:
+    address:
+      description: Structure representing a mailing address.
+      properties:
+        city:
+          description: The city name.
+          type: string
+        country:
+          $ref: '#/components/schemas/country'
+        postal_code:
+          description: The postal or ZIP code.
+          type: string
+        state:
+          description: The state or province.
+          type: string
+        street:
+          description: The street address.
+          type: string
+      required:
+      - street
+      - city
+      - state
+      - postal_code
+      - country
+      type: object
+    country:
+      description: "A small set of supported countries.\nJSON Value `1` is `USA` -
+        United States of America.\nJSON Value `2` is `Canada` - \nJSON Value `3` is
+        `Mexico` - "
+      enum:
+      - 1
+      - 2
+      - 3
+      type: integer
+    favorite_country_property:
+      properties:
+        country:
+          $ref: '#/components/schemas/country'
+      required:
+      - country
+      type: object
+    home_address_property:
+      properties:
+        address:
+          $ref: '#/components/schemas/address'
+      required:
+      - address
+      type: object
+info:
+  description: Example StingerAPI interface which only has properties, plus a 
+    struct and an enum.
+  tags:
+  - name: signal
+  - name: method
+  - name: property
+  - name: discovery
+  title: prop-only
+  version: 0.0.1
+operations:
+  favorite_country_update_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/favorite_country_update_request'
+    description: "\n            A client publishes to this topic in order to request
+      that the server updates the property value to provided value.\n\n          \
+      \  The server will respond with a message on the response topic indicating whether
+      the update was successful, and what the new property value is after the update
+      attempt.\n\n            ```plantuml\n            Server -> MQTT Broker: Subscribe
+      to {prefix}/prop-only/{service_id}/property/favorite_country/update\n      \
+      \      Client -> MQTT Broker: Update Request\n            MQTT Broker -> Server:\
+      \  Update Request\n            Server -> Server: Update property value\n   \
+      \         Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n            "
+    messages:
+    - $ref: '#/channels/favorite_country_update_request/messages/favorite_country'
+    reply:
+      channel:
+        $ref: '#/channels/favorite_country_update_response'
+    tags:
+    - name: property
+  favorite_country_update_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/favorite_country_update_response'
+    description: "\n            A server publishes to this topic in order to provide
+      the response to an update request.\n\n            The server will respond with
+      a message on the response topic indicating whether the update was successful,
+      and what the new property value is after the update attempt.\n\n           \
+      \ ```plantuml\n            Server -> MQTT Broker: Subscribe to {prefix}/prop-only/{service_id}/property/favorite_country/update\n\
+      \            Client -> MQTT Broker: Update Request\n            MQTT Broker
+      -> Server:  Update Request\n            Server -> Server: Update property value\n\
+      \            Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n\n            If the update failed, the most recent property value
+      will be included in the response payload, \n            and the client should
+      update its local cached property value to match the value in the response, \n\
+      \            as that is the current value of the property on the server.\n \
+      \           "
+    messages:
+    - $ref: '#/channels/favorite_country_update_response/messages/favorite_country'
+    tags:
+    - name: property
+  favorite_country_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/favorite_country_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'favorite_country'
+      Value (retain=true)\n            Client -> MQTT Broker: Subscribe\n        \
+      \    MQTT Broker -> Client: 'favorite_country' Value\n            ```\n    \
+      \        "
+    messages:
+    - $ref: '#/channels/favorite_country_value/messages/favorite_country'
+    summary: Receive the current value of the 'favorite_country' property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveFavoriteCountryPropertyValue
+  home_address_update_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/home_address_update_request'
+    description: "\n            A client publishes to this topic in order to request
+      that the server updates the property value to provided value.\n\n          \
+      \  The server will respond with a message on the response topic indicating whether
+      the update was successful, and what the new property value is after the update
+      attempt.\n\n            ```plantuml\n            Server -> MQTT Broker: Subscribe
+      to {prefix}/prop-only/{service_id}/property/home_address/update\n          \
+      \  Client -> MQTT Broker: Update Request\n            MQTT Broker -> Server:\
+      \  Update Request\n            Server -> Server: Update property value\n   \
+      \         Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n            "
+    messages:
+    - $ref: '#/channels/home_address_update_request/messages/home_address'
+    reply:
+      channel:
+        $ref: '#/channels/home_address_update_response'
+    tags:
+    - name: property
+  home_address_update_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/home_address_update_response'
+    description: "\n            A server publishes to this topic in order to provide
+      the response to an update request.\n\n            The server will respond with
+      a message on the response topic indicating whether the update was successful,
+      and what the new property value is after the update attempt.\n\n           \
+      \ ```plantuml\n            Server -> MQTT Broker: Subscribe to {prefix}/prop-only/{service_id}/property/home_address/update\n\
+      \            Client -> MQTT Broker: Update Request\n            MQTT Broker
+      -> Server:  Update Request\n            Server -> Server: Update property value\n\
+      \            Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n\n            If the update failed, the most recent property value
+      will be included in the response payload, \n            and the client should
+      update its local cached property value to match the value in the response, \n\
+      \            as that is the current value of the property on the server.\n \
+      \           "
+    messages:
+    - $ref: '#/channels/home_address_update_response/messages/home_address'
+    tags:
+    - name: property
+  home_address_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/home_address_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'home_address'
+      Value (retain=true)\n            Client -> MQTT Broker: Subscribe\n        \
+      \    MQTT Broker -> Client: 'home_address' Value\n            ```\n        \
+      \    "
+    messages:
+    - $ref: '#/channels/home_address_value/messages/home_address'
+    summary: Receive the current value of the 'home_address' property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveHomeAddressPropertyValue
+  interface_info:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 1
+        retain: false
+    channel:
+      $ref: '#/channels/interface_info'
+    description: "\n            The server publishes this message periodically (with
+      a message-expiry interval) so that clients can discover running server instances
+      and the method versions they advertise.\n\n            ```plantuml\n       \
+      \     Server -> MQTT Broker: Interface Info (with message expiry)\n        \
+      \    Client -> MQTT Broker: Subscribe\n            MQTT Broker -> Client: Interface
+      Info\n            ```\n            "
+    messages:
+    - $ref: '#/channels/interface_info/messages/interface_info'
+    summary: Receive 'prop-only' interface advertisement/discovery information.
+    tags:
+    - name: discovery

@@ -8,8 +8,7 @@ on the next generation.
 
 This is the Server for the Full interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #[allow(unused_imports)]
@@ -552,6 +551,16 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
             day_of_week,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'todayIs' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!("'todayIs' signal payload failed schema validation: {}", err),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "Full".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -581,6 +590,16 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
             day_of_week,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'todayIs' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'todayIs' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "Full".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -604,6 +623,19 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
         time: chrono::DateTime<chrono::Utc>,
     ) -> SentMessageFuture {
         let data = RandomWordSignalPayload { word, time };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'randomWord' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'randomWord' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "Full".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -629,6 +661,16 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
         time: chrono::DateTime<chrono::Utc>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = RandomWordSignalPayload { word, time };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'randomWord' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'randomWord' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "Full".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -674,6 +716,22 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for addNumbers failed schema validation: {}",
+                err
+            );
+            FullServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<i32, MethodReturnCode> = {
@@ -688,6 +746,22 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = AddNumbersReturnValues { sum: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for addNumbers failed schema validation: {}",
+                            err
+                        );
+                        FullServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -736,6 +810,22 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for doSomething failed schema validation: {}",
+                err
+            );
+            FullServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<DoSomethingReturnValues, MethodReturnCode> = {
@@ -747,6 +837,22 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
             let corr_data = opt_corr_data.unwrap_or_default();
             match rc {
                 Ok(retval) => {
+                    if let Err(err) = retval.validate_schema() {
+                        error!(
+                            "Response payload for doSomething failed schema validation: {}",
+                            err
+                        );
+                        FullServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &retval, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -787,6 +893,22 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = WhatTimeIsItReturnValues { timestamp: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for what_time_is_it failed schema validation: {}",
+                            err
+                        );
+                        FullServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -835,6 +957,22 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for hold_temperature failed schema validation: {}",
+                err
+            );
+            FullServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<bool, MethodReturnCode> = {
@@ -849,6 +987,22 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = HoldTemperatureReturnValues { success: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for hold_temperature failed schema validation: {}",
+                            err
+                        );
+                        FullServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -935,29 +1089,38 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<FavoriteNumberProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'favorite_number' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'favorite_number' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the number field of the struct.
-                        *write_request = new_property_structure.number.clone();
-                        debug!(
-                            "Updating 'favorite_number' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the number field of the struct.
+                            *write_request = new_property_structure.number.clone();
+                            debug!(
+                                "Updating 'favorite_number' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'favorite_number' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'favorite_number' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'favorite_number' property change");
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'favorite_number' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -1103,29 +1266,38 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<FavoriteFoodsProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'favorite_foods' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'favorite_foods' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Multi-value property set as a struct.
-                        *write_request = new_property_structure.clone();
-                        debug!(
-                            "Updating 'favorite_foods' property to new structure: {:?}",
-                            *write_request
-                        );
+                            // Multi-value property set as a struct.
+                            *write_request = new_property_structure.clone();
+                            debug!(
+                                "Updating 'favorite_foods' property to new structure: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'favorite_foods' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'favorite_foods' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'favorite_foods' property change");
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'favorite_foods' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -1298,28 +1470,38 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<FamilyNameProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'family_name' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'family_name' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the family_name field of the struct.
-                        *write_request = new_property_structure.family_name.clone();
-                        debug!(
-                            "Updating 'family_name' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the family_name field of the struct.
+                            *write_request = new_property_structure.family_name.clone();
+                            debug!(
+                                "Updating 'family_name' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'family_name' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'family_name' property change".to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'family_name' property change");
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'family_name' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -1467,29 +1649,40 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<LastBreakfastTimeProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'last_breakfast_time' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'last_breakfast_time' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the timestamp field of the struct.
-                        *write_request = new_property_structure.timestamp.clone();
-                        debug!(
-                            "Updating 'last_breakfast_time' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the timestamp field of the struct.
+                            *write_request = new_property_structure.timestamp.clone();
+                            debug!(
+                                "Updating 'last_breakfast_time' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'last_breakfast_time' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'last_breakfast_time' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!(
+                                        "Timeout committing 'last_breakfast_time' property change"
+                                    );
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'last_breakfast_time' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -1640,29 +1833,38 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<LastBirthdaysProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'last_birthdays' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'last_birthdays' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Multi-value property set as a struct.
-                        *write_request = new_property_structure.clone();
-                        debug!(
-                            "Updating 'last_birthdays' property to new structure: {:?}",
-                            *write_request
-                        );
+                            // Multi-value property set as a struct.
+                            *write_request = new_property_structure.clone();
+                            debug!(
+                                "Updating 'last_birthdays' property to new structure: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'last_birthdays' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'last_birthdays' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'last_birthdays' property change");
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'last_birthdays' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -1794,6 +1996,13 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
                             number: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'favorite_number' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = favorite_number_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -1846,6 +2055,13 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'favorite_foods' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = favorite_foods_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -1894,6 +2110,13 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'lunch_menu' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = lunch_menu_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -1945,6 +2168,13 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
                             family_name: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'family_name' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = family_name_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -1999,6 +2229,13 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
                             timestamp: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'last_breakfast_time' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = last_breakfast_time_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -2051,6 +2288,13 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'last_birthdays' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = last_birthdays_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -2087,6 +2331,9 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
             }
         }
 
+        // Static map of method names to their declared version, used in periodic interface info advertisements.
+        let interface_info_methods: HashMap<String, String> = HashMap::from([]);
+
         // Spawn a task to periodically publish interface info.
         let mut interface_publisher = self.mqtt_client.clone();
         let instance_id = self.instance_id.clone();
@@ -2104,6 +2351,7 @@ impl<C: Mqtt5PubSub + Clone + Send> FullServer<C> {
                     .interface_name("Full".to_string())
                     .title("Example Interface".to_string())
                     .version("0.0.2".to_string())
+                    .methods(interface_info_methods.clone())
                     .instance(instance_id.clone())
                     .connection_topic(topic.clone())
                     .prefix(topic_param_map_for_info.get("prefix").unwrap().to_string())

@@ -1,5 +1,7 @@
 
 #include "signal_payloads.hpp"
+#include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 
 namespace stinger {
 
@@ -38,6 +40,11 @@ void TodayIsPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::D
     parent.AddMember("dayOfMonth", dayOfMonth, allocator);
 
     parent.AddMember("dayOfWeek", static_cast<int>(dayOfWeek), allocator);
+}
+
+bool TodayIsPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for randomWord signal payload ---
@@ -82,6 +89,11 @@ void RandomWordPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson
         tempTimeStringValue.SetString(timeIsoString.c_str(), timeIsoString.size(), allocator);
         parent.AddMember("time", tempTimeStringValue, allocator);
     }
+}
+
+bool RandomWordPayload::ValidateSchema() const
+{
+    return true;
 }
 
 } // namespace full

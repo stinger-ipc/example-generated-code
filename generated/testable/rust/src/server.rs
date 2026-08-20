@@ -8,8 +8,7 @@ on the next generation.
 
 This is the Server for the testable interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #[allow(unused_imports)]
@@ -1840,6 +1839,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
     /// Emits the empty signal with the given arguments.
     pub async fn emit_empty(&mut self) -> SentMessageFuture {
         let data = EmptySignalPayload {};
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'empty' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!("'empty' signal payload failed schema validation: {}", err),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -1863,6 +1872,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         &mut self,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = EmptySignalPayload {};
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'empty' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'empty' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -1882,6 +1901,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
     /// Emits the singleInt signal with the given arguments.
     pub async fn emit_single_int(&mut self, value: i32) -> SentMessageFuture {
         let data = SingleIntSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleInt' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleInt' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -1906,6 +1938,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: i32,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleIntSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleInt' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleInt' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -1922,9 +1964,88 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         let mut publisher = self.mqtt_client.clone();
         publisher.publish_nowait(msg)
     }
+    /// Emits the jsonSchemaValidatedInt signal with the given arguments.
+    pub async fn emit_json_schema_validated_int(&mut self, value: i32) -> SentMessageFuture {
+        let data = JsonSchemaValidatedIntSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'jsonSchemaValidatedInt' signal failed schema validation, not emitting: {}", err);
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'jsonSchemaValidatedInt' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
+        let topic_param_map = HashMap::from([
+            ("interface_name".to_string(), "testable".to_string()),
+            ("service_id".to_string(), self.instance_id.clone()),
+            (
+                "signal_name".to_string(),
+                "jsonSchemaValidatedInt".to_string(),
+            ),
+            ("client_id".to_string(), self.client_id.clone()),
+            ("prefix".to_string(), self.topic_param_prefix.clone()),
+        ]);
+        let topic = strfmt(
+            "{prefix}/testable/{service_id}/signal/jsonSchemaValidatedInt",
+            &topic_param_map,
+        )
+        .unwrap();
+        let msg = message::signal(&topic, &data).unwrap();
+        let mut publisher = self.mqtt_client.clone();
+        let ch = publisher.publish_noblock(msg).await;
+        Self::oneshot_to_future(ch).await
+    }
+
+    /// Emits the jsonSchemaValidatedInt signal with the given arguments, but this is a fire-and-forget version.
+    pub fn emit_json_schema_validated_int_nowait(
+        &mut self,
+        value: i32,
+    ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
+        let data = JsonSchemaValidatedIntSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'jsonSchemaValidatedInt' signal failed schema validation, not emitting: {}", err);
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'jsonSchemaValidatedInt' signal payload failed schema validation: {}",
+                err
+            )));
+        }
+        let topic_param_map = HashMap::from([
+            ("interface_name".to_string(), "testable".to_string()),
+            ("service_id".to_string(), self.instance_id.clone()),
+            (
+                "signal_name".to_string(),
+                "jsonSchemaValidatedInt".to_string(),
+            ),
+            ("client_id".to_string(), self.client_id.clone()),
+            ("prefix".to_string(), self.topic_param_prefix.clone()),
+        ]);
+        let topic = strfmt(
+            "{prefix}/testable/{service_id}/signal/jsonSchemaValidatedInt",
+            &topic_param_map,
+        )
+        .unwrap();
+        let msg = message::signal(&topic, &data).unwrap();
+        let mut publisher = self.mqtt_client.clone();
+        publisher.publish_nowait(msg)
+    }
     /// Emits the singleOptionalInt signal with the given arguments.
     pub async fn emit_single_optional_int(&mut self, value: Option<i32>) -> SentMessageFuture {
         let data = SingleOptionalIntSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleOptionalInt' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleOptionalInt' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -1949,6 +2070,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: Option<i32>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleOptionalIntSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleOptionalInt' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleOptionalInt' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -1979,6 +2110,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             third,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'threeIntegers' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'threeIntegers' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2011,6 +2155,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             third,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'threeIntegers' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'threeIntegers' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2030,6 +2184,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
     /// Emits the singleString signal with the given arguments.
     pub async fn emit_single_string(&mut self, value: String) -> SentMessageFuture {
         let data = SingleStringSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleString' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleString' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2054,6 +2221,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: String,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleStringSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleString' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleString' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2070,12 +2247,88 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         let mut publisher = self.mqtt_client.clone();
         publisher.publish_nowait(msg)
     }
+    /// Emits the jsonSchemaValidatedString signal with the given arguments.
+    pub async fn emit_json_schema_validated_string(&mut self, value: String) -> SentMessageFuture {
+        let data = JsonSchemaValidatedStringSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'jsonSchemaValidatedString' signal failed schema validation, not emitting: {}", err);
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'jsonSchemaValidatedString' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
+        let topic_param_map = HashMap::from([
+            ("interface_name".to_string(), "testable".to_string()),
+            ("service_id".to_string(), self.instance_id.clone()),
+            (
+                "signal_name".to_string(),
+                "jsonSchemaValidatedString".to_string(),
+            ),
+            ("client_id".to_string(), self.client_id.clone()),
+            ("prefix".to_string(), self.topic_param_prefix.clone()),
+        ]);
+        let topic = strfmt(
+            "{prefix}/testable/{service_id}/signal/jsonSchemaValidatedString",
+            &topic_param_map,
+        )
+        .unwrap();
+        let msg = message::signal(&topic, &data).unwrap();
+        let mut publisher = self.mqtt_client.clone();
+        let ch = publisher.publish_noblock(msg).await;
+        Self::oneshot_to_future(ch).await
+    }
+
+    /// Emits the jsonSchemaValidatedString signal with the given arguments, but this is a fire-and-forget version.
+    pub fn emit_json_schema_validated_string_nowait(
+        &mut self,
+        value: String,
+    ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
+        let data = JsonSchemaValidatedStringSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'jsonSchemaValidatedString' signal failed schema validation, not emitting: {}", err);
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'jsonSchemaValidatedString' signal payload failed schema validation: {}",
+                err
+            )));
+        }
+        let topic_param_map = HashMap::from([
+            ("interface_name".to_string(), "testable".to_string()),
+            ("service_id".to_string(), self.instance_id.clone()),
+            (
+                "signal_name".to_string(),
+                "jsonSchemaValidatedString".to_string(),
+            ),
+            ("client_id".to_string(), self.client_id.clone()),
+            ("prefix".to_string(), self.topic_param_prefix.clone()),
+        ]);
+        let topic = strfmt(
+            "{prefix}/testable/{service_id}/signal/jsonSchemaValidatedString",
+            &topic_param_map,
+        )
+        .unwrap();
+        let msg = message::signal(&topic, &data).unwrap();
+        let mut publisher = self.mqtt_client.clone();
+        publisher.publish_nowait(msg)
+    }
     /// Emits the singleOptionalString signal with the given arguments.
     pub async fn emit_single_optional_string(
         &mut self,
         value: Option<String>,
     ) -> SentMessageFuture {
         let data = SingleOptionalStringSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleOptionalString' signal failed schema validation, not emitting: {}", err);
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleOptionalString' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2103,6 +2356,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: Option<String>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleOptionalStringSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleOptionalString' signal failed schema validation, not emitting: {}", err);
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleOptionalString' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2136,6 +2396,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             third,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'threeStrings' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'threeStrings' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2168,6 +2441,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             third,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'threeStrings' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'threeStrings' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2187,6 +2470,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
     /// Emits the singleEnum signal with the given arguments.
     pub async fn emit_single_enum(&mut self, value: Numbers) -> SentMessageFuture {
         let data = SingleEnumSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleEnum' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleEnum' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2199,7 +2495,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             &topic_param_map,
         )
         .unwrap();
-        let msg = message::signal(&topic, &data).unwrap();
+        let msg = message::stable_signal(&topic, &data, "0.1.0").unwrap();
         let mut publisher = self.mqtt_client.clone();
         let ch = publisher.publish_noblock(msg).await;
         Self::oneshot_to_future(ch).await
@@ -2211,6 +2507,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: Numbers,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleEnumSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleEnum' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleEnum' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2223,13 +2529,23 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             &topic_param_map,
         )
         .unwrap();
-        let msg = message::signal(&topic, &data).unwrap();
+        let msg = message::stable_signal(&topic, &data, "0.1.0").unwrap();
         let mut publisher = self.mqtt_client.clone();
         publisher.publish_nowait(msg)
     }
     /// Emits the singleOptionalEnum signal with the given arguments.
     pub async fn emit_single_optional_enum(&mut self, value: Option<Numbers>) -> SentMessageFuture {
         let data = SingleOptionalEnumSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleOptionalEnum' signal failed schema validation, not emitting: {}", err);
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleOptionalEnum' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2254,6 +2570,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: Option<Numbers>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleOptionalEnumSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleOptionalEnum' signal failed schema validation, not emitting: {}", err);
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleOptionalEnum' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2284,6 +2607,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             third,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'threeEnums' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'threeEnums' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2316,6 +2652,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             third,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'threeEnums' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'threeEnums' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2335,6 +2681,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
     /// Emits the singleStruct signal with the given arguments.
     pub async fn emit_single_struct(&mut self, value: AllTypes) -> SentMessageFuture {
         let data = SingleStructSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleStruct' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleStruct' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2359,6 +2718,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: AllTypes,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleStructSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleStruct' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleStruct' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2381,6 +2750,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: Option<AllTypes>,
     ) -> SentMessageFuture {
         let data = SingleOptionalStructSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleOptionalStruct' signal failed schema validation, not emitting: {}", err);
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleOptionalStruct' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2408,6 +2787,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: Option<AllTypes>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleOptionalStructSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleOptionalStruct' signal failed schema validation, not emitting: {}", err);
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleOptionalStruct' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2441,6 +2827,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             third,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'threeStructs' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'threeStructs' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2473,6 +2872,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             third,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'threeStructs' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'threeStructs' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2495,6 +2904,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: chrono::DateTime<chrono::Utc>,
     ) -> SentMessageFuture {
         let data = SingleDateTimeSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleDateTime' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleDateTime' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2519,6 +2941,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: chrono::DateTime<chrono::Utc>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleDateTimeSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleDateTime' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleDateTime' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2541,6 +2973,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: Option<chrono::DateTime<chrono::Utc>>,
     ) -> SentMessageFuture {
         let data = SingleOptionalDatetimeSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleOptionalDatetime' signal failed schema validation, not emitting: {}", err);
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleOptionalDatetime' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2568,6 +3010,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: Option<chrono::DateTime<chrono::Utc>>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleOptionalDatetimeSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleOptionalDatetime' signal failed schema validation, not emitting: {}", err);
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleOptionalDatetime' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2601,6 +3050,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             third,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'threeDateTimes' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'threeDateTimes' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2633,6 +3095,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             third,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'threeDateTimes' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'threeDateTimes' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2652,6 +3124,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
     /// Emits the singleDuration signal with the given arguments.
     pub async fn emit_single_duration(&mut self, value: chrono::Duration) -> SentMessageFuture {
         let data = SingleDurationSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleDuration' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleDuration' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2676,6 +3161,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: chrono::Duration,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleDurationSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleDuration' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleDuration' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2698,6 +3193,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: Option<chrono::Duration>,
     ) -> SentMessageFuture {
         let data = SingleOptionalDurationSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleOptionalDuration' signal failed schema validation, not emitting: {}", err);
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleOptionalDuration' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2725,6 +3230,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: Option<chrono::Duration>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleOptionalDurationSignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleOptionalDuration' signal failed schema validation, not emitting: {}", err);
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleOptionalDuration' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2758,6 +3270,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             third,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'threeDurations' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'threeDurations' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2790,6 +3315,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             third,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'threeDurations' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'threeDurations' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2809,6 +3344,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
     /// Emits the singleBinary signal with the given arguments.
     pub async fn emit_single_binary(&mut self, value: Vec<u8>) -> SentMessageFuture {
         let data = SingleBinarySignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleBinary' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleBinary' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2833,6 +3381,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: Vec<u8>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleBinarySignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'singleBinary' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleBinary' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2855,6 +3413,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: Option<Vec<u8>>,
     ) -> SentMessageFuture {
         let data = SingleOptionalBinarySignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleOptionalBinary' signal failed schema validation, not emitting: {}", err);
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleOptionalBinary' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2882,6 +3450,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         value: Option<Vec<u8>>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleOptionalBinarySignalPayload { value };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleOptionalBinary' signal failed schema validation, not emitting: {}", err);
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleOptionalBinary' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2915,6 +3490,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             third,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'threeBinaries' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'threeBinaries' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2947,6 +3535,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             third,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'threeBinaries' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'threeBinaries' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2966,6 +3564,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
     /// Emits the singleArrayOfIntegers signal with the given arguments.
     pub async fn emit_single_array_of_integers(&mut self, values: Vec<i32>) -> SentMessageFuture {
         let data = SingleArrayOfIntegersSignalPayload { values };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleArrayOfIntegers' signal failed schema validation, not emitting: {}", err);
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleArrayOfIntegers' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -2993,6 +3601,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         values: Vec<i32>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleArrayOfIntegersSignalPayload { values };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleArrayOfIntegers' signal failed schema validation, not emitting: {}", err);
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleArrayOfIntegers' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -3018,6 +3633,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         values: Option<Vec<String>>,
     ) -> SentMessageFuture {
         let data = SingleOptionalArrayOfStringsSignalPayload { values };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleOptionalArrayOfStrings' signal failed schema validation, not emitting: {}", err);
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'singleOptionalArrayOfStrings' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -3045,6 +3670,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         values: Option<Vec<String>>,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = SingleOptionalArrayOfStringsSignalPayload { values };
+        if let Err(err) = data.validate_schema() {
+            error!("Payload for 'singleOptionalArrayOfStrings' signal failed schema validation, not emitting: {}", err);
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'singleOptionalArrayOfStrings' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -3093,6 +3725,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             eighth_of_binaries,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'arrayOfEveryType' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'arrayOfEveryType' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -3140,6 +3785,16 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
             eighth_of_binaries,
         };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'arrayOfEveryType' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'arrayOfEveryType' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "testable".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -3225,6 +3880,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOneInteger failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<i32, MethodReturnCode> = {
@@ -3237,6 +3908,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOneIntegerReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for callOneInteger failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -3285,6 +3972,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOptionalInteger failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<Option<i32>, MethodReturnCode> = {
@@ -3299,6 +4002,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOptionalIntegerReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for callOptionalInteger failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -3352,6 +4071,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callThreeIntegers failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<CallThreeIntegersReturnValues, MethodReturnCode> = {
@@ -3365,6 +4100,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             let corr_data = opt_corr_data.unwrap_or_default();
             match rc {
                 Ok(retval) => {
+                    if let Err(err) = retval.validate_schema() {
+                        error!(
+                            "Response payload for callThreeIntegers failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &retval, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -3416,6 +4167,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOneString failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<String, MethodReturnCode> = {
@@ -3428,6 +4195,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOneStringReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for callOneString failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -3476,6 +4259,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOptionalString failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<Option<String>, MethodReturnCode> = {
@@ -3490,6 +4289,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOptionalStringReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for callOptionalString failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -3541,6 +4356,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callThreeStrings failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<CallThreeStringsReturnValues, MethodReturnCode> = {
@@ -3554,6 +4385,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             let corr_data = opt_corr_data.unwrap_or_default();
             match rc {
                 Ok(retval) => {
+                    if let Err(err) = retval.validate_schema() {
+                        error!(
+                            "Response payload for callThreeStrings failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &retval, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -3602,6 +4449,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOneEnum failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<Numbers, MethodReturnCode> = {
@@ -3614,6 +4477,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOneEnumReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for callOneEnum failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -3662,6 +4541,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOptionalEnum failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<Option<Numbers>, MethodReturnCode> = {
@@ -3676,6 +4571,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOptionalEnumReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for callOptionalEnum failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -3724,6 +4635,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callThreeEnums failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<CallThreeEnumsReturnValues, MethodReturnCode> = {
@@ -3737,6 +4664,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             let corr_data = opt_corr_data.unwrap_or_default();
             match rc {
                 Ok(retval) => {
+                    if let Err(err) = retval.validate_schema() {
+                        error!(
+                            "Response payload for callThreeEnums failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &retval, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -3785,6 +4728,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOneStruct failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<AllTypes, MethodReturnCode> = {
@@ -3797,6 +4756,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOneStructReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for callOneStruct failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -3845,6 +4820,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOptionalStruct failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<Option<AllTypes>, MethodReturnCode> = {
@@ -3859,6 +4850,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOptionalStructReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for callOptionalStruct failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -3910,6 +4917,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callThreeStructs failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<CallThreeStructsReturnValues, MethodReturnCode> = {
@@ -3923,6 +4946,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             let corr_data = opt_corr_data.unwrap_or_default();
             match rc {
                 Ok(retval) => {
+                    if let Err(err) = retval.validate_schema() {
+                        error!(
+                            "Response payload for callThreeStructs failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &retval, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -3971,6 +5010,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOneDateTime failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<chrono::DateTime<chrono::Utc>, MethodReturnCode> = {
@@ -3985,6 +5040,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOneDateTimeReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for callOneDateTime failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -4033,6 +5104,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOptionalDateTime failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<Option<chrono::DateTime<chrono::Utc>>, MethodReturnCode> = {
@@ -4047,6 +5134,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOptionalDateTimeReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!("Response payload for callOptionalDateTime failed schema validation: {}", err);
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -4100,6 +5200,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callThreeDateTimes failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<CallThreeDateTimesReturnValues, MethodReturnCode> = {
@@ -4113,6 +5229,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             let corr_data = opt_corr_data.unwrap_or_default();
             match rc {
                 Ok(retval) => {
+                    if let Err(err) = retval.validate_schema() {
+                        error!(
+                            "Response payload for callThreeDateTimes failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &retval, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -4164,6 +5296,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOneDuration failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<chrono::Duration, MethodReturnCode> = {
@@ -4176,6 +5324,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOneDurationReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for callOneDuration failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -4224,6 +5388,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOptionalDuration failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<Option<chrono::Duration>, MethodReturnCode> = {
@@ -4238,6 +5418,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOptionalDurationReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!("Response payload for callOptionalDuration failed schema validation: {}", err);
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -4291,6 +5484,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callThreeDurations failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<CallThreeDurationsReturnValues, MethodReturnCode> = {
@@ -4304,6 +5513,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             let corr_data = opt_corr_data.unwrap_or_default();
             match rc {
                 Ok(retval) => {
+                    if let Err(err) = retval.validate_schema() {
+                        error!(
+                            "Response payload for callThreeDurations failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &retval, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -4355,6 +5580,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOneBinary failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<Vec<u8>, MethodReturnCode> = {
@@ -4367,6 +5608,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOneBinaryReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for callOneBinary failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -4415,6 +5672,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOptionalBinary failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<Option<Vec<u8>>, MethodReturnCode> = {
@@ -4429,6 +5702,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOptionalBinaryReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!(
+                            "Response payload for callOptionalBinary failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -4480,6 +5769,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callThreeBinaries failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<CallThreeBinariesReturnValues, MethodReturnCode> = {
@@ -4493,6 +5798,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             let corr_data = opt_corr_data.unwrap_or_default();
             match rc {
                 Ok(retval) => {
+                    if let Err(err) = retval.validate_schema() {
+                        error!(
+                            "Response payload for callThreeBinaries failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &retval, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -4545,6 +5866,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOneListOfIntegers failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<Vec<i32>, MethodReturnCode> = {
@@ -4559,6 +5896,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOneListOfIntegersReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!("Response payload for callOneListOfIntegers failed schema validation: {}", err);
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -4613,6 +5963,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callOptionalListOfFloats failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<Option<Vec<f32>>, MethodReturnCode> = {
@@ -4627,6 +5993,19 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             match rc {
                 Ok(retval) => {
                     let resp_obj = CallOptionalListOfFloatsReturnValues { output1: retval };
+                    if let Err(err) = resp_obj.validate_schema() {
+                        error!("Response payload for callOptionalListOfFloats failed schema validation: {}", err);
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &resp_obj, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -4678,6 +6057,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
         }
         // Unwrap is OK here because we just checked for error.
         let payload = payload_obj.unwrap();
+        if let Err(err) = payload.validate_schema() {
+            error!(
+                "Request payload for callTwoLists failed schema validation: {}",
+                err
+            );
+            TestableServer::<C>::publish_error_response(
+                publisher,
+                opt_resp_topic,
+                opt_corr_data,
+                MethodReturnCode::ClientDeserializationError(
+                    "Request payload failed schema validation".to_string(),
+                ),
+            )
+            .await;
+            return;
+        }
 
         // call the method handler
         let rc: Result<CallTwoListsReturnValues, MethodReturnCode> = {
@@ -4691,6 +6086,22 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             let corr_data = opt_corr_data.unwrap_or_default();
             match rc {
                 Ok(retval) => {
+                    if let Err(err) = retval.validate_schema() {
+                        error!(
+                            "Response payload for callTwoLists failed schema validation: {}",
+                            err
+                        );
+                        TestableServer::<C>::publish_error_response(
+                            publisher,
+                            Some(resp_topic),
+                            Some(corr_data),
+                            MethodReturnCode::ServerSerializationError(
+                                "Response payload failed schema validation".to_string(),
+                            ),
+                        )
+                        .await;
+                        return;
+                    }
                     let msg = message::response(&resp_topic, &retval, corr_data, None).unwrap();
                     let _fut_publish_result = publisher.publish(msg).await;
                 }
@@ -4777,29 +6188,40 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteIntegerProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_integer' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'read_write_integer' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_integer' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!(
+                                "Updating 'read_write_integer' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_integer' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_integer' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!(
+                                        "Timeout committing 'read_write_integer' property change"
+                                    );
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'read_write_integer' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -4972,26 +6394,29 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteOptionalIntegerProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_optional_integer' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'read_write_optional_integer' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_optional_integer' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!("Updating 'read_write_optional_integer' property to new value: {:?}", *write_request);
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_optional_integer' property change");
-                                return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_integer' property change".to_string());
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_optional_integer' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_integer' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -5138,31 +6563,29 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteTwoIntegersProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_two_integers' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'read_write_two_integers' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Multi-value property set as a struct.
-                        *write_request = new_property_structure.clone();
-                        debug!(
-                            "Updating 'read_write_two_integers' property to new structure: {:?}",
-                            *write_request
-                        );
+                            // Multi-value property set as a struct.
+                            *write_request = new_property_structure.clone();
+                            debug!("Updating 'read_write_two_integers' property to new structure: {:?}", *write_request);
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!(
-                                    "Timeout committing 'read_write_two_integers' property change"
-                                );
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_two_integers' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_two_integers' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_two_integers' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -5338,29 +6761,40 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteStringProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_string' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'read_write_string' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_string' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!(
+                                "Updating 'read_write_string' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_string' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_string' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!(
+                                        "Timeout committing 'read_write_string' property change"
+                                    );
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'read_write_string' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -5504,26 +6938,32 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteOptionalStringProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_optional_string' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'read_write_optional_string' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_optional_string' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!(
+                                "Updating 'read_write_optional_string' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_optional_string' property change");
-                                return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_string' property change".to_string());
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_optional_string' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_string' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -5670,31 +7110,32 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteTwoStringsProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_two_strings' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'read_write_two_strings' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Multi-value property set as a struct.
-                        *write_request = new_property_structure.clone();
-                        debug!(
-                            "Updating 'read_write_two_strings' property to new structure: {:?}",
-                            *write_request
-                        );
+                            // Multi-value property set as a struct.
+                            *write_request = new_property_structure.clone();
+                            debug!(
+                                "Updating 'read_write_two_strings' property to new structure: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!(
-                                    "Timeout committing 'read_write_two_strings' property change"
-                                );
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_two_strings' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_two_strings' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_two_strings' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -5841,29 +7282,40 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteStructProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_struct' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'read_write_struct' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_struct' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!(
+                                "Updating 'read_write_struct' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_struct' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_struct' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!(
+                                        "Timeout committing 'read_write_struct' property change"
+                                    );
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'read_write_struct' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -6007,26 +7459,32 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteOptionalStructProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_optional_struct' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'read_write_optional_struct' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_optional_struct' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!(
+                                "Updating 'read_write_optional_struct' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_optional_struct' property change");
-                                return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_struct' property change".to_string());
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_optional_struct' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_struct' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -6173,31 +7631,32 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteTwoStructsProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_two_structs' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'read_write_two_structs' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Multi-value property set as a struct.
-                        *write_request = new_property_structure.clone();
-                        debug!(
-                            "Updating 'read_write_two_structs' property to new structure: {:?}",
-                            *write_request
-                        );
+                            // Multi-value property set as a struct.
+                            *write_request = new_property_structure.clone();
+                            debug!(
+                                "Updating 'read_write_two_structs' property to new structure: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!(
-                                    "Timeout committing 'read_write_two_structs' property change"
-                                );
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_two_structs' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_two_structs' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_two_structs' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -6373,29 +7832,38 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteEnumProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_enum' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'read_write_enum' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_enum' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!(
+                                "Updating 'read_write_enum' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_enum' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_enum' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_enum' property change");
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'read_write_enum' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -6541,31 +8009,32 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteOptionalEnumProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_optional_enum' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'read_write_optional_enum' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_optional_enum' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!(
+                                "Updating 'read_write_optional_enum' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!(
-                                    "Timeout committing 'read_write_optional_enum' property change"
-                                );
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_optional_enum' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_optional_enum' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_enum' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -6712,29 +8181,40 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteTwoEnumsProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_two_enums' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'read_write_two_enums' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Multi-value property set as a struct.
-                        *write_request = new_property_structure.clone();
-                        debug!(
-                            "Updating 'read_write_two_enums' property to new structure: {:?}",
-                            *write_request
-                        );
+                            // Multi-value property set as a struct.
+                            *write_request = new_property_structure.clone();
+                            debug!(
+                                "Updating 'read_write_two_enums' property to new structure: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_two_enums' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_two_enums' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!(
+                                        "Timeout committing 'read_write_two_enums' property change"
+                                    );
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'read_write_two_enums' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -6881,29 +8361,40 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteDatetimeProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_datetime' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'read_write_datetime' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_datetime' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!(
+                                "Updating 'read_write_datetime' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_datetime' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_datetime' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!(
+                                        "Timeout committing 'read_write_datetime' property change"
+                                    );
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'read_write_datetime' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -7052,26 +8543,29 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteOptionalDatetimeProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_optional_datetime' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'read_write_optional_datetime' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_optional_datetime' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!("Updating 'read_write_optional_datetime' property to new value: {:?}", *write_request);
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_optional_datetime' property change");
-                                return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_datetime' property change".to_string());
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_optional_datetime' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_datetime' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -7222,31 +8716,29 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteTwoDatetimesProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_two_datetimes' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'read_write_two_datetimes' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Multi-value property set as a struct.
-                        *write_request = new_property_structure.clone();
-                        debug!(
-                            "Updating 'read_write_two_datetimes' property to new structure: {:?}",
-                            *write_request
-                        );
+                            // Multi-value property set as a struct.
+                            *write_request = new_property_structure.clone();
+                            debug!("Updating 'read_write_two_datetimes' property to new structure: {:?}", *write_request);
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!(
-                                    "Timeout committing 'read_write_two_datetimes' property change"
-                                );
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_two_datetimes' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_two_datetimes' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_two_datetimes' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -7393,29 +8885,40 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteDurationProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_duration' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'read_write_duration' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_duration' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!(
+                                "Updating 'read_write_duration' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_duration' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_duration' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!(
+                                        "Timeout committing 'read_write_duration' property change"
+                                    );
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'read_write_duration' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -7559,26 +9062,29 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteOptionalDurationProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_optional_duration' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'read_write_optional_duration' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_optional_duration' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!("Updating 'read_write_optional_duration' property to new value: {:?}", *write_request);
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_optional_duration' property change");
-                                return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_duration' property change".to_string());
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_optional_duration' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_duration' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -7727,31 +9233,29 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteTwoDurationsProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_two_durations' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'read_write_two_durations' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Multi-value property set as a struct.
-                        *write_request = new_property_structure.clone();
-                        debug!(
-                            "Updating 'read_write_two_durations' property to new structure: {:?}",
-                            *write_request
-                        );
+                            // Multi-value property set as a struct.
+                            *write_request = new_property_structure.clone();
+                            debug!("Updating 'read_write_two_durations' property to new structure: {:?}", *write_request);
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!(
-                                    "Timeout committing 'read_write_two_durations' property change"
-                                );
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_two_durations' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_two_durations' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_two_durations' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -7898,29 +9402,40 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteBinaryProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_binary' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'read_write_binary' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_binary' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!(
+                                "Updating 'read_write_binary' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_binary' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_binary' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!(
+                                        "Timeout committing 'read_write_binary' property change"
+                                    );
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'read_write_binary' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -8064,26 +9579,32 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteOptionalBinaryProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_optional_binary' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'read_write_optional_binary' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_optional_binary' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!(
+                                "Updating 'read_write_optional_binary' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_optional_binary' property change");
-                                return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_binary' property change".to_string());
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_optional_binary' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_optional_binary' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -8230,31 +9751,29 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteTwoBinariesProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_two_binaries' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'read_write_two_binaries' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Multi-value property set as a struct.
-                        *write_request = new_property_structure.clone();
-                        debug!(
-                            "Updating 'read_write_two_binaries' property to new structure: {:?}",
-                            *write_request
-                        );
+                            // Multi-value property set as a struct.
+                            *write_request = new_property_structure.clone();
+                            debug!("Updating 'read_write_two_binaries' property to new structure: {:?}", *write_request);
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!(
-                                    "Timeout committing 'read_write_two_binaries' property change"
-                                );
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_two_binaries' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_two_binaries' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_two_binaries' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -8401,26 +9920,32 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteListOfStringsProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_list_of_strings' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'read_write_list_of_strings' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the value field of the struct.
-                        *write_request = new_property_structure.value.clone();
-                        debug!(
-                            "Updating 'read_write_list_of_strings' property to new value: {:?}",
-                            *write_request
-                        );
+                            // Single value property.  Use the value field of the struct.
+                            *write_request = new_property_structure.value.clone();
+                            debug!(
+                                "Updating 'read_write_list_of_strings' property to new value: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_list_of_strings' property change");
-                                return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_list_of_strings' property change".to_string());
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_list_of_strings' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'read_write_list_of_strings' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -8567,29 +10092,38 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<ReadWriteListsProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'read_write_lists' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'read_write_lists' payload failed schema validation"
+                                    .to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Multi-value property set as a struct.
-                        *write_request = new_property_structure.clone();
-                        debug!(
-                            "Updating 'read_write_lists' property to new structure: {:?}",
-                            *write_request
-                        );
+                            // Multi-value property set as a struct.
+                            *write_request = new_property_structure.clone();
+                            debug!(
+                                "Updating 'read_write_lists' property to new structure: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'read_write_lists' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'read_write_lists' property change"
-                                        .to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'read_write_lists' property change");
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'read_write_lists' property change"
+                                            .to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -8721,6 +10255,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_integer' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_integer_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -8775,6 +10316,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_only_integer' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_only_integer_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -8830,6 +10378,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_optional_integer' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_optional_integer_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -8880,6 +10435,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_two_integers' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_two_integers_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -8935,6 +10497,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_only_string' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_only_string_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -8989,6 +10558,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_string' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_string_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9044,6 +10620,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_optional_string' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_optional_string_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9093,6 +10676,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_two_strings' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_two_strings_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9147,6 +10737,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_struct' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_struct_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9202,6 +10799,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_optional_struct' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_optional_struct_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9251,6 +10855,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_two_structs' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_two_structs_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9305,6 +10916,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_only_enum' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_only_enum_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9359,6 +10977,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_enum' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_enum_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9414,6 +11039,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_optional_enum' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_optional_enum_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9463,6 +11095,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_two_enums' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_two_enums_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9517,6 +11156,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_datetime' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_datetime_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9572,6 +11218,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_optional_datetime' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_optional_datetime_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9623,6 +11276,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_two_datetimes' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_two_datetimes_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9674,6 +11334,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_duration' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_duration_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9729,6 +11396,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_optional_duration' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_optional_duration_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9780,6 +11454,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_two_durations' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_two_durations_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9831,6 +11512,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_binary' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_binary_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9886,6 +11574,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_optional_binary' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_optional_binary_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9936,6 +11631,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_two_binaries' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_two_binaries_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -9992,6 +11694,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                             value: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_list_of_strings' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_list_of_strings_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -10041,6 +11750,13 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'read_write_lists' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = read_write_lists_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -10077,6 +11793,10 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
             }
         }
 
+        // Static map of method names to their declared version, used in periodic interface info advertisements.
+        let interface_info_methods: HashMap<String, String> =
+            HashMap::from([("callTwoLists".to_string(), "0.1.0".to_string())]);
+
         // Spawn a task to periodically publish interface info.
         let mut interface_publisher = self.mqtt_client.clone();
         let instance_id = self.instance_id.clone();
@@ -10094,6 +11814,7 @@ impl<C: Mqtt5PubSub + Clone + Send> TestableServer<C> {
                     .interface_name("testable".to_string())
                     .title("Interface for testing".to_string())
                     .version("0.0.1".to_string())
+                    .methods(interface_info_methods.clone())
                     .instance(instance_id.clone())
                     .connection_topic(topic.clone())
                     .prefix(topic_param_map_for_info.get("prefix").unwrap().to_string())
@@ -12308,7 +14029,7 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"drink": true, "sandwich": "apples", "crackers": 3.14, "order_number": 42, "time_of_lunch": "1990-07-08T16:20:00Z", "duration_of_lunch": "PT3536S"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [42, 2022], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": ["apples", "foo"], "array_of_enums": [], "optional_array_of_enums": [1, 1], "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": [], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} 
+                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"drink": true, "sandwich": "apples", "crackers": 3.14, "order_number": 42, "time_of_lunch": "1990-07-08T16:20:00Z", "duration_of_lunch": "PT3536S"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": [], "array_of_enums": [1, 1], "optional_array_of_enums": [1, 1], "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": [], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": [], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": null} 
             }"#;
             let payload: ReadWriteStructProperty = serde_json::from_str(json_str).unwrap();
 
@@ -12358,7 +14079,7 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"drink": true, "sandwich": "apples", "crackers": 3.14, "order_number": 42, "time_of_lunch": "1990-07-08T16:20:00Z", "duration_of_lunch": "PT3536S"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [42, 2022], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": [], "array_of_enums": [1, 1], "optional_array_of_enums": [1, 1], "array_of_datetimes": [], "optional_array_of_datetimes": [], "array_of_durations": [], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} 
+                "value": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"drink": true, "sandwich": "apples", "crackers": 3.14, "order_number": 42, "time_of_lunch": "1990-07-08T16:20:00Z", "duration_of_lunch": "PT3536S"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [42, 2022], "optional_array_of_integers": [42, 2022], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": [], "array_of_enums": [1, 1], "optional_array_of_enums": [1, 1], "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} 
             }"#;
             let payload: ReadWriteOptionalStructProperty = serde_json::from_str(json_str).unwrap();
 
@@ -12408,9 +14129,9 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "first": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"drink": true, "sandwich": "apples", "crackers": 3.14, "order_number": 42, "time_of_lunch": "1990-07-08T16:20:00Z", "duration_of_lunch": "PT3536S"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": null, "array_of_integers": [], "optional_array_of_integers": [42, 2022], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": [], "array_of_enums": [], "optional_array_of_enums": [], "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": [], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": [], "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": [], "array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} ,
+                "first": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"drink": true, "sandwich": "apples", "crackers": 3.14, "order_number": 42, "time_of_lunch": "1990-07-08T16:20:00Z", "duration_of_lunch": "PT3536S"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "array_of_integers": [], "optional_array_of_integers": null, "array_of_strings": [], "optional_array_of_strings": ["apples", "foo"], "array_of_enums": [], "optional_array_of_enums": [1, 1], "array_of_datetimes": [], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": ["PT3536S", "PT975S"], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": [], "optional_array_of_binaries": null, "array_of_entry_objects": [], "optional_array_of_entry_objects": []} ,
             
-                "second": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"drink": true, "sandwich": "apples", "crackers": 3.14, "order_number": 42, "time_of_lunch": "1990-07-08T16:20:00Z", "duration_of_lunch": "PT3536S"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": null, "array_of_integers": [], "optional_array_of_integers": [], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": [], "array_of_enums": [1, 1], "optional_array_of_enums": [1, 1], "array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "optional_array_of_datetimes": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"], "array_of_durations": [], "optional_array_of_durations": [], "array_of_binaries": ["ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "ZXhhbXBsZSBiaW5hcnkgZGF0YQ=="], "optional_array_of_binaries": [], "array_of_entry_objects": [], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} 
+                "second": {"the_bool": true, "the_int": 42, "the_number": 3.14, "the_str": "apples", "the_enum": 1, "an_entry_object": {"drink": true, "sandwich": "apples", "crackers": 3.14, "order_number": 42, "time_of_lunch": "1990-07-08T16:20:00Z", "duration_of_lunch": "PT3536S"}, "date_and_time": "1990-07-08T16:20:00Z", "time_duration": "PT3536S", "data": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==", "OptionalInteger": 42, "OptionalString": "apples", "OptionalEnum": 1, "optionalEntryObject": {"key": 42, "value": "apples"}, "OptionalDateTime": "1990-07-08T16:20:00Z", "OptionalDuration": null, "OptionalBinary": null, "array_of_integers": [42, 2022], "optional_array_of_integers": [42, 2022], "array_of_strings": ["apples", "foo"], "optional_array_of_strings": ["apples", "foo"], "array_of_enums": [1, 1], "optional_array_of_enums": null, "array_of_datetimes": [], "optional_array_of_datetimes": null, "array_of_durations": [], "optional_array_of_durations": ["PT3536S", "PT975S"], "array_of_binaries": [], "optional_array_of_binaries": null, "array_of_entry_objects": [], "optional_array_of_entry_objects": [{"key": 42, "value": "apples"}, {"key": 2022, "value": "foo"}]} 
             }"#;
             let payload: ReadWriteTwoStructsProperty = serde_json::from_str(json_str).unwrap();
 
@@ -13014,7 +14735,7 @@ mod tests {
             let json_str = r#"{
                 "first": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==" ,
             
-                "second": "ZXhhbXBsZSBiaW5hcnkgZGF0YQ==" 
+                "second": null 
             }"#;
             let payload: ReadWriteTwoBinariesProperty = serde_json::from_str(json_str).unwrap();
 
@@ -13111,9 +14832,9 @@ mod tests {
 
             // Just to get this test working faster, we're copy-pasting test code from payloads.rs to generate example property payloads.
             let json_str = r#"{
-                "the_list": [1, 1] ,
+                "the_list": [] ,
             
-                "optionalList": ["1990-07-08T16:20:00Z", "1990-07-08T16:20:00Z"] 
+                "optionalList": null 
             }"#;
             let payload: ReadWriteListsProperty = serde_json::from_str(json_str).unwrap();
 

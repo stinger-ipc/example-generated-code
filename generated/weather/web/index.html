@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="./styles.css" />
     <!--
     This is automatically generated code.
-    LICENSE: This generated content is not subject to any license restrictions.
-    TODO: Get license text from stinger file
+    
     -->
   </head>
   
@@ -23,16 +22,39 @@
       
       </p>
     </div>
+
+    <!------------- TAB BAR ------------->
+    <div class="tab-bar">
+      
+      <button class="tab-btn" ng-class="{'active': activeTab === 'signals'}" ng-click="activeTab = 'signals'">
+        <span class="mdi mdi-bell-outline"></span> Signals
+      </button>
+      
+      
+      <button class="tab-btn" ng-class="{'active': activeTab === 'properties'}" ng-click="activeTab = 'properties'">
+        <span class="mdi mdi-tune"></span> Properties
+      </button>
+      
+      
+      <button class="tab-btn" ng-class="{'active': activeTab === 'methods'}" ng-click="activeTab = 'methods'">
+        <span class="mdi mdi-function"></span> Methods
+      </button>
+      
+    </div>
+
     <!------------- SIGNALS ------------->
+    <div ng-show="activeTab === 'signals'">
     
     <div class="component-box signal-box" id="signal-box-current_time">
-        <h3 class="component-title signal-title">Signal: current_time</h3>
-        <div class="component-doc signal-doc">
+        <h3 class="component-title signal-title" ng-class="{'flash': signals['currentTime'].flash}"><span class="mdi mdi-bell-outline"></span> current_time</h3>
+        
+        <details class="component-doc signal-doc">
+          <summary>Documentation</summary>
 <p>Once in a while (at intervals decided by the provider) the current date
 and time will be published.  (Mostly for example purposes).</p>
+        </details>
         
-        </div>
-        <!--<div class="signal-topic topic">Subscribe: <bound method Signal.topic of <stingeripc.components.Signal object at 0x7ff6d126c8c0>></div>-->
+        <!--<div class="signal-topic topic">Subscribe: {prefix}/weather/{service_id}/signal/current_time</div>-->
         <div class="last-received signal-value">
         
           <table class="arglist">
@@ -44,7 +66,9 @@ and time will be published.  (Mostly for example purposes).</p>
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input disabled type="text" ng-model="signals.currentTime.received.current_time" />
+                
                  
               </td>
             </tr>
@@ -53,16 +77,20 @@ and time will be published.  (Mostly for example purposes).</p>
         </div>
     </div>
     
+    </div>
 
     <!------------- PROPERTIES ------------->
+    <div ng-show="activeTab === 'properties'">
     
     <div class="component-box prop-box" id="prop-box-location">
-        <h3 class="component-title prop-title">Property: location</h3>
-        <div class="component-doc prop-doc">
-<p>Weather will be retrieved for the provided location.</p>
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['location'].flash}"><span class="mdi mdi-tune"></span> location</h3>
         
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7ff6d07148c0>></div>-->
+        <details class="component-doc prop-doc">
+          <summary>Documentation</summary>
+<p>Weather will be retrieved for the provided location.</p>
+        </details>
+        
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='location', documentation='Weather will be retrieved for the provided location.\n', cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f503f95d9a0>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f503f95d940>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f503f95d760>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -74,7 +102,9 @@ and time will be published.  (Mostly for example purposes).</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input type="text" ng-model="properties.location.received.latitude" />
+                
+                <input type="number" step="any" ng-model="properties.location.received.latitude" />
+                
                  
               </td>
             </tr>
@@ -86,7 +116,9 @@ and time will be published.  (Mostly for example purposes).</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input type="text" ng-model="properties.location.received.longitude" />
+                
+                <input type="number" step="any" ng-model="properties.location.received.longitude" />
+                
                  
               </td>
             </tr>
@@ -99,14 +131,16 @@ and time will be published.  (Mostly for example purposes).</p>
     </div>
     
     <div class="component-box prop-box" id="prop-box-current_temperature">
-        <h3 class="component-title prop-title">Property: current_temperature</h3>
-        <div class="component-doc prop-doc">
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['currentTemperature'].flash}"><span class="mdi mdi-tune"></span> current_temperature</h3>
+        
+        <details class="component-doc prop-doc">
+          <summary>Documentation</summary>
 <p>This is the current (estimated) temperature in degrees fahrenheit.  This values
 is regularly updated.  The value is extrapolated from the hourly forecast, but
 adjusted based on the latest conditions at the nearest weather station.</p>
+        </details>
         
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7ff6d12bef00>></div>-->
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='current_temperature', documentation='This is the current (estimated) temperature in degrees fahrenheit.  This values\nis regularly updated.  The value is extrapolated from the hourly forecast, but\nadjusted based on the latest conditions at the nearest weather station.\n', cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f503f95d5e0>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f503f95d640>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f503f95d610>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -118,7 +152,9 @@ adjusted based on the latest conditions at the nearest weather station.</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.currentTemperature.received.temperature_f" />
+                
+                <input disabled type="number" step="any" ng-model="properties.currentTemperature.received.temperature_f" />
+                
                  
               </td>
             </tr>
@@ -129,13 +165,15 @@ adjusted based on the latest conditions at the nearest weather station.</p>
     </div>
     
     <div class="component-box prop-box" id="prop-box-current_condition">
-        <h3 class="component-title prop-title">Property: current_condition</h3>
-        <div class="component-doc prop-doc">
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['currentCondition'].flash}"><span class="mdi mdi-tune"></span> current_condition</h3>
+        
+        <details class="component-doc prop-doc">
+          <summary>Documentation</summary>
 <p>This is the current weather outside.  This comes from the hourly forecast and is
 updated about once per hour.</p>
+        </details>
         
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7ff6d07142c0>></div>-->
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='current_condition', documentation='This is the current weather outside.  This comes from the hourly forecast and is\nupdated about once per hour.\n', cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f503f95d400>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f503f95d4f0>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f503f95c5f0>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -160,7 +198,9 @@ updated about once per hour.</p>
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input disabled type="text" ng-model="properties.currentCondition.received.description" />
+                
                  
               </td>
             </tr>
@@ -171,15 +211,17 @@ updated about once per hour.</p>
     </div>
     
     <div class="component-box prop-box" id="prop-box-daily_forecast">
-        <h3 class="component-title prop-title">Property: daily_forecast</h3>
-        <div class="component-doc prop-doc">
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['dailyForecast'].flash}"><span class="mdi mdi-tune"></span> daily_forecast</h3>
+        
+        <details class="component-doc prop-doc">
+          <summary>Documentation</summary>
 <p>This contains the weather forecast for each day of the next few days.  It is updated
 a couple of times a day.  The current day may not have the high or low temperature
 provided.  This is an example which shows only a few days.  The actual implementation
 will have a value for each day of the week.</p>
+        </details>
         
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7ff6d0714710>></div>-->
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='daily_forecast', documentation='This contains the weather forecast for each day of the next few days.  It is updated\na couple of times a day.  The current day may not have the high or low temperature\nprovided.  This is an example which shows only a few days.  The actual implementation\nwill have a value for each day of the week.\n', cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f503f95cda0>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f503f95cdd0>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f503f95c560>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -207,7 +249,9 @@ will have a value for each day of the week.</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.dailyForecast.received.monday.high_temperature" />
+                
+                <input disabled type="number" step="any" ng-model="properties.dailyForecast.received.monday.high_temperature" />
+                
                  
               </td>
             </tr>
@@ -221,7 +265,9 @@ will have a value for each day of the week.</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.dailyForecast.received.monday.low_temperature" />
+                
+                <input disabled type="number" step="any" ng-model="properties.dailyForecast.received.monday.low_temperature" />
+                
                  
               </td>
             </tr>
@@ -246,7 +292,9 @@ will have a value for each day of the week.</p>
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input disabled type="text" ng-model="properties.dailyForecast.received.monday.start_time" />
+                
                  
               </td>
             </tr>
@@ -258,7 +306,9 @@ will have a value for each day of the week.</p>
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input disabled type="text" ng-model="properties.dailyForecast.received.monday.end_time" />
+                
                  
               </td>
             </tr>
@@ -290,7 +340,9 @@ will have a value for each day of the week.</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.dailyForecast.received.tuesday.high_temperature" />
+                
+                <input disabled type="number" step="any" ng-model="properties.dailyForecast.received.tuesday.high_temperature" />
+                
                  
               </td>
             </tr>
@@ -304,7 +356,9 @@ will have a value for each day of the week.</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.dailyForecast.received.tuesday.low_temperature" />
+                
+                <input disabled type="number" step="any" ng-model="properties.dailyForecast.received.tuesday.low_temperature" />
+                
                  
               </td>
             </tr>
@@ -329,7 +383,9 @@ will have a value for each day of the week.</p>
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input disabled type="text" ng-model="properties.dailyForecast.received.tuesday.start_time" />
+                
                  
               </td>
             </tr>
@@ -341,7 +397,9 @@ will have a value for each day of the week.</p>
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input disabled type="text" ng-model="properties.dailyForecast.received.tuesday.end_time" />
+                
                  
               </td>
             </tr>
@@ -373,7 +431,9 @@ will have a value for each day of the week.</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.dailyForecast.received.wednesday.high_temperature" />
+                
+                <input disabled type="number" step="any" ng-model="properties.dailyForecast.received.wednesday.high_temperature" />
+                
                  
               </td>
             </tr>
@@ -387,7 +447,9 @@ will have a value for each day of the week.</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.dailyForecast.received.wednesday.low_temperature" />
+                
+                <input disabled type="number" step="any" ng-model="properties.dailyForecast.received.wednesday.low_temperature" />
+                
                  
               </td>
             </tr>
@@ -412,7 +474,9 @@ will have a value for each day of the week.</p>
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input disabled type="text" ng-model="properties.dailyForecast.received.wednesday.start_time" />
+                
                  
               </td>
             </tr>
@@ -424,7 +488,9 @@ will have a value for each day of the week.</p>
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input disabled type="text" ng-model="properties.dailyForecast.received.wednesday.end_time" />
+                
                  
               </td>
             </tr>
@@ -441,14 +507,16 @@ will have a value for each day of the week.</p>
     </div>
     
     <div class="component-box prop-box" id="prop-box-hourly_forecast">
-        <h3 class="component-title prop-title">Property: hourly_forecast</h3>
-        <div class="component-doc prop-doc">
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['hourlyForecast'].flash}"><span class="mdi mdi-tune"></span> hourly_forecast</h3>
+        
+        <details class="component-doc prop-doc">
+          <summary>Documentation</summary>
 <p>This contains the weather forecast for each hour of the next 24 hours.  The data source
 us updated a couple of times per day, but this API property is updated every hour on the
 hour.</p>
+        </details>
         
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7ff6d0714a70>></div>-->
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='hourly_forecast', documentation='This contains the weather forecast for each hour of the next 24 hours.  The data source\nus updated a couple of times per day, but this API property is updated every hour on the\nhour.\n', cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f503f95d460>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f503f95d3d0>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f503f95c9b0>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -476,7 +544,9 @@ hour.</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.hourlyForecast.received.hour0.temperature" />
+                
+                <input disabled type="number" step="any" ng-model="properties.hourlyForecast.received.hour0.temperature" />
+                
                  
               </td>
             </tr>
@@ -537,7 +607,9 @@ hour.</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.hourlyForecast.received.hour1.temperature" />
+                
+                <input disabled type="number" step="any" ng-model="properties.hourlyForecast.received.hour1.temperature" />
+                
                  
               </td>
             </tr>
@@ -596,7 +668,9 @@ hour.</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.hourlyForecast.received.hour2.temperature" />
+                
+                <input disabled type="number" step="any" ng-model="properties.hourlyForecast.received.hour2.temperature" />
+                
                  
               </td>
             </tr>
@@ -655,7 +729,9 @@ hour.</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.hourlyForecast.received.hour3.temperature" />
+                
+                <input disabled type="number" step="any" ng-model="properties.hourlyForecast.received.hour3.temperature" />
+                
                  
               </td>
             </tr>
@@ -699,13 +775,15 @@ hour.</p>
     </div>
     
     <div class="component-box prop-box" id="prop-box-current_condition_refresh_interval">
-        <h3 class="component-title prop-title">Property: current_condition_refresh_interval</h3>
-        <div class="component-doc prop-doc">
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['currentConditionRefreshInterval'].flash}"><span class="mdi mdi-tune"></span> current_condition_refresh_interval</h3>
+        
+        <details class="component-doc prop-doc">
+          <summary>Documentation</summary>
 <p>This is the maximum interval, in seconds, that the latest weather conditions at the nearest weather
 station are retrieved.</p>
+        </details>
         
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7ff6d0714d10>></div>-->
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='current_condition_refresh_interval', documentation='This is the maximum interval, in seconds, that the latest weather conditions at the nearest weather\nstation are retrieved.\n', cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f503f95c2c0>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f503f954080>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f503f956f90>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -717,7 +795,9 @@ station are retrieved.</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input type="text" ng-model="properties.currentConditionRefreshInterval.received.seconds" />
+                
+                <input type="number" step="1" ng-model="properties.currentConditionRefreshInterval.received.seconds" />
+                
                  
               </td>
             </tr>
@@ -730,12 +810,14 @@ station are retrieved.</p>
     </div>
     
     <div class="component-box prop-box" id="prop-box-hourly_forecast_refresh_interval">
-        <h3 class="component-title prop-title">Property: hourly_forecast_refresh_interval</h3>
-        <div class="component-doc prop-doc">
-<p>This is the maximum interval, in seconds, that the hourly forecast data is retrieved.</p>
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['hourlyForecastRefreshInterval'].flash}"><span class="mdi mdi-tune"></span> hourly_forecast_refresh_interval</h3>
         
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7ff6d07152e0>></div>-->
+        <details class="component-doc prop-doc">
+          <summary>Documentation</summary>
+<p>This is the maximum interval, in seconds, that the hourly forecast data is retrieved.</p>
+        </details>
+        
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='hourly_forecast_refresh_interval', documentation='This is the maximum interval, in seconds, that the hourly forecast data is retrieved.\n', cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f503f95cec0>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f503f957140>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f503f9576e0>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -749,7 +831,9 @@ station are retrieved.</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input type="text" ng-model="properties.hourlyForecastRefreshInterval.received.seconds" />
+                
+                <input type="number" step="1" ng-model="properties.hourlyForecastRefreshInterval.received.seconds" />
+                
                  
               </td>
             </tr>
@@ -762,12 +846,14 @@ station are retrieved.</p>
     </div>
     
     <div class="component-box prop-box" id="prop-box-daily_forecast_refresh_interval">
-        <h3 class="component-title prop-title">Property: daily_forecast_refresh_interval</h3>
-        <div class="component-doc prop-doc">
-<p>This is the maximum interval, in seconds, that the daily forecast data is retrieved.</p>
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['dailyForecastRefreshInterval'].flash}"><span class="mdi mdi-tune"></span> daily_forecast_refresh_interval</h3>
         
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7ff6d0715370>></div>-->
+        <details class="component-doc prop-doc">
+          <summary>Documentation</summary>
+<p>This is the maximum interval, in seconds, that the daily forecast data is retrieved.</p>
+        </details>
+        
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='daily_forecast_refresh_interval', documentation='This is the maximum interval, in seconds, that the daily forecast data is retrieved.\n', cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f503f95d580>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f503f9572c0>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f503f957320>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -779,7 +865,9 @@ station are retrieved.</p>
               </td>
               <td class="arg-value-cell">
                 
-                <input type="text" ng-model="properties.dailyForecastRefreshInterval.received.seconds" />
+                
+                <input type="number" step="1" ng-model="properties.dailyForecastRefreshInterval.received.seconds" />
+                
                  
               </td>
             </tr>
@@ -791,18 +879,22 @@ station are retrieved.</p>
         
     </div>
      
+    </div>
 
     <!------------- METHODS ------------->
+    <div ng-show="activeTab === 'methods'">
     
     <div class="component-box method-box" id="method-box-refresh_daily_forecast">
-        <h3 class="component-title method-title">Method: refresh_daily_forecast</h3>
-        <div class="component-doc method-doc">
+        <h3 class="component-title method-title"><span class="mdi mdi-function"></span> refresh_daily_forecast</h3>
+        
+        <details class="component-doc method-doc">
+          <summary>Documentation</summary>
 <p>When called, this method will force the retrieval of the daily weather forecast from
 the NWS weather API.  </p>
 <p>When called, the <code>daily_forecast</code> API property will be republished with the latest data.</p>
 <p>This method has no arguments and provides no return values.</p>
+        </details>
         
-        </div>
         <!--<div class="method-topic topic">Publish: </div>-->
         <div class="method-form-box">
             <form ng-submit="callMethod(methods.refreshDailyForecast)">
@@ -813,23 +905,23 @@ the NWS weather API.  </p>
                 <button type="submit" class="publish-button">Call refresh_daily_forecast</button>
             </form>
         </div>
-        <div class="last-received method-response" ng-bind="methods['refreshDailyForecast'].received">
+        <div class="last-received method-response" ng-show="methods['refreshDailyForecast'].received_time">
+            <div class="method-response-status"><span class="mdi mdi-check-circle-outline"></span> Response received at <span ng-bind="methods['refreshDailyForecast'].received_time | date:'HH:mm:ss'"></span></div>
         
-          <table class="arglist">
-          
-          </table>
         </div>
     </div>
     
     <div class="component-box method-box" id="method-box-refresh_hourly_forecast">
-        <h3 class="component-title method-title">Method: refresh_hourly_forecast</h3>
-        <div class="component-doc method-doc">
+        <h3 class="component-title method-title"><span class="mdi mdi-function"></span> refresh_hourly_forecast</h3>
+        
+        <details class="component-doc method-doc">
+          <summary>Documentation</summary>
 <p>When called, this method will force the retrieval of the hourly weather forecast from
 the NWS weather API.  </p>
 <p>When called, the <code>hourly_forecast</code> API property will be republished with the latest data.</p>
 <p>This method has no arguments and provides no return values.</p>
+        </details>
         
-        </div>
         <!--<div class="method-topic topic">Publish: </div>-->
         <div class="method-form-box">
             <form ng-submit="callMethod(methods.refreshHourlyForecast)">
@@ -840,25 +932,25 @@ the NWS weather API.  </p>
                 <button type="submit" class="publish-button">Call refresh_hourly_forecast</button>
             </form>
         </div>
-        <div class="last-received method-response" ng-bind="methods['refreshHourlyForecast'].received">
+        <div class="last-received method-response" ng-show="methods['refreshHourlyForecast'].received_time">
+            <div class="method-response-status"><span class="mdi mdi-check-circle-outline"></span> Response received at <span ng-bind="methods['refreshHourlyForecast'].received_time | date:'HH:mm:ss'"></span></div>
         
-          <table class="arglist">
-          
-          </table>
         </div>
     </div>
     
     <div class="component-box method-box" id="method-box-refresh_current_conditions">
-        <h3 class="component-title method-title">Method: refresh_current_conditions</h3>
-        <div class="component-doc method-doc">
+        <h3 class="component-title method-title"><span class="mdi mdi-function"></span> refresh_current_conditions</h3>
+        
+        <details class="component-doc method-doc">
+          <summary>Documentation</summary>
 <p>When called, this method will force the retrieval of the latest weather conditions
 from the nearest weather station.  It also forces a re-calculation of the current
 temperature.</p>
 <p>When called, the <code>current_temperature</code> and <code>current_condition</code> API properties are
 republished with the latest value.</p>
 <p>This method has no arguments and provides no return values.</p>
+        </details>
         
-        </div>
         <!--<div class="method-topic topic">Publish: </div>-->
         <div class="method-form-box">
             <form ng-submit="callMethod(methods.refreshCurrentConditions)">
@@ -869,14 +961,13 @@ republished with the latest value.</p>
                 <button type="submit" class="publish-button">Call refresh_current_conditions</button>
             </form>
         </div>
-        <div class="last-received method-response" ng-bind="methods['refreshCurrentConditions'].received">
+        <div class="last-received method-response" ng-show="methods['refreshCurrentConditions'].received_time">
+            <div class="method-response-status"><span class="mdi mdi-check-circle-outline"></span> Response received at <span ng-bind="methods['refreshCurrentConditions'].received_time | date:'HH:mm:ss'"></span></div>
         
-          <table class="arglist">
-          
-          </table>
         </div>
     </div>
      
+    </div>
 
     
     <div id="console" ng-class="{ 'expanded' : (console.showing) }">
@@ -887,7 +978,7 @@ republished with the latest value.</p>
         <p ng-repeat="msg in console.requests" class="entry">
           <strong>{{msg.name}}:</strong> <em>{{msg.topic}}</em> <span class="elapsedTime" ng-show="msg.responseTime">{{msg.responseTime - msg.requestTime}}ms</span><span class="elapsedTime" ng-show="msg.eventTime">{{msg.eventTime}}</span>
           <span class="outgoing" ng-show="msg.payload">{{msg.payload}}</span>
-          <span class="incoming" ng-show="msg.response">{{msg.response}}</span>
+          <span class="incoming" ng-show="msg.responseTime">{{ (msg.response === null || msg.response === undefined) ? '(empty response)' : msg.response }}</span>
           <span ng-repeat="result in msg.results" class="action-result">{{result}}</span>
         </p>
       </div>

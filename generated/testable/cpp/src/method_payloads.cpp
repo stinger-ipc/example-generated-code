@@ -2,6 +2,7 @@
 #include "method_payloads.hpp"
 
 #include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 #include <stinger/utils/conversions.hpp>
 
 namespace stinger {
@@ -21,6 +22,11 @@ void CallWithNothingRequestArguments::AddToRapidJsonObject(rapidjson::Value& par
 {
 }
 
+bool CallWithNothingRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callWithNothing method return type ---
 CallWithNothingReturnValues CallWithNothingReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -31,6 +37,11 @@ CallWithNothingReturnValues CallWithNothingReturnValues::FromRapidJsonObject(con
 
 void CallWithNothingReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
+}
+
+bool CallWithNothingReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callOneInteger method request arguments ---
@@ -56,6 +67,11 @@ void CallOneIntegerRequestArguments::AddToRapidJsonObject(rapidjson::Value& pare
     parent.AddMember("input1", input1, allocator);
 }
 
+bool CallOneIntegerRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneInteger method return type ---
 CallOneIntegerReturnValues CallOneIntegerReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -77,6 +93,11 @@ CallOneIntegerReturnValues CallOneIntegerReturnValues::FromRapidJsonObject(const
 void CallOneIntegerReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("output1", output1, allocator);
+}
+
+bool CallOneIntegerReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callOptionalInteger method request arguments ---
@@ -106,6 +127,11 @@ void CallOptionalIntegerRequestArguments::AddToRapidJsonObject(rapidjson::Value&
         parent.AddMember("input1", *input1, allocator);
 }
 
+bool CallOptionalIntegerRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOptionalInteger method return type ---
 CallOptionalIntegerReturnValues CallOptionalIntegerReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -131,6 +157,11 @@ void CallOptionalIntegerReturnValues::AddToRapidJsonObject(rapidjson::Value& par
 {
     if (output1)
         parent.AddMember("output1", *output1, allocator);
+}
+
+bool CallOptionalIntegerReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callThreeIntegers method request arguments ---
@@ -182,6 +213,11 @@ void CallThreeIntegersRequestArguments::AddToRapidJsonObject(rapidjson::Value& p
         parent.AddMember("input3", *input3, allocator);
 }
 
+bool CallThreeIntegersRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callThreeIntegers method return type ---
 CallThreeIntegersReturnValues CallThreeIntegersReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -231,6 +267,11 @@ void CallThreeIntegersReturnValues::AddToRapidJsonObject(rapidjson::Value& paren
         parent.AddMember("output3", *output3, allocator);
 }
 
+bool CallThreeIntegersReturnValues::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneString method request arguments ---
 CallOneStringRequestArguments CallOneStringRequestArguments::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -258,6 +299,11 @@ void CallOneStringRequestArguments::AddToRapidJsonObject(rapidjson::Value& paren
     }
 }
 
+bool CallOneStringRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneString method return type ---
 CallOneStringReturnValues CallOneStringReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -283,6 +329,11 @@ void CallOneStringReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, r
         tempStringValue.SetString(output1.c_str(), output1.size(), allocator);
         parent.AddMember("output1", tempStringValue, allocator);
     }
+}
+
+bool CallOneStringReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callOptionalString method request arguments ---
@@ -315,6 +366,11 @@ void CallOptionalStringRequestArguments::AddToRapidJsonObject(rapidjson::Value& 
     }
 }
 
+bool CallOptionalStringRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOptionalString method return type ---
 CallOptionalStringReturnValues CallOptionalStringReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -343,6 +399,11 @@ void CallOptionalStringReturnValues::AddToRapidJsonObject(rapidjson::Value& pare
         tempStringValue.SetString(output1->c_str(), output1->size(), allocator);
         parent.AddMember("output1", tempStringValue, allocator);
     }
+}
+
+bool CallOptionalStringReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callThreeStrings method request arguments ---
@@ -405,6 +466,11 @@ void CallThreeStringsRequestArguments::AddToRapidJsonObject(rapidjson::Value& pa
     }
 }
 
+bool CallThreeStringsRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callThreeStrings method return type ---
 CallThreeStringsReturnValues CallThreeStringsReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -465,6 +531,11 @@ void CallThreeStringsReturnValues::AddToRapidJsonObject(rapidjson::Value& parent
     }
 }
 
+bool CallThreeStringsReturnValues::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneEnum method request arguments ---
 CallOneEnumRequestArguments CallOneEnumRequestArguments::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -488,6 +559,11 @@ void CallOneEnumRequestArguments::AddToRapidJsonObject(rapidjson::Value& parent,
     parent.AddMember("input1", static_cast<int>(input1), allocator);
 }
 
+bool CallOneEnumRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneEnum method return type ---
 CallOneEnumReturnValues CallOneEnumReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -509,6 +585,11 @@ CallOneEnumReturnValues CallOneEnumReturnValues::FromRapidJsonObject(const rapid
 void CallOneEnumReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("output1", static_cast<int>(output1), allocator);
+}
+
+bool CallOneEnumReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callOptionalEnum method request arguments ---
@@ -537,6 +618,11 @@ void CallOptionalEnumRequestArguments::AddToRapidJsonObject(rapidjson::Value& pa
     parent.AddMember("input1", static_cast<int>(*input1), allocator);
 }
 
+bool CallOptionalEnumRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOptionalEnum method return type ---
 CallOptionalEnumReturnValues CallOptionalEnumReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -561,6 +647,11 @@ CallOptionalEnumReturnValues CallOptionalEnumReturnValues::FromRapidJsonObject(c
 void CallOptionalEnumReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("output1", static_cast<int>(*output1), allocator);
+}
+
+bool CallOptionalEnumReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callThreeEnums method request arguments ---
@@ -611,6 +702,11 @@ void CallThreeEnumsRequestArguments::AddToRapidJsonObject(rapidjson::Value& pare
     parent.AddMember("input3", static_cast<int>(*input3), allocator);
 }
 
+bool CallThreeEnumsRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callThreeEnums method return type ---
 CallThreeEnumsReturnValues CallThreeEnumsReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -659,6 +755,11 @@ void CallThreeEnumsReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, 
     parent.AddMember("output3", static_cast<int>(*output3), allocator);
 }
 
+bool CallThreeEnumsReturnValues::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneStruct method request arguments ---
 CallOneStructRequestArguments CallOneStructRequestArguments::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -689,6 +790,11 @@ void CallOneStructRequestArguments::AddToRapidJsonObject(rapidjson::Value& paren
     }
 }
 
+bool CallOneStructRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneStruct method return type ---
 CallOneStructReturnValues CallOneStructReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -717,6 +823,11 @@ void CallOneStructReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, r
 
         parent.AddMember("output1", tempStructValue, allocator);
     }
+}
+
+bool CallOneStructReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callOptionalStruct method request arguments ---
@@ -754,6 +865,11 @@ void CallOptionalStructRequestArguments::AddToRapidJsonObject(rapidjson::Value& 
     }
 }
 
+bool CallOptionalStructRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOptionalStruct method return type ---
 CallOptionalStructReturnValues CallOptionalStructReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -787,6 +903,11 @@ void CallOptionalStructReturnValues::AddToRapidJsonObject(rapidjson::Value& pare
         }
         parent.AddMember("output1", tempStructValue, allocator);
     }
+}
+
+bool CallOptionalStructReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callThreeStructs method request arguments ---
@@ -860,6 +981,11 @@ void CallThreeStructsRequestArguments::AddToRapidJsonObject(rapidjson::Value& pa
     }
 }
 
+bool CallThreeStructsRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callThreeStructs method return type ---
 CallThreeStructsReturnValues CallThreeStructsReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -931,6 +1057,11 @@ void CallThreeStructsReturnValues::AddToRapidJsonObject(rapidjson::Value& parent
     }
 }
 
+bool CallThreeStructsReturnValues::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneDateTime method request arguments ---
 CallOneDateTimeRequestArguments CallOneDateTimeRequestArguments::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -960,6 +1091,11 @@ void CallOneDateTimeRequestArguments::AddToRapidJsonObject(rapidjson::Value& par
     }
 }
 
+bool CallOneDateTimeRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneDateTime method return type ---
 CallOneDateTimeReturnValues CallOneDateTimeReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -987,6 +1123,11 @@ void CallOneDateTimeReturnValues::AddToRapidJsonObject(rapidjson::Value& parent,
         tempOutput1StringValue.SetString(output1IsoString.c_str(), output1IsoString.size(), allocator);
         parent.AddMember("output1", tempOutput1StringValue, allocator);
     }
+}
+
+bool CallOneDateTimeReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callOptionalDateTime method request arguments ---
@@ -1021,6 +1162,11 @@ void CallOptionalDateTimeRequestArguments::AddToRapidJsonObject(rapidjson::Value
     }
 }
 
+bool CallOptionalDateTimeRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOptionalDateTime method return type ---
 CallOptionalDateTimeReturnValues CallOptionalDateTimeReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -1051,6 +1197,11 @@ void CallOptionalDateTimeReturnValues::AddToRapidJsonObject(rapidjson::Value& pa
         tempOutput1StringValue.SetString(output1IsoString.c_str(), output1IsoString.size(), allocator);
         parent.AddMember("output1", tempOutput1StringValue, allocator);
     }
+}
+
+bool CallOptionalDateTimeReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callThreeDateTimes method request arguments ---
@@ -1119,6 +1270,11 @@ void CallThreeDateTimesRequestArguments::AddToRapidJsonObject(rapidjson::Value& 
     }
 }
 
+bool CallThreeDateTimesRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callThreeDateTimes method return type ---
 CallThreeDateTimesReturnValues CallThreeDateTimesReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -1185,6 +1341,11 @@ void CallThreeDateTimesReturnValues::AddToRapidJsonObject(rapidjson::Value& pare
     }
 }
 
+bool CallThreeDateTimesReturnValues::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneDuration method request arguments ---
 CallOneDurationRequestArguments CallOneDurationRequestArguments::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -1214,6 +1375,11 @@ void CallOneDurationRequestArguments::AddToRapidJsonObject(rapidjson::Value& par
     }
 }
 
+bool CallOneDurationRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneDuration method return type ---
 CallOneDurationReturnValues CallOneDurationReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -1241,6 +1407,11 @@ void CallOneDurationReturnValues::AddToRapidJsonObject(rapidjson::Value& parent,
         tempOutput1StringValue.SetString(output1IsoString.c_str(), output1IsoString.size(), allocator);
         parent.AddMember("output1", tempOutput1StringValue, allocator);
     }
+}
+
+bool CallOneDurationReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callOptionalDuration method request arguments ---
@@ -1275,6 +1446,11 @@ void CallOptionalDurationRequestArguments::AddToRapidJsonObject(rapidjson::Value
     }
 }
 
+bool CallOptionalDurationRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOptionalDuration method return type ---
 CallOptionalDurationReturnValues CallOptionalDurationReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -1305,6 +1481,11 @@ void CallOptionalDurationReturnValues::AddToRapidJsonObject(rapidjson::Value& pa
         tempOutput1StringValue.SetString(output1IsoString.c_str(), output1IsoString.size(), allocator);
         parent.AddMember("output1", tempOutput1StringValue, allocator);
     }
+}
+
+bool CallOptionalDurationReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callThreeDurations method request arguments ---
@@ -1373,6 +1554,11 @@ void CallThreeDurationsRequestArguments::AddToRapidJsonObject(rapidjson::Value& 
     }
 }
 
+bool CallThreeDurationsRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callThreeDurations method return type ---
 CallThreeDurationsReturnValues CallThreeDurationsReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -1439,6 +1625,11 @@ void CallThreeDurationsReturnValues::AddToRapidJsonObject(rapidjson::Value& pare
     }
 }
 
+bool CallThreeDurationsReturnValues::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneBinary method request arguments ---
 CallOneBinaryRequestArguments CallOneBinaryRequestArguments::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -1468,6 +1659,11 @@ void CallOneBinaryRequestArguments::AddToRapidJsonObject(rapidjson::Value& paren
     }
 }
 
+bool CallOneBinaryRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneBinary method return type ---
 CallOneBinaryReturnValues CallOneBinaryReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -1495,6 +1691,11 @@ void CallOneBinaryReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, r
         tempOutput1StringValue.SetString(output1B64String.c_str(), output1B64String.size(), allocator);
         parent.AddMember("output1", tempOutput1StringValue, allocator);
     }
+}
+
+bool CallOneBinaryReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callOptionalBinary method request arguments ---
@@ -1529,6 +1730,11 @@ void CallOptionalBinaryRequestArguments::AddToRapidJsonObject(rapidjson::Value& 
     }
 }
 
+bool CallOptionalBinaryRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOptionalBinary method return type ---
 CallOptionalBinaryReturnValues CallOptionalBinaryReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -1559,6 +1765,11 @@ void CallOptionalBinaryReturnValues::AddToRapidJsonObject(rapidjson::Value& pare
         tempOutput1StringValue.SetString(output1B64String.c_str(), output1B64String.size(), allocator);
         parent.AddMember("output1", tempOutput1StringValue, allocator);
     }
+}
+
+bool CallOptionalBinaryReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callThreeBinaries method request arguments ---
@@ -1627,6 +1838,11 @@ void CallThreeBinariesRequestArguments::AddToRapidJsonObject(rapidjson::Value& p
     }
 }
 
+bool CallThreeBinariesRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callThreeBinaries method return type ---
 CallThreeBinariesReturnValues CallThreeBinariesReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -1693,6 +1909,11 @@ void CallThreeBinariesReturnValues::AddToRapidJsonObject(rapidjson::Value& paren
     }
 }
 
+bool CallThreeBinariesReturnValues::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneListOfIntegers method request arguments ---
 CallOneListOfIntegersRequestArguments CallOneListOfIntegersRequestArguments::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -1731,6 +1952,11 @@ void CallOneListOfIntegersRequestArguments::AddToRapidJsonObject(rapidjson::Valu
     }
 }
 
+bool CallOneListOfIntegersRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOneListOfIntegers method return type ---
 CallOneListOfIntegersReturnValues CallOneListOfIntegersReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -1767,6 +1993,11 @@ void CallOneListOfIntegersReturnValues::AddToRapidJsonObject(rapidjson::Value& p
         }
         parent.AddMember("output1", tempArrayValue, allocator);
     }
+}
+
+bool CallOneListOfIntegersReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callOptionalListOfFloats method request arguments ---
@@ -1810,6 +2041,11 @@ void CallOptionalListOfFloatsRequestArguments::AddToRapidJsonObject(rapidjson::V
     }
 }
 
+bool CallOptionalListOfFloatsRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callOptionalListOfFloats method return type ---
 CallOptionalListOfFloatsReturnValues CallOptionalListOfFloatsReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -1849,6 +2085,11 @@ void CallOptionalListOfFloatsReturnValues::AddToRapidJsonObject(rapidjson::Value
         }
         parent.AddMember("output1", tempArrayValue, allocator);
     }
+}
+
+bool CallOptionalListOfFloatsReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for callTwoLists method request arguments ---
@@ -1920,6 +2161,11 @@ void CallTwoListsRequestArguments::AddToRapidJsonObject(rapidjson::Value& parent
     }
 }
 
+bool CallTwoListsRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for callTwoLists method return type ---
 CallTwoListsReturnValues CallTwoListsReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -1987,6 +2233,11 @@ void CallTwoListsReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, ra
         }
         parent.AddMember("output2", tempArrayValue, allocator);
     }
+}
+
+bool CallTwoListsReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 } // namespace testable

@@ -2,6 +2,7 @@
 #include "method_payloads.hpp"
 
 #include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 #include <stinger/utils/conversions.hpp>
 
 namespace stinger {
@@ -21,6 +22,11 @@ void RefreshDailyForecastRequestArguments::AddToRapidJsonObject(rapidjson::Value
 {
 }
 
+bool RefreshDailyForecastRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for refresh_daily_forecast method return type ---
 RefreshDailyForecastReturnValues RefreshDailyForecastReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -31,6 +37,11 @@ RefreshDailyForecastReturnValues RefreshDailyForecastReturnValues::FromRapidJson
 
 void RefreshDailyForecastReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
+}
+
+bool RefreshDailyForecastReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for refresh_hourly_forecast method request arguments ---
@@ -45,6 +56,11 @@ void RefreshHourlyForecastRequestArguments::AddToRapidJsonObject(rapidjson::Valu
 {
 }
 
+bool RefreshHourlyForecastRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for refresh_hourly_forecast method return type ---
 RefreshHourlyForecastReturnValues RefreshHourlyForecastReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -55,6 +71,11 @@ RefreshHourlyForecastReturnValues RefreshHourlyForecastReturnValues::FromRapidJs
 
 void RefreshHourlyForecastReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
+}
+
+bool RefreshHourlyForecastReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for refresh_current_conditions method request arguments ---
@@ -69,6 +90,11 @@ void RefreshCurrentConditionsRequestArguments::AddToRapidJsonObject(rapidjson::V
 {
 }
 
+bool RefreshCurrentConditionsRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for refresh_current_conditions method return type ---
 RefreshCurrentConditionsReturnValues RefreshCurrentConditionsReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -79,6 +105,11 @@ RefreshCurrentConditionsReturnValues RefreshCurrentConditionsReturnValues::FromR
 
 void RefreshCurrentConditionsReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
+}
+
+bool RefreshCurrentConditionsReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 } // namespace weather

@@ -4,8 +4,7 @@ on the next generation.
 
 It contains enumerations used by the Simple interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #pragma once

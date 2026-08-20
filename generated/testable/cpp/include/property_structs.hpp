@@ -4,8 +4,7 @@ on the next generation.
 
 It contains enumerations used by the testable interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #pragma once
@@ -25,6 +24,8 @@ namespace testable {
 struct ReadWriteIntegerProperty {
     static ReadWriteIntegerProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     int value;
 };
 
@@ -34,6 +35,8 @@ struct ReadWriteIntegerProperty {
 struct ReadOnlyIntegerProperty {
     static ReadOnlyIntegerProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     int value;
 };
 
@@ -43,6 +46,8 @@ struct ReadOnlyIntegerProperty {
 struct ReadWriteOptionalIntegerProperty {
     static ReadWriteOptionalIntegerProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::optional<int> value;
 };
 
@@ -52,6 +57,8 @@ struct ReadWriteOptionalIntegerProperty {
 struct ReadWriteTwoIntegersProperty {
     static ReadWriteTwoIntegersProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     int first; ///< An integer value.
     std::optional<int> second;
 };
@@ -62,6 +69,8 @@ struct ReadWriteTwoIntegersProperty {
 struct ReadOnlyStringProperty {
     static ReadOnlyStringProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::string value;
 };
 
@@ -71,6 +80,8 @@ struct ReadOnlyStringProperty {
 struct ReadWriteStringProperty {
     static ReadWriteStringProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::string value;
 };
 
@@ -80,6 +91,8 @@ struct ReadWriteStringProperty {
 struct ReadWriteOptionalStringProperty {
     static ReadWriteOptionalStringProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::optional<std::string> value;
 };
 
@@ -89,6 +102,8 @@ struct ReadWriteOptionalStringProperty {
 struct ReadWriteTwoStringsProperty {
     static ReadWriteTwoStringsProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::string first; ///< A string value.
     std::optional<std::string> second;
 };
@@ -99,6 +114,8 @@ struct ReadWriteTwoStringsProperty {
 struct ReadWriteStructProperty {
     static ReadWriteStructProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     AllTypes value;
 };
 
@@ -108,6 +125,8 @@ struct ReadWriteStructProperty {
 struct ReadWriteOptionalStructProperty {
     static ReadWriteOptionalStructProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::optional<AllTypes> value;
 };
 
@@ -117,6 +136,8 @@ struct ReadWriteOptionalStructProperty {
 struct ReadWriteTwoStructsProperty {
     static ReadWriteTwoStructsProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     AllTypes first; ///< A struct value.
     std::optional<AllTypes> second;
 };
@@ -127,6 +148,8 @@ struct ReadWriteTwoStructsProperty {
 struct ReadOnlyEnumProperty {
     static ReadOnlyEnumProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     Numbers value;
 };
 
@@ -136,6 +159,8 @@ struct ReadOnlyEnumProperty {
 struct ReadWriteEnumProperty {
     static ReadWriteEnumProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     Numbers value;
 };
 
@@ -145,6 +170,8 @@ struct ReadWriteEnumProperty {
 struct ReadWriteOptionalEnumProperty {
     static ReadWriteOptionalEnumProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::optional<Numbers> value;
 };
 
@@ -154,6 +181,8 @@ struct ReadWriteOptionalEnumProperty {
 struct ReadWriteTwoEnumsProperty {
     static ReadWriteTwoEnumsProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     Numbers first; ///< An enum value.
     std::optional<Numbers> second;
 };
@@ -164,6 +193,8 @@ struct ReadWriteTwoEnumsProperty {
 struct ReadWriteDatetimeProperty {
     static ReadWriteDatetimeProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::chrono::time_point<std::chrono::system_clock> value;
 };
 
@@ -173,6 +204,8 @@ struct ReadWriteDatetimeProperty {
 struct ReadWriteOptionalDatetimeProperty {
     static ReadWriteOptionalDatetimeProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::optional<std::chrono::time_point<std::chrono::system_clock>> value;
 };
 
@@ -182,6 +215,8 @@ struct ReadWriteOptionalDatetimeProperty {
 struct ReadWriteTwoDatetimesProperty {
     static ReadWriteTwoDatetimesProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::chrono::time_point<std::chrono::system_clock> first; ///< A date and time value.
     std::optional<std::chrono::time_point<std::chrono::system_clock>> second;
 };
@@ -192,6 +227,8 @@ struct ReadWriteTwoDatetimesProperty {
 struct ReadWriteDurationProperty {
     static ReadWriteDurationProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::chrono::duration<double> value;
 };
 
@@ -201,6 +238,8 @@ struct ReadWriteDurationProperty {
 struct ReadWriteOptionalDurationProperty {
     static ReadWriteOptionalDurationProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::optional<std::chrono::duration<double>> value;
 };
 
@@ -210,6 +249,8 @@ struct ReadWriteOptionalDurationProperty {
 struct ReadWriteTwoDurationsProperty {
     static ReadWriteTwoDurationsProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::chrono::duration<double> first; ///< A duration of time.
     std::optional<std::chrono::duration<double>> second;
 };
@@ -220,6 +261,8 @@ struct ReadWriteTwoDurationsProperty {
 struct ReadWriteBinaryProperty {
     static ReadWriteBinaryProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::vector<uint8_t> value;
 };
 
@@ -229,6 +272,8 @@ struct ReadWriteBinaryProperty {
 struct ReadWriteOptionalBinaryProperty {
     static ReadWriteOptionalBinaryProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::optional<std::vector<uint8_t>> value;
 };
 
@@ -238,6 +283,8 @@ struct ReadWriteOptionalBinaryProperty {
 struct ReadWriteTwoBinariesProperty {
     static ReadWriteTwoBinariesProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::vector<uint8_t> first; ///< A binary blob of data.
     std::optional<std::vector<uint8_t>> second;
 };
@@ -248,6 +295,8 @@ struct ReadWriteTwoBinariesProperty {
 struct ReadWriteListOfStringsProperty {
     static ReadWriteListOfStringsProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::vector<std::string> value;
 };
 
@@ -257,6 +306,8 @@ struct ReadWriteListOfStringsProperty {
 struct ReadWriteListsProperty {
     static ReadWriteListsProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::vector<Numbers> theList;
     std::optional<std::vector<std::chrono::time_point<std::chrono::system_clock>>> optionalList;
 };

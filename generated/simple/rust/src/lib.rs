@@ -28,6 +28,8 @@ pub mod server;
 
 pub mod lwt;
 
+pub mod constants;
+
 // Re-export commonly used types from payloads when available
 #[cfg(feature = "payloads")]
 pub use payloads::*;

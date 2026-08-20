@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="./styles.css" />
     <!--
     This is automatically generated code.
-    LICENSE: This generated content is not subject to any license restrictions.
-    TODO: Get license text from stinger file
+    
     -->
   </head>
   
@@ -23,13 +22,33 @@
       
       </p>
     </div>
+
+    <!------------- TAB BAR ------------->
+    <div class="tab-bar">
+      
+      <button class="tab-btn" ng-class="{'active': activeTab === 'signals'}" ng-click="activeTab = 'signals'">
+        <span class="mdi mdi-bell-outline"></span> Signals
+      </button>
+      
+      
+      <button class="tab-btn" ng-class="{'active': activeTab === 'properties'}" ng-click="activeTab = 'properties'">
+        <span class="mdi mdi-tune"></span> Properties
+      </button>
+      
+      
+      <button class="tab-btn" ng-class="{'active': activeTab === 'methods'}" ng-click="activeTab = 'methods'">
+        <span class="mdi mdi-function"></span> Methods
+      </button>
+      
+    </div>
+
     <!------------- SIGNALS ------------->
+    <div ng-show="activeTab === 'signals'">
     
     <div class="component-box signal-box" id="signal-box-person_entered">
-        <h3 class="component-title signal-title">Signal: person_entered</h3>
-        <div class="component-doc signal-doc">
-        </div>
-        <!--<div class="signal-topic topic">Subscribe: <bound method Signal.topic of <stingeripc.components.Signal object at 0x7f3f0ba56570>></div>-->
+        <h3 class="component-title signal-title" ng-class="{'flash': signals['personEntered'].flash}"><span class="mdi mdi-bell-outline"></span> person_entered</h3>
+        
+        <!--<div class="signal-topic topic">Subscribe: {prefix}/Simple/{service_id}/signal/person_entered</div>-->
         <div class="last-received signal-value">
         
           <table class="arglist">
@@ -55,7 +74,9 @@
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input disabled type="text" ng-model="signals.personEntered.received.person.name" />
+                
                  
               </td>
             </tr>
@@ -85,14 +106,15 @@
         </div>
     </div>
     
+    </div>
 
     <!------------- PROPERTIES ------------->
+    <div ng-show="activeTab === 'properties'">
     
     <div class="component-box prop-box" id="prop-box-school">
-        <h3 class="component-title prop-title">Property: school</h3>
-        <div class="component-doc prop-doc">
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7f3f0a827410>></div>-->
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['school'].flash}"><span class="mdi mdi-tune"></span> school</h3>
+        
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='school', documentation=None, cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7fcc4a39d550>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7fcc4a392930>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7fcc4a3925d0>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -106,7 +128,9 @@
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input type="text" ng-model="properties.school.received.name" />
+                
                  
               </td>
             </tr>
@@ -118,15 +142,19 @@
         
     </div>
      
+    </div>
 
     <!------------- METHODS ------------->
+    <div ng-show="activeTab === 'methods'">
     
     <div class="component-box method-box" id="method-box-trade_numbers">
-        <h3 class="component-title method-title">Method: trade_numbers</h3>
-        <div class="component-doc method-doc">
-<p>A simple method which trades favorite numbers.</p>
+        <h3 class="component-title method-title"><span class="mdi mdi-function"></span> trade_numbers</h3>
         
-        </div>
+        <details class="component-doc method-doc">
+          <summary>Documentation</summary>
+<p>A simple method which trades favorite numbers.</p>
+        </details>
+        
         <!--<div class="method-topic topic">Publish: </div>-->
         <div class="method-form-box">
             <form ng-submit="callMethod(methods.tradeNumbers)">
@@ -142,7 +170,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input type="text" ng-model="methods.tradeNumbers.args.your_number" />
+                
+                <input type="number" step="1" ng-model="methods.tradeNumbers.args.your_number" />
+                
                  
               </td>
             </tr>
@@ -151,14 +181,13 @@
                 <button type="submit" class="publish-button">Call trade_numbers</button>
             </form>
         </div>
-        <div class="last-received method-response" ng-bind="methods['tradeNumbers'].received">
+        <div class="last-received method-response" ng-show="methods['tradeNumbers'].received_time">
+            <div class="method-response-status"><span class="mdi mdi-check-circle-outline"></span> Response received at <span ng-bind="methods['tradeNumbers'].received_time | date:'HH:mm:ss'"></span></div>
         
-          <table class="arglist">
-          
-          </table>
         </div>
     </div>
      
+    </div>
 
     
     <div id="console" ng-class="{ 'expanded' : (console.showing) }">
@@ -169,7 +198,7 @@
         <p ng-repeat="msg in console.requests" class="entry">
           <strong>{{msg.name}}:</strong> <em>{{msg.topic}}</em> <span class="elapsedTime" ng-show="msg.responseTime">{{msg.responseTime - msg.requestTime}}ms</span><span class="elapsedTime" ng-show="msg.eventTime">{{msg.eventTime}}</span>
           <span class="outgoing" ng-show="msg.payload">{{msg.payload}}</span>
-          <span class="incoming" ng-show="msg.response">{{msg.response}}</span>
+          <span class="incoming" ng-show="msg.responseTime">{{ (msg.response === null || msg.response === undefined) ? '(empty response)' : msg.response }}</span>
           <span ng-repeat="result in msg.results" class="action-result">{{result}}</span>
         </p>
       </div>

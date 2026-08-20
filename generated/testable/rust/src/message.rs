@@ -100,6 +100,88 @@ pub fn property_update_response<T: Serialize>(
     Ok(msg)
 }
 
+#[cfg(any(feature = "server", test))]
+pub fn stable_property_value<T: Serialize>(
+    topic: &str,
+    payload: &T,
+    property_version: u32,
+    version: &str,
+) -> Result<MqttMessage, MethodReturnCode> {
+    let mut builder = MqttMessageBuilder::default();
+    builder
+        .topic(topic)
+        .qos(QoS::AtLeastOnce)
+        .retain(true)
+        .user_property("Version", version);
+    match builder.object_payload(payload) {
+        Ok(_) => {
+            builder.user_property("PropertyVersion", property_version.to_string());
+        }
+        Err(e) => return Err(MethodReturnCode::ServerSerializationError(e.to_string())),
+    }
+    let msg = builder
+        .build()
+        .map_err(|e| MethodReturnCode::PayloadError(e.to_string()))?;
+    Ok(msg)
+}
+
+#[cfg(feature = "client")]
+pub fn stable_property_update_request<T: Serialize>(
+    topic: &str,
+    payload: &T,
+    property_version: u32,
+    correlation_id: Uuid,
+    response_topic: String,
+    version: &str,
+) -> Result<MqttMessage, MethodReturnCode> {
+    let msg = MqttMessageBuilder::default()
+        .topic(topic)
+        .object_payload(payload)
+        .map_err(|e| MethodReturnCode::ClientSerializationError(e.to_string()))?
+        .qos(QoS::AtLeastOnce)
+        .retain(false)
+        .response_topic(response_topic)
+        .user_property("PropertyVersion", property_version.to_string())
+        .user_property("Version", version)
+        .correlation_data(Bytes::from(correlation_id.to_string()))
+        .build()
+        .map_err(|e| MethodReturnCode::PayloadError(e.to_string()))?;
+    Ok(msg)
+}
+
+#[cfg(feature = "server")]
+pub fn stable_property_update_response<T: Serialize>(
+    topic: &str,
+    payload: &T,
+    correlation_data: Bytes,
+    return_code: MethodReturnCode,
+    version: &str,
+) -> Result<MqttMessage, MethodReturnCode> {
+    let (code_num, debug_info) = return_code.to_code();
+    let mut builder = MqttMessageBuilder::default();
+    builder
+        .topic(topic)
+        .qos(QoS::AtLeastOnce)
+        .retain(false)
+        .correlation_data(correlation_data)
+        .user_property("Version", version);
+    match builder.object_payload(payload) {
+        Ok(_) => {
+            builder.user_property("ReturnCode", code_num.to_string());
+            if let Some(info) = debug_info {
+                builder.user_property("DebugInfo", info);
+            }
+        }
+        Err(e) => {
+            return Err(MethodReturnCode::PayloadError(e.to_string()));
+        }
+    }
+    let msg = builder
+        .build()
+        .map_err(|e| MethodReturnCode::PayloadError(e.to_string()))?;
+    Ok(msg)
+}
+
 #[cfg(feature = "client")]
 pub fn request<T: Serialize>(
     topic: &str,
@@ -155,6 +237,91 @@ pub fn response<T: Serialize>(
     Ok(msg)
 }
 
+#[cfg(feature = "client")]
+pub fn stable_request<T: Serialize>(
+    topic: &str,
+    payload: &T,
+    correlation_id: Uuid,
+    response_topic: String,
+    version: &str,
+) -> Result<MqttMessage, MethodReturnCode> {
+    let msg = MqttMessageBuilder::default()
+        .topic(topic)
+        .object_payload(payload)
+        .map_err(|e| MethodReturnCode::ClientSerializationError(e.to_string()))?
+        .qos(QoS::ExactlyOnce)
+        .retain(false)
+        .correlation_data(Bytes::from(correlation_id.to_string()))
+        .response_topic(response_topic)
+        .user_property("Version", version)
+        .build()
+        .map_err(|e| MethodReturnCode::PayloadError(e.to_string()))?;
+    Ok(msg)
+}
+
+#[cfg(feature = "server")]
+pub fn stable_response<T: Serialize>(
+    topic: &str,
+    payload: &T,
+    correlation_data: Bytes,
+    debug_info: Option<String>,
+    version: &str,
+) -> Result<MqttMessage, MethodReturnCode> {
+    let mut builder = MqttMessageBuilder::default();
+    builder
+        .topic(topic)
+        .qos(QoS::AtLeastOnce)
+        .retain(false)
+        .correlation_data(correlation_data)
+        .user_property("Version", version);
+    match builder.object_payload(payload) {
+        Ok(_) => {
+            builder.user_property("ReturnCode", "0");
+            if let Some(info) = debug_info {
+                builder.user_property("DebugInfo", info).payload("{}");
+            }
+        }
+        Err(e) => {
+            let retcode = MethodReturnCode::ServerSerializationError(e.to_string());
+            let (code_num, debug_info) = retcode.to_code();
+            builder.user_property("ReturnCode", code_num.to_string());
+            if let Some(info) = debug_info {
+                builder.user_property("DebugInfo", info);
+            }
+        }
+    }
+    let msg = builder
+        .build()
+        .map_err(|e| MethodReturnCode::PayloadError(e.to_string()))?;
+    Ok(msg)
+}
+
+#[cfg(feature = "server")]
+pub fn stable_error_response(
+    topic: &str,
+    correlation_data: Option<Bytes>,
+    return_code: MethodReturnCode,
+    version: &str,
+) -> Result<MqttMessage, MethodReturnCode> {
+    let (code_num, debug_info) = return_code.to_code();
+    let mut builder = MqttMessageBuilder::default();
+    builder
+        .topic(topic)
+        .payload("{}")
+        .qos(QoS::AtLeastOnce)
+        .retain(false)
+        .correlation_data(correlation_data)
+        .user_property("ReturnCode", code_num.to_string())
+        .user_property("Version", version);
+    if let Some(info) = debug_info {
+        builder.user_property("DebugInfo", info);
+    }
+    let msg = builder
+        .build()
+        .map_err(|e| MethodReturnCode::PayloadError(e.to_string()))?;
+    Ok(msg)
+}
+
 #[cfg(feature = "server")]
 pub fn error_response(
     topic: &str,
@@ -187,6 +354,24 @@ pub fn signal<T: Serialize>(topic: &str, payload: &T) -> Result<MqttMessage, Met
         .map_err(|e| MethodReturnCode::ServerSerializationError(e.to_string()))?
         .qos(QoS::ExactlyOnce)
         .retain(false)
+        .build()
+        .map_err(|e| MethodReturnCode::PayloadError(e.to_string()))?;
+    Ok(msg)
+}
+
+#[cfg(feature = "server")]
+pub fn stable_signal<T: Serialize>(
+    topic: &str,
+    payload: &T,
+    version: &str,
+) -> Result<MqttMessage, MethodReturnCode> {
+    let msg = MqttMessageBuilder::default()
+        .topic(topic)
+        .object_payload(payload)
+        .map_err(|e| MethodReturnCode::ServerSerializationError(e.to_string()))?
+        .qos(QoS::ExactlyOnce)
+        .retain(false)
+        .user_property("Version", version)
         .build()
         .map_err(|e| MethodReturnCode::PayloadError(e.to_string()))?;
     Ok(msg)

@@ -1,6 +1,7 @@
 """
 Tests for Full client.
 """
+
 import pytest
 import sys
 from pathlib import Path
@@ -112,12 +113,25 @@ class TestClientProperties:
         
 
     
-    def test_favorite_number_setter(self, client):
+    def test_favorite_number_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_favorite_number_value =42
             
         client.favorite_number = new_favorite_number_value
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'favorite_number' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'favorite_number' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'favorite_number' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_favorite_number_obj =FavoriteNumberProperty(number=new_favorite_number_value)
+        assert json.loads(new_favorite_number_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'favorite_number' setter did not publish the correct JSON payload"
+        
     
-    def test_favorite_foods_setter(self, client):
+    def test_favorite_foods_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_favorite_foods_value =FavoriteFoodsProperty(
                 
                 drink="apples",
@@ -128,18 +142,50 @@ class TestClientProperties:
                 
             )
         client.favorite_foods = new_favorite_foods_value
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'favorite_foods' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'favorite_foods' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'favorite_foods' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_favorite_foods_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'favorite_foods' setter did not publish the correct JSON payload"
+        
     
-    def test_family_name_setter(self, client):
+    def test_family_name_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_family_name_value ="apples"
             
         client.family_name = new_family_name_value
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'family_name' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'family_name' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'family_name' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_family_name_obj =FamilyNameProperty(family_name=new_family_name_value)
+        assert json.loads(new_family_name_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'family_name' setter did not publish the correct JSON payload"
+        
     
-    def test_last_breakfast_time_setter(self, client):
+    def test_last_breakfast_time_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_last_breakfast_time_value =datetime.now(UTC)
             
         client.last_breakfast_time = new_last_breakfast_time_value
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'last_breakfast_time' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'last_breakfast_time' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'last_breakfast_time' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_last_breakfast_time_obj =LastBreakfastTimeProperty(timestamp=new_last_breakfast_time_value)
+        assert json.loads(new_last_breakfast_time_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'last_breakfast_time' setter did not publish the correct JSON payload"
+        
     
-    def test_last_birthdays_setter(self, client):
+    def test_last_birthdays_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_last_birthdays_value =LastBirthdaysProperty(
                 
                 mom=datetime.now(UTC),
@@ -152,6 +198,14 @@ class TestClientProperties:
                 
             )
         client.last_birthdays = new_last_birthdays_value
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'last_birthdays' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'last_birthdays' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'last_birthdays' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_last_birthdays_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'last_birthdays' setter did not publish the correct JSON payload"
+        
     
 
 

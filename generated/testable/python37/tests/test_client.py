@@ -54,7 +54,7 @@ def initial_property_values():
             optional_string="apples",
             optional_enum=Numbers.ONE,
             optional_entry_object=Entry(key=42, value="apples"),
-            optional_date_time=None,
+            optional_date_time=datetime.now(UTC),
             optional_duration=None,
             optional_binary=b"example binary data",
             array_of_integers=[42, 2022],
@@ -86,7 +86,7 @@ def initial_property_values():
             optional_string="apples",
             optional_enum=Numbers.ONE,
             optional_entry_object=Entry(key=42, value="apples"),
-            optional_date_time=None,
+            optional_date_time=datetime.now(UTC),
             optional_duration=None,
             optional_binary=b"example binary data",
             array_of_integers=[42, 2022],
@@ -342,41 +342,109 @@ class TestClientProperties:
         assert client.read_write_lists is not None, "Property 'read_write_lists' not initialized properly"
         assert client.read_write_lists == initial_property_values.read_write_lists, "Property 'read_write_lists' value does not match expected value"
 
-    def test_read_write_integer_setter(self, client):
+    def test_read_write_integer_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_integer_value = 42
 
         client.read_write_integer = new_read_write_integer_value
 
-    def test_read_write_optional_integer_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_integer' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_integer' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_integer' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_integer_obj = ReadWriteIntegerProperty(value=new_read_write_integer_value)
+        assert json.loads(new_read_write_integer_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_integer' setter did not publish the correct JSON payload"
+
+    def test_read_write_optional_integer_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_optional_integer_value = 42
 
         client.read_write_optional_integer = new_read_write_optional_integer_value
 
-    def test_read_write_two_integers_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_optional_integer' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_optional_integer' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_optional_integer' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_optional_integer_obj = ReadWriteOptionalIntegerProperty(value=new_read_write_optional_integer_value)
+        assert (
+            json.loads(new_read_write_optional_integer_obj.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'read_write_optional_integer' setter did not publish the correct JSON payload"
+
+    def test_read_write_two_integers_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_two_integers_value = ReadWriteTwoIntegersProperty(
             first=42,
             second=42,
         )
         client.read_write_two_integers = new_read_write_two_integers_value
 
-    def test_read_write_string_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_two_integers' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_two_integers' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_two_integers' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert (
+            json.loads(new_read_write_two_integers_value.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'read_write_two_integers' setter did not publish the correct JSON payload"
+
+    def test_read_write_string_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_string_value = "apples"
 
         client.read_write_string = new_read_write_string_value
 
-    def test_read_write_optional_string_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_string' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_string' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_string' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_string_obj = ReadWriteStringProperty(value=new_read_write_string_value)
+        assert json.loads(new_read_write_string_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_string' setter did not publish the correct JSON payload"
+
+    def test_read_write_optional_string_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_optional_string_value = "apples"
 
         client.read_write_optional_string = new_read_write_optional_string_value
 
-    def test_read_write_two_strings_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_optional_string' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_optional_string' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_optional_string' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_optional_string_obj = ReadWriteOptionalStringProperty(value=new_read_write_optional_string_value)
+        assert (
+            json.loads(new_read_write_optional_string_obj.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'read_write_optional_string' setter did not publish the correct JSON payload"
+
+    def test_read_write_two_strings_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_two_strings_value = ReadWriteTwoStringsProperty(
             first="apples",
             second="apples",
         )
         client.read_write_two_strings = new_read_write_two_strings_value
 
-    def test_read_write_struct_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_two_strings' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_two_strings' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_two_strings' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert (
+            json.loads(new_read_write_two_strings_value.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'read_write_two_strings' setter did not publish the correct JSON payload"
+
+    def test_read_write_struct_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_struct_value = AllTypes(
             the_bool=True,
             the_int=42,
@@ -412,7 +480,17 @@ class TestClientProperties:
 
         client.read_write_struct = new_read_write_struct_value
 
-    def test_read_write_optional_struct_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_struct' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_struct' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_struct' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_struct_obj = ReadWriteStructProperty(value=new_read_write_struct_value)
+        assert json.loads(new_read_write_struct_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_struct' setter did not publish the correct JSON payload"
+
+    def test_read_write_optional_struct_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_optional_struct_value = AllTypes(
             the_bool=True,
             the_int=42,
@@ -448,7 +526,19 @@ class TestClientProperties:
 
         client.read_write_optional_struct = new_read_write_optional_struct_value
 
-    def test_read_write_two_structs_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_optional_struct' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_optional_struct' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_optional_struct' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_optional_struct_obj = ReadWriteOptionalStructProperty(value=new_read_write_optional_struct_value)
+        assert (
+            json.loads(new_read_write_optional_struct_obj.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'read_write_optional_struct' setter did not publish the correct JSON payload"
+
+    def test_read_write_two_structs_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_two_structs_value = ReadWriteTwoStructsProperty(
             first=AllTypes(
                 the_bool=True,
@@ -517,85 +607,245 @@ class TestClientProperties:
         )
         client.read_write_two_structs = new_read_write_two_structs_value
 
-    def test_read_write_enum_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_two_structs' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_two_structs' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_two_structs' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert (
+            json.loads(new_read_write_two_structs_value.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'read_write_two_structs' setter did not publish the correct JSON payload"
+
+    def test_read_write_enum_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_enum_value = Numbers.ONE
 
         client.read_write_enum = new_read_write_enum_value
 
-    def test_read_write_optional_enum_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_enum' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_enum' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_enum' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_enum_obj = ReadWriteEnumProperty(value=new_read_write_enum_value)
+        assert json.loads(new_read_write_enum_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_enum' setter did not publish the correct JSON payload"
+
+    def test_read_write_optional_enum_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_optional_enum_value = Numbers.ONE
 
         client.read_write_optional_enum = new_read_write_optional_enum_value
 
-    def test_read_write_two_enums_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_optional_enum' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_optional_enum' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_optional_enum' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_optional_enum_obj = ReadWriteOptionalEnumProperty(value=new_read_write_optional_enum_value)
+        assert (
+            json.loads(new_read_write_optional_enum_obj.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'read_write_optional_enum' setter did not publish the correct JSON payload"
+
+    def test_read_write_two_enums_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_two_enums_value = ReadWriteTwoEnumsProperty(
             first=Numbers.ONE,
             second=Numbers.ONE,
         )
         client.read_write_two_enums = new_read_write_two_enums_value
 
-    def test_read_write_datetime_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_two_enums' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_two_enums' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_two_enums' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_read_write_two_enums_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_two_enums' setter did not publish the correct JSON payload"
+
+    def test_read_write_datetime_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_datetime_value = datetime.now(UTC)
 
         client.read_write_datetime = new_read_write_datetime_value
 
-    def test_read_write_optional_datetime_setter(self, client):
-        new_read_write_optional_datetime_value = None
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_datetime' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_datetime' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_datetime' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_datetime_obj = ReadWriteDatetimeProperty(value=new_read_write_datetime_value)
+        assert json.loads(new_read_write_datetime_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_datetime' setter did not publish the correct JSON payload"
+
+    def test_read_write_optional_datetime_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
+        new_read_write_optional_datetime_value = datetime.now(UTC)
 
         client.read_write_optional_datetime = new_read_write_optional_datetime_value
 
-    def test_read_write_two_datetimes_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_optional_datetime' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_optional_datetime' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_optional_datetime' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_optional_datetime_obj = ReadWriteOptionalDatetimeProperty(value=new_read_write_optional_datetime_value)
+        assert (
+            json.loads(new_read_write_optional_datetime_obj.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'read_write_optional_datetime' setter did not publish the correct JSON payload"
+
+    def test_read_write_two_datetimes_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_two_datetimes_value = ReadWriteTwoDatetimesProperty(
             first=datetime.now(UTC),
             second=datetime.now(UTC),
         )
         client.read_write_two_datetimes = new_read_write_two_datetimes_value
 
-    def test_read_write_duration_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_two_datetimes' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_two_datetimes' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_two_datetimes' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert (
+            json.loads(new_read_write_two_datetimes_value.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'read_write_two_datetimes' setter did not publish the correct JSON payload"
+
+    def test_read_write_duration_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_duration_value = timedelta(seconds=3536)
 
         client.read_write_duration = new_read_write_duration_value
 
-    def test_read_write_optional_duration_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_duration' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_duration' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_duration' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_duration_obj = ReadWriteDurationProperty(value=new_read_write_duration_value)
+        assert json.loads(new_read_write_duration_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_duration' setter did not publish the correct JSON payload"
+
+    def test_read_write_optional_duration_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_optional_duration_value = None
 
         client.read_write_optional_duration = new_read_write_optional_duration_value
 
-    def test_read_write_two_durations_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_optional_duration' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_optional_duration' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_optional_duration' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_optional_duration_obj = ReadWriteOptionalDurationProperty(value=new_read_write_optional_duration_value)
+        assert (
+            json.loads(new_read_write_optional_duration_obj.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'read_write_optional_duration' setter did not publish the correct JSON payload"
+
+    def test_read_write_two_durations_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_two_durations_value = ReadWriteTwoDurationsProperty(
             first=timedelta(seconds=3536),
             second=None,
         )
         client.read_write_two_durations = new_read_write_two_durations_value
 
-    def test_read_write_binary_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_two_durations' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_two_durations' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_two_durations' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert (
+            json.loads(new_read_write_two_durations_value.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'read_write_two_durations' setter did not publish the correct JSON payload"
+
+    def test_read_write_binary_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_binary_value = b"example binary data"
 
         client.read_write_binary = new_read_write_binary_value
 
-    def test_read_write_optional_binary_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_binary' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_binary' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_binary' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_binary_obj = ReadWriteBinaryProperty(value=new_read_write_binary_value)
+        assert json.loads(new_read_write_binary_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_binary' setter did not publish the correct JSON payload"
+
+    def test_read_write_optional_binary_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_optional_binary_value = b"example binary data"
 
         client.read_write_optional_binary = new_read_write_optional_binary_value
 
-    def test_read_write_two_binaries_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_optional_binary' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_optional_binary' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_optional_binary' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_optional_binary_obj = ReadWriteOptionalBinaryProperty(value=new_read_write_optional_binary_value)
+        assert (
+            json.loads(new_read_write_optional_binary_obj.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'read_write_optional_binary' setter did not publish the correct JSON payload"
+
+    def test_read_write_two_binaries_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_two_binaries_value = ReadWriteTwoBinariesProperty(
             first=b"example binary data",
             second=b"example binary data",
         )
         client.read_write_two_binaries = new_read_write_two_binaries_value
 
-    def test_read_write_list_of_strings_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_two_binaries' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_two_binaries' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_two_binaries' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert (
+            json.loads(new_read_write_two_binaries_value.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'read_write_two_binaries' setter did not publish the correct JSON payload"
+
+    def test_read_write_list_of_strings_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_list_of_strings_value = ["apples", "foo"]
 
         client.read_write_list_of_strings = new_read_write_list_of_strings_value
 
-    def test_read_write_lists_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_list_of_strings' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_list_of_strings' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_list_of_strings' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_list_of_strings_obj = ReadWriteListOfStringsProperty(value=new_read_write_list_of_strings_value)
+        assert (
+            json.loads(new_read_write_list_of_strings_obj.model_dump_json(by_alias=True)) == published_msg_json_obj
+        ), "Property 'read_write_list_of_strings' setter did not publish the correct JSON payload"
+
+    def test_read_write_lists_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_read_write_lists_value = ReadWriteListsProperty(
             the_list=[Numbers.ONE, Numbers.ONE],
             optional_list=[datetime.now(UTC), datetime.now(UTC)],
         )
         client.read_write_lists = new_read_write_lists_value
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_lists' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'read_write_lists' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_lists' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_read_write_lists_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_lists' setter did not publish the correct JSON payload"
 
 
 class TestClientMethods:
@@ -802,7 +1052,7 @@ class TestClientMethods:
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=datetime.now(UTC),
+                optional_date_time=None,
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -834,7 +1084,7 @@ class TestClientMethods:
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=None,
+                optional_date_time=datetime.now(UTC),
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],

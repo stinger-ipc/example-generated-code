@@ -2,6 +2,7 @@
 
 #include "property_structs.hpp"
 #include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 
 namespace stinger {
 
@@ -41,6 +42,11 @@ void LocationProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson:
     parent.AddMember("longitude", longitude, allocator);
 }
 
+bool LocationProperty::ValidateSchema() const
+{
+    return true;
+}
+
 CurrentTemperatureProperty CurrentTemperatureProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     CurrentTemperatureProperty currentTemperature;
@@ -61,6 +67,11 @@ CurrentTemperatureProperty CurrentTemperatureProperty::FromRapidJsonObject(const
 void CurrentTemperatureProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("temperature_f", temperatureF, allocator);
+}
+
+bool CurrentTemperatureProperty::ValidateSchema() const
+{
+    return true;
 }
 
 CurrentConditionProperty CurrentConditionProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -98,6 +109,11 @@ void CurrentConditionProperty::AddToRapidJsonObject(rapidjson::Value& parent, ra
         tempStringValue.SetString(description.c_str(), description.size(), allocator);
         parent.AddMember("description", tempStringValue, allocator);
     }
+}
+
+bool CurrentConditionProperty::ValidateSchema() const
+{
+    return true;
 }
 
 DailyForecastProperty DailyForecastProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -163,6 +179,11 @@ void DailyForecastProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapid
 
         parent.AddMember("wednesday", tempStructValue, allocator);
     }
+}
+
+bool DailyForecastProperty::ValidateSchema() const
+{
+    return true;
 }
 
 HourlyForecastProperty HourlyForecastProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -248,6 +269,11 @@ void HourlyForecastProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapi
     }
 }
 
+bool HourlyForecastProperty::ValidateSchema() const
+{
+    return true;
+}
+
 CurrentConditionRefreshIntervalProperty CurrentConditionRefreshIntervalProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     CurrentConditionRefreshIntervalProperty currentConditionRefreshInterval;
@@ -268,6 +294,11 @@ CurrentConditionRefreshIntervalProperty CurrentConditionRefreshIntervalProperty:
 void CurrentConditionRefreshIntervalProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("seconds", seconds, allocator);
+}
+
+bool CurrentConditionRefreshIntervalProperty::ValidateSchema() const
+{
+    return true;
 }
 
 HourlyForecastRefreshIntervalProperty HourlyForecastRefreshIntervalProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -292,6 +323,11 @@ void HourlyForecastRefreshIntervalProperty::AddToRapidJsonObject(rapidjson::Valu
     parent.AddMember("seconds", seconds, allocator);
 }
 
+bool HourlyForecastRefreshIntervalProperty::ValidateSchema() const
+{
+    return true;
+}
+
 DailyForecastRefreshIntervalProperty DailyForecastRefreshIntervalProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     DailyForecastRefreshIntervalProperty dailyForecastRefreshInterval;
@@ -312,6 +348,11 @@ DailyForecastRefreshIntervalProperty DailyForecastRefreshIntervalProperty::FromR
 void DailyForecastRefreshIntervalProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("seconds", seconds, allocator);
+}
+
+bool DailyForecastRefreshIntervalProperty::ValidateSchema() const
+{
+    return true;
 }
 
 } // namespace weather

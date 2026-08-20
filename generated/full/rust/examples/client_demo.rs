@@ -8,8 +8,7 @@ on the next generation.
 
 This is the Client for the Full interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 use full_ipc::client::FullClient;

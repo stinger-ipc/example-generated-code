@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="./styles.css" />
     <!--
     This is automatically generated code.
-    LICENSE: This generated content is not subject to any license restrictions.
-    TODO: Get license text from stinger file
+    
     -->
   </head>
   
@@ -23,18 +22,35 @@
       
       </p>
     </div>
+
+    <!------------- TAB BAR ------------->
+    <div class="tab-bar">
+      
+      
+      <button class="tab-btn" ng-class="{'active': activeTab === 'properties'}" ng-click="activeTab = 'properties'">
+        <span class="mdi mdi-tune"></span> Properties
+      </button>
+      
+      
+    </div>
+
     <!------------- SIGNALS ------------->
+    <div ng-show="activeTab === 'signals'">
     
+    </div>
 
     <!------------- PROPERTIES ------------->
+    <div ng-show="activeTab === 'properties'">
     
     <div class="component-box prop-box" id="prop-box-home_address">
-        <h3 class="component-title prop-title">Property: home_address</h3>
-        <div class="component-doc prop-doc">
-<p>The current home address.</p>
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['homeAddress'].flash}"><span class="mdi mdi-tune"></span> home_address</h3>
         
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7f11acfcef60>></div>-->
+        <details class="component-doc prop-doc">
+          <summary>Documentation</summary>
+<p>The current home address.</p>
+        </details>
+        
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='home_address', documentation='The current home address.', cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f97b271c770>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f97b25223f0>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f97b2796390>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -60,7 +76,9 @@
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input type="text" ng-model="properties.homeAddress.received.address.street" />
+                
                  
               </td>
             </tr>
@@ -74,7 +92,9 @@
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input type="text" ng-model="properties.homeAddress.received.address.city" />
+                
                  
               </td>
             </tr>
@@ -88,7 +108,9 @@
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input type="text" ng-model="properties.homeAddress.received.address.state" />
+                
                  
               </td>
             </tr>
@@ -102,7 +124,9 @@
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input type="text" ng-model="properties.homeAddress.received.address.postal_code" />
+                
                  
               </td>
             </tr>
@@ -134,12 +158,14 @@
     </div>
     
     <div class="component-box prop-box" id="prop-box-favorite_country">
-        <h3 class="component-title prop-title">Property: favorite_country</h3>
-        <div class="component-doc prop-doc">
-<p>The user&rsquo;s favorite country.</p>
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['favoriteCountry'].flash}"><span class="mdi mdi-tune"></span> favorite_country</h3>
         
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7f11acfa62d0>></div>-->
+        <details class="component-doc prop-doc">
+          <summary>Documentation</summary>
+<p>The user&rsquo;s favorite country.</p>
+        </details>
+        
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='favorite_country', documentation="The user's favorite country.", cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f97b26ad700>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f97b2584d70>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f97b25854c0>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -164,9 +190,12 @@
         
     </div>
      
+    </div>
 
     <!------------- METHODS ------------->
+    <div ng-show="activeTab === 'methods'">
      
+    </div>
 
     
     <div id="console" ng-class="{ 'expanded' : (console.showing) }">
@@ -177,7 +206,7 @@
         <p ng-repeat="msg in console.requests" class="entry">
           <strong>{{msg.name}}:</strong> <em>{{msg.topic}}</em> <span class="elapsedTime" ng-show="msg.responseTime">{{msg.responseTime - msg.requestTime}}ms</span><span class="elapsedTime" ng-show="msg.eventTime">{{msg.eventTime}}</span>
           <span class="outgoing" ng-show="msg.payload">{{msg.payload}}</span>
-          <span class="incoming" ng-show="msg.response">{{msg.response}}</span>
+          <span class="incoming" ng-show="msg.responseTime">{{ (msg.response === null || msg.response === undefined) ? '(empty response)' : msg.response }}</span>
           <span ng-repeat="result in msg.results" class="action-result">{{result}}</span>
         </p>
       </div>

@@ -4,8 +4,7 @@ on the next generation.
 
 It contains enumerations used by the testable interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #pragma once
@@ -48,11 +47,15 @@ public:
 
     std::future<bool> emitSingleIntSignal(int);
 
+    std::future<bool> emitJsonSchemaValidatedIntSignal(int);
+
     std::future<bool> emitSingleOptionalIntSignal(std::optional<int>);
 
     std::future<bool> emitThreeIntegersSignal(int, int, std::optional<int>);
 
     std::future<bool> emitSingleStringSignal(std::string);
+
+    std::future<bool> emitJsonSchemaValidatedStringSignal(std::string);
 
     std::future<bool> emitSingleOptionalStringSignal(std::optional<std::string>);
 

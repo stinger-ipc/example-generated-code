@@ -102,9 +102,11 @@ int main(int argc, char** argv)
 
     auto emptyFuture = server->emitEmptySignal();
     auto singleIntFuture = server->emitSingleIntSignal(42);
+    auto jsonSchemaValidatedIntFuture = server->emitJsonSchemaValidatedIntSignal(42);
     auto singleOptionalIntFuture = server->emitSingleOptionalIntSignal(42);
     auto threeIntegersFuture = server->emitThreeIntegersSignal(42, 42, 42);
     auto singleStringFuture = server->emitSingleStringSignal("apples");
+    auto jsonSchemaValidatedStringFuture = server->emitJsonSchemaValidatedStringSignal("apples");
     auto singleOptionalStringFuture = server->emitSingleOptionalStringSignal(std::make_optional(std::string("apples")));
     auto threeStringsFuture = server->emitThreeStringsSignal("apples", "apples", std::make_optional(std::string("apples")));
     auto singleEnumFuture = server->emitSingleEnumSignal(Numbers::ONE);
@@ -127,9 +129,11 @@ int main(int argc, char** argv)
     auto arrayOfEveryTypeFuture = server->emitArrayOfEveryTypeSignal(std::vector<int>{ 42, 2022, 2022 }, std::vector<double>{ 3.14, 1.0, 1.0 }, std::vector<std::string>{ "apples", "foo", "foo" }, std::vector<Numbers>{ Numbers::ONE, Numbers::ONE, Numbers::ONE }, std::vector<Entry>{ Entry{ 42, "apples" }, Entry{ 2022, "foo" }, Entry{ 2022, "foo" } }, std::vector<std::chrono::time_point<std::chrono::system_clock>>{ std::chrono::system_clock::now(), std::chrono::system_clock::now(), std::chrono::system_clock::now() }, std::vector<std::chrono::duration<double>>{ std::chrono::duration<double>(3536), std::chrono::duration<double>(975), std::chrono::duration<double>(967) }, std::vector<std::vector<uint8_t>>{ std::vector<uint8_t>{ 101, 120, 97, 109, 112, 108, 101 }, std::vector<uint8_t>{ 101, 120, 97, 109, 112, 108, 101 }, std::vector<uint8_t>{ 101, 120, 97, 109, 112, 108, 101 } });
     emptyFuture.wait();
     singleIntFuture.wait();
+    jsonSchemaValidatedIntFuture.wait();
     singleOptionalIntFuture.wait();
     threeIntegersFuture.wait();
     singleStringFuture.wait();
+    jsonSchemaValidatedStringFuture.wait();
     singleOptionalStringFuture.wait();
     threeStringsFuture.wait();
     singleEnumFuture.wait();
@@ -312,11 +316,15 @@ int main(int argc, char** argv)
                                             std::this_thread::sleep_for(std::chrono::seconds(1));
                                             auto singleIntFuture = server->emitSingleIntSignal(42);
                                             std::this_thread::sleep_for(std::chrono::seconds(1));
+                                            auto jsonSchemaValidatedIntFuture = server->emitJsonSchemaValidatedIntSignal(42);
+                                            std::this_thread::sleep_for(std::chrono::seconds(1));
                                             auto singleOptionalIntFuture = server->emitSingleOptionalIntSignal(42);
                                             std::this_thread::sleep_for(std::chrono::seconds(1));
                                             auto threeIntegersFuture = server->emitThreeIntegersSignal(42, 42, 42);
                                             std::this_thread::sleep_for(std::chrono::seconds(1));
                                             auto singleStringFuture = server->emitSingleStringSignal("apples");
+                                            std::this_thread::sleep_for(std::chrono::seconds(1));
+                                            auto jsonSchemaValidatedStringFuture = server->emitJsonSchemaValidatedStringSignal("apples");
                                             std::this_thread::sleep_for(std::chrono::seconds(1));
                                             auto singleOptionalStringFuture = server->emitSingleOptionalStringSignal(std::make_optional(std::string("apples")));
                                             std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -360,9 +368,11 @@ int main(int argc, char** argv)
                                             std::this_thread::sleep_for(std::chrono::seconds(1));
                                             emptyFuture.wait();
                                             singleIntFuture.wait();
+                                            jsonSchemaValidatedIntFuture.wait();
                                             singleOptionalIntFuture.wait();
                                             threeIntegersFuture.wait();
                                             singleStringFuture.wait();
+                                            jsonSchemaValidatedStringFuture.wait();
                                             singleOptionalStringFuture.wait();
                                             threeStringsFuture.wait();
                                             singleEnumFuture.wait();
@@ -385,10 +395,10 @@ int main(int argc, char** argv)
                                             arrayOfEveryTypeFuture.wait();
                                         } catch (...) { }
 
-                                        std::cout << "Periodic update iteration " << loopCount << " complete. Sleeping for 35 ...\n";
+                                        std::cout << "Periodic update iteration " << loopCount << " complete. Sleeping for 33 ...\n";
 
                                         // Sleep in 1-second increments so we can stop quickly
-                                        for (int i = 0; i < 35 && keepRunning; ++i) {
+                                        for (int i = 0; i < 33 && keepRunning; ++i) {
                                             std::this_thread::sleep_for(std::chrono::seconds(1));
                                         }
 

@@ -4,8 +4,7 @@ on the next generation.
 
 It contains enumerations used by the SignalOnly interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #pragma once
@@ -24,6 +23,8 @@ namespace signal_only {
 struct AnotherSignalPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static AnotherSignalPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     double one;
     bool two;
@@ -33,6 +34,8 @@ struct AnotherSignalPayload {
 struct BarkPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static BarkPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::string word;
 };
@@ -40,6 +43,8 @@ struct BarkPayload {
 struct MaybeNumberPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static MaybeNumberPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<int> number;
 };
@@ -47,6 +52,8 @@ struct MaybeNumberPayload {
 struct MaybeNamePayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static MaybeNamePayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::string> name;
 };
@@ -54,6 +61,8 @@ struct MaybeNamePayload {
 struct NowPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static NowPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::chrono::time_point<std::chrono::system_clock> timestamp;
 };

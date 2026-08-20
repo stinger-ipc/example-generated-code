@@ -1,6 +1,7 @@
 """
 Tests for Simple client.
 """
+
 import pytest
 import sys
 from pathlib import Path
@@ -75,10 +76,21 @@ class TestClientProperties:
         
 
     
-    def test_school_setter(self, client):
+    def test_school_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_school_value ="apples"
             
         client.school = new_school_value
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'school' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'school' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'school' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_school_obj =SchoolProperty(name=new_school_value)
+        assert json.loads(new_school_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'school' setter did not publish the correct JSON payload"
+        
     
 
 

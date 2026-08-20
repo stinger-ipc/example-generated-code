@@ -2,6 +2,7 @@
 #include "method_payloads.hpp"
 
 #include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 #include <stinger/utils/conversions.hpp>
 
 namespace stinger {

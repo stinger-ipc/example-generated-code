@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="./styles.css" />
     <!--
     This is automatically generated code.
-    LICENSE: This generated content is not subject to any license restrictions.
-    TODO: Get license text from stinger file
+    
     -->
   </head>
   
@@ -23,13 +22,33 @@
       
       </p>
     </div>
+
+    <!------------- TAB BAR ------------->
+    <div class="tab-bar">
+      
+      <button class="tab-btn" ng-class="{'active': activeTab === 'signals'}" ng-click="activeTab = 'signals'">
+        <span class="mdi mdi-bell-outline"></span> Signals
+      </button>
+      
+      
+      <button class="tab-btn" ng-class="{'active': activeTab === 'properties'}" ng-click="activeTab = 'properties'">
+        <span class="mdi mdi-tune"></span> Properties
+      </button>
+      
+      
+      <button class="tab-btn" ng-class="{'active': activeTab === 'methods'}" ng-click="activeTab = 'methods'">
+        <span class="mdi mdi-function"></span> Methods
+      </button>
+      
+    </div>
+
     <!------------- SIGNALS ------------->
+    <div ng-show="activeTab === 'signals'">
     
     <div class="component-box signal-box" id="signal-box-todayIs">
-        <h3 class="component-title signal-title">Signal: todayIs</h3>
-        <div class="component-doc signal-doc">
-        </div>
-        <!--<div class="signal-topic topic">Subscribe: <bound method Signal.topic of <stingeripc.components.Signal object at 0x7f438460af60>></div>-->
+        <h3 class="component-title signal-title" ng-class="{'flash': signals['todayIs'].flash}"><span class="mdi mdi-bell-outline"></span> todayIs</h3>
+        
+        <!--<div class="signal-topic topic">Subscribe: {prefix}/Full/{service_id}/signal/todayIs</div>-->
         <div class="last-received signal-value">
         
           <table class="arglist">
@@ -43,7 +62,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="signals.todayIs.received.dayOfMonth" />
+                
+                <input disabled type="number" step="1" ng-model="signals.todayIs.received.dayOfMonth" />
+                
                  
               </td>
             </tr>
@@ -66,10 +87,9 @@
     </div>
     
     <div class="component-box signal-box" id="signal-box-randomWord">
-        <h3 class="component-title signal-title">Signal: randomWord</h3>
-        <div class="component-doc signal-doc">
-        </div>
-        <!--<div class="signal-topic topic">Subscribe: <bound method Signal.topic of <stingeripc.components.Signal object at 0x7f4384795490>></div>-->
+        <h3 class="component-title signal-title" ng-class="{'flash': signals['randomWord'].flash}"><span class="mdi mdi-bell-outline"></span> randomWord</h3>
+        
+        <!--<div class="signal-topic topic">Subscribe: {prefix}/Full/{service_id}/signal/randomWord</div>-->
         <div class="last-received signal-value">
         
           <table class="arglist">
@@ -81,7 +101,9 @@
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input disabled type="text" ng-model="signals.randomWord.received.word" />
+                
                  
               </td>
             </tr>
@@ -102,16 +124,20 @@
         </div>
     </div>
     
+    </div>
 
     <!------------- PROPERTIES ------------->
+    <div ng-show="activeTab === 'properties'">
     
     <div class="component-box prop-box" id="prop-box-favorite_number">
-        <h3 class="component-title prop-title">Property: favorite_number</h3>
-        <div class="component-doc prop-doc">
-<p>My favorite number</p>
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['favoriteNumber'].flash}"><span class="mdi mdi-tune"></span> favorite_number</h3>
         
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7f43846a5040>></div>-->
+        <details class="component-doc prop-doc">
+          <summary>Documentation</summary>
+<p>My favorite number</p>
+        </details>
+        
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='favorite_number', documentation='My favorite number\n', cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f2eefda9550>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f2eefda95b0>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f2ef008f8c0>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -123,7 +149,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input type="text" ng-model="properties.favoriteNumber.received.number" />
+                
+                <input type="number" step="1" ng-model="properties.favoriteNumber.received.number" />
+                
                  
               </td>
             </tr>
@@ -136,10 +164,9 @@
     </div>
     
     <div class="component-box prop-box" id="prop-box-favorite_foods">
-        <h3 class="component-title prop-title">Property: favorite_foods</h3>
-        <div class="component-doc prop-doc">
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7f4384609400>></div>-->
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['favoriteFoods'].flash}"><span class="mdi mdi-tune"></span> favorite_foods</h3>
+        
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='favorite_foods', documentation=None, cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f2eefda9580>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f2eefda9700>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f2eefda9820>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -151,7 +178,9 @@
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input type="text" ng-model="properties.favoriteFoods.received.drink" />
+                
                  
               </td>
             </tr>
@@ -163,7 +192,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input type="text" ng-model="properties.favoriteFoods.received.slices_of_pizza" />
+                
+                <input type="number" step="1" ng-model="properties.favoriteFoods.received.slices_of_pizza" />
+                
                  
               </td>
             </tr>
@@ -175,7 +206,9 @@
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input type="text" ng-model="properties.favoriteFoods.received.breakfast" />
+                
                  
               </td>
             </tr>
@@ -188,10 +221,9 @@
     </div>
     
     <div class="component-box prop-box" id="prop-box-lunch_menu">
-        <h3 class="component-title prop-title">Property: lunch_menu</h3>
-        <div class="component-doc prop-doc">
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7f43846a51c0>></div>-->
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['lunchMenu'].flash}"><span class="mdi mdi-tune"></span> lunch_menu</h3>
+        
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='lunch_menu', documentation=None, cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f2ef0385820>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f2eefda9a30>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f2eefda9c10>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -217,7 +249,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.lunchMenu.received.monday.drink" />
+                
+                <input disabled type="checkbox" ng-model="properties.lunchMenu.received.monday.drink" />
+                
                  
               </td>
             </tr>
@@ -231,7 +265,9 @@
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input disabled type="text" ng-model="properties.lunchMenu.received.monday.sandwich" />
+                
                  
               </td>
             </tr>
@@ -245,7 +281,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.lunchMenu.received.monday.crackers" />
+                
+                <input disabled type="number" step="any" ng-model="properties.lunchMenu.received.monday.crackers" />
+                
                  
               </td>
             </tr>
@@ -270,7 +308,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.lunchMenu.received.monday.order_number" />
+                
+                <input disabled type="number" step="1" ng-model="properties.lunchMenu.received.monday.order_number" />
+                
                  
               </td>
             </tr>
@@ -332,7 +372,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.lunchMenu.received.tuesday.drink" />
+                
+                <input disabled type="checkbox" ng-model="properties.lunchMenu.received.tuesday.drink" />
+                
                  
               </td>
             </tr>
@@ -346,7 +388,9 @@
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input disabled type="text" ng-model="properties.lunchMenu.received.tuesday.sandwich" />
+                
                  
               </td>
             </tr>
@@ -360,7 +404,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.lunchMenu.received.tuesday.crackers" />
+                
+                <input disabled type="number" step="any" ng-model="properties.lunchMenu.received.tuesday.crackers" />
+                
                  
               </td>
             </tr>
@@ -385,7 +431,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input disabled type="text" ng-model="properties.lunchMenu.received.tuesday.order_number" />
+                
+                <input disabled type="number" step="1" ng-model="properties.lunchMenu.received.tuesday.order_number" />
+                
                  
               </td>
             </tr>
@@ -430,12 +478,14 @@
     </div>
     
     <div class="component-box prop-box" id="prop-box-family_name">
-        <h3 class="component-title prop-title">Property: family_name</h3>
-        <div class="component-doc prop-doc">
-<p>This is to test a property with a single string value.</p>
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['familyName'].flash}"><span class="mdi mdi-tune"></span> family_name</h3>
         
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7f43847c2c00>></div>-->
+        <details class="component-doc prop-doc">
+          <summary>Documentation</summary>
+<p>This is to test a property with a single string value.</p>
+        </details>
+        
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='family_name', documentation='This is to test a property with a single string value.', cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f2ef0094290>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f2eefda9df0>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f2eefda9d00>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -447,7 +497,9 @@
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input type="text" ng-model="properties.familyName.received.family_name" />
+                
                  
               </td>
             </tr>
@@ -460,12 +512,14 @@
     </div>
     
     <div class="component-box prop-box" id="prop-box-last_breakfast_time">
-        <h3 class="component-title prop-title">Property: last_breakfast_time</h3>
-        <div class="component-doc prop-doc">
-<p>This is to test a property with a single datetime value.</p>
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['lastBreakfastTime'].flash}"><span class="mdi mdi-tune"></span> last_breakfast_time</h3>
         
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7f43847c4e30>></div>-->
+        <details class="component-doc prop-doc">
+          <summary>Documentation</summary>
+<p>This is to test a property with a single datetime value.</p>
+        </details>
+        
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='last_breakfast_time', documentation='This is to test a property with a single datetime value.', cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f2ef002d190>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f2eefda9e80>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f2eefda9fd0>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -490,12 +544,14 @@
     </div>
     
     <div class="component-box prop-box" id="prop-box-last_birthdays">
-        <h3 class="component-title prop-title">Property: last_birthdays</h3>
-        <div class="component-doc prop-doc">
-<p>This is to test a property with multiple datetime values.</p>
+        <h3 class="component-title prop-title" ng-class="{'flash': properties['lastBirthdays'].flash}"><span class="mdi mdi-tune"></span> last_birthdays</h3>
         
-        </div>
-        <!--<div class="property-topic topic">Subscribe: <bound method Property.value_topic of <stingeripc.components.Property object at 0x7f43846a5610>></div>-->
+        <details class="component-doc prop-doc">
+          <summary>Documentation</summary>
+<p>This is to test a property with multiple datetime values.</p>
+        </details>
+        
+        <!--<div class="property-topic topic">Subscribe: <bound method IpcProperty.value_topic of IpcProperty(name='last_birthdays', documentation='This is to test a property with multiple datetime values.', cpp=<stingeripc.cpp_symb.CppPropertySymbols object at 0x7f2ef0095b50>, python=<stingeripc.python_symb.PythonPropertySymbols object at 0x7f2eefdaa120>, rust=<stingeripc.rust_symb.RustPropertySymbols object at 0x7f2eefda9fa0>)></div>-->
         <div class="last-received property-value">
           
           <table class="arglist">
@@ -545,7 +601,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input type="text" ng-model="properties.lastBirthdays.received.brothers_age" />
+                
+                <input type="number" step="1" ng-model="properties.lastBirthdays.received.brothers_age" />
+                
                  
               </td>
             </tr>
@@ -557,13 +615,14 @@
         
     </div>
      
+    </div>
 
     <!------------- METHODS ------------->
+    <div ng-show="activeTab === 'methods'">
     
     <div class="component-box method-box" id="method-box-addNumbers">
-        <h3 class="component-title method-title">Method: addNumbers</h3>
-        <div class="component-doc method-doc">
-        </div>
+        <h3 class="component-title method-title"><span class="mdi mdi-function"></span> addNumbers</h3>
+        
         <!--<div class="method-topic topic">Publish: </div>-->
         <div class="method-form-box">
             <form ng-submit="callMethod(methods.addNumbers)">
@@ -577,7 +636,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input type="text" ng-model="methods.addNumbers.args.first" />
+                
+                <input type="number" step="1" ng-model="methods.addNumbers.args.first" />
+                
                  
               </td>
             </tr>
@@ -589,7 +650,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input type="text" ng-model="methods.addNumbers.args.second" />
+                
+                <input type="number" step="1" ng-model="methods.addNumbers.args.second" />
+                
                  
               </td>
             </tr>
@@ -601,7 +664,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input type="text" ng-model="methods.addNumbers.args.third" />
+                
+                <input type="number" step="1" ng-model="methods.addNumbers.args.third" />
+                
                  
               </td>
             </tr>
@@ -610,18 +675,15 @@
                 <button type="submit" class="publish-button">Call addNumbers</button>
             </form>
         </div>
-        <div class="last-received method-response" ng-bind="methods['addNumbers'].received">
+        <div class="last-received method-response" ng-show="methods['addNumbers'].received_time">
+            <div class="method-response-status"><span class="mdi mdi-check-circle-outline"></span> Response received at <span ng-bind="methods['addNumbers'].received_time | date:'HH:mm:ss'"></span></div>
         
-          <table class="arglist">
-          
-          </table>
         </div>
     </div>
     
     <div class="component-box method-box" id="method-box-doSomething">
-        <h3 class="component-title method-title">Method: doSomething</h3>
-        <div class="component-doc method-doc">
-        </div>
+        <h3 class="component-title method-title"><span class="mdi mdi-function"></span> doSomething</h3>
+        
         <!--<div class="method-topic topic">Publish: </div>-->
         <div class="method-form-box">
             <form ng-submit="callMethod(methods.doSomething)">
@@ -635,7 +697,9 @@
               </td>
               <td class="arg-value-cell">
                 
+                
                 <input type="text" ng-model="methods.doSomething.args.task_to_do" />
+                
                  
               </td>
             </tr>
@@ -644,20 +708,20 @@
                 <button type="submit" class="publish-button">Call doSomething</button>
             </form>
         </div>
-        <div class="last-received method-response" ng-bind="methods['doSomething'].received">
+        <div class="last-received method-response" ng-show="methods['doSomething'].received_time">
+            <div class="method-response-status"><span class="mdi mdi-check-circle-outline"></span> Response received at <span ng-bind="methods['doSomething'].received_time | date:'HH:mm:ss'"></span></div>
         
-          <table class="arglist">
-          
-          </table>
         </div>
     </div>
     
     <div class="component-box method-box" id="method-box-what_time_is_it">
-        <h3 class="component-title method-title">Method: what_time_is_it</h3>
-        <div class="component-doc method-doc">
-<p>Get the current date and time.</p>
+        <h3 class="component-title method-title"><span class="mdi mdi-function"></span> what_time_is_it</h3>
         
-        </div>
+        <details class="component-doc method-doc">
+          <summary>Documentation</summary>
+<p>Get the current date and time.</p>
+        </details>
+        
         <!--<div class="method-topic topic">Publish: </div>-->
         <div class="method-form-box">
             <form ng-submit="callMethod(methods.whatTimeIsIt)">
@@ -668,20 +732,20 @@
                 <button type="submit" class="publish-button">Call what_time_is_it</button>
             </form>
         </div>
-        <div class="last-received method-response" ng-bind="methods['whatTimeIsIt'].received">
+        <div class="last-received method-response" ng-show="methods['whatTimeIsIt'].received_time">
+            <div class="method-response-status"><span class="mdi mdi-check-circle-outline"></span> Response received at <span ng-bind="methods['whatTimeIsIt'].received_time | date:'HH:mm:ss'"></span></div>
         
-          <table class="arglist">
-          
-          </table>
         </div>
     </div>
     
     <div class="component-box method-box" id="method-box-hold_temperature">
-        <h3 class="component-title method-title">Method: hold_temperature</h3>
-        <div class="component-doc method-doc">
-<p>Hold a temperature for a specified duration.</p>
+        <h3 class="component-title method-title"><span class="mdi mdi-function"></span> hold_temperature</h3>
         
-        </div>
+        <details class="component-doc method-doc">
+          <summary>Documentation</summary>
+<p>Hold a temperature for a specified duration.</p>
+        </details>
+        
         <!--<div class="method-topic topic">Publish: </div>-->
         <div class="method-form-box">
             <form ng-submit="callMethod(methods.holdTemperature)">
@@ -697,7 +761,9 @@
               </td>
               <td class="arg-value-cell">
                 
-                <input type="text" ng-model="methods.holdTemperature.args.temperature_celsius" />
+                
+                <input type="number" step="any" ng-model="methods.holdTemperature.args.temperature_celsius" />
+                
                  
               </td>
             </tr>
@@ -706,14 +772,13 @@
                 <button type="submit" class="publish-button">Call hold_temperature</button>
             </form>
         </div>
-        <div class="last-received method-response" ng-bind="methods['holdTemperature'].received">
+        <div class="last-received method-response" ng-show="methods['holdTemperature'].received_time">
+            <div class="method-response-status"><span class="mdi mdi-check-circle-outline"></span> Response received at <span ng-bind="methods['holdTemperature'].received_time | date:'HH:mm:ss'"></span></div>
         
-          <table class="arglist">
-          
-          </table>
         </div>
     </div>
      
+    </div>
 
     
     <div id="console" ng-class="{ 'expanded' : (console.showing) }">
@@ -724,7 +789,7 @@
         <p ng-repeat="msg in console.requests" class="entry">
           <strong>{{msg.name}}:</strong> <em>{{msg.topic}}</em> <span class="elapsedTime" ng-show="msg.responseTime">{{msg.responseTime - msg.requestTime}}ms</span><span class="elapsedTime" ng-show="msg.eventTime">{{msg.eventTime}}</span>
           <span class="outgoing" ng-show="msg.payload">{{msg.payload}}</span>
-          <span class="incoming" ng-show="msg.response">{{msg.response}}</span>
+          <span class="incoming" ng-show="msg.responseTime">{{ (msg.response === null || msg.response === undefined) ? '(empty response)' : msg.response }}</span>
           <span ng-repeat="result in msg.results" class="action-result">{{result}}</span>
         </p>
       </div>

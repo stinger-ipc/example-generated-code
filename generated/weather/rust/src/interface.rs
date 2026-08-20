@@ -1,6 +1,7 @@
 use chrono::{SecondsFormat, Utc};
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 /// Interface information structure similar to Python's InterfaceInfo BaseModel
 #[derive(Debug, Clone, Serialize, Deserialize, Builder)]
@@ -8,6 +9,9 @@ pub struct InterfaceInfo {
     pub interface_name: String,
     pub title: String,
     pub version: String,
+    /// Maps method names to their version string, for methods that declare a version.
+    #[builder(default)]
+    pub methods: HashMap<String, String>,
     pub instance: String,
     pub connection_topic: String,
     #[builder(default = "Utc::now().to_rfc3339_opts(SecondsFormat::Secs, true)")]

@@ -8,8 +8,7 @@ on the next generation.
 
 This is the Client for the Full interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 use mqttier::{Connection, MqttierClient, MqttierOptionsBuilder, TcpConnection};
@@ -123,12 +122,35 @@ async fn main() {
         }
     });
 
+    let mut sig_rx = testable_client.get_json_schema_validated_int_receiver();
+    println!("Got signal receiver for jsonSchemaValidatedInt");
+
+    sleep(Duration::from_secs(5)).await;
+
+    let sig_rx_task3 = tokio::spawn(async move {
+        println!("Looping for signal reception...");
+        loop {
+            match sig_rx.recv().await {
+                Ok(payload) => {
+                    println!(
+                        "*** Received jsonSchemaValidatedInt signal with payload: {:?}",
+                        payload
+                    );
+                }
+                Err(e) => {
+                    eprintln!("Error receiving jsonSchemaValidatedInt signal: {:?}", e);
+                    break;
+                }
+            }
+        }
+    });
+
     let mut sig_rx = testable_client.get_single_optional_int_receiver();
     println!("Got signal receiver for singleOptionalInt");
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task3 = tokio::spawn(async move {
+    let sig_rx_task4 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -151,7 +173,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task4 = tokio::spawn(async move {
+    let sig_rx_task5 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -174,7 +196,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task5 = tokio::spawn(async move {
+    let sig_rx_task6 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -192,12 +214,35 @@ async fn main() {
         }
     });
 
+    let mut sig_rx = testable_client.get_json_schema_validated_string_receiver();
+    println!("Got signal receiver for jsonSchemaValidatedString");
+
+    sleep(Duration::from_secs(5)).await;
+
+    let sig_rx_task7 = tokio::spawn(async move {
+        println!("Looping for signal reception...");
+        loop {
+            match sig_rx.recv().await {
+                Ok(payload) => {
+                    println!(
+                        "*** Received jsonSchemaValidatedString signal with payload: {:?}",
+                        payload
+                    );
+                }
+                Err(e) => {
+                    eprintln!("Error receiving jsonSchemaValidatedString signal: {:?}", e);
+                    break;
+                }
+            }
+        }
+    });
+
     let mut sig_rx = testable_client.get_single_optional_string_receiver();
     println!("Got signal receiver for singleOptionalString");
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task6 = tokio::spawn(async move {
+    let sig_rx_task8 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -220,7 +265,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task7 = tokio::spawn(async move {
+    let sig_rx_task9 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -243,7 +288,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task8 = tokio::spawn(async move {
+    let sig_rx_task10 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -263,7 +308,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task9 = tokio::spawn(async move {
+    let sig_rx_task11 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -286,7 +331,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task10 = tokio::spawn(async move {
+    let sig_rx_task12 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -306,7 +351,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task11 = tokio::spawn(async move {
+    let sig_rx_task13 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -329,7 +374,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task12 = tokio::spawn(async move {
+    let sig_rx_task14 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -352,7 +397,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task13 = tokio::spawn(async move {
+    let sig_rx_task15 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -375,7 +420,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task14 = tokio::spawn(async move {
+    let sig_rx_task16 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -398,7 +443,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task15 = tokio::spawn(async move {
+    let sig_rx_task17 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -421,7 +466,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task16 = tokio::spawn(async move {
+    let sig_rx_task18 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -444,7 +489,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task17 = tokio::spawn(async move {
+    let sig_rx_task19 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -467,7 +512,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task18 = tokio::spawn(async move {
+    let sig_rx_task20 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -490,7 +535,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task19 = tokio::spawn(async move {
+    let sig_rx_task21 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -513,7 +558,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task20 = tokio::spawn(async move {
+    let sig_rx_task22 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -536,7 +581,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task21 = tokio::spawn(async move {
+    let sig_rx_task23 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -559,7 +604,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task22 = tokio::spawn(async move {
+    let sig_rx_task24 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -582,7 +627,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task23 = tokio::spawn(async move {
+    let sig_rx_task25 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -605,7 +650,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task24 = tokio::spawn(async move {
+    let sig_rx_task26 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -631,7 +676,7 @@ async fn main() {
 
     sleep(Duration::from_secs(5)).await;
 
-    let sig_rx_task25 = tokio::spawn(async move {
+    let sig_rx_task27 = tokio::spawn(async move {
         println!("Looping for signal reception...");
         loop {
             match sig_rx.recv().await {
@@ -2404,6 +2449,10 @@ async fn main() {
 
     sig_rx_task25.abort();
 
+    sig_rx_task26.abort();
+
+    sig_rx_task27.abort();
+
     property_update_task.abort();
 
     method_calling_task.abort();
@@ -2436,6 +2485,8 @@ async fn main() {
         sig_rx_task23,
         sig_rx_task24,
         sig_rx_task25,
+        sig_rx_task26,
+        sig_rx_task27,
         method_calling_task,
     );
 

@@ -111,7 +111,7 @@ def request_loop(client: TestableClient):
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=datetime.now(UTC),
+                optional_date_time=None,
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -152,7 +152,7 @@ def request_loop(client: TestableClient):
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=None,
+                optional_date_time=datetime.now(UTC),
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -193,7 +193,7 @@ def request_loop(client: TestableClient):
                 optional_string="apples",
                 optional_enum=Numbers.ONE,
                 optional_entry_object=Entry(key=42, value="apples"),
-                optional_date_time=None,
+                optional_date_time=datetime.now(UTC),
                 optional_duration=None,
                 optional_binary=b"example binary data",
                 array_of_integers=[42, 2022],
@@ -291,7 +291,7 @@ def request_loop(client: TestableClient):
         sleep(5)
 
         print("Making call to 'call_optional_date_time'")
-        future_resp = client.call_optional_date_time(input1=None)
+        future_resp = client.call_optional_date_time(input1=datetime.now(UTC))
         try:
             print(f"RESULT:  {future_resp.result(5)}")
         except futures.TimeoutError:
@@ -540,7 +540,7 @@ def request_loop(client: TestableClient):
 
         client.read_write_datetime = datetime.now(UTC)
 
-        client.read_write_optional_datetime = datetime.now(UTC)
+        client.read_write_optional_datetime = None
 
         client.read_write_two_datetimes = ReadWriteTwoDatetimesProperty(
             first=datetime.now(UTC),
@@ -606,6 +606,13 @@ if __name__ == "__main__":
         """
         print(f"Got a 'singleInt' signal: value={ value} ")
 
+    @client_builder.receive_json_schema_validated_int
+    def print_jsonSchemaValidatedInt_receipt(value: int):
+        """
+        @param value int The integer value.
+        """
+        print(f"Got a 'jsonSchemaValidatedInt' signal: value={ value} ")
+
     @client_builder.receive_single_optional_int
     def print_singleOptionalInt_receipt(value: Optional[int]):
         """
@@ -628,6 +635,13 @@ if __name__ == "__main__":
         @param value str The string value.
         """
         print(f"Got a 'singleString' signal: value={ value} ")
+
+    @client_builder.receive_json_schema_validated_string
+    def print_jsonSchemaValidatedString_receipt(value: str):
+        """
+        @param value str The string value.
+        """
+        print(f"Got a 'jsonSchemaValidatedString' signal: value={ value} ")
 
     @client_builder.receive_single_optional_string
     def print_singleOptionalString_receipt(value: Optional[str]):

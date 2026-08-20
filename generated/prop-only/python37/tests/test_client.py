@@ -81,12 +81,32 @@ class TestClientProperties:
         assert client.favorite_country is not None, "Property 'favorite_country' not initialized properly"
         assert client.favorite_country == initial_property_values.favorite_country, "Property 'favorite_country' value does not match expected value"
 
-    def test_home_address_setter(self, client):
+    def test_home_address_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_home_address_value = Address(street="apples", city="apples", state="apples", postal_code="apples", country=Country.USA)
 
         client.home_address = new_home_address_value
 
-    def test_favorite_country_setter(self, client):
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'home_address' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'home_address' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'home_address' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_home_address_obj = HomeAddressProperty(address=new_home_address_value)
+        assert json.loads(new_home_address_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'home_address' setter did not publish the correct JSON payload"
+
+    def test_favorite_country_setter(self, mock_connection, client):
+        mock_connection.clear_published_messages()
+
         new_favorite_country_value = Country.USA
 
         client.favorite_country = new_favorite_country_value
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'favorite_country' setter published message with incorrect QoS"
+        assert published_msg.retain is False, "Property 'favorite_country' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'favorite_country' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_favorite_country_obj = FavoriteCountryProperty(country=new_favorite_country_value)
+        assert json.loads(new_favorite_country_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'favorite_country' setter did not publish the correct JSON payload"

@@ -1,6 +1,7 @@
 """
 Tests for testable server.
 """
+
 import pytest
 from unittest.mock import Mock, patch, MagicMock
 import sys
@@ -73,11 +74,11 @@ class TestableServerSetup:
                 first="apples",
                 second="apples",
             ),
-            read_write_struct=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
+            read_write_struct=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
             read_write_optional_struct=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
             read_write_two_structs=ReadWriteTwoStructsProperty(
-                first=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
-                second=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
+                first=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
+                second=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
             ),
             read_only_enum=Numbers.ONE,
             read_write_enum=Numbers.ONE,
@@ -459,6 +460,26 @@ class TestTestableServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_read_write_integer_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_integer' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_integer_value =42
+            
+        server.read_write_integer = new_read_write_integer_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_integer'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_integer' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_integer' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_integer' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_integer_obj =ReadWriteIntegerProperty(value=new_read_write_integer_value)
+        assert json.loads(new_read_write_integer_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_integer' setter did not publish the correct JSON payload"
+        
+
     def test_read_write_integer_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -525,6 +546,26 @@ class TestTestableServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_read_only_integer_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_only_integer' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_only_integer_value =42
+            
+        server.read_only_integer = new_read_only_integer_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_only_integer'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_only_integer' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_only_integer' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_only_integer' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_only_integer_obj =ReadOnlyIntegerProperty(value=new_read_only_integer_value)
+        assert json.loads(new_read_only_integer_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_only_integer' setter did not publish the correct JSON payload"
+        
+
     def test_read_only_integer_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -583,6 +624,26 @@ class TestTestableServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_read_write_optional_integer_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_optional_integer' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_optional_integer_value =42
+            
+        server.read_write_optional_integer = new_read_write_optional_integer_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_optional_integer'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_optional_integer' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_optional_integer' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_optional_integer' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_optional_integer_obj =ReadWriteOptionalIntegerProperty(value=new_read_write_optional_integer_value)
+        assert json.loads(new_read_write_optional_integer_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_optional_integer' setter did not publish the correct JSON payload"
+        
 
     def test_read_write_optional_integer_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -649,6 +710,30 @@ class TestTestableServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_read_write_two_integers_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_two_integers' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_two_integers_value =ReadWriteTwoIntegersProperty(
+                
+                first=42,
+                
+                second=42,
+                
+            )
+        server.read_write_two_integers = new_read_write_two_integers_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_two_integers'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_two_integers' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_two_integers' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_two_integers' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_read_write_two_integers_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_two_integers' setter did not publish the correct JSON payload"
+        
 
     def test_read_write_two_integers_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -717,6 +802,26 @@ class TestTestableServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_read_only_string_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_only_string' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_only_string_value ="apples"
+            
+        server.read_only_string = new_read_only_string_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_only_string'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_only_string' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_only_string' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_only_string' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_only_string_obj =ReadOnlyStringProperty(value=new_read_only_string_value)
+        assert json.loads(new_read_only_string_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_only_string' setter did not publish the correct JSON payload"
+        
+
     def test_read_only_string_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -775,6 +880,26 @@ class TestTestableServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_read_write_string_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_string' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_string_value ="apples"
+            
+        server.read_write_string = new_read_write_string_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_string'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_string' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_string' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_string' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_string_obj =ReadWriteStringProperty(value=new_read_write_string_value)
+        assert json.loads(new_read_write_string_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_string' setter did not publish the correct JSON payload"
+        
 
     def test_read_write_string_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -842,6 +967,26 @@ class TestTestableServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_read_write_optional_string_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_optional_string' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_optional_string_value ="apples"
+            
+        server.read_write_optional_string = new_read_write_optional_string_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_optional_string'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_optional_string' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_optional_string' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_optional_string' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_optional_string_obj =ReadWriteOptionalStringProperty(value=new_read_write_optional_string_value)
+        assert json.loads(new_read_write_optional_string_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_optional_string' setter did not publish the correct JSON payload"
+        
+
     def test_read_write_optional_string_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -907,6 +1052,30 @@ class TestTestableServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_read_write_two_strings_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_two_strings' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_two_strings_value =ReadWriteTwoStringsProperty(
+                
+                first="apples",
+                
+                second="apples",
+                
+            )
+        server.read_write_two_strings = new_read_write_two_strings_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_two_strings'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_two_strings' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_two_strings' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_two_strings' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_read_write_two_strings_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_two_strings' setter did not publish the correct JSON payload"
+        
 
     def test_read_write_two_strings_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -975,12 +1144,32 @@ class TestTestableServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_read_write_struct_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_struct' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_struct_value =AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")])
+            
+        server.read_write_struct = new_read_write_struct_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_struct'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_struct' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_struct' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_struct' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_struct_obj =ReadWriteStructProperty(value=new_read_write_struct_value)
+        assert json.loads(new_read_write_struct_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_struct' setter did not publish the correct JSON payload"
+        
+
     def test_read_write_struct_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
         # Create and simulate receiving a property update message
         prop_data = {
-            "value": AllTypes(the_bool=True, the_int=2020, the_number=1.0, the_str="example", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="example", crackers=1.0, order_number=2020, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=551)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=551), data=b"example binary data", optional_integer=2020, optional_string="example", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=2020, value="example"), optional_date_time=datetime.now(UTC), optional_duration=timedelta(seconds=2332), optional_binary=b"example binary data", array_of_integers=[2020, 42], optional_array_of_integers=[2020, 42], array_of_strings=["example", "apples"], optional_array_of_strings=["example", "apples"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], optional_array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")], optional_array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")]),
+            "value": AllTypes(the_bool=True, the_int=2020, the_number=1.0, the_str="example", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="example", crackers=1.0, order_number=2020, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=551)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=551), data=b"example binary data", optional_integer=2020, optional_string="example", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=2020, value="example"), optional_date_time=None, optional_duration=timedelta(seconds=2332), optional_binary=b"example binary data", array_of_integers=[2020, 42], optional_array_of_integers=[2020, 42], array_of_strings=["example", "apples"], optional_array_of_strings=["example", "apples"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], optional_array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")], optional_array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")]),
         }
         prop_obj = ReadWriteStructProperty(**prop_data) # type: ignore[arg-type]
         response_topic = "client/test/response"
@@ -1040,6 +1229,26 @@ class TestTestableServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_read_write_optional_struct_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_optional_struct' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_optional_struct_value =AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")])
+            
+        server.read_write_optional_struct = new_read_write_optional_struct_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_optional_struct'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_optional_struct' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_optional_struct' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_optional_struct' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_optional_struct_obj =ReadWriteOptionalStructProperty(value=new_read_write_optional_struct_value)
+        assert json.loads(new_read_write_optional_struct_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_optional_struct' setter did not publish the correct JSON payload"
+        
 
     def test_read_write_optional_struct_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -1107,12 +1316,36 @@ class TestTestableServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_read_write_two_structs_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_two_structs' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_two_structs_value =ReadWriteTwoStructsProperty(
+                
+                first=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
+                
+                second=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
+                
+            )
+        server.read_write_two_structs = new_read_write_two_structs_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_two_structs'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_two_structs' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_two_structs' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_two_structs' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_read_write_two_structs_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_two_structs' setter did not publish the correct JSON payload"
+        
+
     def test_read_write_two_structs_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
         # Create and simulate receiving a property update message
         prop_data = {
-            "first": AllTypes(the_bool=True, the_int=2020, the_number=1.0, the_str="example", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="example", crackers=1.0, order_number=2020, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=551)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=551), data=b"example binary data", optional_integer=2020, optional_string="example", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=2020, value="example"), optional_date_time=datetime.now(UTC), optional_duration=timedelta(seconds=2332), optional_binary=b"example binary data", array_of_integers=[2020, 42], optional_array_of_integers=[2020, 42], array_of_strings=["example", "apples"], optional_array_of_strings=["example", "apples"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], optional_array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")], optional_array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")]),
+            "first": AllTypes(the_bool=True, the_int=2020, the_number=1.0, the_str="example", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="example", crackers=1.0, order_number=2020, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=551)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=551), data=b"example binary data", optional_integer=2020, optional_string="example", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=2020, value="example"), optional_date_time=None, optional_duration=timedelta(seconds=2332), optional_binary=b"example binary data", array_of_integers=[2020, 42], optional_array_of_integers=[2020, 42], array_of_strings=["example", "apples"], optional_array_of_strings=["example", "apples"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], optional_array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")], optional_array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")]),
             "second": AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
         }
         prop_obj = ReadWriteTwoStructsProperty(**prop_data) # type: ignore[arg-type]
@@ -1174,6 +1407,26 @@ class TestTestableServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_read_only_enum_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_only_enum' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_only_enum_value =Numbers.ONE
+            
+        server.read_only_enum = new_read_only_enum_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_only_enum'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_only_enum' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_only_enum' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_only_enum' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_only_enum_obj =ReadOnlyEnumProperty(value=new_read_only_enum_value)
+        assert json.loads(new_read_only_enum_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_only_enum' setter did not publish the correct JSON payload"
+        
+
     def test_read_only_enum_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -1232,6 +1485,26 @@ class TestTestableServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_read_write_enum_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_enum' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_enum_value =Numbers.ONE
+            
+        server.read_write_enum = new_read_write_enum_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_enum'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_enum' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_enum' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_enum' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_enum_obj =ReadWriteEnumProperty(value=new_read_write_enum_value)
+        assert json.loads(new_read_write_enum_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_enum' setter did not publish the correct JSON payload"
+        
 
     def test_read_write_enum_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -1299,6 +1572,26 @@ class TestTestableServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_read_write_optional_enum_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_optional_enum' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_optional_enum_value =Numbers.ONE
+            
+        server.read_write_optional_enum = new_read_write_optional_enum_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_optional_enum'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_optional_enum' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_optional_enum' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_optional_enum' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_optional_enum_obj =ReadWriteOptionalEnumProperty(value=new_read_write_optional_enum_value)
+        assert json.loads(new_read_write_optional_enum_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_optional_enum' setter did not publish the correct JSON payload"
+        
+
     def test_read_write_optional_enum_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -1364,6 +1657,30 @@ class TestTestableServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_read_write_two_enums_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_two_enums' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_two_enums_value =ReadWriteTwoEnumsProperty(
+                
+                first=Numbers.ONE,
+                
+                second=Numbers.ONE,
+                
+            )
+        server.read_write_two_enums = new_read_write_two_enums_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_two_enums'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_two_enums' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_two_enums' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_two_enums' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_read_write_two_enums_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_two_enums' setter did not publish the correct JSON payload"
+        
 
     def test_read_write_two_enums_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -1432,6 +1749,26 @@ class TestTestableServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_read_write_datetime_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_datetime' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_datetime_value =datetime.now(UTC)
+            
+        server.read_write_datetime = new_read_write_datetime_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_datetime'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_datetime' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_datetime' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_datetime' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_datetime_obj =ReadWriteDatetimeProperty(value=new_read_write_datetime_value)
+        assert json.loads(new_read_write_datetime_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_datetime' setter did not publish the correct JSON payload"
+        
+
     def test_read_write_datetime_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -1497,6 +1834,26 @@ class TestTestableServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_read_write_optional_datetime_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_optional_datetime' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_optional_datetime_value =None
+            
+        server.read_write_optional_datetime = new_read_write_optional_datetime_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_optional_datetime'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_optional_datetime' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_optional_datetime' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_optional_datetime' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_optional_datetime_obj =ReadWriteOptionalDatetimeProperty(value=new_read_write_optional_datetime_value)
+        assert json.loads(new_read_write_optional_datetime_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_optional_datetime' setter did not publish the correct JSON payload"
+        
 
     def test_read_write_optional_datetime_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -1564,13 +1921,37 @@ class TestTestableServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_read_write_two_datetimes_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_two_datetimes' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_two_datetimes_value =ReadWriteTwoDatetimesProperty(
+                
+                first=datetime.now(UTC),
+                
+                second=datetime.now(UTC),
+                
+            )
+        server.read_write_two_datetimes = new_read_write_two_datetimes_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_two_datetimes'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_two_datetimes' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_two_datetimes' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_two_datetimes' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_read_write_two_datetimes_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_two_datetimes' setter did not publish the correct JSON payload"
+        
+
     def test_read_write_two_datetimes_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
         # Create and simulate receiving a property update message
         prop_data = {
             "first": datetime.now(UTC),
-            "second": None,
+            "second": datetime.now(UTC),
         }
         prop_obj = ReadWriteTwoDatetimesProperty(**prop_data) # type: ignore[arg-type]
         response_topic = "client/test/response"
@@ -1630,6 +2011,26 @@ class TestTestableServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_read_write_duration_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_duration' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_duration_value =timedelta(seconds=3536)
+            
+        server.read_write_duration = new_read_write_duration_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_duration'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_duration' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_duration' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_duration' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_duration_obj =ReadWriteDurationProperty(value=new_read_write_duration_value)
+        assert json.loads(new_read_write_duration_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_duration' setter did not publish the correct JSON payload"
+        
 
     def test_read_write_duration_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -1697,6 +2098,26 @@ class TestTestableServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_read_write_optional_duration_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_optional_duration' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_optional_duration_value =None
+            
+        server.read_write_optional_duration = new_read_write_optional_duration_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_optional_duration'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_optional_duration' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_optional_duration' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_optional_duration' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_optional_duration_obj =ReadWriteOptionalDurationProperty(value=new_read_write_optional_duration_value)
+        assert json.loads(new_read_write_optional_duration_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_optional_duration' setter did not publish the correct JSON payload"
+        
+
     def test_read_write_optional_duration_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -1762,6 +2183,30 @@ class TestTestableServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_read_write_two_durations_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_two_durations' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_two_durations_value =ReadWriteTwoDurationsProperty(
+                
+                first=timedelta(seconds=3536),
+                
+                second=None,
+                
+            )
+        server.read_write_two_durations = new_read_write_two_durations_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_two_durations'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_two_durations' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_two_durations' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_two_durations' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_read_write_two_durations_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_two_durations' setter did not publish the correct JSON payload"
+        
 
     def test_read_write_two_durations_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -1830,6 +2275,26 @@ class TestTestableServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_read_write_binary_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_binary' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_binary_value =b"example binary data"
+            
+        server.read_write_binary = new_read_write_binary_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_binary'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_binary' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_binary' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_binary' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_binary_obj =ReadWriteBinaryProperty(value=new_read_write_binary_value)
+        assert json.loads(new_read_write_binary_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_binary' setter did not publish the correct JSON payload"
+        
+
     def test_read_write_binary_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -1896,6 +2361,26 @@ class TestTestableServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_read_write_optional_binary_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_optional_binary' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_optional_binary_value =b"example binary data"
+            
+        server.read_write_optional_binary = new_read_write_optional_binary_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_optional_binary'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_optional_binary' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_optional_binary' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_optional_binary' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_optional_binary_obj =ReadWriteOptionalBinaryProperty(value=new_read_write_optional_binary_value)
+        assert json.loads(new_read_write_optional_binary_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_optional_binary' setter did not publish the correct JSON payload"
+        
+
     def test_read_write_optional_binary_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -1961,6 +2446,30 @@ class TestTestableServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_read_write_two_binaries_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_two_binaries' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_two_binaries_value =ReadWriteTwoBinariesProperty(
+                
+                first=b"example binary data",
+                
+                second=b"example binary data",
+                
+            )
+        server.read_write_two_binaries = new_read_write_two_binaries_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_two_binaries'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_two_binaries' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_two_binaries' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_two_binaries' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_read_write_two_binaries_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_two_binaries' setter did not publish the correct JSON payload"
+        
 
     def test_read_write_two_binaries_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -2029,6 +2538,26 @@ class TestTestableServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_read_write_list_of_strings_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_list_of_strings' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_list_of_strings_value =["apples", "foo"]
+            
+        server.read_write_list_of_strings = new_read_write_list_of_strings_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_list_of_strings'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_list_of_strings' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_list_of_strings' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_list_of_strings' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_read_write_list_of_strings_obj =ReadWriteListOfStringsProperty(value=new_read_write_list_of_strings_value)
+        assert json.loads(new_read_write_list_of_strings_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_list_of_strings' setter did not publish the correct JSON payload"
+        
+
     def test_read_write_list_of_strings_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -2094,6 +2623,30 @@ class TestTestableServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_read_write_lists_property_setter(self, server, mock_connection):
+        """Test that setting the 'read_write_lists' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_read_write_lists_value =ReadWriteListsProperty(
+                
+                the_list=[Numbers.ONE, Numbers.ONE],
+                
+                optional_list=[datetime.now(UTC), datetime.now(UTC)],
+                
+            )
+        server.read_write_lists = new_read_write_lists_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'read_write_lists'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'read_write_lists' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'read_write_lists' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'read_write_lists' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_read_write_lists_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'read_write_lists' setter did not publish the correct JSON payload"
+        
 
     def test_read_write_lists_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -2184,6 +2737,28 @@ class TestTestableServerSignals:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
     
+    def test_server_emit_json_schema_validated_int(self, server, mock_connection):
+        """Test that the server can emit the 'json_schema_validated_int' signal."""
+        signal_data = {
+            "value": 42,
+            
+        } # type: Dict[str, Any]
+        server.emit_json_schema_validated_int(**signal_data)
+        
+        # Verify that a message was published
+        published_list = mock_connection.find_published("+/testable/+/signal/jsonSchemaValidatedInt")
+        assert len(published_list) == 1, "No message was published for signal 'json_schema_validated_int'.  Messages: {mock_connection.published_messages}"
+        
+        msg = published_list[0]
+        expected_topic = "x/testable/x/signal/jsonSchemaValidatedInt"
+        assert msg.topic == expected_topic, f"Published topic '{msg.topic}' does not match expected '{expected_topic}'"
+        
+        # Verify payload
+        expected_obj = JsonSchemaValidatedIntSignalPayload(**signal_data) # type: ignore[arg-type]
+        expected_dict = to_jsonified_dict(expected_obj)
+        payload_dict = json.loads(msg.payload.decode('utf-8'))
+        assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+    
     def test_server_emit_single_optional_int(self, server, mock_connection):
         """Test that the server can emit the 'single_optional_int' signal."""
         signal_data = {
@@ -2250,6 +2825,28 @@ class TestTestableServerSignals:
         
         # Verify payload
         expected_obj = SingleStringSignalPayload(**signal_data) # type: ignore[arg-type]
+        expected_dict = to_jsonified_dict(expected_obj)
+        payload_dict = json.loads(msg.payload.decode('utf-8'))
+        assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+    
+    def test_server_emit_json_schema_validated_string(self, server, mock_connection):
+        """Test that the server can emit the 'json_schema_validated_string' signal."""
+        signal_data = {
+            "value": "apples",
+            
+        } # type: Dict[str, Any]
+        server.emit_json_schema_validated_string(**signal_data)
+        
+        # Verify that a message was published
+        published_list = mock_connection.find_published("+/testable/+/signal/jsonSchemaValidatedString")
+        assert len(published_list) == 1, "No message was published for signal 'json_schema_validated_string'.  Messages: {mock_connection.published_messages}"
+        
+        msg = published_list[0]
+        expected_topic = "x/testable/x/signal/jsonSchemaValidatedString"
+        assert msg.topic == expected_topic, f"Published topic '{msg.topic}' does not match expected '{expected_topic}'"
+        
+        # Verify payload
+        expected_obj = JsonSchemaValidatedStringSignalPayload(**signal_data) # type: ignore[arg-type]
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
@@ -2375,7 +2972,7 @@ class TestTestableServerSignals:
     def test_server_emit_single_struct(self, server, mock_connection):
         """Test that the server can emit the 'single_struct' signal."""
         signal_data = {
-            "value": AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
+            "value": AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
             
         } # type: Dict[str, Any]
         server.emit_single_struct(**signal_data)
@@ -2397,7 +2994,7 @@ class TestTestableServerSignals:
     def test_server_emit_single_optional_struct(self, server, mock_connection):
         """Test that the server can emit the 'single_optional_struct' signal."""
         signal_data = {
-            "value": AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
+            "value": AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
             
         } # type: Dict[str, Any]
         server.emit_single_optional_struct(**signal_data)
@@ -2467,7 +3064,7 @@ class TestTestableServerSignals:
     def test_server_emit_single_optional_datetime(self, server, mock_connection):
         """Test that the server can emit the 'single_optional_datetime' signal."""
         signal_data = {
-            "value": datetime.now(UTC),
+            "value": None,
             
         } # type: Dict[str, Any]
         server.emit_single_optional_datetime(**signal_data)
@@ -2493,7 +3090,7 @@ class TestTestableServerSignals:
             
             "second": datetime.now(UTC),
             
-            "third": None,
+            "third": datetime.now(UTC),
             
         } # type: Dict[str, Any]
         server.emit_three_date_times(**signal_data)
@@ -3255,7 +3852,7 @@ class TestTestableServerMethods:
     
     def test_server_handle_call_one_struct_method(self, server, mock_connection):
         """Test that the server can handle the 'call_one_struct' method."""
-        handler_callback_data = AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")])
+        handler_callback_data = AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")])
         received_args = None # type: Optional[Dict[str, Any]]
         def handler(input1) -> AllTypes:
             nonlocal received_args
@@ -3268,7 +3865,7 @@ class TestTestableServerMethods:
 
         # Create and simulate receiving a method call message
         method_data = {
-            "input1": AllTypes(the_bool=True, the_int=2020, the_number=1.0, the_str="example", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="example", crackers=1.0, order_number=2020, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=551)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=551), data=b"example binary data", optional_integer=2020, optional_string="example", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=2020, value="example"), optional_date_time=datetime.now(UTC), optional_duration=timedelta(seconds=2332), optional_binary=b"example binary data", array_of_integers=[2020, 42], optional_array_of_integers=[2020, 42], array_of_strings=["example", "apples"], optional_array_of_strings=["example", "apples"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], optional_array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")], optional_array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")]),
+            "input1": AllTypes(the_bool=True, the_int=2020, the_number=1.0, the_str="example", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="example", crackers=1.0, order_number=2020, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=551)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=551), data=b"example binary data", optional_integer=2020, optional_string="example", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=2020, value="example"), optional_date_time=None, optional_duration=timedelta(seconds=2332), optional_binary=b"example binary data", array_of_integers=[2020, 42], optional_array_of_integers=[2020, 42], array_of_strings=["example", "apples"], optional_array_of_strings=["example", "apples"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], optional_array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")], optional_array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")]),
         } # type: Dict[str, Any]
         method_obj = CallOneStructMethodRequest(**method_data)
         print(method_obj)
@@ -3306,7 +3903,7 @@ class TestTestableServerMethods:
     
     def test_server_handle_call_optional_struct_method(self, server, mock_connection):
         """Test that the server can handle the 'call_optional_struct' method."""
-        handler_callback_data = AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")])
+        handler_callback_data = AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")])
         received_args = None # type: Optional[Dict[str, Any]]
         def handler(input1) -> Optional[AllTypes]:
             nonlocal received_args
@@ -3319,7 +3916,7 @@ class TestTestableServerMethods:
 
         # Create and simulate receiving a method call message
         method_data = {
-            "input1": AllTypes(the_bool=True, the_int=2020, the_number=1.0, the_str="example", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="example", crackers=1.0, order_number=2020, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=551)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=551), data=b"example binary data", optional_integer=2020, optional_string="example", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=2020, value="example"), optional_date_time=None, optional_duration=timedelta(seconds=2332), optional_binary=b"example binary data", array_of_integers=[2020, 42], optional_array_of_integers=[2020, 42], array_of_strings=["example", "apples"], optional_array_of_strings=["example", "apples"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], optional_array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")], optional_array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")]),
+            "input1": AllTypes(the_bool=True, the_int=2020, the_number=1.0, the_str="example", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="example", crackers=1.0, order_number=2020, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=551)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=551), data=b"example binary data", optional_integer=2020, optional_string="example", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=2020, value="example"), optional_date_time=datetime.now(UTC), optional_duration=timedelta(seconds=2332), optional_binary=b"example binary data", array_of_integers=[2020, 42], optional_array_of_integers=[2020, 42], array_of_strings=["example", "apples"], optional_array_of_strings=["example", "apples"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], optional_array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")], optional_array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")]),
         } # type: Dict[str, Any]
         method_obj = CallOptionalStructMethodRequest(**method_data)
         print(method_obj)
@@ -3357,7 +3954,7 @@ class TestTestableServerMethods:
     
     def test_server_handle_call_three_structs_method(self, server, mock_connection):
         """Test that the server can handle the 'call_three_structs' method."""
-        handler_callback_data = CallThreeStructsMethodResponse(output1=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), output2=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), output3=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]))
+        handler_callback_data = CallThreeStructsMethodResponse(output1=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), output2=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), output3=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]))
         received_args = None # type: Optional[Dict[str, Any]]
         def handler(input1, input2, input3) -> CallThreeStructsMethodResponse:
             nonlocal received_args
@@ -3372,7 +3969,7 @@ class TestTestableServerMethods:
 
         # Create and simulate receiving a method call message
         method_data = {
-            "input1": AllTypes(the_bool=True, the_int=2020, the_number=1.0, the_str="example", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="example", crackers=1.0, order_number=2020, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=551)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=551), data=b"example binary data", optional_integer=2020, optional_string="example", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=2020, value="example"), optional_date_time=datetime.now(UTC), optional_duration=timedelta(seconds=2332), optional_binary=b"example binary data", array_of_integers=[2020, 42], optional_array_of_integers=[2020, 42], array_of_strings=["example", "apples"], optional_array_of_strings=["example", "apples"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], optional_array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")], optional_array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")]),
+            "input1": AllTypes(the_bool=True, the_int=2020, the_number=1.0, the_str="example", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="example", crackers=1.0, order_number=2020, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=551)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=551), data=b"example binary data", optional_integer=2020, optional_string="example", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=2020, value="example"), optional_date_time=None, optional_duration=timedelta(seconds=2332), optional_binary=b"example binary data", array_of_integers=[2020, 42], optional_array_of_integers=[2020, 42], array_of_strings=["example", "apples"], optional_array_of_strings=["example", "apples"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], optional_array_of_durations=[timedelta(seconds=551), timedelta(seconds=3536)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")], optional_array_of_entry_objects=[Entry(key=2020, value="example"), Entry(key=42, value="apples")]),
             "input2": AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
             "input3": AllTypes(the_bool=True, the_int=2022, the_number=1.0, the_str="foo", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="foo", crackers=1.0, order_number=2022, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=975)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=975), data=b"example binary data", optional_integer=2022, optional_string="foo", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=2022, value="foo"), optional_date_time=datetime.now(UTC), optional_duration=timedelta(seconds=2428), optional_binary=b"example binary data", array_of_integers=[2022, 2022], optional_array_of_integers=[2022, 2022], array_of_strings=["foo", "foo"], optional_array_of_strings=["foo", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=975), timedelta(seconds=967)], optional_array_of_durations=[timedelta(seconds=975), timedelta(seconds=967)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=2022, value="foo"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=2022, value="foo"), Entry(key=2022, value="foo")]),
         } # type: Dict[str, Any]

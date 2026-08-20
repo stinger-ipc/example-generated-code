@@ -1,5 +1,7 @@
 
 #include "signal_payloads.hpp"
+#include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 
 namespace stinger {
 
@@ -16,6 +18,11 @@ EmptyPayload EmptyPayload::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 
 void EmptyPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
+}
+
+bool EmptyPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for singleInt signal payload ---
@@ -39,6 +46,54 @@ SingleIntPayload SingleIntPayload::FromRapidJsonObject(const rapidjson::Value& j
 void SingleIntPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("value", value, allocator);
+}
+
+bool SingleIntPayload::ValidateSchema() const
+{
+    return true;
+}
+
+// --- (De-)Serialization for jsonSchemaValidatedInt signal payload ---
+JsonSchemaValidatedIntPayload JsonSchemaValidatedIntPayload::FromRapidJsonObject(const rapidjson::Value& jsonObj)
+{
+    JsonSchemaValidatedIntPayload jsonSchemaValidatedIntPayload;
+
+    { // Scoping
+        rapidjson::Value::ConstMemberIterator itr = jsonObj.FindMember("value");
+        if (itr != jsonObj.MemberEnd() && itr->value.IsInt()) {
+            jsonSchemaValidatedIntPayload.value = itr->value.GetInt();
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
+        }
+    }
+
+    return jsonSchemaValidatedIntPayload;
+};
+
+void JsonSchemaValidatedIntPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
+{
+    parent.AddMember("value", value, allocator);
+}
+
+bool JsonSchemaValidatedIntPayload::ValidateSchema() const
+{
+    rapidjson::Document doc;
+    doc.SetObject();
+    AddToRapidJsonObject(doc, doc.GetAllocator());
+    {
+        rapidjson::Document schemaDoc;
+        if (schemaDoc.Parse(R"stingerschema({"maximum": 100, "minimum": 0})stingerschema").HasParseError()) {
+            return false;
+        }
+        rapidjson::SchemaDocument schema(schemaDoc);
+        rapidjson::SchemaValidator validator(schema);
+        auto itr = doc.FindMember("value");
+        if (itr != doc.MemberEnd() && !itr->value.Accept(validator)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 // --- (De-)Serialization for singleOptionalInt signal payload ---
@@ -66,6 +121,11 @@ void SingleOptionalIntPayload::AddToRapidJsonObject(rapidjson::Value& parent, ra
 {
     if (value)
         parent.AddMember("value", *value, allocator);
+}
+
+bool SingleOptionalIntPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for threeIntegers signal payload ---
@@ -117,6 +177,11 @@ void ThreeIntegersPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidj
         parent.AddMember("third", *third, allocator);
 }
 
+bool ThreeIntegersPayload::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for singleString signal payload ---
 SingleStringPayload SingleStringPayload::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -142,6 +207,58 @@ void SingleStringPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjs
         tempStringValue.SetString(value.c_str(), value.size(), allocator);
         parent.AddMember("value", tempStringValue, allocator);
     }
+}
+
+bool SingleStringPayload::ValidateSchema() const
+{
+    return true;
+}
+
+// --- (De-)Serialization for jsonSchemaValidatedString signal payload ---
+JsonSchemaValidatedStringPayload JsonSchemaValidatedStringPayload::FromRapidJsonObject(const rapidjson::Value& jsonObj)
+{
+    JsonSchemaValidatedStringPayload jsonSchemaValidatedStringPayload;
+
+    { // Scoping
+        rapidjson::Value::ConstMemberIterator itr = jsonObj.FindMember("value");
+        if (itr != jsonObj.MemberEnd() && itr->value.IsString()) {
+            jsonSchemaValidatedStringPayload.value = itr->value.GetString();
+
+        } else {
+            throw std::runtime_error("Received payload for the 'value' argument doesn't have required value/type");
+        }
+    }
+
+    return jsonSchemaValidatedStringPayload;
+};
+
+void JsonSchemaValidatedStringPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
+{
+    { // restrict scope
+        rapidjson::Value tempStringValue;
+        tempStringValue.SetString(value.c_str(), value.size(), allocator);
+        parent.AddMember("value", tempStringValue, allocator);
+    }
+}
+
+bool JsonSchemaValidatedStringPayload::ValidateSchema() const
+{
+    rapidjson::Document doc;
+    doc.SetObject();
+    AddToRapidJsonObject(doc, doc.GetAllocator());
+    {
+        rapidjson::Document schemaDoc;
+        if (schemaDoc.Parse(R"stingerschema({"maxLength": 10, "minLength": 1})stingerschema").HasParseError()) {
+            return false;
+        }
+        rapidjson::SchemaDocument schema(schemaDoc);
+        rapidjson::SchemaValidator validator(schema);
+        auto itr = doc.FindMember("value");
+        if (itr != doc.MemberEnd() && !itr->value.Accept(validator)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 // --- (De-)Serialization for singleOptionalString signal payload ---
@@ -172,6 +289,11 @@ void SingleOptionalStringPayload::AddToRapidJsonObject(rapidjson::Value& parent,
         tempStringValue.SetString(value->c_str(), value->size(), allocator);
         parent.AddMember("value", tempStringValue, allocator);
     }
+}
+
+bool SingleOptionalStringPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for threeStrings signal payload ---
@@ -234,6 +356,11 @@ void ThreeStringsPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjs
     }
 }
 
+bool ThreeStringsPayload::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for singleEnum signal payload ---
 SingleEnumPayload SingleEnumPayload::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -255,6 +382,11 @@ SingleEnumPayload SingleEnumPayload::FromRapidJsonObject(const rapidjson::Value&
 void SingleEnumPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("value", static_cast<int>(value), allocator);
+}
+
+bool SingleEnumPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for singleOptionalEnum signal payload ---
@@ -281,6 +413,11 @@ SingleOptionalEnumPayload SingleOptionalEnumPayload::FromRapidJsonObject(const r
 void SingleOptionalEnumPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("value", static_cast<int>(*value), allocator);
+}
+
+bool SingleOptionalEnumPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for threeEnums signal payload ---
@@ -331,6 +468,11 @@ void ThreeEnumsPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson
     parent.AddMember("third", static_cast<int>(*third), allocator);
 }
 
+bool ThreeEnumsPayload::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for singleStruct signal payload ---
 SingleStructPayload SingleStructPayload::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -359,6 +501,11 @@ void SingleStructPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjs
 
         parent.AddMember("value", tempStructValue, allocator);
     }
+}
+
+bool SingleStructPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for singleOptionalStruct signal payload ---
@@ -394,6 +541,11 @@ void SingleOptionalStructPayload::AddToRapidJsonObject(rapidjson::Value& parent,
         }
         parent.AddMember("value", tempStructValue, allocator);
     }
+}
+
+bool SingleOptionalStructPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for threeStructs signal payload ---
@@ -467,6 +619,11 @@ void ThreeStructsPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjs
     }
 }
 
+bool ThreeStructsPayload::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for singleDateTime signal payload ---
 SingleDateTimePayload SingleDateTimePayload::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -494,6 +651,11 @@ void SingleDateTimePayload::AddToRapidJsonObject(rapidjson::Value& parent, rapid
         tempValueStringValue.SetString(valueIsoString.c_str(), valueIsoString.size(), allocator);
         parent.AddMember("value", tempValueStringValue, allocator);
     }
+}
+
+bool SingleDateTimePayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for singleOptionalDatetime signal payload ---
@@ -526,6 +688,11 @@ void SingleOptionalDatetimePayload::AddToRapidJsonObject(rapidjson::Value& paren
         tempValueStringValue.SetString(valueIsoString.c_str(), valueIsoString.size(), allocator);
         parent.AddMember("value", tempValueStringValue, allocator);
     }
+}
+
+bool SingleOptionalDatetimePayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for threeDateTimes signal payload ---
@@ -594,6 +761,11 @@ void ThreeDateTimesPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapid
     }
 }
 
+bool ThreeDateTimesPayload::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for singleDuration signal payload ---
 SingleDurationPayload SingleDurationPayload::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -621,6 +793,11 @@ void SingleDurationPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapid
         tempValueStringValue.SetString(valueIsoString.c_str(), valueIsoString.size(), allocator);
         parent.AddMember("value", tempValueStringValue, allocator);
     }
+}
+
+bool SingleDurationPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for singleOptionalDuration signal payload ---
@@ -653,6 +830,11 @@ void SingleOptionalDurationPayload::AddToRapidJsonObject(rapidjson::Value& paren
         tempValueStringValue.SetString(valueIsoString.c_str(), valueIsoString.size(), allocator);
         parent.AddMember("value", tempValueStringValue, allocator);
     }
+}
+
+bool SingleOptionalDurationPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for threeDurations signal payload ---
@@ -721,6 +903,11 @@ void ThreeDurationsPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapid
     }
 }
 
+bool ThreeDurationsPayload::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for singleBinary signal payload ---
 SingleBinaryPayload SingleBinaryPayload::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -748,6 +935,11 @@ void SingleBinaryPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidjs
         tempValueStringValue.SetString(valueB64String.c_str(), valueB64String.size(), allocator);
         parent.AddMember("value", tempValueStringValue, allocator);
     }
+}
+
+bool SingleBinaryPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for singleOptionalBinary signal payload ---
@@ -780,6 +972,11 @@ void SingleOptionalBinaryPayload::AddToRapidJsonObject(rapidjson::Value& parent,
         tempValueStringValue.SetString(valueB64String.c_str(), valueB64String.size(), allocator);
         parent.AddMember("value", tempValueStringValue, allocator);
     }
+}
+
+bool SingleOptionalBinaryPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for threeBinaries signal payload ---
@@ -848,6 +1045,11 @@ void ThreeBinariesPayload::AddToRapidJsonObject(rapidjson::Value& parent, rapidj
     }
 }
 
+bool ThreeBinariesPayload::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for singleArrayOfIntegers signal payload ---
 SingleArrayOfIntegersPayload SingleArrayOfIntegersPayload::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -884,6 +1086,11 @@ void SingleArrayOfIntegersPayload::AddToRapidJsonObject(rapidjson::Value& parent
         }
         parent.AddMember("values", tempArrayValue, allocator);
     }
+}
+
+bool SingleArrayOfIntegersPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for singleOptionalArrayOfStrings signal payload ---
@@ -927,6 +1134,11 @@ void SingleOptionalArrayOfStringsPayload::AddToRapidJsonObject(rapidjson::Value&
         }
         parent.AddMember("values", tempArrayValue, allocator);
     }
+}
+
+bool SingleOptionalArrayOfStringsPayload::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for arrayOfEveryType signal payload ---
@@ -1170,6 +1382,11 @@ void ArrayOfEveryTypePayload::AddToRapidJsonObject(rapidjson::Value& parent, rap
         }
         parent.AddMember("eighth_of_binaries", tempArrayValue, allocator);
     }
+}
+
+bool ArrayOfEveryTypePayload::ValidateSchema() const
+{
+    return true;
 }
 
 } // namespace testable

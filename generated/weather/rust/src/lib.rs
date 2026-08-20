@@ -19,6 +19,8 @@ pub mod discovery;
 
 #[cfg(feature = "payloads")]
 pub mod payloads;
+#[cfg(feature = "payloads")]
+pub mod serde_formats;
 
 #[cfg(feature = "client")]
 pub mod client;

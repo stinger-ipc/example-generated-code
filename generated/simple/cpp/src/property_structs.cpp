@@ -2,6 +2,7 @@
 
 #include "property_structs.hpp"
 #include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 
 namespace stinger {
 
@@ -32,6 +33,11 @@ void SchoolProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::D
         tempStringValue.SetString(name.c_str(), name.size(), allocator);
         parent.AddMember("name", tempStringValue, allocator);
     }
+}
+
+bool SchoolProperty::ValidateSchema() const
+{
+    return true;
 }
 
 } // namespace simple

@@ -4,8 +4,7 @@ on the next generation.
 
 It contains enumerations used by the testable interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #pragma once
@@ -24,11 +23,24 @@ namespace testable {
 struct EmptyPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static EmptyPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
 };
 
 struct SingleIntPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleIntPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
+    // Values...
+    int value;
+};
+
+struct JsonSchemaValidatedIntPayload {
+    void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    static JsonSchemaValidatedIntPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     int value;
 };
@@ -36,6 +48,8 @@ struct SingleIntPayload {
 struct SingleOptionalIntPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleOptionalIntPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<int> value;
 };
@@ -43,6 +57,8 @@ struct SingleOptionalIntPayload {
 struct ThreeIntegersPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static ThreeIntegersPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     int first;
     int second;
@@ -52,6 +68,17 @@ struct ThreeIntegersPayload {
 struct SingleStringPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleStringPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
+    // Values...
+    std::string value;
+};
+
+struct JsonSchemaValidatedStringPayload {
+    void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    static JsonSchemaValidatedStringPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::string value;
 };
@@ -59,6 +86,8 @@ struct SingleStringPayload {
 struct SingleOptionalStringPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleOptionalStringPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::string> value;
 };
@@ -66,6 +95,8 @@ struct SingleOptionalStringPayload {
 struct ThreeStringsPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static ThreeStringsPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::string first;
     std::string second;
@@ -75,6 +106,8 @@ struct ThreeStringsPayload {
 struct SingleEnumPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleEnumPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     Numbers value;
 };
@@ -82,6 +115,8 @@ struct SingleEnumPayload {
 struct SingleOptionalEnumPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleOptionalEnumPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<Numbers> value;
 };
@@ -89,6 +124,8 @@ struct SingleOptionalEnumPayload {
 struct ThreeEnumsPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static ThreeEnumsPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     Numbers first;
     Numbers second;
@@ -98,6 +135,8 @@ struct ThreeEnumsPayload {
 struct SingleStructPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleStructPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     AllTypes value;
 };
@@ -105,6 +144,8 @@ struct SingleStructPayload {
 struct SingleOptionalStructPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleOptionalStructPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<AllTypes> value;
 };
@@ -112,6 +153,8 @@ struct SingleOptionalStructPayload {
 struct ThreeStructsPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static ThreeStructsPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     AllTypes first;
     AllTypes second;
@@ -121,6 +164,8 @@ struct ThreeStructsPayload {
 struct SingleDateTimePayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleDateTimePayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::chrono::time_point<std::chrono::system_clock> value;
 };
@@ -128,6 +173,8 @@ struct SingleDateTimePayload {
 struct SingleOptionalDatetimePayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleOptionalDatetimePayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::chrono::time_point<std::chrono::system_clock>> value;
 };
@@ -135,6 +182,8 @@ struct SingleOptionalDatetimePayload {
 struct ThreeDateTimesPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static ThreeDateTimesPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::chrono::time_point<std::chrono::system_clock> first;
     std::chrono::time_point<std::chrono::system_clock> second;
@@ -144,6 +193,8 @@ struct ThreeDateTimesPayload {
 struct SingleDurationPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleDurationPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::chrono::duration<double> value;
 };
@@ -151,6 +202,8 @@ struct SingleDurationPayload {
 struct SingleOptionalDurationPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleOptionalDurationPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::chrono::duration<double>> value;
 };
@@ -158,6 +211,8 @@ struct SingleOptionalDurationPayload {
 struct ThreeDurationsPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static ThreeDurationsPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::chrono::duration<double> first;
     std::chrono::duration<double> second;
@@ -167,6 +222,8 @@ struct ThreeDurationsPayload {
 struct SingleBinaryPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleBinaryPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::vector<uint8_t> value;
 };
@@ -174,6 +231,8 @@ struct SingleBinaryPayload {
 struct SingleOptionalBinaryPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleOptionalBinaryPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::vector<uint8_t>> value;
 };
@@ -181,6 +240,8 @@ struct SingleOptionalBinaryPayload {
 struct ThreeBinariesPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static ThreeBinariesPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::vector<uint8_t> first;
     std::vector<uint8_t> second;
@@ -190,6 +251,8 @@ struct ThreeBinariesPayload {
 struct SingleArrayOfIntegersPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleArrayOfIntegersPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::vector<int> values;
 };
@@ -197,6 +260,8 @@ struct SingleArrayOfIntegersPayload {
 struct SingleOptionalArrayOfStringsPayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static SingleOptionalArrayOfStringsPayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::vector<std::string>> values;
 };
@@ -204,6 +269,8 @@ struct SingleOptionalArrayOfStringsPayload {
 struct ArrayOfEveryTypePayload {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static ArrayOfEveryTypePayload FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::vector<int> firstOfIntegers;
     std::vector<double> secondOfFloats;

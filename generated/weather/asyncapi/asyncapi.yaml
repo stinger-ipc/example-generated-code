@@ -1,0 +1,2020 @@
+asyncapi: 3.0.0
+channels:
+  current_condition_refresh_interval_update_request:
+    address: '{prefix}/weather/{service_id}/property/current_condition_refresh_interval/update'
+    description: "This is the maximum interval, in seconds, that the latest weather
+      conditions at the nearest weather\nstation are retrieved.\n"
+    messages:
+      current_condition_refresh_interval:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: 
+                client/[^\}]+/weather/property/current_condition_refresh_interval/update/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the new property value that the client
+          wants to set.\n            \n                The entirety of the JSON object
+          must be provided, and will completely replace the\n                current
+          value of the property if the update is accepted.\n                \n   \
+          \             The `PropertyVersion` user property value (a number provided
+          as an MQTT string)\n                should be the same `PropertyVersion`
+          value that was most recently received."
+        headers:
+          properties:
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: CurrentConditionRefreshIntervalUpdateRequest
+        payload:
+          $ref: '#/components/schemas/current_condition_refresh_interval_property'
+        summary: A request to update the 'current_condition_refresh_interval' 
+          property.
+        tags:
+        - name: property
+        - name: update
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: A request to update the 'current_condition_refresh_interval' 
+      property.
+    title: CurrentConditionRefreshIntervalUpdateRequest
+  current_condition_refresh_interval_update_response:
+    address: 
+      client/{client_id}/weather/property/current_condition_refresh_interval/update/response
+    description: "This is the maximum interval, in seconds, that the latest weather
+      conditions at the nearest weather\nstation are retrieved.\n"
+    messages:
+      current_condition_refresh_interval:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+        contentType: application/json
+        description: "The payload represents the latest value of the property after
+          the update attempt.\n            \n            If the property update was
+          successful, then there should be a `ReturnCode` user property with value
+          `0`, and the payload should match the value that was sent in the update
+          request.\n            The `PropertyValue` user property will be the newest
+          version of the property value after the update.\n            The `DebugInfo`
+          user property is usually empty or unset on success, but is not required
+          to be empty.  If provided, the\n            client should log or print the
+          provided `DebugInfo` string for debugging purposes.\n\n            If the
+          property update was unsuccessful, then there should be a `ReturnCode` user
+          property with a non-zero value, and the payload will contain the server's
+          current value for the property.\n            The `PropertyValue` user property
+          will be the version of the current property value (which may or may not
+          be what it was before).\n            The `DebugInfo` user property should
+          contain a string describing why the update was unsuccessful, and the client
+          should log or print it for debugging purposes, but the client is not to
+          specifically parse the `DebugInfo` for programatic meaning.\n          \
+          \  "
+        headers:
+          properties:
+            DebugInfo:
+              description: A string describing why the update was unsuccessful, 
+                if applicable.
+              type: string
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              minimum: -1
+              type: integer
+            ReturnCode:
+              description: 'SUCCESS: 0 | CLIENT_ERROR: 1 | SERVER_ERROR: 2 | TRANSPORT_ERROR:
+                3 | PAYLOAD_ERROR: 4 | CLIENT_SERIALIZATION_ERROR: 5 | CLIENT_DESERIALIZATION_ERROR:
+                6 | SERVER_SERIALIZATION_ERROR: 7 | SERVER_DESERIALIZATION_ERROR:
+                8 | METHOD_NOT_FOUND: 9 | UNAUTHORIZED: 10 | TIMEOUT: 11 | OUT_OF_SYNC:
+                12 | UNKNOWN_ERROR: 13 | NOT_IMPLEMENTED: 14 | SERVICE_UNAVAILABLE:
+                15'
+              enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              type: integer
+          required:
+          - PropertyValue
+          - ReturnCode
+          - DebugInfo
+          type: object
+        name: CurrentConditionRefreshIntervalUpdateResponse
+        payload:
+          $ref: '#/components/schemas/current_condition_refresh_interval_property'
+        summary: The response after updating the 
+          'current_condition_refresh_interval' property.
+        tags:
+        - name: property
+        - name: update
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+    summary: A response to the update request for the 
+      'current_condition_refresh_interval' property.
+    title: CurrentConditionRefreshIntervalUpdateResponse
+  current_condition_refresh_interval_value:
+    address: '{prefix}/weather/{service_id}/property/current_condition_refresh_interval/value'
+    description: "This is the maximum interval, in seconds, that the latest weather
+      conditions at the nearest weather\nstation are retrieved.\n"
+    messages:
+      current_condition_refresh_interval:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: CurrentConditionRefreshIntervalPropertyValue
+        payload:
+          $ref: '#/components/schemas/current_condition_refresh_interval_property'
+        summary: The current value of the 'current_condition_refresh_interval' 
+          property.
+        tags:
+        - name: property
+        - name: value
+        title: current_condition_refresh_interval value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'current_condition_refresh_interval' 
+      property.
+    tags:
+    - name: property
+    - name: value
+    title: CurrentConditionRefreshIntervalPropertyValue
+  current_condition_value:
+    address: '{prefix}/weather/{service_id}/property/current_condition/value'
+    description: "This is the current weather outside.  This comes from the hourly
+      forecast and is\nupdated about once per hour.\n"
+    messages:
+      current_condition:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: CurrentConditionPropertyValue
+        payload:
+          $ref: '#/components/schemas/current_condition_property'
+        summary: The current value of the 'current_condition' property.
+        tags:
+        - name: property
+        - name: value
+        title: current_condition value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'current_condition' property.
+    tags:
+    - name: property
+    - name: value
+    title: CurrentConditionPropertyValue
+  current_temperature_value:
+    address: '{prefix}/weather/{service_id}/property/current_temperature/value'
+    description: "This is the current (estimated) temperature in degrees fahrenheit.\
+      \  This values\nis regularly updated.  The value is extrapolated from the hourly
+      forecast, but\nadjusted based on the latest conditions at the nearest weather
+      station.\n"
+    messages:
+      current_temperature:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: CurrentTemperaturePropertyValue
+        payload:
+          $ref: '#/components/schemas/current_temperature_property'
+        summary: The current value of the 'current_temperature' property.
+        tags:
+        - name: property
+        - name: value
+        title: current_temperature value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'current_temperature' property.
+    tags:
+    - name: property
+    - name: value
+    title: CurrentTemperaturePropertyValue
+  current_time:
+    address: '{prefix}/weather/{service_id}/signal/current_time'
+    description: "Once in a while (at intervals decided by the provider) the current
+      date\nand time will be published.  (Mostly for example purposes).\n"
+    messages:
+      current_time:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: The payload represents the data for the signal.  It is 
+          encoded as a JSON object.
+        name: current_time
+        payload:
+          properties:
+            current_time:
+              type: string
+          required:
+          - current_time
+          type: object
+        summary: The message for the 'current_time' signal.
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  daily_forecast_refresh_interval_update_request:
+    address: '{prefix}/weather/{service_id}/property/daily_forecast_refresh_interval/update'
+    description: "This is the maximum interval, in seconds, that the daily forecast
+      data is retrieved.\n"
+    messages:
+      daily_forecast_refresh_interval:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: 
+                client/[^\}]+/weather/property/daily_forecast_refresh_interval/update/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the new property value that the client
+          wants to set.\n            \n                The entirety of the JSON object
+          must be provided, and will completely replace the\n                current
+          value of the property if the update is accepted.\n                \n   \
+          \             The `PropertyVersion` user property value (a number provided
+          as an MQTT string)\n                should be the same `PropertyVersion`
+          value that was most recently received."
+        headers:
+          properties:
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: DailyForecastRefreshIntervalUpdateRequest
+        payload:
+          $ref: '#/components/schemas/daily_forecast_refresh_interval_property'
+        summary: A request to update the 'daily_forecast_refresh_interval' 
+          property.
+        tags:
+        - name: property
+        - name: update
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: A request to update the 'daily_forecast_refresh_interval' property.
+    title: DailyForecastRefreshIntervalUpdateRequest
+  daily_forecast_refresh_interval_update_response:
+    address: 
+      client/{client_id}/weather/property/daily_forecast_refresh_interval/update/response
+    description: "This is the maximum interval, in seconds, that the daily forecast
+      data is retrieved.\n"
+    messages:
+      daily_forecast_refresh_interval:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+        contentType: application/json
+        description: "The payload represents the latest value of the property after
+          the update attempt.\n            \n            If the property update was
+          successful, then there should be a `ReturnCode` user property with value
+          `0`, and the payload should match the value that was sent in the update
+          request.\n            The `PropertyValue` user property will be the newest
+          version of the property value after the update.\n            The `DebugInfo`
+          user property is usually empty or unset on success, but is not required
+          to be empty.  If provided, the\n            client should log or print the
+          provided `DebugInfo` string for debugging purposes.\n\n            If the
+          property update was unsuccessful, then there should be a `ReturnCode` user
+          property with a non-zero value, and the payload will contain the server's
+          current value for the property.\n            The `PropertyValue` user property
+          will be the version of the current property value (which may or may not
+          be what it was before).\n            The `DebugInfo` user property should
+          contain a string describing why the update was unsuccessful, and the client
+          should log or print it for debugging purposes, but the client is not to
+          specifically parse the `DebugInfo` for programatic meaning.\n          \
+          \  "
+        headers:
+          properties:
+            DebugInfo:
+              description: A string describing why the update was unsuccessful, 
+                if applicable.
+              type: string
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              minimum: -1
+              type: integer
+            ReturnCode:
+              description: 'SUCCESS: 0 | CLIENT_ERROR: 1 | SERVER_ERROR: 2 | TRANSPORT_ERROR:
+                3 | PAYLOAD_ERROR: 4 | CLIENT_SERIALIZATION_ERROR: 5 | CLIENT_DESERIALIZATION_ERROR:
+                6 | SERVER_SERIALIZATION_ERROR: 7 | SERVER_DESERIALIZATION_ERROR:
+                8 | METHOD_NOT_FOUND: 9 | UNAUTHORIZED: 10 | TIMEOUT: 11 | OUT_OF_SYNC:
+                12 | UNKNOWN_ERROR: 13 | NOT_IMPLEMENTED: 14 | SERVICE_UNAVAILABLE:
+                15'
+              enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              type: integer
+          required:
+          - PropertyValue
+          - ReturnCode
+          - DebugInfo
+          type: object
+        name: DailyForecastRefreshIntervalUpdateResponse
+        payload:
+          $ref: '#/components/schemas/daily_forecast_refresh_interval_property'
+        summary: The response after updating the 
+          'daily_forecast_refresh_interval' property.
+        tags:
+        - name: property
+        - name: update
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+    summary: A response to the update request for the 
+      'daily_forecast_refresh_interval' property.
+    title: DailyForecastRefreshIntervalUpdateResponse
+  daily_forecast_refresh_interval_value:
+    address: '{prefix}/weather/{service_id}/property/daily_forecast_refresh_interval/value'
+    description: "This is the maximum interval, in seconds, that the daily forecast
+      data is retrieved.\n"
+    messages:
+      daily_forecast_refresh_interval:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: DailyForecastRefreshIntervalPropertyValue
+        payload:
+          $ref: '#/components/schemas/daily_forecast_refresh_interval_property'
+        summary: The current value of the 'daily_forecast_refresh_interval' 
+          property.
+        tags:
+        - name: property
+        - name: value
+        title: daily_forecast_refresh_interval value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'daily_forecast_refresh_interval' 
+      property.
+    tags:
+    - name: property
+    - name: value
+    title: DailyForecastRefreshIntervalPropertyValue
+  daily_forecast_value:
+    address: '{prefix}/weather/{service_id}/property/daily_forecast/value'
+    description: "This contains the weather forecast for each day of the next few
+      days.  It is updated\na couple of times a day.  The current day may not have
+      the high or low temperature\nprovided.  This is an example which shows only
+      a few days.  The actual implementation\nwill have a value for each day of the
+      week.\n"
+    messages:
+      daily_forecast:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: DailyForecastPropertyValue
+        payload:
+          $ref: '#/components/schemas/daily_forecast_property'
+        summary: The current value of the 'daily_forecast' property.
+        tags:
+        - name: property
+        - name: value
+        title: daily_forecast value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'daily_forecast' property.
+    tags:
+    - name: property
+    - name: value
+    title: DailyForecastPropertyValue
+  hourly_forecast_refresh_interval_update_request:
+    address: '{prefix}/weather/{service_id}/property/hourly_forecast_refresh_interval/update'
+    description: "This is the maximum interval, in seconds, that the hourly forecast
+      data is retrieved.\n"
+    messages:
+      hourly_forecast_refresh_interval:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: 
+                client/[^\}]+/weather/property/hourly_forecast_refresh_interval/update/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the new property value that the client
+          wants to set.\n            \n                The entirety of the JSON object
+          must be provided, and will completely replace the\n                current
+          value of the property if the update is accepted.\n                \n   \
+          \             The `PropertyVersion` user property value (a number provided
+          as an MQTT string)\n                should be the same `PropertyVersion`
+          value that was most recently received."
+        headers:
+          properties:
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: HourlyForecastRefreshIntervalUpdateRequest
+        payload:
+          $ref: '#/components/schemas/hourly_forecast_refresh_interval_property'
+        summary: A request to update the 'hourly_forecast_refresh_interval' 
+          property.
+        tags:
+        - name: property
+        - name: update
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: A request to update the 'hourly_forecast_refresh_interval' 
+      property.
+    title: HourlyForecastRefreshIntervalUpdateRequest
+  hourly_forecast_refresh_interval_update_response:
+    address: 
+      client/{client_id}/weather/property/hourly_forecast_refresh_interval/update/response
+    description: "This is the maximum interval, in seconds, that the hourly forecast
+      data is retrieved.\n"
+    messages:
+      hourly_forecast_refresh_interval:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+        contentType: application/json
+        description: "The payload represents the latest value of the property after
+          the update attempt.\n            \n            If the property update was
+          successful, then there should be a `ReturnCode` user property with value
+          `0`, and the payload should match the value that was sent in the update
+          request.\n            The `PropertyValue` user property will be the newest
+          version of the property value after the update.\n            The `DebugInfo`
+          user property is usually empty or unset on success, but is not required
+          to be empty.  If provided, the\n            client should log or print the
+          provided `DebugInfo` string for debugging purposes.\n\n            If the
+          property update was unsuccessful, then there should be a `ReturnCode` user
+          property with a non-zero value, and the payload will contain the server's
+          current value for the property.\n            The `PropertyValue` user property
+          will be the version of the current property value (which may or may not
+          be what it was before).\n            The `DebugInfo` user property should
+          contain a string describing why the update was unsuccessful, and the client
+          should log or print it for debugging purposes, but the client is not to
+          specifically parse the `DebugInfo` for programatic meaning.\n          \
+          \  "
+        headers:
+          properties:
+            DebugInfo:
+              description: A string describing why the update was unsuccessful, 
+                if applicable.
+              type: string
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              minimum: -1
+              type: integer
+            ReturnCode:
+              description: 'SUCCESS: 0 | CLIENT_ERROR: 1 | SERVER_ERROR: 2 | TRANSPORT_ERROR:
+                3 | PAYLOAD_ERROR: 4 | CLIENT_SERIALIZATION_ERROR: 5 | CLIENT_DESERIALIZATION_ERROR:
+                6 | SERVER_SERIALIZATION_ERROR: 7 | SERVER_DESERIALIZATION_ERROR:
+                8 | METHOD_NOT_FOUND: 9 | UNAUTHORIZED: 10 | TIMEOUT: 11 | OUT_OF_SYNC:
+                12 | UNKNOWN_ERROR: 13 | NOT_IMPLEMENTED: 14 | SERVICE_UNAVAILABLE:
+                15'
+              enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              type: integer
+          required:
+          - PropertyValue
+          - ReturnCode
+          - DebugInfo
+          type: object
+        name: HourlyForecastRefreshIntervalUpdateResponse
+        payload:
+          $ref: '#/components/schemas/hourly_forecast_refresh_interval_property'
+        summary: The response after updating the 
+          'hourly_forecast_refresh_interval' property.
+        tags:
+        - name: property
+        - name: update
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+    summary: A response to the update request for the 
+      'hourly_forecast_refresh_interval' property.
+    title: HourlyForecastRefreshIntervalUpdateResponse
+  hourly_forecast_refresh_interval_value:
+    address: '{prefix}/weather/{service_id}/property/hourly_forecast_refresh_interval/value'
+    description: "This is the maximum interval, in seconds, that the hourly forecast
+      data is retrieved.\n"
+    messages:
+      hourly_forecast_refresh_interval:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: HourlyForecastRefreshIntervalPropertyValue
+        payload:
+          $ref: '#/components/schemas/hourly_forecast_refresh_interval_property'
+        summary: The current value of the 'hourly_forecast_refresh_interval' 
+          property.
+        tags:
+        - name: property
+        - name: value
+        title: hourly_forecast_refresh_interval value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'hourly_forecast_refresh_interval' 
+      property.
+    tags:
+    - name: property
+    - name: value
+    title: HourlyForecastRefreshIntervalPropertyValue
+  hourly_forecast_value:
+    address: '{prefix}/weather/{service_id}/property/hourly_forecast/value'
+    description: "This contains the weather forecast for each hour of the next 24
+      hours.  The data source\nus updated a couple of times per day, but this API
+      property is updated every hour on the\nhour.\n"
+    messages:
+      hourly_forecast:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: HourlyForecastPropertyValue
+        payload:
+          $ref: '#/components/schemas/hourly_forecast_property'
+        summary: The current value of the 'hourly_forecast' property.
+        tags:
+        - name: property
+        - name: value
+        title: hourly_forecast value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'hourly_forecast' property.
+    tags:
+    - name: property
+    - name: value
+    title: HourlyForecastPropertyValue
+  interface_info:
+    address: '{prefix}/weather/{service_id}/interface'
+    description: Advertisement/discovery channel for the 'weather' interface.
+    messages:
+      interface_info:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: The server periodically publishes this message (with a 
+          message-expiry interval) so that clients can discover running 
+          instances of the interface and the versions of the methods they 
+          support.
+        name: InterfaceInfo
+        payload:
+          properties:
+            connection_topic:
+              type: string
+            instance:
+              type: string
+            interface_name:
+              type: string
+            methods:
+              additionalProperties:
+                type: string
+              description: Maps method names to their version string, for 
+                methods that declare a version.
+              type: object
+            prefix:
+              type: string
+            timestamp:
+              format: date-time
+              type: string
+            title:
+              type: string
+            version:
+              type: string
+          required:
+          - interface_name
+          - title
+          - version
+          - instance
+          - connection_topic
+          - timestamp
+          - prefix
+          type: object
+        summary: Advertisement/discovery information for the 'weather' 
+          interface.
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  location_update_request:
+    address: '{prefix}/weather/{service_id}/property/location/update'
+    description: "Weather will be retrieved for the provided location.\n"
+    messages:
+      location:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: client/[^\}]+/weather/property/location/update/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the new property value that the client
+          wants to set.\n            \n                The entirety of the JSON object
+          must be provided, and will completely replace the\n                current
+          value of the property if the update is accepted.\n                \n   \
+          \             The `PropertyVersion` user property value (a number provided
+          as an MQTT string)\n                should be the same `PropertyVersion`
+          value that was most recently received."
+        headers:
+          properties:
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: LocationUpdateRequest
+        payload:
+          $ref: '#/components/schemas/location_property'
+        summary: A request to update the 'location' property.
+        tags:
+        - name: property
+        - name: update
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: A request to update the 'location' property.
+    title: LocationUpdateRequest
+  location_update_response:
+    address: client/{client_id}/weather/property/location/update/response
+    description: "Weather will be retrieved for the provided location.\n"
+    messages:
+      location:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+        contentType: application/json
+        description: "The payload represents the latest value of the property after
+          the update attempt.\n            \n            If the property update was
+          successful, then there should be a `ReturnCode` user property with value
+          `0`, and the payload should match the value that was sent in the update
+          request.\n            The `PropertyValue` user property will be the newest
+          version of the property value after the update.\n            The `DebugInfo`
+          user property is usually empty or unset on success, but is not required
+          to be empty.  If provided, the\n            client should log or print the
+          provided `DebugInfo` string for debugging purposes.\n\n            If the
+          property update was unsuccessful, then there should be a `ReturnCode` user
+          property with a non-zero value, and the payload will contain the server's
+          current value for the property.\n            The `PropertyValue` user property
+          will be the version of the current property value (which may or may not
+          be what it was before).\n            The `DebugInfo` user property should
+          contain a string describing why the update was unsuccessful, and the client
+          should log or print it for debugging purposes, but the client is not to
+          specifically parse the `DebugInfo` for programatic meaning.\n          \
+          \  "
+        headers:
+          properties:
+            DebugInfo:
+              description: A string describing why the update was unsuccessful, 
+                if applicable.
+              type: string
+            PropertyValue:
+              description: This is the current version of the property.  The 
+                version in the request must match the version of the property 
+                value for the update to be accepted.  This prevents lost updates
+                when multiple clients are updating the same property.
+              minimum: -1
+              type: integer
+            ReturnCode:
+              description: 'SUCCESS: 0 | CLIENT_ERROR: 1 | SERVER_ERROR: 2 | TRANSPORT_ERROR:
+                3 | PAYLOAD_ERROR: 4 | CLIENT_SERIALIZATION_ERROR: 5 | CLIENT_DESERIALIZATION_ERROR:
+                6 | SERVER_SERIALIZATION_ERROR: 7 | SERVER_DESERIALIZATION_ERROR:
+                8 | METHOD_NOT_FOUND: 9 | UNAUTHORIZED: 10 | TIMEOUT: 11 | OUT_OF_SYNC:
+                12 | UNKNOWN_ERROR: 13 | NOT_IMPLEMENTED: 14 | SERVICE_UNAVAILABLE:
+                15'
+              enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              type: integer
+          required:
+          - PropertyValue
+          - ReturnCode
+          - DebugInfo
+          type: object
+        name: LocationUpdateResponse
+        payload:
+          $ref: '#/components/schemas/location_property'
+        summary: The response after updating the 'location' property.
+        tags:
+        - name: property
+        - name: update
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+    summary: A response to the update request for the 'location' property.
+    title: LocationUpdateResponse
+  location_value:
+    address: '{prefix}/weather/{service_id}/property/location/value'
+    description: "Weather will be retrieved for the provided location.\n"
+    messages:
+      location:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "The payload represents the current value of the property.  It
+          is encoded as a JSON object.\n\n            The `PropertyValue` user property
+          value (an integer provided as an MQTT string) is a version number that increments
+          with each new value of the property.\n            A client typically stores
+          this value in order to provide it in update requests.\n            "
+        headers:
+          properties:
+            DebugInfo:
+              description: A optional (not likely to be provided) string that 
+                the client should log or print for debugging purposes.
+              type: string
+            PropertyValue:
+              description: An integer that increments with each new value of the
+                property.
+              type: integer
+          required:
+          - PropertyValue
+          type: object
+        name: LocationPropertyValue
+        payload:
+          $ref: '#/components/schemas/location_property'
+        summary: The current value of the 'location' property.
+        tags:
+        - name: property
+        - name: value
+        title: location value
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+    summary: The current value of the 'location' property.
+    tags:
+    - name: property
+    - name: value
+    title: LocationPropertyValue
+  refresh_current_conditions_request:
+    address: '{prefix}/weather/{service_id}/method/refresh_current_conditions/request'
+    description: "When called, this method will force the retrieval of the latest
+      weather conditions\nfrom the nearest weather station.  It also forces a re-calculation
+      of the current\ntemperature.\n\nWhen called, the `current_temperature` and `current_condition`
+      API properties are\nrepublished with the latest value.\n\nThis method has no
+      arguments and provides no return values.\n"
+    messages:
+      refresh_current_conditions_request:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: 
+                client/[^\}]+/weather/method/refresh_current_conditions/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the arguments for the method call.  It
+          is encoded as a JSON object.\n            \n            Correlation data
+          must be provided as an MQTT property.  The data can be any binary data,
+          but must be unique to this method.  Typically, using a UUID is sufficient
+          to ensure uniqueness.  The server will include the same correlation data
+          in the response message, so the client can match responses to requests when
+          multiple requests are in-flight.\n            \n            A response topic
+          must be provided as an MQTT property.  The server will publish the response
+          message to the provided response topic.  The method-calling client must
+          have a valid subscription to the MQTT response topic.\n            "
+        name: refresh_current_conditions_request
+        payload:
+          properties: {}
+          type: object
+        tags:
+        - name: method
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  refresh_current_conditions_response:
+    address: 
+      client/{client_id}/weather/method/refresh_current_conditions/response
+    description: "When called, this method will force the retrieval of the latest
+      weather conditions\nfrom the nearest weather station.  It also forces a re-calculation
+      of the current\ntemperature.\n\nWhen called, the `current_temperature` and `current_condition`
+      API properties are\nrepublished with the latest value.\n\nThis method has no
+      arguments and provides no return values.\n"
+    messages:
+      refresh_current_conditions_return_values:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "\n            This payload represents the {% if self.method.return_arg_list
+          | length > 1 %}return values{%elif self.method.return_arg_list | length
+          == 1 %}return value{% else %}completion{% endif %} of the method call response.\
+          \  It is encoded as a JSON object.\n            \n            A \"correlation
+          data\" MQTT property will be included in the response message, and will
+          match the correlation data provided in the request message, so the client
+          can match responses to requests when multiple requests are in-flight.  Whatever
+          binary data was provided as correlation data in the request will be provided
+          as correlation data in the response.\n            (Hint: any blob of data
+          works, so you could include extra tracking information like a timestamp
+          if you needed it).\n            "
+        name: refresh_current_conditions return values
+        payload:
+          properties: {}
+          type: object
+        tags:
+        - name: method
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+  refresh_daily_forecast_request:
+    address: '{prefix}/weather/{service_id}/method/refresh_daily_forecast/request'
+    description: "When called, this method will force the retrieval of the daily weather
+      forecast from\nthe NWS weather API.  \n\nWhen called, the `daily_forecast` API
+      property will be republished with the latest data.\n\nThis method has no arguments
+      and provides no return values.\n"
+    messages:
+      refresh_daily_forecast_request:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: 
+                client/[^\}]+/weather/method/refresh_daily_forecast/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the arguments for the method call.  It
+          is encoded as a JSON object.\n            \n            Correlation data
+          must be provided as an MQTT property.  The data can be any binary data,
+          but must be unique to this method.  Typically, using a UUID is sufficient
+          to ensure uniqueness.  The server will include the same correlation data
+          in the response message, so the client can match responses to requests when
+          multiple requests are in-flight.\n            \n            A response topic
+          must be provided as an MQTT property.  The server will publish the response
+          message to the provided response topic.  The method-calling client must
+          have a valid subscription to the MQTT response topic.\n            "
+        name: refresh_daily_forecast_request
+        payload:
+          properties: {}
+          type: object
+        tags:
+        - name: method
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  refresh_daily_forecast_response:
+    address: client/{client_id}/weather/method/refresh_daily_forecast/response
+    description: "When called, this method will force the retrieval of the daily weather
+      forecast from\nthe NWS weather API.  \n\nWhen called, the `daily_forecast` API
+      property will be republished with the latest data.\n\nThis method has no arguments
+      and provides no return values.\n"
+    messages:
+      refresh_daily_forecast_return_values:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "\n            This payload represents the {% if self.method.return_arg_list
+          | length > 1 %}return values{%elif self.method.return_arg_list | length
+          == 1 %}return value{% else %}completion{% endif %} of the method call response.\
+          \  It is encoded as a JSON object.\n            \n            A \"correlation
+          data\" MQTT property will be included in the response message, and will
+          match the correlation data provided in the request message, so the client
+          can match responses to requests when multiple requests are in-flight.  Whatever
+          binary data was provided as correlation data in the request will be provided
+          as correlation data in the response.\n            (Hint: any blob of data
+          works, so you could include extra tracking information like a timestamp
+          if you needed it).\n            "
+        name: refresh_daily_forecast return values
+        payload:
+          properties: {}
+          type: object
+        tags:
+        - name: method
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+  refresh_hourly_forecast_request:
+    address: '{prefix}/weather/{service_id}/method/refresh_hourly_forecast/request'
+    description: "When called, this method will force the retrieval of the hourly
+      weather forecast from\nthe NWS weather API.  \n\nWhen called, the `hourly_forecast`
+      API property will be republished with the latest data.\n\nThis method has no
+      arguments and provides no return values.\n"
+    messages:
+      refresh_hourly_forecast_request:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+            correlationData:
+              format: uuid
+              type: string
+            responseTopic:
+              pattern: 
+                client/[^\}]+/weather/method/refresh_hourly_forecast/response
+              type: string
+        contentType: application/json
+        description: "The payload represents the arguments for the method call.  It
+          is encoded as a JSON object.\n            \n            Correlation data
+          must be provided as an MQTT property.  The data can be any binary data,
+          but must be unique to this method.  Typically, using a UUID is sufficient
+          to ensure uniqueness.  The server will include the same correlation data
+          in the response message, so the client can match responses to requests when
+          multiple requests are in-flight.\n            \n            A response topic
+          must be provided as an MQTT property.  The server will publish the response
+          message to the provided response topic.  The method-calling client must
+          have a valid subscription to the MQTT response topic.\n            "
+        name: refresh_hourly_forecast_request
+        payload:
+          properties: {}
+          type: object
+        tags:
+        - name: method
+        - name: request
+    parameters:
+      prefix:
+        $ref: '#/components/parameters/prefix'
+      service_id:
+        $ref: '#/components/parameters/service_id'
+  refresh_hourly_forecast_response:
+    address: client/{client_id}/weather/method/refresh_hourly_forecast/response
+    description: "When called, this method will force the retrieval of the hourly
+      weather forecast from\nthe NWS weather API.  \n\nWhen called, the `hourly_forecast`
+      API property will be republished with the latest data.\n\nThis method has no
+      arguments and provides no return values.\n"
+    messages:
+      refresh_hourly_forecast_return_values:
+        bindings:
+          mqtt:
+            bindingVersion: 0.2.0
+            contentType: application/json
+        contentType: application/json
+        description: "\n            This payload represents the {% if self.method.return_arg_list
+          | length > 1 %}return values{%elif self.method.return_arg_list | length
+          == 1 %}return value{% else %}completion{% endif %} of the method call response.\
+          \  It is encoded as a JSON object.\n            \n            A \"correlation
+          data\" MQTT property will be included in the response message, and will
+          match the correlation data provided in the request message, so the client
+          can match responses to requests when multiple requests are in-flight.  Whatever
+          binary data was provided as correlation data in the request will be provided
+          as correlation data in the response.\n            (Hint: any blob of data
+          works, so you could include extra tracking information like a timestamp
+          if you needed it).\n            "
+        name: refresh_hourly_forecast return values
+        payload:
+          properties: {}
+          type: object
+        tags:
+        - name: method
+        - name: response
+    parameters:
+      client_id:
+        $ref: '#/components/parameters/client_id'
+components:
+  parameters:
+    client_id:
+      description: The MQTT Client ID
+    prefix:
+      description: Topic parameter 'prefix'
+    service_id:
+      description: The ID of the service/instance
+  schemas:
+    current_condition_property:
+      properties:
+        condition:
+          $ref: '#/components/schemas/weather_condition'
+        description:
+          type: string
+      required:
+      - condition
+      - description
+      type: object
+    current_condition_refresh_interval_property:
+      properties:
+        seconds:
+          type: integer
+      required:
+      - seconds
+      type: object
+    current_temperature_property:
+      properties:
+        temperature_f:
+          type: number
+      required:
+      - temperature_f
+      type: object
+    daily_forecast_property:
+      properties:
+        monday:
+          $ref: '#/components/schemas/forecast_for_day'
+        tuesday:
+          $ref: '#/components/schemas/forecast_for_day'
+        wednesday:
+          $ref: '#/components/schemas/forecast_for_day'
+      required:
+      - monday
+      - tuesday
+      - wednesday
+      type: object
+    daily_forecast_refresh_interval_property:
+      properties:
+        seconds:
+          type: integer
+      required:
+      - seconds
+      type: object
+    forecast_for_day:
+      description: "This structure contains the forecast for a single day.  The high
+        or low temperature\nmay be missing for the current day.\n"
+      properties:
+        condition:
+          $ref: '#/components/schemas/weather_condition'
+        end_time:
+          type: string
+        high_temperature:
+          description: High temperature for the day in degrees fahrenheit.
+          type: number
+        low_temperature:
+          description: Low temperature for the day in degrees fahrenheit.
+          type: number
+        start_time:
+          type: string
+      required:
+      - high_temperature
+      - low_temperature
+      - condition
+      - start_time
+      - end_time
+      type: object
+    forecast_for_hour:
+      description: "This structure contains the forecast for a single hour.\n"
+      properties:
+        condition:
+          $ref: '#/components/schemas/weather_condition'
+        starttime:
+          description: Forecast is valid for the hour starting at this time.
+          format: date-time
+          type: string
+        temperature:
+          description: Forecasted temperature in degrees fahrenheit.
+          type: number
+      required:
+      - temperature
+      - starttime
+      - condition
+      type: object
+    hourly_forecast_property:
+      properties:
+        hour_0:
+          $ref: '#/components/schemas/forecast_for_hour'
+        hour_1:
+          $ref: '#/components/schemas/forecast_for_hour'
+        hour_2:
+          $ref: '#/components/schemas/forecast_for_hour'
+        hour_3:
+          $ref: '#/components/schemas/forecast_for_hour'
+      required:
+      - hour_0
+      - hour_1
+      - hour_2
+      - hour_3
+      type: object
+    hourly_forecast_refresh_interval_property:
+      properties:
+        seconds:
+          description: Interval duration in seconds.
+          type: integer
+      required:
+      - seconds
+      type: object
+    location_property:
+      properties:
+        latitude:
+          type: number
+        longitude:
+          type: number
+      required:
+      - latitude
+      - longitude
+      type: object
+    weather_condition:
+      description: "This enum contains the possible weather conditions that can be
+        reported.\n\nJSON Value `1` is `rainy` - \nJSON Value `2` is `sunny` - \n\
+        JSON Value `3` is `partly_cloudy` - \nJSON Value `4` is `mostly_cloudy` -\
+        \ \nJSON Value `5` is `overcast` - \nJSON Value `6` is `windy` - \nJSON Value
+        `7` is `snowy` - "
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      type: integer
+info:
+  description: Current conditions, daily and hourly forecasts from the NWS API
+  tags:
+  - name: signal
+  - name: method
+  - name: property
+  - name: discovery
+  title: weather
+  version: 0.1.2
+operations:
+  current_condition_refresh_interval_update_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/current_condition_refresh_interval_update_request'
+    description: "\n            A client publishes to this topic in order to request
+      that the server updates the property value to provided value.\n\n          \
+      \  The server will respond with a message on the response topic indicating whether
+      the update was successful, and what the new property value is after the update
+      attempt.\n\n            ```plantuml\n            Server -> MQTT Broker: Subscribe
+      to {prefix}/weather/{service_id}/property/current_condition_refresh_interval/update\n\
+      \            Client -> MQTT Broker: Update Request\n            MQTT Broker
+      -> Server:  Update Request\n            Server -> Server: Update property value\n\
+      \            Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n            "
+    messages:
+    - $ref: '#/channels/current_condition_refresh_interval_update_request/messages/current_condition_refresh_interval'
+    reply:
+      channel:
+        $ref: '#/channels/current_condition_refresh_interval_update_response'
+    tags:
+    - name: property
+  current_condition_refresh_interval_update_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/current_condition_refresh_interval_update_response'
+    description: "\n            A server publishes to this topic in order to provide
+      the response to an update request.\n\n            The server will respond with
+      a message on the response topic indicating whether the update was successful,
+      and what the new property value is after the update attempt.\n\n           \
+      \ ```plantuml\n            Server -> MQTT Broker: Subscribe to {prefix}/weather/{service_id}/property/current_condition_refresh_interval/update\n\
+      \            Client -> MQTT Broker: Update Request\n            MQTT Broker
+      -> Server:  Update Request\n            Server -> Server: Update property value\n\
+      \            Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n\n            If the update failed, the most recent property value
+      will be included in the response payload, \n            and the client should
+      update its local cached property value to match the value in the response, \n\
+      \            as that is the current value of the property on the server.\n \
+      \           "
+    messages:
+    - $ref: '#/channels/current_condition_refresh_interval_update_response/messages/current_condition_refresh_interval'
+    tags:
+    - name: property
+  current_condition_refresh_interval_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/current_condition_refresh_interval_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'current_condition_refresh_interval'
+      Value (retain=true)\n            Client -> MQTT Broker: Subscribe\n        \
+      \    MQTT Broker -> Client: 'current_condition_refresh_interval' Value\n   \
+      \         ```\n            "
+    messages:
+    - $ref: '#/channels/current_condition_refresh_interval_value/messages/current_condition_refresh_interval'
+    summary: Receive the current value of the 
+      'current_condition_refresh_interval' property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveCurrentConditionRefreshIntervalPropertyValue
+  current_condition_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/current_condition_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'current_condition'
+      Value (retain=true)\n            Client -> MQTT Broker: Subscribe\n        \
+      \    MQTT Broker -> Client: 'current_condition' Value\n            ```\n   \
+      \         "
+    messages:
+    - $ref: '#/channels/current_condition_value/messages/current_condition'
+    summary: Receive the current value of the 'current_condition' property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveCurrentConditionPropertyValue
+  current_temperature_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/current_temperature_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'current_temperature'
+      Value (retain=true)\n            Client -> MQTT Broker: Subscribe\n        \
+      \    MQTT Broker -> Client: 'current_temperature' Value\n            ```\n \
+      \           "
+    messages:
+    - $ref: '#/channels/current_temperature_value/messages/current_temperature'
+    summary: Receive the current value of the 'current_temperature' property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveCurrentTemperaturePropertyValue
+  current_time:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/current_time'
+    description: "\n            The server publishes a message to the signal topic
+      whenever the signal is emitted.\n            Clients can subscribe to the signal
+      topic to receive messages whenever the signal is emitted.\n\n            ```plantuml\n\
+      \            Client -> MQTT Broker: Subscribe\n            Server -> MQTT Broker:
+      'current_time' Signal\n            MQTT Broker -> Client: 'current_time' Signal\n\
+      \            ```\n\n            The message is not retained, so clients will
+      only receive the signal message when the signal is emitted while they are subscribed.\n\
+      \            "
+    messages:
+    - $ref: '#/channels/current_time/messages/current_time'
+    summary: Receive the 'current_time' signal.
+    tags:
+    - name: signal
+  daily_forecast_refresh_interval_update_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/daily_forecast_refresh_interval_update_request'
+    description: "\n            A client publishes to this topic in order to request
+      that the server updates the property value to provided value.\n\n          \
+      \  The server will respond with a message on the response topic indicating whether
+      the update was successful, and what the new property value is after the update
+      attempt.\n\n            ```plantuml\n            Server -> MQTT Broker: Subscribe
+      to {prefix}/weather/{service_id}/property/daily_forecast_refresh_interval/update\n\
+      \            Client -> MQTT Broker: Update Request\n            MQTT Broker
+      -> Server:  Update Request\n            Server -> Server: Update property value\n\
+      \            Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n            "
+    messages:
+    - $ref: '#/channels/daily_forecast_refresh_interval_update_request/messages/daily_forecast_refresh_interval'
+    reply:
+      channel:
+        $ref: '#/channels/daily_forecast_refresh_interval_update_response'
+    tags:
+    - name: property
+  daily_forecast_refresh_interval_update_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/daily_forecast_refresh_interval_update_response'
+    description: "\n            A server publishes to this topic in order to provide
+      the response to an update request.\n\n            The server will respond with
+      a message on the response topic indicating whether the update was successful,
+      and what the new property value is after the update attempt.\n\n           \
+      \ ```plantuml\n            Server -> MQTT Broker: Subscribe to {prefix}/weather/{service_id}/property/daily_forecast_refresh_interval/update\n\
+      \            Client -> MQTT Broker: Update Request\n            MQTT Broker
+      -> Server:  Update Request\n            Server -> Server: Update property value\n\
+      \            Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n\n            If the update failed, the most recent property value
+      will be included in the response payload, \n            and the client should
+      update its local cached property value to match the value in the response, \n\
+      \            as that is the current value of the property on the server.\n \
+      \           "
+    messages:
+    - $ref: '#/channels/daily_forecast_refresh_interval_update_response/messages/daily_forecast_refresh_interval'
+    tags:
+    - name: property
+  daily_forecast_refresh_interval_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/daily_forecast_refresh_interval_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'daily_forecast_refresh_interval'
+      Value (retain=true)\n            Client -> MQTT Broker: Subscribe\n        \
+      \    MQTT Broker -> Client: 'daily_forecast_refresh_interval' Value\n      \
+      \      ```\n            "
+    messages:
+    - $ref: '#/channels/daily_forecast_refresh_interval_value/messages/daily_forecast_refresh_interval'
+    summary: Receive the current value of the 'daily_forecast_refresh_interval' 
+      property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveDailyForecastRefreshIntervalPropertyValue
+  daily_forecast_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/daily_forecast_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'daily_forecast'
+      Value (retain=true)\n            Client -> MQTT Broker: Subscribe\n        \
+      \    MQTT Broker -> Client: 'daily_forecast' Value\n            ```\n      \
+      \      "
+    messages:
+    - $ref: '#/channels/daily_forecast_value/messages/daily_forecast'
+    summary: Receive the current value of the 'daily_forecast' property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveDailyForecastPropertyValue
+  hourly_forecast_refresh_interval_update_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/hourly_forecast_refresh_interval_update_request'
+    description: "\n            A client publishes to this topic in order to request
+      that the server updates the property value to provided value.\n\n          \
+      \  The server will respond with a message on the response topic indicating whether
+      the update was successful, and what the new property value is after the update
+      attempt.\n\n            ```plantuml\n            Server -> MQTT Broker: Subscribe
+      to {prefix}/weather/{service_id}/property/hourly_forecast_refresh_interval/update\n\
+      \            Client -> MQTT Broker: Update Request\n            MQTT Broker
+      -> Server:  Update Request\n            Server -> Server: Update property value\n\
+      \            Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n            "
+    messages:
+    - $ref: '#/channels/hourly_forecast_refresh_interval_update_request/messages/hourly_forecast_refresh_interval'
+    reply:
+      channel:
+        $ref: '#/channels/hourly_forecast_refresh_interval_update_response'
+    tags:
+    - name: property
+  hourly_forecast_refresh_interval_update_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/hourly_forecast_refresh_interval_update_response'
+    description: "\n            A server publishes to this topic in order to provide
+      the response to an update request.\n\n            The server will respond with
+      a message on the response topic indicating whether the update was successful,
+      and what the new property value is after the update attempt.\n\n           \
+      \ ```plantuml\n            Server -> MQTT Broker: Subscribe to {prefix}/weather/{service_id}/property/hourly_forecast_refresh_interval/update\n\
+      \            Client -> MQTT Broker: Update Request\n            MQTT Broker
+      -> Server:  Update Request\n            Server -> Server: Update property value\n\
+      \            Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n\n            If the update failed, the most recent property value
+      will be included in the response payload, \n            and the client should
+      update its local cached property value to match the value in the response, \n\
+      \            as that is the current value of the property on the server.\n \
+      \           "
+    messages:
+    - $ref: '#/channels/hourly_forecast_refresh_interval_update_response/messages/hourly_forecast_refresh_interval'
+    tags:
+    - name: property
+  hourly_forecast_refresh_interval_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/hourly_forecast_refresh_interval_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'hourly_forecast_refresh_interval'
+      Value (retain=true)\n            Client -> MQTT Broker: Subscribe\n        \
+      \    MQTT Broker -> Client: 'hourly_forecast_refresh_interval' Value\n     \
+      \       ```\n            "
+    messages:
+    - $ref: '#/channels/hourly_forecast_refresh_interval_value/messages/hourly_forecast_refresh_interval'
+    summary: Receive the current value of the 'hourly_forecast_refresh_interval'
+      property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveHourlyForecastRefreshIntervalPropertyValue
+  hourly_forecast_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/hourly_forecast_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'hourly_forecast'
+      Value (retain=true)\n            Client -> MQTT Broker: Subscribe\n        \
+      \    MQTT Broker -> Client: 'hourly_forecast' Value\n            ```\n     \
+      \       "
+    messages:
+    - $ref: '#/channels/hourly_forecast_value/messages/hourly_forecast'
+    summary: Receive the current value of the 'hourly_forecast' property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveHourlyForecastPropertyValue
+  interface_info:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 1
+        retain: false
+    channel:
+      $ref: '#/channels/interface_info'
+    description: "\n            The server publishes this message periodically (with
+      a message-expiry interval) so that clients can discover running server instances
+      and the method versions they advertise.\n\n            ```plantuml\n       \
+      \     Server -> MQTT Broker: Interface Info (with message expiry)\n        \
+      \    Client -> MQTT Broker: Subscribe\n            MQTT Broker -> Client: Interface
+      Info\n            ```\n            "
+    messages:
+    - $ref: '#/channels/interface_info/messages/interface_info'
+    summary: Receive 'weather' interface advertisement/discovery information.
+    tags:
+    - name: discovery
+  location_update_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/location_update_request'
+    description: "\n            A client publishes to this topic in order to request
+      that the server updates the property value to provided value.\n\n          \
+      \  The server will respond with a message on the response topic indicating whether
+      the update was successful, and what the new property value is after the update
+      attempt.\n\n            ```plantuml\n            Server -> MQTT Broker: Subscribe
+      to {prefix}/weather/{service_id}/property/location/update\n            Client
+      -> MQTT Broker: Update Request\n            MQTT Broker -> Server:  Update Request\n\
+      \            Server -> Server: Update property value\n            Server ->
+      MQTT Broker: New Property Value\n            MQTT Broker -> Client: New Property
+      Value\n            Server -> MQTT Broker: Property Update Response\n       \
+      \     MQTT Broker -> Client: Property Update Response\n            ```\n   \
+      \         "
+    messages:
+    - $ref: '#/channels/location_update_request/messages/location'
+    reply:
+      channel:
+        $ref: '#/channels/location_update_response'
+    tags:
+    - name: property
+  location_update_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/location_update_response'
+    description: "\n            A server publishes to this topic in order to provide
+      the response to an update request.\n\n            The server will respond with
+      a message on the response topic indicating whether the update was successful,
+      and what the new property value is after the update attempt.\n\n           \
+      \ ```plantuml\n            Server -> MQTT Broker: Subscribe to {prefix}/weather/{service_id}/property/location/update\n\
+      \            Client -> MQTT Broker: Update Request\n            MQTT Broker
+      -> Server:  Update Request\n            Server -> Server: Update property value\n\
+      \            Server -> MQTT Broker: New Property Value\n            MQTT Broker
+      -> Client: New Property Value\n            Server -> MQTT Broker: Property Update
+      Response\n            MQTT Broker -> Client: Property Update Response\n    \
+      \        ```\n\n            If the update failed, the most recent property value
+      will be included in the response payload, \n            and the client should
+      update its local cached property value to match the value in the response, \n\
+      \            as that is the current value of the property on the server.\n \
+      \           "
+    messages:
+    - $ref: '#/channels/location_update_response/messages/location'
+    tags:
+    - name: property
+  location_value:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/location_value'
+    description: "\n            Every time the property value changes, the server
+      will publish the current property value to MQTT.\n            It publishes with
+      a retain=true flag, so that clients can receive the current property value immediately
+      upon subscribing.\n            Clients can subscribe to the value topic to receive
+      the current property value and be notified of changes to the property value.\n\
+      \n            ```plantuml\n            Server -> MQTT Broker: 'location' Value
+      (retain=true)\n            Client -> MQTT Broker: Subscribe\n            MQTT
+      Broker -> Client: 'location' Value\n            ```\n            "
+    messages:
+    - $ref: '#/channels/location_value/messages/location'
+    summary: Receive the current value of the 'location' property.
+    tags:
+    - name: property
+    - name: value
+    title: ReceiveLocationPropertyValue
+  refresh_current_conditions_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/refresh_current_conditions_request'
+    description: "\n            A method may call one of the server's methods by publishing
+      a message to the method's request topic.\n\n            ```plantuml\n      \
+      \      Client -> MQTT Broker: Method Request\n            MQTT Broker -> Server:
+      Method Request\n            Server -> Server: Process method call\n        \
+      \    Server -> MQTT Broker: Method Response\n            MQTT Broker -> Client:
+      Method Response\n            ```\n            "
+    messages:
+    - $ref: '#/channels/refresh_current_conditions_request/messages/refresh_current_conditions_request'
+    reply:
+      channel:
+        $ref: '#/channels/refresh_current_conditions_response'
+    tags:
+    - name: method
+    - name: request
+  refresh_current_conditions_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/refresh_current_conditions_response'
+    description: "\n            The server will publish a response message to the
+      response topic provided in the request message.  The response message will contain
+      the return value(s) of the method call.\n\n            ```plantuml\n       \
+      \     Client -> MQTT Broker: Method Request\n            MQTT Broker -> Server:
+      Method Request\n            Server -> Server: Process method call\n        \
+      \    Server -> MQTT Broker: Method Response\n            MQTT Broker -> Client:
+      Method Response\n            ```\n            "
+    messages:
+    - $ref: '#/channels/refresh_current_conditions_response/messages/refresh_current_conditions_return_values'
+    tags:
+    - name: method
+    - name: response
+  refresh_daily_forecast_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/refresh_daily_forecast_request'
+    description: "\n            A method may call one of the server's methods by publishing
+      a message to the method's request topic.\n\n            ```plantuml\n      \
+      \      Client -> MQTT Broker: Method Request\n            MQTT Broker -> Server:
+      Method Request\n            Server -> Server: Process method call\n        \
+      \    Server -> MQTT Broker: Method Response\n            MQTT Broker -> Client:
+      Method Response\n            ```\n            "
+    messages:
+    - $ref: '#/channels/refresh_daily_forecast_request/messages/refresh_daily_forecast_request'
+    reply:
+      channel:
+        $ref: '#/channels/refresh_daily_forecast_response'
+    tags:
+    - name: method
+    - name: request
+  refresh_daily_forecast_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/refresh_daily_forecast_response'
+    description: "\n            The server will publish a response message to the
+      response topic provided in the request message.  The response message will contain
+      the return value(s) of the method call.\n\n            ```plantuml\n       \
+      \     Client -> MQTT Broker: Method Request\n            MQTT Broker -> Server:
+      Method Request\n            Server -> Server: Process method call\n        \
+      \    Server -> MQTT Broker: Method Response\n            MQTT Broker -> Client:
+      Method Response\n            ```\n            "
+    messages:
+    - $ref: '#/channels/refresh_daily_forecast_response/messages/refresh_daily_forecast_return_values'
+    tags:
+    - name: method
+    - name: response
+  refresh_hourly_forecast_request:
+    action: send
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/refresh_hourly_forecast_request'
+    description: "\n            A method may call one of the server's methods by publishing
+      a message to the method's request topic.\n\n            ```plantuml\n      \
+      \      Client -> MQTT Broker: Method Request\n            MQTT Broker -> Server:
+      Method Request\n            Server -> Server: Process method call\n        \
+      \    Server -> MQTT Broker: Method Response\n            MQTT Broker -> Client:
+      Method Response\n            ```\n            "
+    messages:
+    - $ref: '#/channels/refresh_hourly_forecast_request/messages/refresh_hourly_forecast_request'
+    reply:
+      channel:
+        $ref: '#/channels/refresh_hourly_forecast_response'
+    tags:
+    - name: method
+    - name: request
+  refresh_hourly_forecast_response:
+    action: receive
+    bindings:
+      mqtt:
+        bindingVersion: 0.2.0
+        qos: 2
+        retain: false
+    channel:
+      $ref: '#/channels/refresh_hourly_forecast_response'
+    description: "\n            The server will publish a response message to the
+      response topic provided in the request message.  The response message will contain
+      the return value(s) of the method call.\n\n            ```plantuml\n       \
+      \     Client -> MQTT Broker: Method Request\n            MQTT Broker -> Server:
+      Method Request\n            Server -> Server: Process method call\n        \
+      \    Server -> MQTT Broker: Method Response\n            MQTT Broker -> Client:
+      Method Response\n            ```\n            "
+    messages:
+    - $ref: '#/channels/refresh_hourly_forecast_response/messages/refresh_hourly_forecast_return_values'
+    tags:
+    - name: method
+    - name: response

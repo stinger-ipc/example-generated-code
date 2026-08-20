@@ -8,8 +8,7 @@ on the next generation.
 
 This is the Server for the weather interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #[allow(unused_imports)]
@@ -547,6 +546,19 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
     /// Emits the current_time signal with the given arguments.
     pub async fn emit_current_time(&mut self, current_time: String) -> SentMessageFuture {
         let data = CurrentTimeSignalPayload { current_time };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'current_time' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Self::wrap_return_code_in_future(MethodReturnCode::ServerSerializationError(
+                format!(
+                    "'current_time' signal payload failed schema validation: {}",
+                    err
+                ),
+            ))
+            .await;
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "weather".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -571,6 +583,16 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
         current_time: String,
     ) -> std::result::Result<MqttPublishSuccess, Mqtt5PubSubError> {
         let data = CurrentTimeSignalPayload { current_time };
+        if let Err(err) = data.validate_schema() {
+            error!(
+                "Payload for 'current_time' signal failed schema validation, not emitting: {}",
+                err
+            );
+            return Err(Mqtt5PubSubError::Other(format!(
+                "'current_time' signal payload failed schema validation: {}",
+                err
+            )));
+        }
         let topic_param_map = HashMap::from([
             ("interface_name".to_string(), "weather".to_string()),
             ("service_id".to_string(), self.instance_id.clone()),
@@ -783,28 +805,39 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<LocationProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!(
+                                "Property 'location' update payload failed schema validation: {}",
+                                err
+                            );
+                            return_code = MethodReturnCode::ClientDeserializationError(
+                                "Property 'location' payload failed schema validation".to_string(),
+                            );
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Multi-value property set as a struct.
-                        *write_request = new_property_structure.clone();
-                        debug!(
-                            "Updating 'location' property to new structure: {:?}",
-                            *write_request
-                        );
+                            // Multi-value property set as a struct.
+                            *write_request = new_property_structure.clone();
+                            debug!(
+                                "Updating 'location' property to new structure: {:?}",
+                                *write_request
+                            );
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'location' property change");
-                                return_code = MethodReturnCode::ServerError(
-                                    "Timeout committing 'location' property change".to_string(),
-                                );
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'location' property change");
+                                    return_code = MethodReturnCode::ServerError(
+                                        "Timeout committing 'location' property change".to_string(),
+                                    );
+                                    None
+                                }
                             }
                         }
                     }
@@ -1071,23 +1104,29 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
                 match serde_json::from_str::<CurrentConditionRefreshIntervalProperty>(&payload_str)
                 {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'current_condition_refresh_interval' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'current_condition_refresh_interval' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the seconds field of the struct.
-                        *write_request = new_property_structure.seconds.clone();
-                        debug!("Updating 'current_condition_refresh_interval' property to new value: {:?}", *write_request);
+                            // Single value property.  Use the seconds field of the struct.
+                            *write_request = new_property_structure.seconds.clone();
+                            debug!("Updating 'current_condition_refresh_interval' property to new value: {:?}", *write_request);
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'current_condition_refresh_interval' property change");
-                                return_code = MethodReturnCode::ServerError("Timeout committing 'current_condition_refresh_interval' property change".to_string());
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'current_condition_refresh_interval' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'current_condition_refresh_interval' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -1235,23 +1274,29 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<HourlyForecastRefreshIntervalProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'hourly_forecast_refresh_interval' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'hourly_forecast_refresh_interval' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the seconds field of the struct.
-                        *write_request = new_property_structure.seconds.clone();
-                        debug!("Updating 'hourly_forecast_refresh_interval' property to new value: {:?}", *write_request);
+                            // Single value property.  Use the seconds field of the struct.
+                            *write_request = new_property_structure.seconds.clone();
+                            debug!("Updating 'hourly_forecast_refresh_interval' property to new value: {:?}", *write_request);
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'hourly_forecast_refresh_interval' property change");
-                                return_code = MethodReturnCode::ServerError("Timeout committing 'hourly_forecast_refresh_interval' property change".to_string());
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'hourly_forecast_refresh_interval' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'hourly_forecast_refresh_interval' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -1394,23 +1439,29 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
             MethodReturnCode::Success(_) => {
                 match serde_json::from_str::<DailyForecastRefreshIntervalProperty>(&payload_str) {
                     Ok(new_property_structure) => {
-                        let request_lock = property_pointer.write_request();
-                        let mut write_request = request_lock.write().await;
+                        if let Err(err) = new_property_structure.validate_schema() {
+                            error!("Property 'daily_forecast_refresh_interval' update payload failed schema validation: {}", err);
+                            return_code = MethodReturnCode::ClientDeserializationError("Property 'daily_forecast_refresh_interval' payload failed schema validation".to_string());
+                            None
+                        } else {
+                            let request_lock = property_pointer.write_request();
+                            let mut write_request = request_lock.write().await;
 
-                        // Single value property.  Use the seconds field of the struct.
-                        *write_request = new_property_structure.seconds.clone();
-                        debug!("Updating 'daily_forecast_refresh_interval' property to new value: {:?}", *write_request);
+                            // Single value property.  Use the seconds field of the struct.
+                            *write_request = new_property_structure.seconds.clone();
+                            debug!("Updating 'daily_forecast_refresh_interval' property to new value: {:?}", *write_request);
 
-                        // Committing the write request blocks until the message has been published to MQTT.
-                        match write_request
-                            .commit(std::time::Duration::from_secs(2))
-                            .await
-                        {
-                            CommitResult::Applied(_) => Some((*write_request).clone()),
-                            CommitResult::TimedOut => {
-                                error!("Timeout committing 'daily_forecast_refresh_interval' property change");
-                                return_code = MethodReturnCode::ServerError("Timeout committing 'daily_forecast_refresh_interval' property change".to_string());
-                                None
+                            // Committing the write request blocks until the message has been published to MQTT.
+                            match write_request
+                                .commit(std::time::Duration::from_secs(2))
+                                .await
+                            {
+                                CommitResult::Applied(_) => Some((*write_request).clone()),
+                                CommitResult::TimedOut => {
+                                    error!("Timeout committing 'daily_forecast_refresh_interval' property change");
+                                    return_code = MethodReturnCode::ServerError("Timeout committing 'daily_forecast_refresh_interval' property change".to_string());
+                                    None
+                                }
                             }
                         }
                     }
@@ -1535,6 +1586,13 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'location' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = location_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -1588,6 +1646,13 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
                             temperature_f: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'current_temperature' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = current_temperature_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -1640,6 +1705,13 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'current_condition' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = current_condition_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -1692,6 +1764,13 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'daily_forecast' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = daily_forecast_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -1744,6 +1823,13 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
 
                         let payload_obj = request.clone();
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'hourly_forecast' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = hourly_forecast_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -1801,6 +1887,13 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
                             seconds: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'current_condition_refresh_interval' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = current_condition_refresh_interval_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -1855,6 +1948,13 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
                             seconds: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'hourly_forecast_refresh_interval' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = hourly_forecast_refresh_interval_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -1909,6 +2009,13 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
                             seconds: request.clone(),
                         };
 
+                        if let Err(err) = payload_obj.validate_schema() {
+                            error!("Value for 'daily_forecast_refresh_interval' property failed schema validation, not publishing: {}", err);
+                            if let Some(responder) = opt_responder {
+                                let _ = responder.send(None);
+                            }
+                            continue;
+                        }
                         let version_value = daily_forecast_refresh_interval_prop_version
                             .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
                             + 1; // fetch_add returns the previous value, so add 1 to get the new version after the update.
@@ -1943,6 +2050,9 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
             }
         }
 
+        // Static map of method names to their declared version, used in periodic interface info advertisements.
+        let interface_info_methods: HashMap<String, String> = HashMap::from([]);
+
         // Spawn a task to periodically publish interface info.
         let mut interface_publisher = self.mqtt_client.clone();
         let instance_id = self.instance_id.clone();
@@ -1960,6 +2070,7 @@ impl<C: Mqtt5PubSub + Clone + Send> WeatherServer<C> {
                     .interface_name("weather".to_string())
                     .title("NWS weather forecast".to_string())
                     .version("0.1.2".to_string())
+                    .methods(interface_info_methods.clone())
                     .instance(instance_id.clone())
                     .connection_topic(topic.clone())
                     .prefix(topic_param_map_for_info.get("prefix").unwrap().to_string())

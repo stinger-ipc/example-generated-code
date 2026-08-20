@@ -2,6 +2,7 @@
 #include "method_payloads.hpp"
 
 #include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 #include <stinger/utils/conversions.hpp>
 
 namespace stinger {
@@ -58,6 +59,11 @@ void AddNumbersRequestArguments::AddToRapidJsonObject(rapidjson::Value& parent, 
         parent.AddMember("third", *third, allocator);
 }
 
+bool AddNumbersRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for addNumbers method return type ---
 AddNumbersReturnValues AddNumbersReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -79,6 +85,11 @@ AddNumbersReturnValues AddNumbersReturnValues::FromRapidJsonObject(const rapidjs
 void AddNumbersReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("sum", sum, allocator);
+}
+
+bool AddNumbersReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for doSomething method request arguments ---
@@ -106,6 +117,11 @@ void DoSomethingRequestArguments::AddToRapidJsonObject(rapidjson::Value& parent,
         tempStringValue.SetString(taskToDo.c_str(), taskToDo.size(), allocator);
         parent.AddMember("task_to_do", tempStringValue, allocator);
     }
+}
+
+bool DoSomethingRequestArguments::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for doSomething method return type ---
@@ -146,6 +162,11 @@ void DoSomethingReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, rap
     parent.AddMember("identifier", identifier, allocator);
 }
 
+bool DoSomethingReturnValues::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for what_time_is_it method request arguments ---
 WhatTimeIsItRequestArguments WhatTimeIsItRequestArguments::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -156,6 +177,11 @@ WhatTimeIsItRequestArguments WhatTimeIsItRequestArguments::FromRapidJsonObject(c
 
 void WhatTimeIsItRequestArguments::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
+}
+
+bool WhatTimeIsItRequestArguments::ValidateSchema() const
+{
+    return true;
 }
 
 // --- (De-)Serialization for what_time_is_it method return type ---
@@ -187,6 +213,11 @@ void WhatTimeIsItReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, ra
     }
 }
 
+bool WhatTimeIsItReturnValues::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for hold_temperature method request arguments ---
 HoldTemperatureRequestArguments HoldTemperatureRequestArguments::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -210,6 +241,11 @@ void HoldTemperatureRequestArguments::AddToRapidJsonObject(rapidjson::Value& par
     parent.AddMember("temperature_celsius", temperatureCelsius, allocator);
 }
 
+bool HoldTemperatureRequestArguments::ValidateSchema() const
+{
+    return true;
+}
+
 // --- (De-)Serialization for hold_temperature method return type ---
 HoldTemperatureReturnValues HoldTemperatureReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -231,6 +267,11 @@ HoldTemperatureReturnValues HoldTemperatureReturnValues::FromRapidJsonObject(con
 void HoldTemperatureReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("success", success, allocator);
+}
+
+bool HoldTemperatureReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 } // namespace full

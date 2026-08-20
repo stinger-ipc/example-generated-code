@@ -1,6 +1,7 @@
 """
 Tests for SignalOnly server.
 """
+
 import pytest
 from unittest.mock import Mock, patch, MagicMock
 import sys

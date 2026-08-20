@@ -4,8 +4,7 @@ on the next generation.
 
 It contains enumerations used by the Full interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #pragma once
@@ -26,12 +25,16 @@ namespace full {
 struct FavoriteNumberProperty {
     static FavoriteNumberProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     int number;
 };
 
 struct FavoriteFoodsProperty {
     static FavoriteFoodsProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::string drink;
     int slicesOfPizza;
     std::optional<std::string> breakfast;
@@ -40,6 +43,8 @@ struct FavoriteFoodsProperty {
 struct LunchMenuProperty {
     static LunchMenuProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     Lunch monday;
     Lunch tuesday; ///< Tuesday's lunch menu.
 };
@@ -50,6 +55,8 @@ struct LunchMenuProperty {
 struct FamilyNameProperty {
     static FamilyNameProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::string familyName;
 };
 
@@ -59,6 +66,8 @@ struct FamilyNameProperty {
 struct LastBreakfastTimeProperty {
     static LastBreakfastTimeProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::chrono::time_point<std::chrono::system_clock> timestamp;
 };
 
@@ -68,6 +77,8 @@ struct LastBreakfastTimeProperty {
 struct LastBirthdaysProperty {
     static LastBirthdaysProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     std::chrono::time_point<std::chrono::system_clock> mom;
     std::chrono::time_point<std::chrono::system_clock> dad;
     std::optional<std::chrono::time_point<std::chrono::system_clock>> sister;

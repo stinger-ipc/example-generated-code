@@ -53,6 +53,12 @@ int main(int argc, char** argv)
                                                    << "value=" << value << std::endl;
                                      });
 
+    client.registerJsonSchemaValidatedIntCallback([](int value)
+                                                  {
+                                                      std::cout << "Received JSON_SCHEMA_VALIDATED_INT signal: "
+                                                                << "value=" << value << std::endl;
+                                                  });
+
     client.registerSingleOptionalIntCallback([](std::optional<int> value)
                                              {
                                                  std::cout << "Received SINGLE_OPTIONAL_INT signal: "
@@ -70,6 +76,12 @@ int main(int argc, char** argv)
                                             std::cout << "Received SINGLE_STRING signal: "
                                                       << "value=" << value << std::endl;
                                         });
+
+    client.registerJsonSchemaValidatedStringCallback([](std::string value)
+                                                     {
+                                                         std::cout << "Received JSON_SCHEMA_VALIDATED_STRING signal: "
+                                                                   << "value=" << value << std::endl;
+                                                     });
 
     client.registerSingleOptionalStringCallback([](std::optional<std::string> value)
                                                 {

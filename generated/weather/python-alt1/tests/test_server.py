@@ -1,6 +1,7 @@
 """
 Tests for weather server.
 """
+
 import pytest
 from unittest.mock import Mock, patch, MagicMock
 import sys
@@ -211,6 +212,30 @@ class TestWeatherServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_location_property_setter(self, server, mock_connection):
+        """Test that setting the 'location' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_location_value =LocationProperty(
+                
+                latitude=3.14,
+                
+                longitude=3.14,
+                
+            )
+        server.location = new_location_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'location'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'location' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'location' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'location' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_location_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'location' setter did not publish the correct JSON payload"
+        
+
     def test_location_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -278,6 +303,26 @@ class TestWeatherServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_current_temperature_property_setter(self, server, mock_connection):
+        """Test that setting the 'current_temperature' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_current_temperature_value =3.14
+            
+        server.current_temperature = new_current_temperature_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'current_temperature'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'current_temperature' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'current_temperature' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'current_temperature' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_current_temperature_obj =CurrentTemperatureProperty(temperature_f=new_current_temperature_value)
+        assert json.loads(new_current_temperature_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'current_temperature' setter did not publish the correct JSON payload"
+        
+
     def test_current_temperature_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -336,6 +381,30 @@ class TestWeatherServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_current_condition_property_setter(self, server, mock_connection):
+        """Test that setting the 'current_condition' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_current_condition_value =CurrentConditionProperty(
+                
+                condition=WeatherCondition.SNOWY,
+                
+                description="apples",
+                
+            )
+        server.current_condition = new_current_condition_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'current_condition'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'current_condition' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'current_condition' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'current_condition' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_current_condition_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'current_condition' setter did not publish the correct JSON payload"
+        
 
     def test_current_condition_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -396,6 +465,32 @@ class TestWeatherServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_daily_forecast_property_setter(self, server, mock_connection):
+        """Test that setting the 'daily_forecast' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_daily_forecast_value =DailyForecastProperty(
+                
+                monday=ForecastForDay(high_temperature=3.14, low_temperature=3.14, condition=WeatherCondition.SNOWY, start_time="apples", end_time="apples"),
+                
+                tuesday=ForecastForDay(high_temperature=3.14, low_temperature=3.14, condition=WeatherCondition.SNOWY, start_time="apples", end_time="apples"),
+                
+                wednesday=ForecastForDay(high_temperature=3.14, low_temperature=3.14, condition=WeatherCondition.SNOWY, start_time="apples", end_time="apples"),
+                
+            )
+        server.daily_forecast = new_daily_forecast_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'daily_forecast'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'daily_forecast' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'daily_forecast' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'daily_forecast' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_daily_forecast_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'daily_forecast' setter did not publish the correct JSON payload"
+        
 
     def test_daily_forecast_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -458,6 +553,34 @@ class TestWeatherServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_hourly_forecast_property_setter(self, server, mock_connection):
+        """Test that setting the 'hourly_forecast' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_hourly_forecast_value =HourlyForecastProperty(
+                
+                hour_0=ForecastForHour(temperature=3.14, starttime=datetime.now(UTC), condition=WeatherCondition.SNOWY),
+                
+                hour_1=ForecastForHour(temperature=3.14, starttime=datetime.now(UTC), condition=WeatherCondition.SNOWY),
+                
+                hour_2=ForecastForHour(temperature=3.14, starttime=datetime.now(UTC), condition=WeatherCondition.SNOWY),
+                
+                hour_3=ForecastForHour(temperature=3.14, starttime=datetime.now(UTC), condition=WeatherCondition.SNOWY),
+                
+            )
+        server.hourly_forecast = new_hourly_forecast_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'hourly_forecast'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'hourly_forecast' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'hourly_forecast' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'hourly_forecast' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        assert json.loads(new_hourly_forecast_value.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'hourly_forecast' setter did not publish the correct JSON payload"
+        
+
     def test_hourly_forecast_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -519,6 +642,26 @@ class TestWeatherServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_current_condition_refresh_interval_property_setter(self, server, mock_connection):
+        """Test that setting the 'current_condition_refresh_interval' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_current_condition_refresh_interval_value =42
+            
+        server.current_condition_refresh_interval = new_current_condition_refresh_interval_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'current_condition_refresh_interval'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'current_condition_refresh_interval' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'current_condition_refresh_interval' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'current_condition_refresh_interval' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_current_condition_refresh_interval_obj =CurrentConditionRefreshIntervalProperty(seconds=new_current_condition_refresh_interval_value)
+        assert json.loads(new_current_condition_refresh_interval_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'current_condition_refresh_interval' setter did not publish the correct JSON payload"
+        
 
     def test_current_condition_refresh_interval_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
@@ -586,6 +729,26 @@ class TestWeatherServerProperties:
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_hourly_forecast_refresh_interval_property_setter(self, server, mock_connection):
+        """Test that setting the 'hourly_forecast_refresh_interval' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_hourly_forecast_refresh_interval_value =42
+            
+        server.hourly_forecast_refresh_interval = new_hourly_forecast_refresh_interval_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'hourly_forecast_refresh_interval'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'hourly_forecast_refresh_interval' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'hourly_forecast_refresh_interval' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'hourly_forecast_refresh_interval' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_hourly_forecast_refresh_interval_obj =HourlyForecastRefreshIntervalProperty(seconds=new_hourly_forecast_refresh_interval_value)
+        assert json.loads(new_hourly_forecast_refresh_interval_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'hourly_forecast_refresh_interval' setter did not publish the correct JSON payload"
+        
+
     def test_hourly_forecast_refresh_interval_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()
 
@@ -651,6 +814,26 @@ class TestWeatherServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode('utf-8'))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_daily_forecast_refresh_interval_property_setter(self, server, mock_connection):
+        """Test that setting the 'daily_forecast_refresh_interval' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_daily_forecast_refresh_interval_value =42
+            
+        server.daily_forecast_refresh_interval = new_daily_forecast_refresh_interval_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'daily_forecast_refresh_interval'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'daily_forecast_refresh_interval' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'daily_forecast_refresh_interval' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'daily_forecast_refresh_interval' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_daily_forecast_refresh_interval_obj =DailyForecastRefreshIntervalProperty(seconds=new_daily_forecast_refresh_interval_value)
+        assert json.loads(new_daily_forecast_refresh_interval_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'daily_forecast_refresh_interval' setter did not publish the correct JSON payload"
+        
 
     def test_daily_forecast_refresh_interval_receive(self, server, server_setup, mock_connection):
         mock_connection.clear_published_messages()

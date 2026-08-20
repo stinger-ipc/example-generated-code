@@ -2,6 +2,7 @@
 
 #include "property_structs.hpp"
 #include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 
 namespace stinger {
 
@@ -30,6 +31,11 @@ void ReadWriteIntegerProperty::AddToRapidJsonObject(rapidjson::Value& parent, ra
     parent.AddMember("value", value, allocator);
 }
 
+bool ReadWriteIntegerProperty::ValidateSchema() const
+{
+    return true;
+}
+
 ReadOnlyIntegerProperty ReadOnlyIntegerProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     ReadOnlyIntegerProperty readOnlyInteger;
@@ -50,6 +56,11 @@ ReadOnlyIntegerProperty ReadOnlyIntegerProperty::FromRapidJsonObject(const rapid
 void ReadOnlyIntegerProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("value", value, allocator);
+}
+
+bool ReadOnlyIntegerProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteOptionalIntegerProperty ReadWriteOptionalIntegerProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -76,6 +87,11 @@ void ReadWriteOptionalIntegerProperty::AddToRapidJsonObject(rapidjson::Value& pa
 {
     if (value)
         parent.AddMember("value", *value, allocator);
+}
+
+bool ReadWriteOptionalIntegerProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteTwoIntegersProperty ReadWriteTwoIntegersProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -115,6 +131,11 @@ void ReadWriteTwoIntegersProperty::AddToRapidJsonObject(rapidjson::Value& parent
         parent.AddMember("second", *second, allocator);
 }
 
+bool ReadWriteTwoIntegersProperty::ValidateSchema() const
+{
+    return true;
+}
+
 ReadOnlyStringProperty ReadOnlyStringProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     ReadOnlyStringProperty readOnlyString;
@@ -141,6 +162,11 @@ void ReadOnlyStringProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapi
     }
 }
 
+bool ReadOnlyStringProperty::ValidateSchema() const
+{
+    return true;
+}
+
 ReadWriteStringProperty ReadWriteStringProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     ReadWriteStringProperty readWriteString;
@@ -165,6 +191,11 @@ void ReadWriteStringProperty::AddToRapidJsonObject(rapidjson::Value& parent, rap
         tempStringValue.SetString(value.c_str(), value.size(), allocator);
         parent.AddMember("value", tempStringValue, allocator);
     }
+}
+
+bool ReadWriteStringProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteOptionalStringProperty ReadWriteOptionalStringProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -194,6 +225,11 @@ void ReadWriteOptionalStringProperty::AddToRapidJsonObject(rapidjson::Value& par
         tempStringValue.SetString(value->c_str(), value->size(), allocator);
         parent.AddMember("value", tempStringValue, allocator);
     }
+}
+
+bool ReadWriteOptionalStringProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteTwoStringsProperty ReadWriteTwoStringsProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -240,6 +276,11 @@ void ReadWriteTwoStringsProperty::AddToRapidJsonObject(rapidjson::Value& parent,
     }
 }
 
+bool ReadWriteTwoStringsProperty::ValidateSchema() const
+{
+    return true;
+}
+
 ReadWriteStructProperty ReadWriteStructProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     ReadWriteStructProperty readWriteStruct;
@@ -267,6 +308,11 @@ void ReadWriteStructProperty::AddToRapidJsonObject(rapidjson::Value& parent, rap
 
         parent.AddMember("value", tempStructValue, allocator);
     }
+}
+
+bool ReadWriteStructProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteOptionalStructProperty ReadWriteOptionalStructProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -301,6 +347,11 @@ void ReadWriteOptionalStructProperty::AddToRapidJsonObject(rapidjson::Value& par
         }
         parent.AddMember("value", tempStructValue, allocator);
     }
+}
+
+bool ReadWriteOptionalStructProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteTwoStructsProperty ReadWriteTwoStructsProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -355,6 +406,11 @@ void ReadWriteTwoStructsProperty::AddToRapidJsonObject(rapidjson::Value& parent,
     }
 }
 
+bool ReadWriteTwoStructsProperty::ValidateSchema() const
+{
+    return true;
+}
+
 ReadOnlyEnumProperty ReadOnlyEnumProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     ReadOnlyEnumProperty readOnlyEnum;
@@ -377,6 +433,11 @@ void ReadOnlyEnumProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapidj
     parent.AddMember("value", static_cast<int>(value), allocator);
 }
 
+bool ReadOnlyEnumProperty::ValidateSchema() const
+{
+    return true;
+}
+
 ReadWriteEnumProperty ReadWriteEnumProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     ReadWriteEnumProperty readWriteEnum;
@@ -397,6 +458,11 @@ ReadWriteEnumProperty ReadWriteEnumProperty::FromRapidJsonObject(const rapidjson
 void ReadWriteEnumProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("value", static_cast<int>(value), allocator);
+}
+
+bool ReadWriteEnumProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteOptionalEnumProperty ReadWriteOptionalEnumProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -422,6 +488,11 @@ ReadWriteOptionalEnumProperty ReadWriteOptionalEnumProperty::FromRapidJsonObject
 void ReadWriteOptionalEnumProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("value", static_cast<int>(*value), allocator);
+}
+
+bool ReadWriteOptionalEnumProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteTwoEnumsProperty ReadWriteTwoEnumsProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -460,6 +531,11 @@ void ReadWriteTwoEnumsProperty::AddToRapidJsonObject(rapidjson::Value& parent, r
     parent.AddMember("second", static_cast<int>(*second), allocator);
 }
 
+bool ReadWriteTwoEnumsProperty::ValidateSchema() const
+{
+    return true;
+}
+
 ReadWriteDatetimeProperty ReadWriteDatetimeProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     ReadWriteDatetimeProperty readWriteDatetime;
@@ -486,6 +562,11 @@ void ReadWriteDatetimeProperty::AddToRapidJsonObject(rapidjson::Value& parent, r
         tempValueStringValue.SetString(valueIsoString.c_str(), valueIsoString.size(), allocator);
         parent.AddMember("value", tempValueStringValue, allocator);
     }
+}
+
+bool ReadWriteDatetimeProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteOptionalDatetimeProperty ReadWriteOptionalDatetimeProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -517,6 +598,11 @@ void ReadWriteOptionalDatetimeProperty::AddToRapidJsonObject(rapidjson::Value& p
         tempValueStringValue.SetString(valueIsoString.c_str(), valueIsoString.size(), allocator);
         parent.AddMember("value", tempValueStringValue, allocator);
     }
+}
+
+bool ReadWriteOptionalDatetimeProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteTwoDatetimesProperty ReadWriteTwoDatetimesProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -567,6 +653,11 @@ void ReadWriteTwoDatetimesProperty::AddToRapidJsonObject(rapidjson::Value& paren
     }
 }
 
+bool ReadWriteTwoDatetimesProperty::ValidateSchema() const
+{
+    return true;
+}
+
 ReadWriteDurationProperty ReadWriteDurationProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     ReadWriteDurationProperty readWriteDuration;
@@ -593,6 +684,11 @@ void ReadWriteDurationProperty::AddToRapidJsonObject(rapidjson::Value& parent, r
         tempValueStringValue.SetString(valueIsoString.c_str(), valueIsoString.size(), allocator);
         parent.AddMember("value", tempValueStringValue, allocator);
     }
+}
+
+bool ReadWriteDurationProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteOptionalDurationProperty ReadWriteOptionalDurationProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -624,6 +720,11 @@ void ReadWriteOptionalDurationProperty::AddToRapidJsonObject(rapidjson::Value& p
         tempValueStringValue.SetString(valueIsoString.c_str(), valueIsoString.size(), allocator);
         parent.AddMember("value", tempValueStringValue, allocator);
     }
+}
+
+bool ReadWriteOptionalDurationProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteTwoDurationsProperty ReadWriteTwoDurationsProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -674,6 +775,11 @@ void ReadWriteTwoDurationsProperty::AddToRapidJsonObject(rapidjson::Value& paren
     }
 }
 
+bool ReadWriteTwoDurationsProperty::ValidateSchema() const
+{
+    return true;
+}
+
 ReadWriteBinaryProperty ReadWriteBinaryProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     ReadWriteBinaryProperty readWriteBinary;
@@ -700,6 +806,11 @@ void ReadWriteBinaryProperty::AddToRapidJsonObject(rapidjson::Value& parent, rap
         tempValueStringValue.SetString(valueB64String.c_str(), valueB64String.size(), allocator);
         parent.AddMember("value", tempValueStringValue, allocator);
     }
+}
+
+bool ReadWriteBinaryProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteOptionalBinaryProperty ReadWriteOptionalBinaryProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -731,6 +842,11 @@ void ReadWriteOptionalBinaryProperty::AddToRapidJsonObject(rapidjson::Value& par
         tempValueStringValue.SetString(valueB64String.c_str(), valueB64String.size(), allocator);
         parent.AddMember("value", tempValueStringValue, allocator);
     }
+}
+
+bool ReadWriteOptionalBinaryProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteTwoBinariesProperty ReadWriteTwoBinariesProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -781,6 +897,11 @@ void ReadWriteTwoBinariesProperty::AddToRapidJsonObject(rapidjson::Value& parent
     }
 }
 
+bool ReadWriteTwoBinariesProperty::ValidateSchema() const
+{
+    return true;
+}
+
 ReadWriteListOfStringsProperty ReadWriteListOfStringsProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     ReadWriteListOfStringsProperty readWriteListOfStrings;
@@ -818,6 +939,11 @@ void ReadWriteListOfStringsProperty::AddToRapidJsonObject(rapidjson::Value& pare
         }
         parent.AddMember("value", tempArrayValue, allocator);
     }
+}
+
+bool ReadWriteListOfStringsProperty::ValidateSchema() const
+{
+    return true;
 }
 
 ReadWriteListsProperty ReadWriteListsProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
@@ -890,6 +1016,11 @@ void ReadWriteListsProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapi
         }
         parent.AddMember("optionalList", tempArrayValue, allocator);
     }
+}
+
+bool ReadWriteListsProperty::ValidateSchema() const
+{
+    return true;
 }
 
 } // namespace testable

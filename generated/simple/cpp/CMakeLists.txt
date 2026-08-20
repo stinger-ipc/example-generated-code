@@ -21,6 +21,9 @@ find_package(RapidJSON REQUIRED)
 
 # Fetch stinger-cpp-utils dependency
 include(FetchContent)
+# Build the MockConnection so the generated unit tests can drive the client/server
+# without a real broker.  Must be set before stinger-cpp-utils is made available.
+set(STINGER_UTILS_BUILD_MOCK ON CACHE BOOL "" FORCE)
 FetchContent_Declare(
 	stinger-cpp-utils
 	GIT_REPOSITORY https://github.com/stinger-ipc/stinger-cpp-utils.git
@@ -169,3 +172,44 @@ export (EXPORT SimpleIpcTargets
 	FILE ${CMAKE_CURRENT_BINARY_DIR}/SimpleIpc-targets.cmake
 	NAMESPACE SimpleIpc::
 )
+
+# ---------------------------- Unit tests ----------------------------
+# Tests are built and registered with CTest by default.  Configure with
+# -DBUILD_TESTING=OFF to skip them (e.g. when consuming this as a subproject).
+include(CTest)
+if(BUILD_TESTING)
+	# Fetch GoogleTest.  If a dependency (e.g. stinger-cpp-utils) has already
+	# made it available, this re-declaration is a no-op and the existing
+	# GTest::* targets are reused.
+	FetchContent_Declare(
+		googletest
+		GIT_REPOSITORY https://github.com/google/googletest.git
+		GIT_TAG v1.15.2
+	)
+	# Prevent GoogleTest from overriding the parent project's settings on Windows.
+	set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+	FetchContent_MakeAvailable(googletest)
+
+	add_executable(simple_unit_tests
+		tests/test_client.cpp
+		tests/test_serialization.cpp
+		tests/test_server.cpp
+		
+	)
+	target_link_libraries(simple_unit_tests
+		PRIVATE
+			SimpleIpc::Client
+			SimpleIpc::Server
+			GTest::gtest_main
+			Threads::Threads
+	)
+	set_target_properties(simple_unit_tests
+		PROPERTIES
+			CXX_STANDARD 17
+			CXX_STANDARD_REQUIRED ON
+			CXX_EXTENSIONS OFF
+	)
+
+	include(GoogleTest)
+	gtest_discover_tests(simple_unit_tests)
+endif()

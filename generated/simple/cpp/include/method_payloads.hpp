@@ -4,8 +4,7 @@ on the next generation.
 
 It contains enumerations used by the Simple interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #pragma once
@@ -23,6 +22,8 @@ namespace simple {
 struct TradeNumbersRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static TradeNumbersRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     int yourNumber;
 };
@@ -30,6 +31,8 @@ struct TradeNumbersRequestArguments {
 struct TradeNumbersReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static TradeNumbersReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     int myNumber;
 };

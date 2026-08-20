@@ -4,8 +4,7 @@ on the next generation.
 
 It contains enumerations used by the testable interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #pragma once
@@ -23,16 +22,22 @@ namespace testable {
 struct CallWithNothingRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallWithNothingRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
 };
 
 struct CallWithNothingReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallWithNothingReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
 };
 
 struct CallOneIntegerRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneIntegerRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     int input1;
 };
@@ -40,6 +45,8 @@ struct CallOneIntegerRequestArguments {
 struct CallOneIntegerReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneIntegerReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     int output1;
 };
@@ -47,6 +54,8 @@ struct CallOneIntegerReturnValues {
 struct CallOptionalIntegerRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalIntegerRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<int> input1;
 };
@@ -54,6 +63,8 @@ struct CallOptionalIntegerRequestArguments {
 struct CallOptionalIntegerReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalIntegerReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<int> output1;
 };
@@ -61,6 +72,8 @@ struct CallOptionalIntegerReturnValues {
 struct CallThreeIntegersRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallThreeIntegersRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     int input1;
     int input2;
@@ -70,6 +83,8 @@ struct CallThreeIntegersRequestArguments {
 struct CallThreeIntegersReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallThreeIntegersReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     int output1;
     int output2;
@@ -79,6 +94,8 @@ struct CallThreeIntegersReturnValues {
 struct CallOneStringRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneStringRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::string input1;
 };
@@ -86,6 +103,8 @@ struct CallOneStringRequestArguments {
 struct CallOneStringReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneStringReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::string output1;
 };
@@ -93,6 +112,8 @@ struct CallOneStringReturnValues {
 struct CallOptionalStringRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalStringRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::string> input1;
 };
@@ -100,6 +121,8 @@ struct CallOptionalStringRequestArguments {
 struct CallOptionalStringReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalStringReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::string> output1;
 };
@@ -107,6 +130,8 @@ struct CallOptionalStringReturnValues {
 struct CallThreeStringsRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallThreeStringsRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::string input1;
     std::optional<std::string> input2;
@@ -116,6 +141,8 @@ struct CallThreeStringsRequestArguments {
 struct CallThreeStringsReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallThreeStringsReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::string output1;
     std::optional<std::string> output2;
@@ -125,6 +152,8 @@ struct CallThreeStringsReturnValues {
 struct CallOneEnumRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneEnumRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     Numbers input1;
 };
@@ -132,6 +161,8 @@ struct CallOneEnumRequestArguments {
 struct CallOneEnumReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneEnumReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     Numbers output1;
 };
@@ -139,6 +170,8 @@ struct CallOneEnumReturnValues {
 struct CallOptionalEnumRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalEnumRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<Numbers> input1;
 };
@@ -146,6 +179,8 @@ struct CallOptionalEnumRequestArguments {
 struct CallOptionalEnumReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalEnumReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<Numbers> output1;
 };
@@ -153,6 +188,8 @@ struct CallOptionalEnumReturnValues {
 struct CallThreeEnumsRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallThreeEnumsRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     Numbers input1;
     Numbers input2;
@@ -162,6 +199,8 @@ struct CallThreeEnumsRequestArguments {
 struct CallThreeEnumsReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallThreeEnumsReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     Numbers output1;
     Numbers output2;
@@ -171,6 +210,8 @@ struct CallThreeEnumsReturnValues {
 struct CallOneStructRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneStructRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     AllTypes input1;
 };
@@ -178,6 +219,8 @@ struct CallOneStructRequestArguments {
 struct CallOneStructReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneStructReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     AllTypes output1;
 };
@@ -185,6 +228,8 @@ struct CallOneStructReturnValues {
 struct CallOptionalStructRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalStructRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<AllTypes> input1;
 };
@@ -192,6 +237,8 @@ struct CallOptionalStructRequestArguments {
 struct CallOptionalStructReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalStructReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<AllTypes> output1;
 };
@@ -199,6 +246,8 @@ struct CallOptionalStructReturnValues {
 struct CallThreeStructsRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallThreeStructsRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<AllTypes> input1;
     AllTypes input2;
@@ -208,6 +257,8 @@ struct CallThreeStructsRequestArguments {
 struct CallThreeStructsReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallThreeStructsReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<AllTypes> output1;
     AllTypes output2;
@@ -217,6 +268,8 @@ struct CallThreeStructsReturnValues {
 struct CallOneDateTimeRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneDateTimeRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::chrono::time_point<std::chrono::system_clock> input1;
 };
@@ -224,6 +277,8 @@ struct CallOneDateTimeRequestArguments {
 struct CallOneDateTimeReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneDateTimeReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::chrono::time_point<std::chrono::system_clock> output1;
 };
@@ -231,6 +286,8 @@ struct CallOneDateTimeReturnValues {
 struct CallOptionalDateTimeRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalDateTimeRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::chrono::time_point<std::chrono::system_clock>> input1;
 };
@@ -238,6 +295,8 @@ struct CallOptionalDateTimeRequestArguments {
 struct CallOptionalDateTimeReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalDateTimeReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::chrono::time_point<std::chrono::system_clock>> output1;
 };
@@ -245,6 +304,8 @@ struct CallOptionalDateTimeReturnValues {
 struct CallThreeDateTimesRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallThreeDateTimesRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::chrono::time_point<std::chrono::system_clock> input1;
     std::chrono::time_point<std::chrono::system_clock> input2;
@@ -254,6 +315,8 @@ struct CallThreeDateTimesRequestArguments {
 struct CallThreeDateTimesReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallThreeDateTimesReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::chrono::time_point<std::chrono::system_clock> output1;
     std::chrono::time_point<std::chrono::system_clock> output2;
@@ -263,6 +326,8 @@ struct CallThreeDateTimesReturnValues {
 struct CallOneDurationRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneDurationRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::chrono::duration<double> input1;
 };
@@ -270,6 +335,8 @@ struct CallOneDurationRequestArguments {
 struct CallOneDurationReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneDurationReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::chrono::duration<double> output1;
 };
@@ -277,6 +344,8 @@ struct CallOneDurationReturnValues {
 struct CallOptionalDurationRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalDurationRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::chrono::duration<double>> input1;
 };
@@ -284,6 +353,8 @@ struct CallOptionalDurationRequestArguments {
 struct CallOptionalDurationReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalDurationReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::chrono::duration<double>> output1;
 };
@@ -291,6 +362,8 @@ struct CallOptionalDurationReturnValues {
 struct CallThreeDurationsRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallThreeDurationsRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::chrono::duration<double> input1;
     std::chrono::duration<double> input2;
@@ -300,6 +373,8 @@ struct CallThreeDurationsRequestArguments {
 struct CallThreeDurationsReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallThreeDurationsReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::chrono::duration<double> output1;
     std::chrono::duration<double> output2;
@@ -309,6 +384,8 @@ struct CallThreeDurationsReturnValues {
 struct CallOneBinaryRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneBinaryRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::vector<uint8_t> input1;
 };
@@ -316,6 +393,8 @@ struct CallOneBinaryRequestArguments {
 struct CallOneBinaryReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneBinaryReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::vector<uint8_t> output1;
 };
@@ -323,6 +402,8 @@ struct CallOneBinaryReturnValues {
 struct CallOptionalBinaryRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalBinaryRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::vector<uint8_t>> input1;
 };
@@ -330,6 +411,8 @@ struct CallOptionalBinaryRequestArguments {
 struct CallOptionalBinaryReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalBinaryReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::vector<uint8_t>> output1;
 };
@@ -337,6 +420,8 @@ struct CallOptionalBinaryReturnValues {
 struct CallThreeBinariesRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallThreeBinariesRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::vector<uint8_t> input1;
     std::vector<uint8_t> input2;
@@ -346,6 +431,8 @@ struct CallThreeBinariesRequestArguments {
 struct CallThreeBinariesReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallThreeBinariesReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::vector<uint8_t> output1;
     std::vector<uint8_t> output2;
@@ -355,6 +442,8 @@ struct CallThreeBinariesReturnValues {
 struct CallOneListOfIntegersRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneListOfIntegersRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::vector<int> input1;
 };
@@ -362,6 +451,8 @@ struct CallOneListOfIntegersRequestArguments {
 struct CallOneListOfIntegersReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOneListOfIntegersReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::vector<int> output1;
 };
@@ -369,6 +460,8 @@ struct CallOneListOfIntegersReturnValues {
 struct CallOptionalListOfFloatsRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalListOfFloatsRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::vector<double>> input1;
 };
@@ -376,6 +469,8 @@ struct CallOptionalListOfFloatsRequestArguments {
 struct CallOptionalListOfFloatsReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallOptionalListOfFloatsReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::optional<std::vector<double>> output1;
 };
@@ -383,6 +478,8 @@ struct CallOptionalListOfFloatsReturnValues {
 struct CallTwoListsRequestArguments {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallTwoListsRequestArguments FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::vector<Numbers> input1;
     std::optional<std::vector<std::string>> input2;
@@ -391,6 +488,8 @@ struct CallTwoListsRequestArguments {
 struct CallTwoListsReturnValues {
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
     static CallTwoListsReturnValues FromRapidJsonObject(const rapidjson::Value& jsonObj);
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     // Values...
     std::vector<Numbers> output1;
     std::optional<std::vector<std::string>> output2;

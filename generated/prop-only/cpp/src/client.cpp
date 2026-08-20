@@ -76,6 +76,9 @@ void PropOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
 
 void PropOnlyClient::_receiveHomeAddressPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "home_address property update debug from server: %s", msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -96,6 +99,11 @@ void PropOnlyClient::_receiveHomeAddressPropertyUpdate(const stinger::mqtt::Mess
         } else {
             throw std::runtime_error("Received payload for the 'address' argument doesn't have required value/type");
         }
+    }
+
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'home_address' property update failed schema validation; ignoring.");
+        return;
     }
 
     { // Scope lock
@@ -167,6 +175,9 @@ std::future<bool> PropOnlyClient::updateHomeAddressProperty(Address address) con
 
 void PropOnlyClient::_receiveFavoriteCountryPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "favorite_country property update debug from server: %s", msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -187,6 +198,11 @@ void PropOnlyClient::_receiveFavoriteCountryPropertyUpdate(const stinger::mqtt::
         } else {
             throw std::runtime_error("Received payload for the 'country' argument doesn't have required value/type");
         }
+    }
+
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'favorite_country' property update failed schema validation; ignoring.");
+        return;
     }
 
     { // Scope lock

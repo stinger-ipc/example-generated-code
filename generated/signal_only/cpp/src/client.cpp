@@ -70,6 +70,9 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
     _broker->Log(LOG_DEBUG, "Received message on topic %s with subscription id=%d", msg.topic.c_str(), subscriptionId);
     if (subscriptionId == _anotherSignalSignalSubscriptionId) {
         _broker->Log(LOG_INFO, "Handling anotherSignal signal");
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "anotherSignal signal debug from server: %s", msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_anotherSignalSignalCallbacks.size() > 0) {
@@ -117,6 +120,11 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
                     }
                 }
 
+                AnotherSignalPayload signalPayload{ tempOne, tempTwo, tempThree };
+                if (!signalPayload.ValidateSchema()) {
+                    _broker->Log(LOG_WARNING, "Received 'anotherSignal' signal payload failed schema validation; ignoring.");
+                    return;
+                }
                 std::lock_guard<std::mutex> lock(_anotherSignalSignalCallbacksMutex);
                 for (const auto& cb: _anotherSignalSignalCallbacks) {
                     try {
@@ -136,6 +144,9 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
     }
     if (subscriptionId == _barkSignalSubscriptionId) {
         _broker->Log(LOG_INFO, "Handling bark signal");
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "bark signal debug from server: %s", msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_barkSignalCallbacks.size() > 0) {
@@ -161,6 +172,11 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
                     }
                 }
 
+                BarkPayload signalPayload{ tempWord };
+                if (!signalPayload.ValidateSchema()) {
+                    _broker->Log(LOG_WARNING, "Received 'bark' signal payload failed schema validation; ignoring.");
+                    return;
+                }
                 std::lock_guard<std::mutex> lock(_barkSignalCallbacksMutex);
                 for (const auto& cb: _barkSignalCallbacks) {
                     try {
@@ -180,6 +196,9 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
     }
     if (subscriptionId == _maybeNumberSignalSubscriptionId) {
         _broker->Log(LOG_INFO, "Handling maybe_number signal");
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "maybe_number signal debug from server: %s", msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_maybeNumberSignalCallbacks.size() > 0) {
@@ -205,6 +224,11 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
                     }
                 }
 
+                MaybeNumberPayload signalPayload{ tempNumber };
+                if (!signalPayload.ValidateSchema()) {
+                    _broker->Log(LOG_WARNING, "Received 'maybe_number' signal payload failed schema validation; ignoring.");
+                    return;
+                }
                 std::lock_guard<std::mutex> lock(_maybeNumberSignalCallbacksMutex);
                 for (const auto& cb: _maybeNumberSignalCallbacks) {
                     try {
@@ -224,6 +248,9 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
     }
     if (subscriptionId == _maybeNameSignalSubscriptionId) {
         _broker->Log(LOG_INFO, "Handling maybe_name signal");
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "maybe_name signal debug from server: %s", msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_maybeNameSignalCallbacks.size() > 0) {
@@ -249,6 +276,11 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
                     }
                 }
 
+                MaybeNamePayload signalPayload{ tempName };
+                if (!signalPayload.ValidateSchema()) {
+                    _broker->Log(LOG_WARNING, "Received 'maybe_name' signal payload failed schema validation; ignoring.");
+                    return;
+                }
                 std::lock_guard<std::mutex> lock(_maybeNameSignalCallbacksMutex);
                 for (const auto& cb: _maybeNameSignalCallbacks) {
                     try {
@@ -268,6 +300,9 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
     }
     if (subscriptionId == _nowSignalSubscriptionId) {
         _broker->Log(LOG_INFO, "Handling now signal");
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "now signal debug from server: %s", msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_nowSignalCallbacks.size() > 0) {
@@ -299,6 +334,11 @@ void SignalOnlyClient::_receiveMessage(const stinger::mqtt::Message& msg)
                     }
                 }
 
+                NowPayload signalPayload{ tempTimestamp };
+                if (!signalPayload.ValidateSchema()) {
+                    _broker->Log(LOG_WARNING, "Received 'now' signal payload failed schema validation; ignoring.");
+                    return;
+                }
                 std::lock_guard<std::mutex> lock(_nowSignalCallbacksMutex);
                 for (const auto& cb: _nowSignalCallbacks) {
                     try {

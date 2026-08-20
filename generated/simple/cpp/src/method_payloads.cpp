@@ -2,6 +2,7 @@
 #include "method_payloads.hpp"
 
 #include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 #include <stinger/utils/conversions.hpp>
 
 namespace stinger {
@@ -32,6 +33,26 @@ void TradeNumbersRequestArguments::AddToRapidJsonObject(rapidjson::Value& parent
     parent.AddMember("your_number", yourNumber, allocator);
 }
 
+bool TradeNumbersRequestArguments::ValidateSchema() const
+{
+    rapidjson::Document doc;
+    doc.SetObject();
+    AddToRapidJsonObject(doc, doc.GetAllocator());
+    {
+        rapidjson::Document schemaDoc;
+        if (schemaDoc.Parse(R"stingerschema({"maximum": 10000, "minimum": 0})stingerschema").HasParseError()) {
+            return false;
+        }
+        rapidjson::SchemaDocument schema(schemaDoc);
+        rapidjson::SchemaValidator validator(schema);
+        auto itr = doc.FindMember("your_number");
+        if (itr != doc.MemberEnd() && !itr->value.Accept(validator)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 // --- (De-)Serialization for trade_numbers method return type ---
 TradeNumbersReturnValues TradeNumbersReturnValues::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
@@ -53,6 +74,11 @@ TradeNumbersReturnValues TradeNumbersReturnValues::FromRapidJsonObject(const rap
 void TradeNumbersReturnValues::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("my_number", myNumber, allocator);
+}
+
+bool TradeNumbersReturnValues::ValidateSchema() const
+{
+    return true;
 }
 
 } // namespace simple

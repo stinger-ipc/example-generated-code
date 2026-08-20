@@ -4,8 +4,7 @@ on the next generation.
 
 It contains enumerations used by the weather interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #pragma once
@@ -26,6 +25,8 @@ namespace weather {
 struct LocationProperty {
     static LocationProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     double latitude;
     double longitude;
 };
@@ -39,6 +40,8 @@ struct LocationProperty {
 struct CurrentTemperatureProperty {
     static CurrentTemperatureProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     double temperatureF;
 };
 
@@ -50,6 +53,8 @@ struct CurrentTemperatureProperty {
 struct CurrentConditionProperty {
     static CurrentConditionProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     WeatherCondition condition;
     std::string description;
 };
@@ -64,6 +69,8 @@ struct CurrentConditionProperty {
 struct DailyForecastProperty {
     static DailyForecastProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     ForecastForDay monday; ///< This is the forecast for Monday.
     ForecastForDay tuesday;
     ForecastForDay wednesday;
@@ -78,6 +85,8 @@ struct DailyForecastProperty {
 struct HourlyForecastProperty {
     static HourlyForecastProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     ForecastForHour hour0; ///< This is the forecast for the current hour.
     ForecastForHour hour1; ///< This is the forecast for the next hour.
     ForecastForHour hour2;
@@ -92,6 +101,8 @@ struct HourlyForecastProperty {
 struct CurrentConditionRefreshIntervalProperty {
     static CurrentConditionRefreshIntervalProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     int seconds;
 };
 
@@ -102,6 +113,8 @@ struct CurrentConditionRefreshIntervalProperty {
 struct HourlyForecastRefreshIntervalProperty {
     static HourlyForecastRefreshIntervalProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     int seconds; ///< Interval duration in seconds.
 };
 
@@ -112,6 +125,8 @@ struct HourlyForecastRefreshIntervalProperty {
 struct DailyForecastRefreshIntervalProperty {
     static DailyForecastRefreshIntervalProperty FromRapidJsonObject(const rapidjson::Value& jsonObj);
     void AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const;
+    // Validates fields that declare a JSON schema constraint.  Returns true if all such fields conform to their schema (or if none declare one).
+    bool ValidateSchema() const;
     int seconds;
 };
 

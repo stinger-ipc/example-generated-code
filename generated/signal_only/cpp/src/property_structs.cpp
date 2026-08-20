@@ -2,6 +2,7 @@
 
 #include "property_structs.hpp"
 #include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 
 namespace stinger {
 

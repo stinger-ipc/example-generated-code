@@ -1,39 +1,19 @@
 const clientId = "prop-only-web-" + new Date().getTime();
+const client_id = clientId;
 
-const responseTopic = "client/" + clientId + "/responses";
 var responseSubscriptionId = null;
+
+const topicParams = Object.fromEntries(new URLSearchParams(location.search));
+
+const instanceId = topicParams.instance_id || null;
 
 function makeRequestProperties() {
     const correlationData = Math.random().toString(16).substr(2, 8);
     return {
         "contentType": "application/json",
-        "correlationData": correlationData,
-        "responseTopic": responseTopic
+        "correlationData": correlationData
     }
 }
-
-function getInstanceIdFromHash() {
-    // Return everything after the last '#' and strip an AngularJS hashbang ('!') if present.
-    if (typeof location === 'undefined' || !location || !location.hash) return null;
-    const hash = location.hash;
-    // Find last '#' in case there are multiple hashes; include support for '#!' (hashbang)
-    const lastHashIdx = hash.lastIndexOf('#');
-    if (lastHashIdx === -1 || lastHashIdx === hash.length - 1) return null;
-    let val = hash.substring(lastHashIdx + 1);
-    // Strip leading '!' used by AngularJS hashbang URLs (#!)
-    if (val.startsWith('!')) val = val.substring(1);
-    if (!val) return null;
-    // Convert '+' to space (common in URL-encoding) before decode
-    const plusConverted = val.replace(/\+/g, ' ');
-    try {
-        return decodeURIComponent(plusConverted);
-    } catch (e) {
-        // If decode fails (malformed percent-encoding), return the raw plus-converted string
-        return plusConverted;
-    }
-}
-
-const instanceId = getInstanceIdFromHash();
 
 // Replace '+' tokens in topics with the instance id (if present)
 function resolveTopic(topic) {
@@ -43,14 +23,30 @@ function resolveTopic(topic) {
 
 var app = angular.module("myApp", []);
 
-app.controller("myCtrl", function ($scope, $filter, $location) {
+app.controller("myCtrl", function ($scope, $filter, $location, $timeout) {
 
     console.log("Running app");
 
     var subscription_state = 0;
 
+    // Briefly flash a component's title bar to indicate a freshly received value.
+    function triggerFlash(obj) {
+        obj.flash = false;
+        $timeout(function () {
+            obj.flash = true;
+            $timeout(function () {
+                obj.flash = false;
+            }, 800);
+        }, 0);
+    }
+
     $scope.timePattern = new RegExp("^[0-2][0-9]:[0-5][0-9]$");
     $scope.online = false;
+
+    // Active tab — default to the first tab that has content
+    
+    $scope.activeTab = 'properties';
+    
 
     $scope.enums = {
         "country": [
@@ -70,19 +66,21 @@ app.controller("myCtrl", function ($scope, $filter, $location) {
             "name": "home_address",
             "received": { 
                 "address": { 
-                    "street": "",
+                    "street": null,
                 
-                    "city": "",
+                    "city": null,
                 
-                    "state": "",
+                    "state": null,
                 
-                    "postal_code": "",
+                    "postal_code": null,
                 
-                    "country": ""
+                    "country": null
                  }
              },
-            "mqtt_topic": "{prefix}/prop-only/{service_id}/property/home_address/value",
-            "update_topic": "{prefix}/prop-only/{service_id}/property/home_address/update",
+            "mqtt_topic": `${topicParams.prefix}/prop-only/${topicParams.service_id}/property/home_address/value`,
+            "update_topic": `${topicParams.prefix}/prop-only/${topicParams.service_id}/property/home_address/update`,
+            "response_topic": `client/${client_id}/prop-only/property/home_address/update/response`,
+            "flash": false,
             "property_version": -1
         },
     
@@ -90,10 +88,12 @@ app.controller("myCtrl", function ($scope, $filter, $location) {
             "subscription_id": null,
             "name": "favorite_country",
             "received": { 
-                "country": {  }
+                "country": null
              },
-            "mqtt_topic": "{prefix}/prop-only/{service_id}/property/favorite_country/value",
-            "update_topic": "{prefix}/prop-only/{service_id}/property/favorite_country/update",
+            "mqtt_topic": `${topicParams.prefix}/prop-only/${topicParams.service_id}/property/favorite_country/value`,
+            "update_topic": `${topicParams.prefix}/prop-only/${topicParams.service_id}/property/favorite_country/update`,
+            "response_topic": `client/${client_id}/prop-only/property/favorite_country/update/response`,
+            "flash": false,
             "property_version": -1
         }
     };
@@ -129,26 +129,31 @@ app.controller("myCtrl", function ($scope, $filter, $location) {
         console.log("Connection Lost");
     });
 
-    function publish(name, topic, payload, qos) {
-        console.log(name + " Sending to " + topic);
-        console.log(payload);
+    function publish_method_request(method, payload) {
+        var qos = 1;
+        console.log("METHOD REQUEST", method, payload);
         let props = makeRequestProperties();
-        $scope.console.requests.unshift({"name":name, "correlationData":props.correlationData, "topic": topic, "payload": payload, "response": null, "requestTime": Date.now()});
-        client.publish(topic, payload, { "qos": qos, retain: false, properties: props});
+        props.responseTopic = method.response_topic;
+        $scope.console.requests.unshift({"name":method.name, "correlationData":props.correlationData, "topic": method.mqtt_topic, "payload": payload, "response": null, "requestTime": Date.now()});
+        console.log("PUBLISH REQUEST", method.mqtt_topic, payload, props);
+        client.publish(method.mqtt_topic, payload, { "qos": qos, retain: false, properties: props});
         return props.correlationData;
     }
 
-    function publish_property_update(name, topic, payload, property_version) {
-        console.log(name + " Sending to " + topic);
-        console.log(payload);
+    function publish_property_update(prop_obj, payload) {
+        console.log("PROPERTY UPDATE", prop_obj, payload);
+        const correlationData = Math.random().toString(16).substr(2, 8);
         let props = {
             "contentType": "application/json",
             "userProperties": {
-                "PropertyVersion": property_version.toString()
-            }
+                "PropertyVersion": prop_obj.property_version
+            },
+            "correlationData": correlationData,
+            "responseTopic": prop_obj.response_topic
         };
-        $scope.console.requests.unshift({"name":name, "correlationData":null, "topic": topic, "payload": payload, "response": null, "requestTime": Date.now()});
-        client.publish(topic, payload, { "qos": 1, retain: false, properties: props});
+        $scope.console.requests.unshift({"name":prop_obj.name, "correlationData":correlationData, "topic": prop_obj.update_topic, "payload": payload, "response": null, "requestTime": Date.now()});
+        console.log("PUBLISH UPDATE", prop_obj.update_topic, payload, props);
+        client.publish(prop_obj.update_topic, payload, { "qos": 1, retain: false, properties: props});
         return;
     }
 
@@ -172,6 +177,7 @@ app.controller("myCtrl", function ($scope, $filter, $location) {
             if (sig.subscription_id == subid) {
                 sig.received = obj;
                 sig.received_time = new Date();
+                triggerFlash(sig);
             }
         }
         for (const key in $scope.properties) {
@@ -181,6 +187,7 @@ app.controller("myCtrl", function ($scope, $filter, $location) {
                 prop.received = obj;
                 console.log("Set property '" + prop.name + "' received object to ", prop.received);
                 prop.property_version = packet.properties.userProperties.PropertyVersion;
+                triggerFlash(prop);
             }
         }
         for (const key in $scope.methods) {
@@ -210,16 +217,29 @@ app.controller("myCtrl", function ($scope, $filter, $location) {
         var subscription_count = 10;
         console.log("Connected with ", client);
 
-        var responseSubscriptionId = subscription_count++;
-        const responseSubOpts = {
+        const methodResponseSubscriptionTopic = `client/${client_id}/prop-only/method/+/response`;
+        var methodResponseSubscriptionId = subscription_count++;
+        const methodResponseSubOpts = {
             "qos": 1,
             "properties": {
-                "subscriptionIdentifier": responseSubscriptionId
+                "subscriptionIdentifier": methodResponseSubscriptionId
             }
         };
-        client.subscribe(responseTopic, responseSubOpts);
-        console.log("Subscribing to response topic " + responseTopic + " with id " + responseSubscriptionId);
+        client.subscribe(methodResponseSubscriptionTopic, methodResponseSubOpts);
+        console.log("Subscribing to response topic " + methodResponseSubscriptionTopic + " with id " + methodResponseSubscriptionId);
         
+
+        const propertyResponseSubscriptionTopic = `client/${client_id}/prop-only/property/+/update/response`;
+        var propertyResponseSubscriptionId = subscription_count++;
+        const propertyResponseSubOpts = {
+            "qos": 1,
+            "properties": {
+                "subscriptionIdentifier": propertyResponseSubscriptionId
+            }
+        };
+        client.subscribe(propertyResponseSubscriptionTopic, propertyResponseSubOpts);
+        console.log("Subscribing to response topic " + propertyResponseSubscriptionTopic + " with id " + propertyResponseSubscriptionId);
+
         
 
         for (const key in $scope.properties) {
@@ -243,17 +263,16 @@ app.controller("myCtrl", function ($scope, $filter, $location) {
 
     $scope.updateProperty = function(prop) {
         const payload = JSON.stringify(prop.received);
-        publish_property_update("Property Update", prop.update_topic, payload, 1);
+        publish_property_update(prop, payload);
     };
  
     $scope.callMethod = function(method) {
         const payload = {};
         for (const key in method.args) {
             if (!method.args.hasOwnProperty(key)) continue;
-            payload[key] = method.args[key].value;
+            payload[key] = method.args[key];
         }
         const payload_str = JSON.stringify(payload);
-        console.log("Method Call", method.mqtt_topic, payload_str, 1);
-        method.pending_correlation_id = publish("Method Call", method.mqtt_topic, payload_str, 1);
+        method.pending_correlation_id = publish_method_request(method, payload_str);
     };
 });

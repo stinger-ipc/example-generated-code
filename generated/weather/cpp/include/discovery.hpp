@@ -57,6 +57,7 @@ struct InstanceInfo {
 public:
     std::optional<std::string> serviceId; // In the payload, this is the 'instance' field.
     std::optional<std::string> prefix;
+    std::map<std::string, std::string> methods; // Maps method names to their version string, for methods that declare a version.
     InitialPropertyValues initial_property_values; // Not included in (de-)serialization.
 
     /**

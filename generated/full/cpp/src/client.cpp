@@ -103,6 +103,9 @@ void FullClient::_receiveMessage(const stinger::mqtt::Message& msg)
     _broker->Log(LOG_DEBUG, "Received message on topic %s with subscription id=%d", msg.topic.c_str(), subscriptionId);
     if (subscriptionId == _todayIsSignalSubscriptionId) {
         _broker->Log(LOG_INFO, "Handling todayIs signal");
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "todayIs signal debug from server: %s", msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_todayIsSignalCallbacks.size() > 0) {
@@ -139,6 +142,11 @@ void FullClient::_receiveMessage(const stinger::mqtt::Message& msg)
                     }
                 }
 
+                TodayIsPayload signalPayload{ tempDayOfMonth, tempDayOfWeek };
+                if (!signalPayload.ValidateSchema()) {
+                    _broker->Log(LOG_WARNING, "Received 'todayIs' signal payload failed schema validation; ignoring.");
+                    return;
+                }
                 std::lock_guard<std::mutex> lock(_todayIsSignalCallbacksMutex);
                 for (const auto& cb: _todayIsSignalCallbacks) {
                     try {
@@ -158,6 +166,9 @@ void FullClient::_receiveMessage(const stinger::mqtt::Message& msg)
     }
     if (subscriptionId == _randomWordSignalSubscriptionId) {
         _broker->Log(LOG_INFO, "Handling randomWord signal");
+        if (msg.properties.debugInfo.has_value()) {
+            _broker->Log(LOG_INFO, "randomWord signal debug from server: %s", msg.properties.debugInfo->c_str());
+        }
         rapidjson::Document doc;
         try {
             if (_randomWordSignalCallbacks.size() > 0) {
@@ -200,6 +211,11 @@ void FullClient::_receiveMessage(const stinger::mqtt::Message& msg)
                     }
                 }
 
+                RandomWordPayload signalPayload{ tempWord, tempTime };
+                if (!signalPayload.ValidateSchema()) {
+                    _broker->Log(LOG_WARNING, "Received 'randomWord' signal payload failed schema validation; ignoring.");
+                    return;
+                }
                 std::lock_guard<std::mutex> lock(_randomWordSignalCallbacksMutex);
                 for (const auto& cb: _randomWordSignalCallbacks) {
                     try {
@@ -267,12 +283,15 @@ std::future<int> FullClient::addNumbers(int first, int second, std::optional<int
     rapidjson::Document doc;
     doc.SetObject();
 
-    doc.AddMember("first", first, doc.GetAllocator());
-
-    doc.AddMember("second", second, doc.GetAllocator());
-
-    if (third)
-        doc.AddMember("third", *third, doc.GetAllocator());
+    AddNumbersRequestArguments requestArgs{ first, second, third };
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for 'addNumbers' failed schema validation; not sending.");
+        _pendingAddNumbersMethodCalls[correlationData].set_exception(
+                std::make_exception_ptr(std::runtime_error("Request payload for 'addNumbers' failed schema validation"))
+        );
+        return _pendingAddNumbersMethodCalls[correlationData].get_future();
+    }
+    requestArgs.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -298,6 +317,9 @@ void FullClient::_handleAddNumbersResponse(
 )
 {
     _broker->Log(LOG_DEBUG, "In response handler for addNumbers");
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "addNumbers response debug from server: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
 
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
@@ -321,8 +343,15 @@ void FullClient::_handleAddNumbersResponse(
         // Found the promise for this correlation ID.
 
         // Method has a single return value.
-        auto returnValue = AddNumbersReturnValues::FromRapidJsonObject(doc).sum;
-        promiseItr->second.set_value(returnValue);
+        auto returnValues = AddNumbersReturnValues::FromRapidJsonObject(doc);
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for 'addNumbers' failed schema validation.");
+            promiseItr->second.set_exception(
+                    std::make_exception_ptr(std::runtime_error("Response payload for 'addNumbers' failed schema validation"))
+            );
+            return;
+        }
+        promiseItr->second.set_value(returnValues.sum);
     }
 
     _broker->Log(LOG_DEBUG, "End of response handler for addNumbers");
@@ -336,11 +365,15 @@ std::future<DoSomethingReturnValues> FullClient::doSomething(std::string taskToD
     rapidjson::Document doc;
     doc.SetObject();
 
-    { // restrict scope
-        rapidjson::Value tempStringValue;
-        tempStringValue.SetString(taskToDo.c_str(), taskToDo.size(), doc.GetAllocator());
-        doc.AddMember("task_to_do", tempStringValue, doc.GetAllocator());
+    DoSomethingRequestArguments requestArgs{ taskToDo };
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for 'doSomething' failed schema validation; not sending.");
+        _pendingDoSomethingMethodCalls[correlationData].set_exception(
+                std::make_exception_ptr(std::runtime_error("Request payload for 'doSomething' failed schema validation"))
+        );
+        return _pendingDoSomethingMethodCalls[correlationData].get_future();
     }
+    requestArgs.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -366,6 +399,9 @@ void FullClient::_handleDoSomethingResponse(
 )
 {
     _broker->Log(LOG_DEBUG, "In response handler for doSomething");
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "doSomething response debug from server: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
 
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
@@ -390,6 +426,13 @@ void FullClient::_handleDoSomethingResponse(
 
         // Method has multiple return values.
         auto returnValues = DoSomethingReturnValues::FromRapidJsonObject(doc);
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for 'doSomething' failed schema validation.");
+            promiseItr->second.set_exception(
+                    std::make_exception_ptr(std::runtime_error("Response payload for 'doSomething' failed schema validation"))
+            );
+            return;
+        }
         promiseItr->second.set_value(returnValues);
     }
 
@@ -428,6 +471,9 @@ void FullClient::_handleWhatTimeIsItResponse(
 )
 {
     _broker->Log(LOG_DEBUG, "In response handler for what_time_is_it");
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "what_time_is_it response debug from server: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
 
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
@@ -451,8 +497,15 @@ void FullClient::_handleWhatTimeIsItResponse(
         // Found the promise for this correlation ID.
 
         // Method has a single return value.
-        auto returnValue = WhatTimeIsItReturnValues::FromRapidJsonObject(doc).timestamp;
-        promiseItr->second.set_value(returnValue);
+        auto returnValues = WhatTimeIsItReturnValues::FromRapidJsonObject(doc);
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for 'what_time_is_it' failed schema validation.");
+            promiseItr->second.set_exception(
+                    std::make_exception_ptr(std::runtime_error("Response payload for 'what_time_is_it' failed schema validation"))
+            );
+            return;
+        }
+        promiseItr->second.set_value(returnValues.timestamp);
     }
 
     _broker->Log(LOG_DEBUG, "End of response handler for what_time_is_it");
@@ -466,7 +519,15 @@ std::future<bool> FullClient::holdTemperature(double temperatureCelsius)
     rapidjson::Document doc;
     doc.SetObject();
 
-    doc.AddMember("temperature_celsius", temperatureCelsius, doc.GetAllocator());
+    HoldTemperatureRequestArguments requestArgs{ temperatureCelsius };
+    if (!requestArgs.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Request payload for 'hold_temperature' failed schema validation; not sending.");
+        _pendingHoldTemperatureMethodCalls[correlationData].set_exception(
+                std::make_exception_ptr(std::runtime_error("Request payload for 'hold_temperature' failed schema validation"))
+        );
+        return _pendingHoldTemperatureMethodCalls[correlationData].get_future();
+    }
+    requestArgs.AddToRapidJsonObject(doc, doc.GetAllocator());
 
     rapidjson::StringBuffer buf;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
@@ -492,6 +553,9 @@ void FullClient::_handleHoldTemperatureResponse(
 )
 {
     _broker->Log(LOG_DEBUG, "In response handler for hold_temperature");
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "hold_temperature response debug from server: %s", msg.topic.c_str(), msg.properties.debugInfo->c_str());
+    }
 
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
@@ -515,8 +579,15 @@ void FullClient::_handleHoldTemperatureResponse(
         // Found the promise for this correlation ID.
 
         // Method has a single return value.
-        auto returnValue = HoldTemperatureReturnValues::FromRapidJsonObject(doc).success;
-        promiseItr->second.set_value(returnValue);
+        auto returnValues = HoldTemperatureReturnValues::FromRapidJsonObject(doc);
+        if (!returnValues.ValidateSchema()) {
+            _broker->Log(LOG_WARNING, "Response payload for 'hold_temperature' failed schema validation.");
+            promiseItr->second.set_exception(
+                    std::make_exception_ptr(std::runtime_error("Response payload for 'hold_temperature' failed schema validation"))
+            );
+            return;
+        }
+        promiseItr->second.set_value(returnValues.success);
     }
 
     _broker->Log(LOG_DEBUG, "End of response handler for hold_temperature");
@@ -524,6 +595,9 @@ void FullClient::_handleHoldTemperatureResponse(
 
 void FullClient::_receiveFavoriteNumberPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "favorite_number property update debug from server: %s", msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -544,6 +618,11 @@ void FullClient::_receiveFavoriteNumberPropertyUpdate(const stinger::mqtt::Messa
         } else {
             throw std::runtime_error("Received payload for the 'number' argument doesn't have required value/type");
         }
+    }
+
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'favorite_number' property update failed schema validation; ignoring.");
+        return;
     }
 
     { // Scope lock
@@ -608,6 +687,9 @@ std::future<bool> FullClient::updateFavoriteNumberProperty(int number) const
 
 void FullClient::_receiveFavoriteFoodsPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "favorite_foods property update debug from server: %s", msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -649,6 +731,11 @@ void FullClient::_receiveFavoriteFoodsPropertyUpdate(const stinger::mqtt::Messag
         } else {
             throw std::runtime_error("Received payload for the 'breakfast' argument doesn't have required value/type");
         }
+    }
+
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'favorite_foods' property update failed schema validation; ignoring.");
+        return;
     }
 
     { // Scope lock
@@ -725,6 +812,9 @@ std::future<bool> FullClient::updateFavoriteFoodsProperty(std::string drink, int
 
 void FullClient::_receiveLunchMenuPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "lunch_menu property update debug from server: %s", msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -754,6 +844,11 @@ void FullClient::_receiveLunchMenuPropertyUpdate(const stinger::mqtt::Message& m
         } else {
             throw std::runtime_error("Received payload for the 'tuesday' argument doesn't have required value/type");
         }
+    }
+
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'lunch_menu' property update failed schema validation; ignoring.");
+        return;
     }
 
     { // Scope lock
@@ -794,6 +889,9 @@ void FullClient::registerLunchMenuPropertyCallback(const std::function<void(Lunc
 
 void FullClient::_receiveFamilyNamePropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "family_name property update debug from server: %s", msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -814,6 +912,11 @@ void FullClient::_receiveFamilyNamePropertyUpdate(const stinger::mqtt::Message& 
         } else {
             throw std::runtime_error("Received payload for the 'family_name' argument doesn't have required value/type");
         }
+    }
+
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'family_name' property update failed schema validation; ignoring.");
+        return;
     }
 
     { // Scope lock
@@ -882,6 +985,9 @@ std::future<bool> FullClient::updateFamilyNameProperty(std::string familyName) c
 
 void FullClient::_receiveLastBreakfastTimePropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "last_breakfast_time property update debug from server: %s", msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -903,6 +1009,11 @@ void FullClient::_receiveLastBreakfastTimePropertyUpdate(const stinger::mqtt::Me
         } else {
             throw std::runtime_error("Received payload for the 'timestamp' argument doesn't have required value/type");
         }
+    }
+
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'last_breakfast_time' property update failed schema validation; ignoring.");
+        return;
     }
 
     { // Scope lock
@@ -972,6 +1083,9 @@ std::future<bool> FullClient::updateLastBreakfastTimeProperty(std::chrono::time_
 
 void FullClient::_receiveLastBirthdaysPropertyUpdate(const stinger::mqtt::Message& msg)
 {
+    if (msg.properties.debugInfo.has_value()) {
+        _broker->Log(LOG_INFO, "last_birthdays property update debug from server: %s", msg.properties.debugInfo->c_str());
+    }
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(msg.payload.c_str());
     if (!ok) {
@@ -1028,6 +1142,11 @@ void FullClient::_receiveLastBirthdaysPropertyUpdate(const stinger::mqtt::Messag
         } else {
             throw std::runtime_error("Received payload for the 'brothers_age' argument doesn't have required value/type");
         }
+    }
+
+    if (!tempValue.ValidateSchema()) {
+        _broker->Log(LOG_WARNING, "Received 'last_birthdays' property update failed schema validation; ignoring.");
+        return;
     }
 
     { // Scope lock

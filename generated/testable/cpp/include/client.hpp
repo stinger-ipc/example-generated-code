@@ -4,8 +4,7 @@ on the next generation.
 
 It contains enumerations used by the testable interface.
 
-LICENSE: This generated code is not subject to any license restrictions from the generator itself.
-TODO: Get license text from stinger file
+
 */
 
 #pragma once
@@ -54,6 +53,10 @@ public:
     // The provided method will be called whenever a `singleInt` is received.
     void registerSingleIntCallback(const std::function<void(int)>& cb);
 
+    // Register a callback for the `jsonSchemaValidatedInt` signal.
+    // The provided method will be called whenever a `jsonSchemaValidatedInt` is received.
+    void registerJsonSchemaValidatedIntCallback(const std::function<void(int)>& cb);
+
     // Register a callback for the `singleOptionalInt` signal.  The argument is optional.
     // The provided method will be called whenever a `singleOptionalInt` is received.
     void registerSingleOptionalIntCallback(const std::function<void(std::optional<int>)>& cb);
@@ -65,6 +68,10 @@ public:
     // Register a callback for the `singleString` signal.
     // The provided method will be called whenever a `singleString` is received.
     void registerSingleStringCallback(const std::function<void(std::string)>& cb);
+
+    // Register a callback for the `jsonSchemaValidatedString` signal.
+    // The provided method will be called whenever a `jsonSchemaValidatedString` is received.
+    void registerJsonSchemaValidatedStringCallback(const std::function<void(std::string)>& cb);
 
     // Register a callback for the `singleOptionalString` signal.  The argument is optional.
     // The provided method will be called whenever a `singleOptionalString` is received.
@@ -611,6 +618,13 @@ private:
     // MQTT Subscription ID for `singleInt` signal receptions.
     int _singleIntSignalSubscriptionId = -1;
 
+    // List of callbacks to be called whenever the `jsonSchemaValidatedInt` signal is received.
+    std::vector<std::function<void(int)>> _jsonSchemaValidatedIntSignalCallbacks;
+    std::mutex _jsonSchemaValidatedIntSignalCallbacksMutex;
+
+    // MQTT Subscription ID for `jsonSchemaValidatedInt` signal receptions.
+    int _jsonSchemaValidatedIntSignalSubscriptionId = -1;
+
     // List of callbacks to be called whenever the `singleOptionalInt` signal is received.
     std::vector<std::function<void(std::optional<int>)>> _singleOptionalIntSignalCallbacks;
     std::mutex _singleOptionalIntSignalCallbacksMutex;
@@ -631,6 +645,13 @@ private:
 
     // MQTT Subscription ID for `singleString` signal receptions.
     int _singleStringSignalSubscriptionId = -1;
+
+    // List of callbacks to be called whenever the `jsonSchemaValidatedString` signal is received.
+    std::vector<std::function<void(std::string)>> _jsonSchemaValidatedStringSignalCallbacks;
+    std::mutex _jsonSchemaValidatedStringSignalCallbacksMutex;
+
+    // MQTT Subscription ID for `jsonSchemaValidatedString` signal receptions.
+    int _jsonSchemaValidatedStringSignalSubscriptionId = -1;
 
     // List of callbacks to be called whenever the `singleOptionalString` signal is received.
     std::vector<std::function<void(std::optional<std::string>)>> _singleOptionalStringSignalCallbacks;

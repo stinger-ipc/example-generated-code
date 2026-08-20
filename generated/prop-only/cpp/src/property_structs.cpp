@@ -2,6 +2,7 @@
 
 #include "property_structs.hpp"
 #include <rapidjson/document.h>
+#include <rapidjson/schema.h>
 
 namespace stinger {
 
@@ -37,6 +38,11 @@ void HomeAddressProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapidjs
     }
 }
 
+bool HomeAddressProperty::ValidateSchema() const
+{
+    return true;
+}
+
 FavoriteCountryProperty FavoriteCountryProperty::FromRapidJsonObject(const rapidjson::Value& jsonObj)
 {
     FavoriteCountryProperty favoriteCountry;
@@ -57,6 +63,11 @@ FavoriteCountryProperty FavoriteCountryProperty::FromRapidJsonObject(const rapid
 void FavoriteCountryProperty::AddToRapidJsonObject(rapidjson::Value& parent, rapidjson::Document::AllocatorType& allocator) const
 {
     parent.AddMember("country", static_cast<int>(country), allocator);
+}
+
+bool FavoriteCountryProperty::ValidateSchema() const
+{
+    return true;
 }
 
 } // namespace prop_only

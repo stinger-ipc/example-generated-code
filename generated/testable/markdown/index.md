@@ -2,8 +2,7 @@
 
 <!--
 This is automatically generated documentation.
-LICENSE: This generated content is not subject to any license restrictions.
-TODO: Get license text from stinger file
+
 --> 
 _This tries to capture most variants of features._
 
@@ -193,9 +192,9 @@ initial_property_values = TestableInitialPropertyValues(
     read_write_two_structs=
         ReadWriteTwoStructsProperty(
             
-            first=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
+            first=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
             
-            second=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
+            second=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
             
         ),
     read_write_two_structs_version=11,
@@ -226,7 +225,7 @@ initial_property_values = TestableInitialPropertyValues(
         
     read_write_datetime_version=16,
 
-    read_write_optional_datetime=None,
+    read_write_optional_datetime=datetime.now(UTC),
         
     read_write_optional_datetime_version=17,
 
@@ -673,7 +672,7 @@ initial_property_values = TestableInitialPropertyValues(
             
             first=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
             
-            second=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
+            second=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]),
             
         ),
     read_write_two_structs_version=11,
@@ -1014,6 +1013,95 @@ singleIntFuture.wait(); // Optional, to block until signal is sent.
 </details>
 
 
+### Signal `jsonSchemaValidatedInt`
+
+A signal with a single integer parameter that is validated against a JSON schema.
+
+#### Signal Parameters for `jsonSchemaValidatedInt`
+
+| Name          | Type     |Description|
+|---------------|----------|-----------|
+|     value     | integer  |The integer value.|
+
+#### Code Examples
+
+<details>
+  <summary>Python Client code for receiving 'jsonSchemaValidatedInt' signal</summary>
+
+The `jsonSchemaValidatedInt` signal can be subscribed to by using the client's `receive_json_schema_validated_int` decorator on a callback function. The name of the function does not matter. The function is called any time the signal is received.
+
+```python
+@client.receive_json_schema_validated_int
+def on_json_schema_validated_int(value: int):
+    print(f"Got a 'jsonSchemaValidatedInt' signal: value={ value } ")
+```
+
+</details>
+
+<details>
+  <summary>Python Server code for emitting 'jsonSchemaValidatedInt' signal</summary>
+
+A server can emit a `jsonSchemaValidatedInt` signal simply by calling the server's `emit_json_schema_validated_int` method.
+
+```python
+server.emit_json_schema_validated_int(42)
+```
+
+</details>
+
+<details>
+  <summary>Rust Client code for receiving 'jsonSchemaValidatedInt' signal</summary>
+
+A Rust client receives signals through a `tokio::broadcast` channel.  Receiving from the channel returns a `Result<T, RecvError>` object.  
+
+Since receiving a message through the channel blocks, it may be best to put this into a separate async task.
+
+```rust
+let mut json_schema_validated_int_signal_rx = client.get_json_schema_validated_int_receiver();
+print("Got a 'jsonSchemaValidatedInt' signal: {:?}", json_schema_validated_int_signal_rx.recv().await);
+```
+
+</details>
+
+<details>
+  <summary>Rust Server code for emitting 'jsonSchemaValidatedInt' signal</summary>
+
+A server can emit a `jsonSchemaValidatedInt` signal simply by calling the server's `emit_json_schema_validated_int` method.
+
+```rust
+let publish_result = server.emit_json_schema_validated_int(42).await;
+```
+
+The return type is a **Pinned Boxed Future** that resolves to a `Result<(), MethodReturnCode>`.  The future is resolved when the signal is sent (with "publish complete" acknowledgment) or when an error occurs.  If you need to block until the signal is received by the MQTT broker, you can `.await` the future.
+
+</details>
+
+<details>
+  <summary>C++ Client code for registering a 'jsonSchemaValidatedInt' signal callback</summary>
+
+A client can register a callback function to be called when a `jsonSchemaValidatedInt` signal is received.  The callback function should take the same parameters as the signal.  In this example, we are using a lambda as the callback function.
+
+```cpp
+client.registerJsonSchemaValidatedIntCallback([](int value) {
+    std::cout << "value=" <<value <<  std::endl;
+});
+```
+
+</details>
+
+<details>
+  <summary>C++ Server code for emitting a 'jsonSchemaValidatedInt' signal</summary>
+
+A `jsonSchemaValidatedInt` signal can be emitted by calling the server's `emitJsonSchemaValidatedIntSignal` method.  This returns a `std::future` that can be waited on if desired.  The future is resolved when the signal is sent.
+
+```cpp
+auto jsonSchemaValidatedIntFuture = server.emitJsonSchemaValidatedIntSignal(42);
+jsonSchemaValidatedIntFuture.wait(); // Optional, to block until signal is sent.
+```
+
+</details>
+
+
 ### Signal `singleOptionalInt`
 
 A signal with a single optional integer parameter.
@@ -1278,6 +1366,95 @@ A `singleString` signal can be emitted by calling the server's `emitSingleString
 ```cpp
 auto singleStringFuture = server.emitSingleStringSignal("apples");
 singleStringFuture.wait(); // Optional, to block until signal is sent.
+```
+
+</details>
+
+
+### Signal `jsonSchemaValidatedString`
+
+A signal with a single string parameter that is validated against a JSON schema.
+
+#### Signal Parameters for `jsonSchemaValidatedString`
+
+| Name          | Type     |Description|
+|---------------|----------|-----------|
+|     value     |  string  |The string value.|
+
+#### Code Examples
+
+<details>
+  <summary>Python Client code for receiving 'jsonSchemaValidatedString' signal</summary>
+
+The `jsonSchemaValidatedString` signal can be subscribed to by using the client's `receive_json_schema_validated_string` decorator on a callback function. The name of the function does not matter. The function is called any time the signal is received.
+
+```python
+@client.receive_json_schema_validated_string
+def on_json_schema_validated_string(value: str):
+    print(f"Got a 'jsonSchemaValidatedString' signal: value={ value } ")
+```
+
+</details>
+
+<details>
+  <summary>Python Server code for emitting 'jsonSchemaValidatedString' signal</summary>
+
+A server can emit a `jsonSchemaValidatedString` signal simply by calling the server's `emit_json_schema_validated_string` method.
+
+```python
+server.emit_json_schema_validated_string("apples")
+```
+
+</details>
+
+<details>
+  <summary>Rust Client code for receiving 'jsonSchemaValidatedString' signal</summary>
+
+A Rust client receives signals through a `tokio::broadcast` channel.  Receiving from the channel returns a `Result<T, RecvError>` object.  
+
+Since receiving a message through the channel blocks, it may be best to put this into a separate async task.
+
+```rust
+let mut json_schema_validated_string_signal_rx = client.get_json_schema_validated_string_receiver();
+print("Got a 'jsonSchemaValidatedString' signal: {:?}", json_schema_validated_string_signal_rx.recv().await);
+```
+
+</details>
+
+<details>
+  <summary>Rust Server code for emitting 'jsonSchemaValidatedString' signal</summary>
+
+A server can emit a `jsonSchemaValidatedString` signal simply by calling the server's `emit_json_schema_validated_string` method.
+
+```rust
+let publish_result = server.emit_json_schema_validated_string("apples".to_string()).await;
+```
+
+The return type is a **Pinned Boxed Future** that resolves to a `Result<(), MethodReturnCode>`.  The future is resolved when the signal is sent (with "publish complete" acknowledgment) or when an error occurs.  If you need to block until the signal is received by the MQTT broker, you can `.await` the future.
+
+</details>
+
+<details>
+  <summary>C++ Client code for registering a 'jsonSchemaValidatedString' signal callback</summary>
+
+A client can register a callback function to be called when a `jsonSchemaValidatedString` signal is received.  The callback function should take the same parameters as the signal.  In this example, we are using a lambda as the callback function.
+
+```cpp
+client.registerJsonSchemaValidatedStringCallback([](std::string value) {
+    std::cout << "value=" <<value <<  std::endl;
+});
+```
+
+</details>
+
+<details>
+  <summary>C++ Server code for emitting a 'jsonSchemaValidatedString' signal</summary>
+
+A `jsonSchemaValidatedString` signal can be emitted by calling the server's `emitJsonSchemaValidatedStringSignal` method.  This returns a `std::future` that can be waited on if desired.  The future is resolved when the signal is sent.
+
+```cpp
+auto jsonSchemaValidatedStringFuture = server.emitJsonSchemaValidatedStringSignal("apples");
+jsonSchemaValidatedStringFuture.wait(); // Optional, to block until signal is sent.
 ```
 
 </details>
@@ -1763,7 +1940,7 @@ def on_single_struct(value: AllTypes):
 A server can emit a `singleStruct` signal simply by calling the server's `emit_single_struct` method.
 
 ```python
-server.emit_single_struct(AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]))
+server.emit_single_struct(AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]))
 ```
 
 </details>
@@ -1943,7 +2120,7 @@ def on_three_structs(first: AllTypes, second: AllTypes, third: Optional[AllTypes
 A server can emit a `threeStructs` signal simply by calling the server's `emit_three_structs` method.
 
 ```python
-server.emit_three_structs(AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]))
+server.emit_three_structs(AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]))
 ```
 
 </details>
@@ -2121,7 +2298,7 @@ def on_single_optional_datetime(value: Optional[datetime]):
 A server can emit a `singleOptionalDatetime` signal simply by calling the server's `emit_single_optional_datetime` method.
 
 ```python
-server.emit_single_optional_datetime(datetime.now(UTC))
+server.emit_single_optional_datetime(None)
 ```
 
 </details>
@@ -2212,7 +2389,7 @@ def on_three_date_times(first: datetime, second: datetime, third: Optional[datet
 A server can emit a `threeDateTimes` signal simply by calling the server's `emit_three_date_times` method.
 
 ```python
-server.emit_three_date_times(datetime.now(UTC), datetime.now(UTC), datetime.now(UTC))
+server.emit_three_date_times(datetime.now(UTC), datetime.now(UTC), None)
 ```
 
 </details>
@@ -3862,7 +4039,7 @@ This returns a `Future` object.  In this example, we wait up to 5 seconds for th
 ```python
 from futures import Future
 
-future = client.call_three_structs(input1=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), input2=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), input3=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]))
+future = client.call_three_structs(input1=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), input2=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), input3=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]))
 try:
     print(f"RESULT:  {future.result(5)}")
 except futures.TimeoutError:
@@ -3882,7 +4059,7 @@ The decorated method is called everytime the a request for the method is receive
 def call_three_structs(input1: Optional[AllTypes], input2: AllTypes, input3: AllTypes) -> CallThreeStructsMethodResponse:
     """ This is an example handler for the 'callThreeStructs' method.  """
     print(f"Running call_three_structs'({input1}, {input2}, {input3})'")
-    return CallThreeStructsMethodResponse(output1=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), output2=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), output3=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]))
+    return CallThreeStructsMethodResponse(output1=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), output2=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=datetime.now(UTC), optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]), output3=AllTypes(the_bool=True, the_int=42, the_number=3.14, the_str="apples", the_enum=Numbers.ONE, an_entry_object=Lunch(drink=True, sandwich="apples", crackers=3.14, order_number=42, time_of_lunch=datetime.now(UTC), duration_of_lunch=timedelta(seconds=3536)), date_and_time=datetime.now(UTC), time_duration=timedelta(seconds=3536), data=b"example binary data", optional_integer=42, optional_string="apples", optional_enum=Numbers.ONE, optional_entry_object=Entry(key=42, value="apples"), optional_date_time=None, optional_duration=None, optional_binary=b"example binary data", array_of_integers=[42, 2022], optional_array_of_integers=[42, 2022], array_of_strings=["apples", "foo"], optional_array_of_strings=["apples", "foo"], array_of_enums=[Numbers.ONE, Numbers.ONE], optional_array_of_enums=[Numbers.ONE, Numbers.ONE], array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], optional_array_of_datetimes=[datetime.now(UTC), datetime.now(UTC)], array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], optional_array_of_durations=[timedelta(seconds=3536), timedelta(seconds=975)], array_of_binaries=[b"example binary data", b"example binary data"], optional_array_of_binaries=[b"example binary data", b"example binary data"], array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")], optional_array_of_entry_objects=[Entry(key=42, value="apples"), Entry(key=2022, value="foo")]))
 ```
 
 </details>
@@ -3984,7 +4161,7 @@ This returns a `Future` object.  In this example, we wait up to 5 seconds for th
 ```python
 from futures import Future
 
-future = client.call_optional_date_time(input1=None)
+future = client.call_optional_date_time(input1=datetime.now(UTC))
 try:
     print(f"RESULT:  {future.result(5)}")
 except futures.TimeoutError:
@@ -4004,7 +4181,7 @@ The decorated method is called everytime the a request for the method is receive
 def call_optional_date_time(input1: Optional[datetime]) -> Optional[datetime]:
     """ This is an example handler for the 'callOptionalDateTime' method.  """
     print(f"Running call_optional_date_time'({input1})'")
-    return datetime.now(UTC)
+    return None
 ```
 
 </details>

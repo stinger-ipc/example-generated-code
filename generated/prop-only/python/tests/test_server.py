@@ -106,6 +106,25 @@ class TestPropOnlyServerProperties:
         payload_dict = json.loads(msg.payload.decode("utf-8"))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
 
+    def test_home_address_property_setter(self, server, mock_connection):
+        """Test that setting the 'home_address' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True  # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_home_address_value = Address(street="apples", city="apples", state="apples", postal_code="apples", country=Country.USA)
+
+        server.home_address = new_home_address_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'home_address'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'home_address' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'home_address' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'home_address' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_home_address_obj = HomeAddressProperty(address=new_home_address_value)
+        assert json.loads(new_home_address_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'home_address' setter did not publish the correct JSON payload"
+
     def test_home_address_property_receive(self, server, mock_connection):
         """Test that receiving a property update for 'home_address' updates the server property and calls callbacks."""
         received_data = None
@@ -289,6 +308,25 @@ class TestPropOnlyServerProperties:
         expected_dict = to_jsonified_dict(expected_obj)
         payload_dict = json.loads(msg.payload.decode("utf-8"))
         assert payload_dict == expected_dict, f"Published payload '{payload_dict}' does not match expected '{expected_dict}'"
+
+    def test_favorite_country_property_setter(self, server, mock_connection):
+        """Test that setting the 'favorite_country' property publishes the correct message."""
+        mock_connection.clear_published_messages()
+        server._force_property_publish = True  # Backdoor way to force server to publish property updates even if the value hasn't changed.  For unittests only.
+
+        new_favorite_country_value = Country.USA
+
+        server.favorite_country = new_favorite_country_value
+
+        assert len(mock_connection.published_messages) == 1, f"No message was published for property 'favorite_country'.  Messages: {mock_connection.published_messages}"
+
+        published_msg = mock_connection.published_messages[-1]
+        assert published_msg.qos == 1, "Property 'favorite_country' setter published message with incorrect QoS"
+        assert published_msg.retain is True, "Property 'favorite_country' setter published message with incorrect retain flag"
+        assert published_msg.content_type == "application/json", "Property 'favorite_country' setter published message with incorrect content type"
+        published_msg_json_obj = json.loads(published_msg.payload)
+        new_favorite_country_obj = FavoriteCountryProperty(country=new_favorite_country_value)
+        assert json.loads(new_favorite_country_obj.model_dump_json(by_alias=True)) == published_msg_json_obj, "Property 'favorite_country' setter did not publish the correct JSON payload"
 
     def test_favorite_country_property_receive(self, server, mock_connection):
         """Test that receiving a property update for 'favorite_country' updates the server property and calls callbacks."""
